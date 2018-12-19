@@ -13,6 +13,7 @@ import Splash						from './screens/splash';
 
 import PromoListScreen				from './screens/promo/list';
 import PromoViewScreen				from './screens/promo/view';
+import PromoDetailsScreen			from './screens/promo/details';
 import PromoParticipateScreen		from './screens/promo/participate';
 import PromoMyListScreen			from './screens/promo/my';
 
@@ -33,6 +34,7 @@ var Navigator = createAppContainer(createStackNavigator(
 	{
 		promo_list:					PromoListScreen,
 		promo_view:					PromoViewScreen,
+		promo_details:				PromoDetailsScreen,
 		promo_participate:			PromoParticipateScreen,
 		promo_my_view:				PromoMyListScreen,
 		settings:					SettingsScreen,
@@ -46,8 +48,8 @@ var Navigator = createAppContainer(createStackNavigator(
 	{
 		initialRouteName: 'promo_list',
 		// initialRouteName: 'promo_view',
+		// initialRouteName: 'promo_details',
 		// initialRouteName: 'promo_participate',
-		// initialRouteName: 'promo_my_list',
 		// initialRouteName: 'promo_my_view',
 		// initialRouteName: 'settings',
 		// initialRouteName: 'settings_confirm_phone',

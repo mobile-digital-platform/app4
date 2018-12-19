@@ -41,12 +41,18 @@ export default class SplashComponent extends Component {
 	}
 
 	componentDidMount() {
-		this.timer = setTimeout(_ => this.setState({timeout:true}),2000);
+		this.timer = setTimeout(_ => this.setState({timeout:true}),0);
 		this.update();
 	}
 	componentDidUpdate(prev_props) {
-		if(this.state.user_loaded && this.props.promo_list.loaded) {
-			if(this.state.timeout) this.props.set_page('navigator');
+		console.log(this.props.promo_list);
+		if(!this.state.fail) {
+			if(this.props.promo_list.error) {
+				Alert.alert('Не удается наладить связь с сервером');
+				this.setState({fail:true});
+			} else if(this.state.user_loaded && this.props.promo_list.loaded) {
+				if(this.state.timeout) this.props.set_page('navigator');
+			}
 		}
 	}
 	componentWillUnmount() {
@@ -55,6 +61,7 @@ export default class SplashComponent extends Component {
 
 	update = () => {
 		this.interval = setInterval(_ => this.setState(({now}) => ({now:++now%3})),200);
+		this.setState({fail:false});
 		this.get_user();
 		this.get_promo_list();
 	}
@@ -78,8 +85,8 @@ export default class SplashComponent extends Component {
 			} else {
 				st.set('user',{});
 			}
-			this.setState({user_loaded:true});
 		}
+		this.setState({user_loaded:true});
 	}
 	get_promo_list = async () => {
 		if(this.props.promo_list.data.length) {

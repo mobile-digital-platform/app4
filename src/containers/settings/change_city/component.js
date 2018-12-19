@@ -31,20 +31,27 @@ const styles = StyleSheet.create({
 });
 
 export default withNavigation(class ChangeCity extends Component {
-	state = {
-		city_id: 0,
-		city_name: '',
-		suggest: [],
-	};
+	constructor(props) {
+		super(props);
+
+		this.input = React.createRef();
+
+		this.state = {
+			city_id: 0,
+			city_name: '',
+			suggest: [],
+		};
+	}
 
 	componentDidMount() {
+		this.input.current.focus();
 		if(this.props.user.city>0)			this.setState({city_id:this.props.user.city,city_name:city.find_city(this.props.user.city)});
 		else if(this.props.user.city_name)	this.change_text(this.props.user.city_name);
 	}
 
 	change_text = (city_name) => {
 		this.setState({city_name});
-		if(city_name.length>1)	this.setState({suggest:city.search_city(city_name.trim())});
+		if(city_name.length)	this.setState({suggest:city.search_city(city_name.trim())});
 		else					this.setState({suggest:[]});
 	}
 	select = (city_id,city_name) => {
@@ -63,9 +70,10 @@ export default withNavigation(class ChangeCity extends Component {
 
 		return (
 			<View style={styles.container}>
-				<TextInput style={styles.input} value={state.city_name} placeholder="Ваш город" onChangeText={this.change_text} />
+				<TextInput ref={this.input} style={styles.input} value={state.city_name} placeholder="Ваш город" onChangeText={this.change_text} />
 				{state.city_name.length ? (
 					<FlatList
+						keyboardShouldPersistTaps='always'
 						style={styles.list}
 						data={state.suggest}
 						renderItem={this.render_item}

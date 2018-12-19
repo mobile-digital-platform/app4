@@ -3,6 +3,8 @@ import {StyleSheet,TouchableOpacity,TextInput,Text,View} from 'react-native';
 import {withNavigation} from 'react-navigation';
 import {TextInputMask} from 'react-native-masked-text'
 
+import ReactNative,{Keyboard,UIManager,findNodeHandle,Animated} from 'react-native';
+
 import Icon from 'react-native-vector-icons/EvilIcons';
 
 const styles = StyleSheet.create({
@@ -61,13 +63,13 @@ export default withNavigation(class InputPhone extends Component {
 	constructor(props) {
 		super(props);
 
+		this.input = this.props.id || React.createRef();
+
 		this.state = {
 			active: !!(props.value?.length),
 			value: props.value ?? '',
 			error: props.error,
 		};
-
-		this.input = React.createRef();
 	}
 
 	componentDidUpdate(prevProps) {
@@ -88,6 +90,23 @@ export default withNavigation(class InputPhone extends Component {
 	set_active = async () => {
 		await this.setState({active:true});
 		this.input.current._inputElement.focus();
+
+		if(this.props.keyboard_options) {
+			this.props.keyboard_options.scroll.current.scrollTo({x:0,y:this.props.keyboard_options.offset,animated:true});
+		}
+
+		// console.log("XSS!");
+
+		// console.log(this.input.current._inputElement);
+		// console.log(this.props.keyboard_options.scroll.current);
+
+		// let node = findNodeHandle(this.input.current._inputElement);
+		// console.log(node);
+		// UIManager.measureInWindow(node,(x,y,width,height) => console.log({x,y,width,height}));
+
+		// let scroll = findNodeHandle(this.props.scroll.current);
+		// console.log(this.props.scroll.getScrollResponder());
+		// this.props.scroll.getScrollResponder().scrollResponderScrollNativeHandleToKeyboard(node,-100,true);
 	}
 	reset_active = () => {
 		if(!this.state.value.length) this.setState({active:false});

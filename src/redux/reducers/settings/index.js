@@ -132,6 +132,16 @@ export const request = {
 			return {error};
 		}
 	},
+	phone_send_password: async (phone) => {
+		let {response,error} = await API('/PhoneSendPassword',{Phone:phone});
+		if(response) {
+			return {response:{code:response.Code}};
+		}
+		if(error) {
+			console.log('error',error);
+			return {error};
+		}
+	},
 	phone_confirm: async (data) => {
 		let {response,error} = await API('/PhoneConfirm',{UserID:data.user_id,Code:data.code});
 		if(response) {

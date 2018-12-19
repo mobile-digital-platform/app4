@@ -28,7 +28,7 @@
   },
   "rnpm": {
     "assets": [
-	  "./assets/",
+      "./assets/",
       "./assets/splash_screen/"
     ]
   }

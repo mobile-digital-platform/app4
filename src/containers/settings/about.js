@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
 		fontSize: 16, fontWeight: 'bold',
 	},
 	bottom: {
-		marginTop: 20, marginBottom: 70,
+		marginTop: 20, marginBottom: 30,
 	},
 	version: {
 		marginBottom: 15,
@@ -65,8 +65,10 @@ export default withNavigation((props) => (
 		</View>
 		<View style={styles.bottom}>
 			<Text style={styles.version}>Версия {config.version}, © {config.year}</Text>
+			{/*
 			<Text style={styles.support}>Телефон поддержки</Text>
 			<Text style={styles.support_number}>{config.support_number}</Text>
+			*/}
 		</View>
 	</View>
 ));

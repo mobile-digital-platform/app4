@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{Component} from 'react';
 import {StyleSheet,Image,Text,TouchableOpacity,View} from 'react-native';
 import {withNavigation} from 'react-navigation';
 
@@ -12,6 +12,9 @@ const styles = StyleSheet.create({
 		height: 150, width: '100%',
 		backgroundColor: '#eee',
 	},
+	big_image: {
+		height: 350,
+	},
 	area: {
 		width: '100%',
 		borderWidth: 1, borderTopWidth: 0, borderColor: '#ccc',
@@ -22,9 +25,32 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default withNavigation(({navigation,data,my,...props}) => (
-	<TouchableOpacity style={styles.container} onPress={_ => navigation.push(my ? 'promo_my_view' : 'promo_view',{data})}>
-		<Image style={styles.image} source={{uri:'https://www.sostav.ru/images/news/2018/04/20/on5vjvly.jpg'}} />
-		<View style={styles.area}><Text style={styles.title}>{data.title.toUpperCase()}</Text></View>
-	</TouchableOpacity>
-));
+export default withNavigation(class ListItem extends Component {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			image_url: this.props.data.image_url,
+			image_height: styles[(this.props.big ? 'big_' : '')+'image'].height,
+		}
+	}
+
+	componentDidMount() {
+		Image.getSize(this.state.image_url,(width,height) => {
+			if(0.8*height<this.state.image_height) this.setState({image_height:0.8*height});
+		},error => {
+			this.setState({image:'https://www.sostav.ru/images/news/2018/04/20/on5vjvly.jpg'});
+		});
+	}
+
+	render() {
+		let data = this.props.data;
+
+		return (
+			<TouchableOpacity style={styles.container} onPress={_ => this.props.navigation.push(this.props.my ? 'promo_my_view' : 'promo_view',{data})}>
+				<Image style={[styles.image,{height:this.state.image_height}]} source={{uri:this.state.image_url}} />
+				<View style={styles.area}><Text style={styles.title}>{data.title.toUpperCase()}</Text></View>
+			</TouchableOpacity>
+		);
+	}
+});

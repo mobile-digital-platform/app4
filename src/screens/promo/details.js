@@ -5,7 +5,7 @@ import {light,dark}		from '../../navigation';
 
 import Settings_Button	from '../../containers/settings_button';
 
-import Promo_View		from '../../containers/promo/view';
+import Promo_View		from '../../containers/promo/details';
 
 const styles = StyleSheet.create({
 	container: {

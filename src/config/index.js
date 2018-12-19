@@ -1,6 +1,6 @@
 export default {
 	name: 'mobile-digital-platform',
-	version: '0.1.0',
+	version: '0.1.1',
 	year: '2019',
 	support_number: '8-800-1112233',
 

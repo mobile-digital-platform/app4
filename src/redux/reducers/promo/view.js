@@ -27,18 +27,25 @@ export default function reducer(st = ReducerRecord(),action) {
 		case SET:		return {...st,data:payload};
 	 	case REQUEST:	return {...st,loading:true};
  		case SUCCESS:
+			console.log(payload.data);
 			let retailer = payload.data.map(e => ({
-				// id:			e.PromoID,
-				// group_id:	e.PromoGroupID,
-				// title:		e.PromoGroupName,
-				id:				e.NetworkID,
-				name:			e.NetworkName,
-				description:	e.Description,
-				start:			new Date(e.Start),
-				end:			new Date(e.Finish),
-				image_url:		e.BannerLink,
-				link:			e.WebSiteLink,
-				active:			e.IsActive,
+				id:					e.PromoID,
+				group_id:			e.PromoGroupID,
+				title:				e.PromoGroupName,
+				description:		e.Description,
+				start:				e.Start.substr(0,10),
+				end:				e.Finish.substr(0,10),
+				network: {
+					id:					e.NetworkID,
+					name:				e.NetworkName,
+					image_url:			e.NetworkLogoLink,
+				},
+				image_url:			e.BannerLink,
+				link:				e.WebSiteLink,
+				rules:				e.RulesLink,
+				active:				e.IsActive,
+				can_participate:	e.CanJoin,
+				participation:		e.Participate,
 			})).filter(e => e.active);
 
 			return {

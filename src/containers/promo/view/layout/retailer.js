@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet,Image,ImageBackground,Text,TouchableOpacity,View} from 'react-native';
+import {Linking,StyleSheet,Image,ImageBackground,Text,TouchableOpacity,View} from 'react-native';
 import {withNavigation} from 'react-navigation';
 
 import Icon from 'react-native-vector-icons/EvilIcons';
@@ -11,10 +11,13 @@ const styles = StyleSheet.create({
 		alignItems: 'flex-start',
 		padding: 20,
 	},
-	image: {
+	image_area: {
 		height: 50, width: 50,
 		borderRadius: 25,
-		backgroundColor: '#eee',
+		backgroundColor: '#fff',
+	},
+	image: {
+		height: '100%', width: '100%',
 	},
 	area: {
 		flex: 1,
@@ -50,22 +53,33 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default withNavigation(({navigation,data}) => (
-	<TouchableOpacity style={styles.container} onPress={_=>{return;navigation.push('promo_participate')}}>
-		<Image style={styles.image} source={{src:data.image_url}} />
-		<View style={styles.area}>
-			<Text style={styles.title}>{data.name}</Text>
-			<View style={styles.about}>
-				<TouchableOpacity style={styles.link_area} onPress={_=>navigation.push('web',{title:'Сайт акции'})}>
-					<Text style={styles.link}>Сайт акции</Text>
-					<Icon name="chevron-right" style={{color:'red'}} size={30} />
-				</TouchableOpacity>
-				{/*
-				<TouchableOpacity style={styles.participate} onPress={_=>navigation.push('promo_participate')}>
-					<Text style={styles.participate_text}>Участвовать</Text>
-				</TouchableOpacity>
-				*/}
+export default withNavigation(({navigation,data,extra}) => {
+	// if(!data.network.image_url) data.network.image_url = 'https://www.sostav.ru/images/news/2018/04/20/on5vjvly.jpg';
+
+	return (
+		<TouchableOpacity style={styles.container} onPress={_=>navigation.push('promo_details',{data,promo:extra})}>
+			<View style={styles.image_area}>
+			{data.network.image_url ? (
+			 	<Image style={styles.image} source={{uri:data.network.image_url}} />
+			) : null}
 			</View>
-		</View>
-	</TouchableOpacity>
-));
+			<View style={styles.area}>
+				<Text style={styles.title}>{data.network.name}</Text>
+				<View style={styles.about}>
+					{data.link ? (
+					<TouchableOpacity
+						style={styles.link_area}
+						onPress={_=>Linking.openURL(data.link)/*navigation.push('web',{title:'Сайт акции',source:data.link})*/}
+					>
+						<Text style={styles.link}>Сайт акции</Text>
+						<Icon name="chevron-right" style={{color:'red'}} size={30} />
+					</TouchableOpacity>
+					) : null}
+					<TouchableOpacity style={styles.participate} onPress={_=>navigation.push('promo_details',{data,promo:extra})}>
+						<Text style={styles.participate_text}>Подробнее</Text>
+					</TouchableOpacity>
+				</View>
+			</View>
+		</TouchableOpacity>
+	);
+});

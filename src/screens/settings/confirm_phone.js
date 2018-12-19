@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Platform,StatusBar,StyleSheet,ScrollView,View} from 'react-native';
+import {Platform,StatusBar,StyleSheet,View} from 'react-native';
 
 import {light,dark}		from '../../navigation';
 
@@ -22,10 +22,10 @@ export default class MainList extends Component {
 
 	render() {
 		return (
-			<ScrollView style={styles.container}>
+			<View style={styles.container}>
 				<StatusBar barStyle="light-content" />
 				<ConfirmPhone/>
-			</ScrollView>
+			</View>
 		);
 	}
 }

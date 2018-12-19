@@ -77,9 +77,9 @@ export default withNavigation(class Authorization extends Component {
 
 		this.timeout;
 		this.state = {
-			phone_value: '79170000011',
+			phone: '79170000011',
 			phone_error: false,
-			password_value: '',
+			password: '',
 			password_error: false,
 			ready: false,
 			code: '',
@@ -103,27 +103,27 @@ export default withNavigation(class Authorization extends Component {
 		},1000);
 	}
 
-	set_phone = async (phone_value) => {
-		await this.setState({phone_value});
-		this.setState({ready:this.state.phone_value.length && this.state.password_value.length});
+	set_phone = async (phone) => {
+		await this.setState({phone});
+		this.setState({ready:this.state.phone.length && this.state.password.length});
 	}
-	set_password = async (password_value) => {
-		await this.setState({password_value});
-		this.setState({ready:this.state.phone_value.length && this.state.password_value.length});
+	set_password = async (password) => {
+		await this.setState({password});
+		this.setState({ready:this.state.phone.length && this.state.password.length});
 	}
 
-	ask_code = async () => {
+	ask_password = async () => {
 		if(['starting','expired'].indexOf(this.state.state)>=0) {
 			// Ставим таймер, чтоб заново запросить нельзя было
-			this.timer(55);
+			this.timer(60);
 
 			// Запрашиваем код
-			let {response,error} = await request.phone_send_code(this.props.user.id);
+			let {response,error} = await request.phone_send_password(this.state.phone);
 			if(response) {
 				console.log(response);
 			}
 			if(error) {
-				// Даже если и ошибка, пользователю мы в этом не признаемся
+				Alert.alert('Невозможно восстановить пароль','Проверьте правильность ввода номера телефона');
 			}
 		}
 	}
@@ -147,10 +147,10 @@ export default withNavigation(class Authorization extends Component {
 				<View style={styles.main}>
 					<Text style={styles.main_text}>Для авторизации введите номер телефона и пароль, указанные при регистрации.</Text>
 					<View style={styles.main_input}>
-						<InputPhone title="Мобильный телефон" value={state.phone_value} error={state.phone_error} send={this.set_phone} />
+						<InputPhone title="Мобильный телефон" value={state.phone} error={state.phone_error} send={this.set_phone} />
 					</View>
 					<View style={styles.main_input}>
-						<Input title="Пароль" password={true} value={state.password_value} error={state.password_error} send={this.set_password} />
+						<Input title="Пароль" password={true} value={state.password} error={state.password_error} send={this.set_password} />
 					</View>
 					<TouchableOpacity style={state.ready ? styles.button : styles.button_disabled} onPress={this.enter}>
 						<Text style={state.ready ? styles.button_text : styles.button_disabled_text}>Войти</Text>
@@ -163,7 +163,7 @@ export default withNavigation(class Authorization extends Component {
 							Отправить код повторно можно через {this.state.timeout} сек.
 						</Text>
 					) : null}
-					<TouchableOpacity style={styles.reset_button} onPress={this.ask_code}>
+					<TouchableOpacity style={styles.reset_button} onPress={this.ask_password}>
 						<Text style={styles.reset_button_text}>Восстановить пароль</Text>
 					</TouchableOpacity>
 				</View>

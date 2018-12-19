@@ -39,13 +39,13 @@ export default class Input extends Component {
 	constructor(props) {
 		super(props);
 
+		this.input = React.createRef();
+
 		this.state = {
 			active: !!(props.value?.length),
 			value: props.value ?? '',
 			error: props.error,
 		};
-
-		this.input = React.createRef();
 	}
 
 	componentDidUpdate(prevProps) {
@@ -66,6 +66,10 @@ export default class Input extends Component {
 	set_active = async () => {
 		await this.setState({active:true});
 		this.input.current.focus();
+
+		if(this.props.keyboard_options) {
+			this.props.keyboard_options.scroll.current.scrollTo({x:0,y:this.props.keyboard_options.offset,animated:true});
+		}
 	}
 	reset_active = () => {
 		if(!this.state.value.length) this.setState({active:false});

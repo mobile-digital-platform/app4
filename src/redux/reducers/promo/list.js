@@ -29,13 +29,14 @@ export default function reducer(st = ReducerRecord(),action) {
 		let items = payload.data.map(e => ({
 			id:			e.PromoGroupID,
 			title:		e.PromoGroupName,
-			start:		new Date(e.Start),
-			end:		new Date(e.Finish),
+			start:		e.Start.substr(0,10),
+			end:		e.Finish.substr(0,10),
 			image_url:	e.BannerLink,
 		}));
 		let data = [];
-		if(payload.next)		data = [...st.data,...items];
-		else if(payload.new)	data = [...items,...st.data];
+		// if(payload.next)		data = [...st.data,...items];
+		// else if(payload.new)	data = [...items,...st.data];
+		data = items;
 
 		return {
 			...st,
@@ -69,6 +70,7 @@ export const fetch_data_saga = function*({payload}) {
 	// 	ending: Math.ceil(Math.random()*20),
 	// });
 	let {response,error} = yield call(API,'/PromoGroupList');
+	yield new Promise(resolve => setTimeout(resolve,1000));
 	if(response) {
 		yield put({
 			type: SUCCESS,

@@ -8,7 +8,7 @@ export default withNavigation(class PromoParticipaateComponent extends Component
 	state = {};
 
 	componentDidMount() {
-		this.id = this.props.navigation.getParam('id',0);
+		this.id = this.props.navigation.getParam('id');
 		// this.props.get_data(this.id);
 	}
 

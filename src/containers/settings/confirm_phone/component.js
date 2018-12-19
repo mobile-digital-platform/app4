@@ -1,12 +1,14 @@
 import React,{Component} from 'react';
-import {Alert,StyleSheet,Text,TouchableOpacity,View} from 'react-native';
+import {StyleSheet,ScrollView,Text,TouchableOpacity,View} from 'react-native';
 import {withNavigation} from 'react-navigation';
 
 import Icon from 'react-native-vector-icons/EvilIcons';
 
 import Input from '../../../templates/input';
 
+import alert		from '../../../services/alert';
 import st			from '../../../services/storage';
+
 import {request}	from '../../../redux/reducers/settings';
 
 const styles = StyleSheet.create({
@@ -118,18 +120,18 @@ export default withNavigation(class ConfirmPhoneComponent extends Component {
 
 	send = async () => {
 		if(this.state.state == 'expired') {
-			Alert.alert('Срок действия смс истек','Пожалуйста, запросите новую');
+			alert('Срок действия смс истек','Пожалуйста, запросите новую');
 		} else if(this.state.code.length) {
 			let {response,error} = await request.phone_confirm({user_id:this.props.user.id,code:this.state.code});
 			if(response) {
 				this.props.update_user({phone_confirmed:true});
 				st.merge('user',{phone_confirmed:true});
-				Alert.alert('Номер телефона успешно подтвержден');
+				await alert('Номер телефона успешно подтвержден');
 				this.props.navigation.goBack();
 			}
 			if(error) {
 				console.log('error',error);
-				Alert.alert(error.message);
+				alert(error.message);
 			}
 		}
 	}
@@ -149,7 +151,7 @@ export default withNavigation(class ConfirmPhoneComponent extends Component {
 		again_button_text_styles[1]	= (this.state.state == 'expired') ? styles.active_button_text	: styles.passive_button_text;
 
 		return (
-			<View>
+			<ScrollView keyboardShouldPersistTaps='always' keyboardDismissMode='on-drag'>
 				<View style={styles.main}>
 					<Text style={styles.main_text}>На ваш телефон отправлено SMS-сообщение с кодом подтверждения. Введите этот код в поле:</Text>
 					<View style={styles.main_input}><Input title="Код из SMS" value={state.code} type="numeric" update={code => this.setState({code})} /></View>
@@ -166,7 +168,7 @@ export default withNavigation(class ConfirmPhoneComponent extends Component {
 						<Text style={again_button_text_styles}>Повторить</Text>
 					</TouchableOpacity>
 				</View>
-			</View>
+			</ScrollView>
 		);
 	}
 })

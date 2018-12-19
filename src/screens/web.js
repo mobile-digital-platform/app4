@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Platform,StyleSheet,StatusBar,View,Text,WebView} from 'react-native';
+import {Platform,StyleSheet,StatusBar,ScrollView,View,Text,WebView} from 'react-native';
 
 import {light,dark}		from '../navigation';
 

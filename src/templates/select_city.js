@@ -15,6 +15,9 @@ const styles = StyleSheet.create({
 		borderRadius: 100,
 		backgroundColor: '#fff',
 	},
+	container_error: {
+		borderColor: 'red',
+	},
 	left: {
 		flex: 1,
 	},
@@ -46,7 +49,7 @@ const styles = StyleSheet.create({
 
 export default withNavigation(({navigation,...props}) => (
 	<View>
-		<TouchableOpacity style={styles.container} onPress={_=>navigation.push('settings_change_city')}>
+		<TouchableOpacity style={[styles.container,props.error?styles.container_error:{}]} onPress={_=>navigation.push('settings_change_city')}>
 			<View style={styles.left}>
 			{props.value ? (
 				<View>

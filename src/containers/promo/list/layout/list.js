@@ -30,11 +30,11 @@ const styles = StyleSheet.create({
 export default class List extends Component {
 
 	key_extractor = item => ''+item.id;
-	render_item = ({item}) => (<Item data={item} my={this.props.my} />)
+	render_item = ({item}) => (<Item data={item} my={this.props.my} big={this.props.data.length<3} />)
 	render_footer = () => {
-		if(this.props.error)	return (<Error error={this.props.error} />);
+		if(this.props.error)		return (<Error error={this.props.error} />);
 		// if(this.props.loaded)	return (<Text>Больше ничего нет</Text>);
-		if(this.props.loading)	return (<Wait/>);
+		if(this.props.loading && !this.props.data.length) return (<Wait/>);
 		return null;
 	}
 
@@ -55,8 +55,8 @@ export default class List extends Component {
 					extraData={this.props}
 					keyExtractor={this.key_extractor}
 					// onEndReached={this.props.load_next}
-					// onEndReachedThreshold={0.9}
-					// onRefresh={this.props.load_new}
+					// onEndReachedThreshold={0}
+					onRefresh={this.props.load_new}
 					refreshing={this.props.loading}
 				/>
 			)}

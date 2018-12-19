@@ -21,6 +21,8 @@ export default withNavigation(class PromoListComponent extends Component {
 	}
 
 	render() {
+		console.log("Promo List Component",this.props);
+		
 		return (
 			<Layout
 				{...this.props}

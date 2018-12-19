@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
 		// borderRadius: Dimensions.get('window').width*0.4,
 		resizeMode: 'contain',
 	},
+	/*
 	button: {
 		paddingVertical: 15, paddingHorizontal: 50,
 		borderRadius: 100,
@@ -25,14 +26,17 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		textAlign: 'center',
 	},
+	*/
 });
 
 export default () => (
 	<View style={styles.container}>
 		<StatusBar barStyle="light-content" />
 		<Image style={[styles.image]} source={{uri:'https://www.coca-cola.ru/images/meals/logo.png'}} />
+		{/*
 		<TouchableOpacity style={styles.button} onPress={_=>this.props.navigation.replace('splash')}>
 			<Text style={styles.button_text}>Начать</Text>
 		</TouchableOpacity>
+		*/}
 	</View>
 );

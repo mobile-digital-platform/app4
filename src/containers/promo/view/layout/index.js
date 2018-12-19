@@ -46,26 +46,30 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default withNavigation(({navigation,data}) => (
-	<ScrollView style={styles.container}>
-		<ImageBackground style={styles.banner} imageStyle={{opacity:0.7}} source={{uri:data.image_url}}>
-			<Text style={styles.title}>{data.title}</Text>
-			{/*data ? (<Text style={styles.ending}>Заканчивается через {Math.ceil((data.end.getTime()-new Date().getTime())/(24*60*60*1000))} дней</Text>) : null*/}
-		</ImageBackground>
-		{data.description?.length ? (
-			<View style={styles.area}>
-				<Text style={styles.subtitle}>Условия акции</Text>
-				<Text style={styles.description}>{data.description}</Text>
+export default withNavigation(({navigation,data}) => {
+	data.retailer = data.retailer?.filter(e => e.active);
+
+	return (
+		<ScrollView style={styles.container}>
+			<ImageBackground style={styles.banner} imageStyle={{opacity:0.7}} source={{uri:data.image_url}}>
+				<Text style={styles.title}>{data.title}</Text>
+				{/*data ? (<Text style={styles.ending}>Заканчивается через {Math.ceil((data.end.getTime()-new Date().getTime())/(24*60*60*1000))} дней</Text>) : null*/}
+			</ImageBackground>
+			{data.description?.length ? (
+				<View style={styles.area}>
+					<Text style={styles.subtitle}>Условия акции</Text>
+					<Text style={styles.description}>{data.description}</Text>
+				</View>
+			) : null}
+			<View style={styles.retailers}>
+				<Text style={[styles.subtitle,{paddingHorizontal:20}]}>Где проводится</Text>
+				<FlatList
+					data={data.retailer}
+					renderItem={({item}) => (<Retailer data={item} extra={data} />)}
+					ItemSeparatorComponent={Separator}
+					keyExtractor={item => ''+item.id}
+				/>
 			</View>
-		) : null}
-		<View style={styles.retailers}>
-			<Text style={[styles.subtitle,{paddingHorizontal:20}]}>Где проводится</Text>
-			<FlatList
-				data={data.retailer}
-				renderItem={({item}) => (<Retailer data={item} />)}
-				ItemSeparatorComponent={Separator}
-				keyExtractor={item => ''+item.id}
-			/>
-		</View>
-	</ScrollView>
-));
+		</ScrollView>
+	);
+});
