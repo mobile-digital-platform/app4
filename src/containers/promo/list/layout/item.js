@@ -49,7 +49,7 @@ export default withNavigation(class ListItem extends Component {
 		return (
 			<TouchableOpacity style={styles.container} onPress={_ => this.props.navigation.push(this.props.my ? 'promo_my_view' : 'promo_view',{data})}>
 				<Image style={[styles.image,{height:this.state.image_height}]} source={{uri:this.state.image_url}} />
-				<View style={styles.area}><Text style={styles.title}>{data.title.toUpperCase()}</Text></View>
+				<View style={styles.area}><Text style={styles.title}>{data.title?.toUpperCase()}</Text></View>
 			</TouchableOpacity>
 		);
 	}

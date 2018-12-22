@@ -8,6 +8,8 @@ import {Provider}					from 'react-redux';
 
 import config						from './config';
 
+import Smoke						from './containers/smoke';
+
 import Onboarding					from './screens/onboarding';
 import Splash						from './screens/splash';
 
@@ -20,7 +22,6 @@ import PromoMyListScreen			from './screens/promo/my';
 import SettingsScreen				from './screens/settings/main';
 import ConfirmPhoneScreen			from './screens/settings/confirm_phone';
 import AuthorizationScreen			from './screens/settings/authorization';
-import ChangePasswordScreen			from './screens/settings/change_password';
 import ChangeCityScreen				from './screens/settings/change_city';
 import SettingsAddLoyaltyCardScreen	from './screens/settings/add_loyalty_card';
 
@@ -40,7 +41,6 @@ var Navigator = createAppContainer(createStackNavigator(
 		settings:					SettingsScreen,
 		settings_confirm_phone:		ConfirmPhoneScreen,
 		settings_authorization:		AuthorizationScreen,
-		settings_change_password:	ChangePasswordScreen,
 		settings_change_city:		ChangeCityScreen,
 		settings_add_loyalty_card:	SettingsAddLoyaltyCardScreen,
 		web:						WebScreen,
@@ -54,7 +54,6 @@ var Navigator = createAppContainer(createStackNavigator(
 		// initialRouteName: 'settings',
 		// initialRouteName: 'settings_confirm_phone',
 		// initialRouteName: 'settings_authorization',
-		// initialRouteName: 'settings_change_password',
 		// initialRouteName: 'settings_change_city',
 		// initialRouteName: 'settings_add_loyalty_card',
 		// initialRouteName: 'web',
@@ -79,6 +78,7 @@ export default class Router extends Component {
 				{this.state.page == 'onboarding'	? (<Onboarding	set_page={this.set_page} />)	: null}
 				{this.state.page == 'splash'		? (<Splash		set_page={this.set_page} />)	: null}
 				{this.state.page == 'navigator'		? (<Navigator/>) : null}
+				<Smoke/>
 			</Provider>
 		);
 	}

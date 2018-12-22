@@ -1,4 +1,6 @@
 import React from 'react';
-import Router from './src/router';
+import Root from './src/root';
 
-export default (props) => <Router/>
+import './polyfills';
+
+export default (props) => <Root/>

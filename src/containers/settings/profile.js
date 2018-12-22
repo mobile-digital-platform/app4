@@ -2,19 +2,15 @@ import React from 'react';
 import {StyleSheet,TouchableOpacity,Text,View} from 'react-native';
 import {withNavigation} from 'react-navigation';
 
-import Icon from 'react-native-vector-icons/EvilIcons';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+
+import SubTitle		from '../../templates/subtitle';
 
 import config from '../../config';
 
 const styles = StyleSheet.create({
 	container: {
 		paddingVertical: 20, paddingHorizontal: 30,
-	},
-	title: {
-		paddingVertical: 10, paddingHorizontal: 10,
-		color: '#bbb',
-		fontSize: 14, fontWeight: 'bold',
-		textTransform: 'uppercase',
 	},
 	list_item: {
 		flexDirection: 'row',
@@ -23,20 +19,20 @@ const styles = StyleSheet.create({
 		// backgroundColor: '#eee',
 	},
 	list_text: {
-		marginLeft: 5,
+		marginLeft: 10,
 		fontSize: 16, fontWeight: 'bold',
 	},
 });
 
 export default withNavigation(({navigation,...props}) => (
 	<View style={styles.container}>
-		<Text style={styles.title}>Учетная запись</Text>
+		<SubTitle style={{paddingVertical:10,paddingHorizontal:10}} text="Учетная запись" />
 		<View style={styles.list}>
 			<TouchableOpacity style={styles.list_item} onPress={_=>{
-				props.log_out();
+
 				navigation.push('settings_authorization');
 			}}>
-				<Icon name="user" style={{color:'red'}} size={40} />
+				<Icon name="user-alt" style={{color:'red'}} size={20} />
 				<Text style={styles.list_text}>Сменить пользователя</Text>
 			</TouchableOpacity>
 			{/*

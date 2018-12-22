@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
 
 export default class MainList extends Component {
 	static navigationOptions = ({navigation}) => ({
-		title: 'Акции',
+		title: 'Акции'.toUpperCase(),
 		headerRight: (<Settings_Button navigation={navigation} />),
 		...dark,
 	});

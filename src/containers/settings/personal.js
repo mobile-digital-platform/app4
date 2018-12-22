@@ -1,12 +1,11 @@
 import React,{Component} from 'react';
-import {Dimensions,StyleSheet,KeyboardAvoidingView,TouchableOpacity,Text,View} from 'react-native';
-
-import ReactNative,{Keyboard,UIManager,findNodeHandle,Animated} from 'react-native';
+import {Dimensions,Keyboard,StyleSheet,KeyboardAvoidingView,TouchableOpacity,Text,View} from 'react-native';
 
 import Input		from '../../templates/input';
 import InputPhone	from '../../templates/input_phone';
 import Textarea		from '../../templates/textarea';
 import SelectCity	from '../../templates/select_city';
+import SubTitle		from '../../templates/subtitle';
 
 const styles = StyleSheet.create({
 	container: {
@@ -14,12 +13,6 @@ const styles = StyleSheet.create({
 	},
 	block: {
 		paddingVertical: 10,
-	},
-	title: {
-		paddingBottom: 10, paddingHorizontal: 25,
-		color: '#bbb',
-		fontSize: 14, fontWeight: 'bold',
-		textTransform: 'uppercase',
 	},
 	save: {
 		marginTop: 10, padding: 15,
@@ -48,6 +41,8 @@ export default class Personal extends Component {
 	constructor(props) {
 		super(props);
 
+		let window = Dimensions.get('window');
+
 		this.inputs = {
 			name: {
 				ref: React.createRef(),
@@ -59,11 +54,11 @@ export default class Personal extends Component {
 			},
 			phone: {
 				ref: React.createRef(),
-				offset: 250,
+				offset: window.height-400,
 			},
 			mail: {
 				ref: React.createRef(),
-				offset: 300,
+				offset: window.height-300,
 			},
 		}
 
@@ -86,10 +81,17 @@ export default class Personal extends Component {
 		};
 	}
 
+	componentDidMount() {
+		this.setState(this.props.user);
+	}
 	componentDidUpdate(prev_props) {
-		if(!Object.is(this.props.state.personal_data,prev_props.state.personal_data)) {
-			this.setState(this.props.state.personal_data);
-			if(this.state.city_error && this.props.state.personal_data.city_id) this.setState({city_error:''});
+		if(!Object.is(this.props.user,prev_props.user)) {
+			this.setState(this.props.user);
+
+			// Убираем показ ошибок, если они исправлены
+			if(this.props.user.name.length	&& this.state.name_error)	this.setState({name_error:''});
+			if(this.props.user.city_id		&& this.state.city_error)	this.setState({city_error:''});
+			if(this.props.user.phone.length	&& this.state.phone_error)	this.setState({phone_error:''});
 		}
 	}
 
@@ -107,13 +109,9 @@ export default class Personal extends Component {
 			mail:			this.state.mail,
 			mail_confirmed:	this.state.mail_confirmed,
 		});
-
-		// Убираем показ ошибок, если они исправлены
-		if(this.state.name.length	&& this.state.name_error)	this.setState({name_error:''});
-		if(this.state.city_id		&& this.state.city_error)	this.setState({city_error:''});
-		if(this.state.phone.length	&& this.state.phone_error)	this.setState({phone_error:''});
 	}
 	send = async () => {
+		Keyboard.dismiss();
 		if(this.state.waiting) return;
 
 		// Проверяем имя
@@ -159,12 +157,11 @@ export default class Personal extends Component {
 
 	render() {
 		let state = this.state;
-		// console.log("personal component",state);
 
 		return (
 			<View style={styles.container}>
 				<View style={styles.block}>
-					<Text style={styles.title}>Персональные данные</Text>
+					<SubTitle style={{paddingBottom:10,paddingHorizontal:25}} text="Персональные данные" />
 					<Input
 						id={this.inputs.name.ref}
 						title="Имя"
@@ -200,7 +197,7 @@ export default class Personal extends Component {
 				</View>
 				*/}
 				<View style={styles.block}>
-					<Text style={styles.title}>Контакты</Text>
+					<SubTitle style={{paddingBottom:10,paddingHorizontal:25}} text="Контакты" />
 					<InputPhone
 						id={this.inputs.phone.ref}
 						title="Мобильный телефон"

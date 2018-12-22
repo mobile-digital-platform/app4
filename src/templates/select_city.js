@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet,TouchableOpacity,Text,View} from 'react-native';
+import {Keyboard,StyleSheet,TouchableOpacity,Text,View} from 'react-native';
 import {withNavigation} from 'react-navigation';
 
 import Icon from 'react-native-vector-icons/EvilIcons';
@@ -49,7 +49,10 @@ const styles = StyleSheet.create({
 
 export default withNavigation(({navigation,...props}) => (
 	<View>
-		<TouchableOpacity style={[styles.container,props.error?styles.container_error:{}]} onPress={_=>navigation.push('settings_change_city')}>
+		<TouchableOpacity style={[styles.container,props.error?styles.container_error:{}]} onPress={_ => {
+			Keyboard.dismiss();
+			navigation.push('settings_change_city');
+		}}>
 			<View style={styles.left}>
 			{props.value ? (
 				<View>

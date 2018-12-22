@@ -26,10 +26,9 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		fontSize: 20, fontWeight: 'bold',
-		textTransform: 'uppercase',
 	},
 	about: {
-		flexDirection: 'row',
+		flexDirection: 'row-reverse',
 		justifyContent: 'space-between',
 		alignItems: 'center',
 		marginTop: 5,
@@ -64,8 +63,11 @@ export default withNavigation(({navigation,data,extra}) => {
 			) : null}
 			</View>
 			<View style={styles.area}>
-				<Text style={styles.title}>{data.network.name}</Text>
+				<Text style={styles.title}>{data.network.name.toUpperCase()}</Text>
 				<View style={styles.about}>
+					<TouchableOpacity style={styles.participate} onPress={_=>navigation.push('promo_details',{data,promo:extra})}>
+						<Text style={styles.participate_text}>Подробнее</Text>
+					</TouchableOpacity>
 					{data.link ? (
 					<TouchableOpacity
 						style={styles.link_area}
@@ -75,9 +77,6 @@ export default withNavigation(({navigation,data,extra}) => {
 						<Icon name="chevron-right" style={{color:'red'}} size={30} />
 					</TouchableOpacity>
 					) : null}
-					<TouchableOpacity style={styles.participate} onPress={_=>navigation.push('promo_details',{data,promo:extra})}>
-						<Text style={styles.participate_text}>Подробнее</Text>
-					</TouchableOpacity>
 				</View>
 			</View>
 		</TouchableOpacity>

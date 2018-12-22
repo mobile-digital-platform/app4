@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 
 export default class PromoView extends Component {
 	static navigationOptions = ({navigation}) => ({
-		title: 'Принять участие',
+		title: 'Принять участие'.toUpperCase(),
 		headerRight: (<Settings_Button navigation={navigation} style={{color:'#fff'}} />),
 		...light,
 	});

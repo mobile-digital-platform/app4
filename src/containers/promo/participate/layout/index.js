@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/EvilIcons';
 import Input		from '../../../../templates/input';
 import SelectCity	from '../../../../templates/select_city';
 import InputPhone	from '../../../../templates/input_phone';
+import SubTitle		from '../../../../templates/subtitle';
 
 const styles = StyleSheet.create({
 	container: {
@@ -21,12 +22,6 @@ const styles = StyleSheet.create({
 		fontSize: 24, fontWeight: 'bold',
 		textTransform: 'uppercase',
 		textShadowRadius: 5, textShadowColor: '#111',
-	},
-	subtitle: {
-		paddingBottom: 10,
-		color: '#bbb',
-		fontSize: 16, fontWeight: 'bold',
-		textTransform: 'uppercase',
 	},
 	ending: {
 		color: '#fff',
@@ -148,25 +143,25 @@ export default withNavigation(class Participate extends Component {
 				) : null}
 				<View style={styles.area}>
 					<View style={styles.block}>
-					<Input
-						title="Имя"
-						value={state.name}
-						update={value => this.update({name:value})}
-						send={value => this.setState({name:value})}
-						error={state.name_error}
-					/>
-					<Input
-						title="Отчество"
-						value={state.father}
-						update={value => this.update({father:value})}
-						send={value => this.setState({father:value})}
-					/>
-					<Input
-						title="Фамилия"
-						value={state.family}
-						update={value => this.update({family:value})}
-						send={value => this.setState({family:value})}
-					/>
+						<Input
+							title="Имя"
+							value={state.name}
+							update={value => this.update({name:value})}
+							send={value => this.setState({name:value})}
+							error={state.name_error}
+						/>
+						<Input
+							title="Отчество"
+							value={state.father}
+							update={value => this.update({father:value})}
+							send={value => this.setState({father:value})}
+						/>
+						<Input
+							title="Фамилия"
+							value={state.family}
+							update={value => this.update({family:value})}
+							send={value => this.setState({family:value})}
+						/>
 					</View>
 					<View style={styles.block}>
 						<InputPhone
@@ -193,7 +188,7 @@ export default withNavigation(class Participate extends Component {
 						/>
 					</View>
 					<View style={styles.loyalty_card_block}>
-						<Text style={styles.subtitle}>Карта лояльности</Text>
+						<SubTitle style={{paddingBottom:10}} text="Карта лояльности" />
 						<Text style={styles.loyalty_card_text}>Если у вас есть карта лояльности, то покупки по ней будут автоматически участвовать в акции.</Text>
 						<Input title="Номер карты лояльности" />
 					</View>

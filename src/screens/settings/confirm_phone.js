@@ -16,7 +16,7 @@ theme.headerTitleStyle.fontSize = 17;
 
 export default class MainList extends Component {
 	static navigationOptions = ({navigation}) => ({
-		title: 'Подтвердить номер',
+		title: 'Подтвердить номер'.toUpperCase(),
 		...theme,
 	});
 

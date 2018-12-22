@@ -68,7 +68,7 @@ export default class Input extends Component {
 		this.input.current.focus();
 
 		if(this.props.keyboard_options) {
-			this.props.keyboard_options.scroll.current.scrollTo({x:0,y:this.props.keyboard_options.offset,animated:true});
+			this.props.keyboard_options.scroll.current.scrollTo({y:this.props.keyboard_options.offset});
 		}
 	}
 	reset_active = () => {
@@ -87,7 +87,6 @@ export default class Input extends Component {
 						<TextInput
 							ref={this.input}
 							style={styles.input}
-							secureTextEntry={this.props.password}
 							value={state.value}
 							keyboardType={this.props.type}
 							onChangeText={this.set_value}

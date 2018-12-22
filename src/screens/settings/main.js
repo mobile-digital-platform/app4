@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
 
 export default class MainSettings extends Component {
 	static navigationOptions = ({navigation}) => ({
-		title: 'Настройки',
+		title: 'Настройки'.toUpperCase(),
 		...light,
 	});
 

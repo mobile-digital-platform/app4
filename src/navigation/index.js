@@ -12,7 +12,6 @@ const light = {
 	},
 	headerTitleStyle: {
 		fontSize: 20, fontWeight: 'bold',
-		textTransform: 'uppercase',
 	},
 };
 
@@ -30,7 +29,6 @@ const dark = {
 	},
 	headerTitleStyle: {
 		fontSize: 20, fontWeight: 'bold',
-		textTransform: 'uppercase',
 	},
 };
 

@@ -1,3 +1,5 @@
+import {NetInfo} from 'react-native';
+
 var domain = 'http://api.emg.ru/cc_v1/WebServiceCC.asmx';
 
 export default async function(method,data = {}) {
@@ -19,7 +21,7 @@ export default async function(method,data = {}) {
 				body: JSON.stringify({Data:data}),
 			});
 
-			// yield new Promise(res => setTimeout(res,1000));
+			// yield new Promise(resolve => setTimeout(resolve,1000));
 
 			if(res.status == 200) {
 				let data = (await res.json()).d.Data.data;
@@ -29,13 +31,19 @@ export default async function(method,data = {}) {
 				} else {
 					return {response:data};
 				}
+			} else if(res.status == 500) {
+				return {error:{code:res.status,message:'Сервер не доступен'}};
 			} else {
 				console.log(res);
-				return {error:{code:res.status,message:'Сервер не доступен'}};
+
+				let connection_info = await NetInfo.getConnectionInfo();
+				if(connection_info.type == 'none') return {error:{message:'Нет интернета'}};
+
+				return {error:{code:res.status,message:'Проблемы со связью'}};
 			}
 		} catch(e) {
 			console.log(e);
-			return {error:{code:'Не удается выполнить запрос'}};
+			return {error:{message:'Не удается выполнить запрос'}};
 		}
 	} else {
 		console.log("Неизвестный метод АПИ: ",method);

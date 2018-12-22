@@ -2,11 +2,15 @@ import React from 'react';
 import {StyleSheet,FlatList,ImageBackground,ScrollView,Text,TouchableOpacity,View} from 'react-native';
 import {withNavigation} from 'react-navigation';
 
+import SubTitle		from '../../../templates/subtitle';
+
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 	},
 	banner: {
+		justifyContent: 'flex-end',
+		height: 140,
 		padding: 20, paddingTop: 50,
 		backgroundColor: '#000',
 	},
@@ -14,14 +18,7 @@ const styles = StyleSheet.create({
 		marginBottom: 20,
 		color: '#fff',
 		fontSize: 24, fontWeight: 'bold',
-		textTransform: 'uppercase',
 		textShadowRadius: 5, textShadowColor: '#111',
-	},
-	subtitle: {
-		paddingBottom: 10,
-		color: '#bbb',
-		fontSize: 16, fontWeight: 'bold',
-		textTransform: 'uppercase',
 	},
 	ending: {
 		color: '#fff',
@@ -90,14 +87,14 @@ export default withNavigation(({navigation}) => {
 	return (
 		<View style={styles.container}>
 			<ImageBackground style={styles.banner} imageStyle={{opacity:0.7}} source={{uri:data.image_url}}>
-				<Text style={styles.title}>{promo.title}</Text>
+				<Text style={styles.title}>{promo.title?.toUpperCase()}</Text>
 				{data ? (
 					<Text style={styles.ending}>{data.diff_text}</Text>
 				) : null}
 			</ImageBackground>
 			{data.description?.length ? (
 			<View style={styles.area}>
-				<Text style={styles.subtitle}>Условия акции</Text>
+				<SubTitle style={{paddingBottom:10}} text="Условия акции" />
 				<ScrollView style={styles.description_area} scrollEnabled={data.description.length>1000}>
 					<Text style={styles.description}>{data.description+'\n'}</Text>
 				</ScrollView>

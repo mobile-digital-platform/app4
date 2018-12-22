@@ -1,10 +1,11 @@
 import React,{Component} from 'react';
-import {StyleSheet,ScrollView,Text,TouchableOpacity,View} from 'react-native';
+import {Keyboard,StyleSheet,ScrollView,Text,TouchableOpacity,View} from 'react-native';
 import {withNavigation} from 'react-navigation';
 
 import Icon from 'react-native-vector-icons/EvilIcons';
 
-import Input from '../../../templates/input';
+import Input		from '../../../templates/input';
+import SubTitle		from '../../../templates/subtitle';
 
 import alert		from '../../../services/alert';
 import st			from '../../../services/storage';
@@ -33,11 +34,6 @@ const styles = StyleSheet.create({
 	again: {
 		paddingVertical: 20, paddingHorizontal: 40,
 		borderTopWidth: 1, borderTopColor: '#ccc',
-	},
-	again_title: {
-		color: '#bbb',
-		fontSize: 14, fontWeight: 'bold',
-		textTransform: 'uppercase',
 	},
 	again_wait: {
 		paddingVertical: 10,
@@ -105,35 +101,46 @@ export default withNavigation(class ConfirmPhoneComponent extends Component {
 	ask_code = async () => {
 		if(['starting','expired'].indexOf(this.state.state)>=0) {
 			// Ставим таймер, чтоб заново запросить нельзя было
-			this.timer(60);
 
 			// Запрашиваем код
+			this.props.open_smoke();
 			let {response,error} = await request.phone_send_code(this.props.user.id);
 			if(response) {
 				console.log(response);
+				this.setState({code:response.code});
+				if(this.state.state == 'expired') alert("Код отправлен повторно");
 			}
 			if(error) {
 				// Даже если и ошибка, пользователю мы в этом не признаемся
 			}
+			this.props.close_smoke();
+			this.timer(60);
+		} else {
+			alert("Вы уже запросили смс");
 		}
 	}
 
 	send = async () => {
-		if(this.state.state == 'expired') {
-			alert('Срок действия смс истек','Пожалуйста, запросите новую');
-		} else if(this.state.code.length) {
-			let {response,error} = await request.phone_confirm({user_id:this.props.user.id,code:this.state.code});
-			if(response) {
-				this.props.update_user({phone_confirmed:true});
-				st.merge('user',{phone_confirmed:true});
-				await alert('Номер телефона успешно подтвержден');
-				this.props.navigation.goBack();
-			}
-			if(error) {
-				console.log('error',error);
-				alert(error.message);
-			}
+		Keyboard.dismiss();
+		if(!this.state.code.length) {
+			alert("Введите код из смс");
+			return;
 		}
+
+		this.props.open_smoke();
+		let {response,error} = await request.phone_confirm({user_id:this.props.user.id,code:this.state.code});
+		this.props.close_smoke();
+		if(response) {
+			this.props.update_user({phone_confirmed:true});
+			st.merge('user',{phone_confirmed:true});
+			await alert('Номер телефона успешно подтвержден');
+			this.props.navigation.goBack();
+		}
+		if(error) {
+			console.log('error',error);
+			await alert(error.message);
+		}
+		this.props.close_smoke();
 	}
 
 	render() {
@@ -145,8 +152,8 @@ export default withNavigation(class ConfirmPhoneComponent extends Component {
 		let again_button_styles			= [styles.again_button];
 		let again_button_text_styles	= [styles.again_button_text];
 
-		main_button_styles[1]		= (this.state.state == 'expired') ? styles.passive_button		: styles.active_button;
-		main_button_text_styles[1]	= (this.state.state == 'expired') ? styles.passive_button_text	: styles.active_button_text;
+		main_button_styles[1]		= styles.active_button;
+		main_button_text_styles[1]	= styles.active_button_text;
 		again_button_styles[1]		= (this.state.state == 'expired') ? styles.active_button		: styles.passive_button;
 		again_button_text_styles[1]	= (this.state.state == 'expired') ? styles.active_button_text	: styles.passive_button_text;
 
@@ -160,7 +167,7 @@ export default withNavigation(class ConfirmPhoneComponent extends Component {
 					</TouchableOpacity>
 				</View>
 				<View style={styles.again}>
-					<Text style={styles.again_title}>Я не получил SMS-сообщение</Text>
+					<SubTitle text="Я не получил SMS-сообщение" />
 					<Text style={[styles.again_wait,this.state.state=='expired' ? styles.again_wait_hide : {}]}>
 						Отправить код повторно можно через {this.state.timeout} сек.
 					</Text>

@@ -37,27 +37,9 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		color: 'red',
 	},
-	confirm: {
-		marginTop: 10, paddingHorizontal: 20,
-	},
-	confirm_text: {
-		color: '#bbb',
-		fontSize: 16,
-	},
-	confirm_enter: {
-		flexDirection: 'row',
-		justifyContent: 'flex-start',
-		alignItems: 'center',
-		marginVertical: 5,
-	},
-	confirm_enter_text: {
-		marginBottom: 3,
-		color: 'red',
-		fontSize: 18, fontWeight: 'bold',
-	},
 });
 
-export default withNavigation(class InputPhone extends Component {
+export default withNavigation(class InputCard extends Component {
 	constructor(props) {
 		super(props);
 
@@ -90,21 +72,8 @@ export default withNavigation(class InputPhone extends Component {
 		this.input.current._inputElement.focus();
 
 		if(this.props.keyboard_options) {
-			this.props.keyboard_options.scroll.current.scrollTo({y:this.props.keyboard_options.offset});
+			this.props.keyboard_options.scroll.current.scrollTo({x:0,y:this.props.keyboard_options.offset,animated:true});
 		}
-
-		// console.log("XSS!");
-
-		// console.log(this.input.current._inputElement);
-		// console.log(this.props.keyboard_options.scroll.current);
-
-		// let node = findNodeHandle(this.input.current._inputElement);
-		// console.log(node);
-		// UIManager.measureInWindow(node,(x,y,width,height) => console.log({x,y,width,height}));
-
-		// let scroll = findNodeHandle(this.props.scroll.current);
-		// console.log(this.props.scroll.getScrollResponder());
-		// this.props.scroll.getScrollResponder().scrollResponderScrollNativeHandleToKeyboard(node,-100,true);
 	}
 	reset_active = () => {
 		if(!this.state.value.length) this.setState({active:false});
@@ -117,38 +86,24 @@ export default withNavigation(class InputPhone extends Component {
 
 		return (
 			<View>
-				{props.disabled || state.active ? (
+				{state.active ? (
 					<View style={[styles.container,state.error?styles.container_error:{}]}>
 						<Text style={styles.title}>{this.props.title}</Text>
 						{props.disabled ? (
-							<Text style={styles.input}>{
-								'+'+props.value.substr(0,1)+'('+props.value.substr(1,3)+')'+
-								props.value.substr(4,3)+'-'+props.value.substr(7,2)+'-'+props.value.substr(9,2)
-								}</Text>
+							<Text style={styles.input}>{state.value}</Text>
 						) : (
 							<TextInputMask
 								ref={this.input}
 								style={styles.input}
 								value={state.value}
 								disabled={props.disabled}
-								keyboardType="phone-pad"
+								keyboardType="number-pad"
 								onChangeText={this.set_value}
 								onBlur={this.reset_active}
 								type={'custom'}
-								options={{mask:'+7(999)999-99-99'}}
+								options={{mask:'9999 9999 9999 9999'}}
 							/>
 						)}
-						{/*
-						<TextInput
-							ref={this.input}
-							style={styles.input}
-							value={state.value}
-							disabled={props.disabled}
-							keyboardType="phone-pad"
-							onChangeText={this.set_value}
-							onBlur={this.reset_active}
-						/>
-						*/}
 					</View>
 				) : (
 					<TouchableOpacity style={[styles.container,state.error?styles.container_error:{}]} onPress={this.set_active}>
@@ -156,15 +111,6 @@ export default withNavigation(class InputPhone extends Component {
 					</TouchableOpacity>
 				)}
 				{state.error ? (<Text style={styles.error_text}>{state.error}</Text>) : null}
-				{this.props.need_confirm ? (
-				<View style={styles.confirm}>
-					<Text style={styles.confirm_text}>Вам необходимо подтвердить номер телефона по СМС</Text>
-					<TouchableOpacity style={styles.confirm_enter} onPress={_=>navigation.push('settings_confirm_phone')}>
-						<Text style={styles.confirm_enter_text}>Ввести код подтверждения</Text>
-						<Icon name="chevron-right" style={{color:'red'}} size={40}/>
-					</TouchableOpacity>
-				</View>
-			) : null}
 			</View>
 		);
 	}

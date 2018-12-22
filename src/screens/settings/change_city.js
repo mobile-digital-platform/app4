@@ -15,8 +15,7 @@ const styles = StyleSheet.create({
 
 export default class MainList extends Component {
 	static navigationOptions = ({navigation}) => ({
-		title: 'Выберите город',
-		headerRight: (<Settings_Button navigation={navigation} style={{color:'#fff'}} />),
+		title: 'Выберите город'.toUpperCase(),
 		...light,
 	});
 

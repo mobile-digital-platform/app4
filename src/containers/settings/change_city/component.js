@@ -1,12 +1,14 @@
 import React,{Component} from 'react';
-import {Platform,StyleSheet,FlatList,Text,TextInput,TouchableOpacity,View} from 'react-native';
+import {Platform,StyleSheet,FlatList,KeyboardAvoidingView,Text,TextInput,TouchableOpacity,View} from 'react-native';
 import {withNavigation} from 'react-navigation';
 
 import city from '../../../services/city';
 
 const styles = StyleSheet.create({
 	container: {
-		padding: 20,
+		flex: 1,
+		padding: 20, paddingBottom: 0,
+		// backgroundColor: '#eee',
 	},
 	input: {
 		marginVertical: 10,
@@ -51,8 +53,8 @@ export default withNavigation(class ChangeCity extends Component {
 
 	change_text = (city_name) => {
 		this.setState({city_name});
-		if(city_name.length)	this.setState({suggest:city.search_city(city_name.trim())});
-		else					this.setState({suggest:[]});
+		if(city_name.trim().length)	this.setState({suggest:city.search_city(city_name.trim())});
+		else						this.setState({suggest:[]});
 	}
 	select = (city_id,city_name) => {
 		this.props.update_user({city_id,city_name});
@@ -68,10 +70,10 @@ export default withNavigation(class ChangeCity extends Component {
 	render() {
 		let state = this.state;
 
-		return (
+		let container = (
 			<View style={styles.container}>
 				<TextInput ref={this.input} style={styles.input} value={state.city_name} placeholder="Ваш город" onChangeText={this.change_text} />
-				{state.city_name.length ? (
+				{state.city_name.trim().length ? (
 					<FlatList
 						keyboardShouldPersistTaps='always'
 						style={styles.list}
@@ -85,5 +87,10 @@ export default withNavigation(class ChangeCity extends Component {
 				)}
 			</View>
 		);
+
+		return Platform.select({
+			ios: (<KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={80} style={{flex:1}}>{container}</KeyboardAvoidingView>),
+			android: (container),
+		});
 	}
 });

@@ -1,7 +1,8 @@
 import React,{Component} from 'react';
-import {Alert,StyleSheet,Image,View,Text} from 'react-native';
+import {NetInfo,StyleSheet,Image,View,Text} from 'react-native';
 
-import st from '../../services/storage';
+import alert	from '../../services/alert';
+import st		from '../../services/storage';
 
 import {request as settings_request} from '../../redux/reducers/settings';
 
@@ -40,15 +41,23 @@ export default class SplashComponent extends Component {
 		};
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
 		this.timer = setTimeout(_ => this.setState({timeout:true}),0);
-		this.update();
+
+		let connection_info = await NetInfo.getConnectionInfo()
+		if(connection_info.type == 'none') {
+			alert("Нет интернета");
+			this.setState({fail:true});
+			NetInfo.addEventListener('connectionChange',this.connectionDidChange);
+			return;
+		} else {
+			this.update();
+		}
 	}
 	componentDidUpdate(prev_props) {
-		console.log(this.props.promo_list);
 		if(!this.state.fail) {
 			if(this.props.promo_list.error) {
-				Alert.alert('Не удается наладить связь с сервером');
+				alert('Не удается наладить связь с сервером');
 				this.setState({fail:true});
 			} else if(this.state.user_loaded && this.props.promo_list.loaded) {
 				if(this.state.timeout) this.props.set_page('navigator');
@@ -57,13 +66,18 @@ export default class SplashComponent extends Component {
 	}
 	componentWillUnmount() {
 		clearInterval(this.interval);
+		NetInfo.removeEventListener('connectionChange',this.connectionDidChange);
+	}
+
+	connectionDidChange = (connection_info) => {
+		if(connection_info.type != 'none') this.update();
 	}
 
 	update = () => {
 		this.interval = setInterval(_ => this.setState(({now}) => ({now:++now%3})),200);
 		this.setState({fail:false});
-		this.get_user();
 		this.get_promo_list();
+		this.get_user();
 	}
 
 	get_user = async () => {
@@ -78,7 +92,7 @@ export default class SplashComponent extends Component {
 					st.set('user',response);
 				}
 				if(error) {
-					Alert.alert('Не удается наладить связь с сервером');
+					alert('Не удается наладить связь с сервером');
 					this.setState({fail:true});
 					clearInterval(this.interval);
 				}
