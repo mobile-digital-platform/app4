@@ -2,6 +2,8 @@ import React,{Component} from 'react';
 import {StyleSheet,Image,Text,TouchableOpacity,View} from 'react-native';
 import {withNavigation} from 'react-navigation';
 
+import promo_date_diff from '../../../../services/promo_date_diff';
+
 const styles = StyleSheet.create({
 	container: {
 		alignItems: 'flex-start',
@@ -15,17 +17,33 @@ const styles = StyleSheet.create({
 	big_image: {
 		height: 350,
 	},
+	retailer_area: {
+		alignItems: 'flex-end',
+		width: '100%',
+		marginTop: -25, marginBottom: -15,
+		paddingRight: 10,
+	},
+	retailer_image: {
+		height: 40, width: 40,
+		borderRadius: 20,
+		backgroundColor: '#eee',
+	},
 	area: {
 		width: '100%',
+		padding: 20,
 		borderWidth: 1, borderTopWidth: 0, borderColor: '#ccc',
 	},
 	title: {
-		margin: 20,
-		fontSize: 20,
+		paddingTop: 3,
+		fontSize: 20, fontFamily: 'GothamPro',
+	},
+	ending: {
+		marginTop: 6,
+		fontSize: 16, fontFamily: 'GothamPro',
 	},
 });
 
-export default withNavigation(class ListItem extends Component {
+export default withNavigation(class MyListItem extends Component {
 	constructor(props) {
 		super(props);
 
@@ -46,10 +64,18 @@ export default withNavigation(class ListItem extends Component {
 	render() {
 		let data = this.props.data;
 
+		data = promo_date_diff(data);
+
 		return (
-			<TouchableOpacity style={styles.container} onPress={_ => this.props.navigation.push(this.props.my ? 'promo_my_view' : 'promo_view',{data})}>
+			<TouchableOpacity style={styles.container} onPress={_=>this.props.navigation.push('promo_my_view',{data})}>
 				<Image style={[styles.image,{height:this.state.image_height}]} source={{uri:this.state.image_url}} />
-				<View style={styles.area}><Text style={styles.title}>{data.title?.toUpperCase()}</Text></View>
+				<View style={styles.retailer_area}>
+					<Image style={styles.retailer_image} source={{uri:data.retailer.image_url}} />
+				</View>
+				<View style={styles.area}>
+					<Text style={styles.title}>{data.title?.toUpperCase()}</Text>
+					<Text style={styles.ending}>{data.diff_text}</Text>
+				</View>
 			</TouchableOpacity>
 		);
 	}

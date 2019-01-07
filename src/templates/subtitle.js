@@ -2,11 +2,10 @@ import React from 'react';
 import {StyleSheet,Text,View} from 'react-native';
 
 const styles = StyleSheet.create({
-	container: {
-	},
 	title: {
+		paddingTop: 3,
 		color: '#bbb',
-		fontSize: 14, fontWeight: 'bold',
+		fontSize: 14, fontFamily: 'GothamPro-Medium',
 	},
 });
 

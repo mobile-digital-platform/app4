@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 		padding: 20,
 	},
 	main_text: {
-		fontSize: 16,
+		fontSize: 16, fontFamily: 'GothamPro',
 		textAlign: 'center',
 	},
 	main_input: {
@@ -28,7 +28,8 @@ const styles = StyleSheet.create({
 		borderRadius: 40,
 	},
 	main_button_text: {
-		fontSize: 20, fontWeight: 'bold',
+		paddingTop: 3,
+		fontSize: 20, fontFamily: 'GothamPro-Medium',
 		textAlign: 'center',
 	},
 	again: {
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
 	},
 	again_wait: {
 		paddingVertical: 10,
-		color: 'red',
+		color: '#f40000',
 	},
 	again_wait_hide: {
 		color: 'transparent',
@@ -47,7 +48,8 @@ const styles = StyleSheet.create({
 		borderRadius: 100,
 	},
 	again_button_text: {
-		fontSize: 20,
+		paddingTop: 3,
+		fontSize: 18, fontFamily: 'GothamPro-Medium',
 		textAlign: 'center',
 	},
 

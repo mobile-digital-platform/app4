@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Alert,StyleSheet,ScrollView} from 'react-native';
+import {Alert,StyleSheet,ScrollView,View} from 'react-native';
 import {withNavigation} from 'react-navigation';
 
 import Personal		from './personal';
@@ -23,21 +23,31 @@ export default withNavigation(class SettingsComponent extends Component {
 		this.props.update_user(data);
 	}
 	save_personal_data = async (data) => {
+		this.props.open_smoke();
 		// Если он уже вошел, то сохраняем, иначе регистрируем
 		if(this.props.user?.id) {
 			this.props.update_user(data);
-			this.props.open_smoke();
 			let {response,error} = await request.save({...this.props.user,...data});
 			if(response) {
 				st.merge('user',{...this.props.user,...data});
-				await alert('Изменения сохранены');
+
+				// Указал или поменял почту
+				if(data.mail && !this.props.user.mail_confirmed || data.last_mail != data.mail) {
+					let {response,error} = await request.mail_send_code(this.props.user.id);
+					if(response) {
+						await alert('Изменения сохранены','На почту отправлено письмо подтверждения');
+					}
+					if(error) {
+						// Тут непонятно, что делать
+					}
+				} else {
+					await alert('Изменения сохранены');
+				}
 			}
 			if(error) {
 				await alert('Не удалось сохранить изменения');
 			}
-			this.props.close_smoke();
 		} else {
-			this.props.open_smoke();
 			let {response,error} = await request.register(data);
 			if(response) {
 				// Записываем его ид, полученный с сервера
@@ -54,8 +64,23 @@ export default withNavigation(class SettingsComponent extends Component {
 			if(error) {
 				await alert('Регистрация не удалась',error.message);
 			}
-			this.props.close_smoke();
 		}
+		this.props.close_smoke();
+	}
+
+	remove_loyalty_card = async (id) => {
+		this.props.open_smoke();
+		let {response,error} = await request.remove_loyalty_card({
+			user_id:		this.props.user.id,
+			retailer_id:	id,
+		});
+		if(response) {
+			this.props.remove_loyalty_card({id});
+		}
+		if(error) {
+			await alert('Не вышло удалить карту',error.message);
+		}
+		this.props.close_smoke();
 	}
 
 	render() {
@@ -69,10 +94,10 @@ export default withNavigation(class SettingsComponent extends Component {
 					update_data={this.set_personal_data}
 					send_data={this.save_personal_data}
 				/>
-				<Profile		{...this.props} log_out={this.props.log_out} />
 				{/*
-				<LoyaltyCards	{...this.props} />
 				*/}
+				<Profile		{...this.props} log_out={this.props.log_out} />
+				{this.props.user.id ? (<LoyaltyCards {...this.props} remove={this.remove_loyalty_card} />) : null}
 				<About			{...this.props} />
 			</ScrollView>
 		);

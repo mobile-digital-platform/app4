@@ -5,21 +5,24 @@ import {withNavigation} from 'react-navigation';
 import Layout from './layout';
 
 export default withNavigation(class PromoViewComponent extends Component {
-	state = {};
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			data: props.navigation.getParam('data',null),
+		};
+	}
 
 	componentDidMount() {
-		let data = this.props.navigation.getParam('data');
-		this.props.set_data(data);
-		this.props.get_retailers(this.props.id);
 	}
 
 	render() {
-		console.log("Component",this.props.data);
+		console.log("Component Promo View",this.state);
 
 		return (
 			<Layout
 				{...this.props}
-				state={this.state}
+				data={this.state.data}
 			/>
 		);
 	}

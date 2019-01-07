@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import {Platform,StyleSheet,StatusBar,ScrollView,View,Text,WebView} from 'react-native';
 
-import {light,dark}		from '../navigation';
+import {light,dark} from '../navigation';
 
 import Wait from '../templates/wait';
 

@@ -19,7 +19,8 @@ const styles = StyleSheet.create({
 		borderRadius: 100,
 	},
 	save_text: {
-		fontSize: 24,
+		paddingTop: 3,
+		fontSize: 22, fontFamily: 'GothamPro-Medium',
 		textAlign: 'center',
 	},
 
@@ -64,6 +65,7 @@ export default class Personal extends Component {
 
 		this.state = {
 			waiting:		false,
+			updated:		false,
 			name:			'',
 			name_error:		'',
 			father:			'',
@@ -75,6 +77,7 @@ export default class Personal extends Component {
 			phone:			'',
 			phone_confirmed:false,
 			phone_error:	'',
+			last_mail:		'',
 			mail:			'',
 			mail_confirmed:	false,
 			mail_error:		'',
@@ -83,6 +86,7 @@ export default class Personal extends Component {
 
 	componentDidMount() {
 		this.setState(this.props.user);
+		this.setState({last_mail:this.props.user.mail});
 	}
 	componentDidUpdate(prev_props) {
 		if(!Object.is(this.props.user,prev_props.user)) {
@@ -97,6 +101,7 @@ export default class Personal extends Component {
 
 	update = async (state_adjust) => {
 		await this.setState(state_adjust);
+		this.setState({updated:true});
 		this.props.update_data({
 			name:			this.state.name,
 			father:			this.state.father,
@@ -111,11 +116,13 @@ export default class Personal extends Component {
 		});
 	}
 	send = async () => {
+		let state = this.state;
+
 		Keyboard.dismiss();
-		if(this.state.waiting) return;
+		if(state.waiting) return;
 
 		// Проверяем имя
-		if(!this.state.name.length) {
+		if(!state.name.length) {
 			this.props.scroll.current.scrollTo({y:this.inputs.name.offset});
 			this.setState({name_error:'Введите имя'});
 			return;
@@ -123,7 +130,7 @@ export default class Personal extends Component {
 			await this.setState({name_error:''});
 		}
 		// Проверяем город
-		if(!this.state.city_id) {
+		if(!state.city_id) {
 			this.props.scroll.current.scrollTo({y:this.inputs.city.offset});
 			this.setState({city_error:'Выберите город'});
 			return;
@@ -131,7 +138,7 @@ export default class Personal extends Component {
 			await this.setState({city_error:''});
 		}
 		// Проверяем номер телефона
-		if(!this.state.phone.length) {
+		if(!state.phone.length) {
 			this.props.scroll.current.scrollTo({y:this.inputs.phone.offset});
 			this.setState({phone_error:'Введите номер телефона'});
 			return;
@@ -139,20 +146,20 @@ export default class Personal extends Component {
 			await this.setState({phone_error:''});
 		}
 
+		// Отправляем изменения
 		await this.setState({waiting:true});
 		await this.props.send_data({
-			name:			this.state.name,
-			father:			this.state.father,
-			family:			this.state.family,
-			gender:			this.state.gender,
-			city_id:		this.state.city_id,
-			city_name:		this.state.city_name,
-			phone:			this.state.phone,
-			phone_confirmed:this.state.phone_confirmed,
-			mail:			this.state.mail,
-			mail_confirmed:	this.state.mail_confirmed,
+			name:			state.name,
+			father:			state.father,
+			family:			state.family,
+			gender:			state.gender,
+			city_id:		state.city_id,
+			city_name:		state.city_name,
+			phone:			state.phone,
+			last_mail:		state.last_mail,
+			mail:			state.mail,
 		});
-		this.setState({waiting:false});
+		this.setState({last_mail:state.mail,waiting:false});
 	}
 
 	render() {

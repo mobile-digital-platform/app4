@@ -11,27 +11,27 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff',
 	},
 	container_error: {
-		borderColor: 'red',
+		borderColor: '#f40000',
 	},
 	title: {
-		marginTop: 10,
-		// backgroundColor: '#eee',
+		marginTop: 10, paddingTop: 3,
 		color: '#bbb',
-		fontSize: 14,
+		fontSize: 14, fontFamily: 'GothamPro',
 	},
 	title_active: {
-		marginTop: 0,
-		fontSize: 20,
+		marginTop: 0, paddingTop: 3,
+		fontSize: 18, fontFamily: 'GothamPro',
 	},
 	input: {
 		width: '100%',
-		marginBottom: 8, paddingVertical: 3,
-		fontSize: 18,
+		marginBottom: 8,
+		paddingTop: 6, paddingBottom: 3,
+		fontSize: 18, fontFamily: 'GothamPro',
 	},
 	error_text: {
-		marginLeft: 20, marginBottom: 10,
-		fontSize: 14,
-		color: 'red',
+		marginLeft: 25, marginBottom: 10, paddingTop: 3,
+		fontSize: 14, fontFamily: 'GothamPro',
+		color: '#f40000',
 	},
 });
 
@@ -86,7 +86,7 @@ export default class Input extends Component {
 						<Text style={styles.title}>{this.props.title}</Text>
 						<TextInput
 							ref={this.input}
-							style={styles.input}
+							style={[styles.input,this.props.style]}
 							value={state.value}
 							keyboardType={this.props.type}
 							onChangeText={this.set_value}

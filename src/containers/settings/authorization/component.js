@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 	main_text: {
 		marginBottom: 20, marginHorizontal: 20,
 		color: '#111',
-		fontSize: 16,
+		fontSize: 16, fontFamily: 'GothamPro',
 		textAlign: 'center',
 	},
 	main_input: {
@@ -29,11 +29,12 @@ const styles = StyleSheet.create({
 	button: {
 		marginVertical: 10, padding: 15,
 		borderRadius: 40,
-		backgroundColor: 'red',
+		backgroundColor: '#f40000',
 	},
 	button_text: {
+		paddingTop: 3,
 		color: '#fff',
-		fontSize: 20, fontWeight: 'bold',
+		fontSize: 20, fontFamily: 'GothamPro-Medium',
 		textAlign: 'center',
 	},
 	button_disabled: {
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
 	},
 	button_disabled_text: {
 		color: '#d5d5d5',
-		fontSize: 20,
+		fontSize: 20, fontFamily: 'GothamPro-Medium',
 		textAlign: 'center',
 	},
 	reset: {
@@ -52,19 +53,20 @@ const styles = StyleSheet.create({
 	},
 	reset_wait: {
 		paddingVertical: 10,
-		color: 'red',
+		color: '#f40000',
 	},
 	reset_wait_hide: {
 		color: 'transparent',
 	},
 	reset_button: {
 		marginVertical: 20, padding: 15,
-		borderWidth: 1, borderColor: 'red',
+		borderWidth: 1, borderColor: '#f40000',
 		borderRadius: 40,
 	},
 	reset_button_text: {
-		color: 'red',
-		fontSize: 20,
+		paddingTop: 3,
+		color: '#f40000',
+		fontSize: 18, fontFamily: 'GothamPro',
 		textAlign: 'center',
 	},
 });

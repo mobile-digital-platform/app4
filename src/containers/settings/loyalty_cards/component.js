@@ -5,7 +5,7 @@ import {withNavigation} from 'react-navigation';
 import Icon from 'react-native-vector-icons/EvilIcons';
 
 import InputCard		from '../../../templates/input_card';
-import SelectNetwork	from '../../../templates/select_network';
+import SelectRetailer	from '../../../templates/select_retailer';
 
 import alert			from '../../../services/alert';
 import st				from '../../../services/storage';
@@ -28,7 +28,8 @@ const styles = StyleSheet.create({
 		borderRadius: 40,
 	},
 	main_button_text: {
-		fontSize: 20, fontWeight: 'bold',
+		paddingTop: 3,
+		fontSize: 18, fontFamily: 'GothamPro-Medium',
 		textAlign: 'center',
 	},
 
@@ -46,29 +47,14 @@ const styles = StyleSheet.create({
 	},
 });
 
-let data = [
-	{
-		id: 1,
-		name: 'Магнит',
-	},
-	{
-		id: 2,
-		name: 'Пятерочка',
-	},
-	{
-		id: 3,
-		name: 'Лента',
-	},
-];
-
 export default withNavigation(class LoyaltyCardsComponent extends Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			network_id: 1,
-			network_name: 'Магнит',
-			network_error: '',
+			retailer_id: 0,
+			retailer_name: '',
+			retailer_error: '',
 			opened: false,
 			number: '',
 			number_error: '',
@@ -81,18 +67,18 @@ export default withNavigation(class LoyaltyCardsComponent extends Component {
 	}
 
 	open = () => this.setState({opened:true});
-	choose = (network_id) => this.setState({network_id,opened:false});
+	choose = (retailer_id) => this.setState({retailer_id,opened:false});
 	update = async (state_adjust) => {
 		await this.setState(state_adjust);
 
 		// Убираем показ ошибок, если они исправлены
 		if(this.state.number.length && this.state.number_error) this.setState({number_error:''});
 
-		if(this.state.network_id && this.state.number.length) this.setState({ready:true});
+		if(this.state.retailer_id && this.state.number.length) this.setState({ready:true});
 	}
 	send = async () => {
-		if(!this.state.network_id) {
-			this.setState({network_error:'Выберите торговую сеть'});
+		if(!this.state.retailer_id) {
+			this.setState({retailer_error:'Выберите торговую сеть'});
 			return;
 		}
 		if(!this.state.number.length) {
@@ -101,25 +87,31 @@ export default withNavigation(class LoyaltyCardsComponent extends Component {
 		}
 
 		let obj = {
-			user_id:	this.props.user.id,
-			network_id:	this.state.network_id,
-			number:		this.state.number,
+			retailer_id:	this.state.retailer_id,
+			number:			this.state.number,
 		};
 
 		this.props.open_smoke();
-		let {response,error} = await request.add_loyalty_card(obj);
+		let {response,error} = await request.add_loyalty_card({
+			...obj,
+			user_id: this.props.user.id
+		});
 		if(response) {
-			this.props.update_user({loyalty_card:[...this.props.user.loyalty_card,obj]});
+			this.props.add_loyalty_card(obj);
 		}
 		if(error) {
 			await alert("Ошибка","Не удалось добавить карту");
 		}
 		this.props.close_smoke();
+		this.props.navigation.goBack();
 	}
 
 	render() {
+		let props = this.props;
 		let state = this.state;
 		console.log("LoyaltyCardsComponent",this.props,this.state);
+
+		let retailer_list = props.retailer_list.filter(e => (props.user.loyalty_card.map(g => g.retailer_id).indexOf(e.id)<0));
 
 		let button_styles		= [styles.main_button,this.state.ready ? styles.active_button : styles.passive_button];
 		let button_text_styles	= [styles.main_button_text,this.state.ready ? styles.active_button_text : styles.passive_button_text];
@@ -128,11 +120,11 @@ export default withNavigation(class LoyaltyCardsComponent extends Component {
 			<View style={styles.main}>
 				<Text style={styles.main_text}>Выберите торговую сеть из списка</Text>
 				<View style={styles.main_input}>
-					<SelectNetwork
-						value={state.network_id}
-						data={data}
-						update={network_id => this.update({network_id})}
-						error={this.network_error}
+					<SelectRetailer
+						value={state.retailer_id}
+						data={retailer_list}
+						update={retailer_id => this.update({retailer_id})}
+						error={this.retailer_error}
 					/>
 					<InputCard
 						title="Номер карты лояльности"

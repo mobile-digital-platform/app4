@@ -1,6 +1,11 @@
 import {connect} from 'react-redux';
 
-import {get_data,module as promo_module} from '../../redux/reducers/promo/list';
+import {
+	set_promo_list,
+	set_my_promo_list,
+	set_retailer_list,
+	module as promo_module
+} from '../../redux/reducers/promo';
 import {
 	update_user,
 	module as settings_module
@@ -9,12 +14,14 @@ import Component from './component';
 
 const mapStateToProps = state => ({
 	user: state[settings_module],
-	promo_list: state[promo_module],
+	promo: state[promo_module],
 });
 
 const mapDispatchToProps = {
+	set_promo_list,
+	set_my_promo_list,
+	set_retailer_list,
 	update_user,
-	get_data,
 };
 
 export default connect(mapStateToProps,mapDispatchToProps)(Component);

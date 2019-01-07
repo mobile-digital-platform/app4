@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {StyleSheet,FlatList,TouchableOpacity,Text,View} from 'react-native';
+import {StyleSheet,FlatList,Image,TouchableOpacity,Text,View} from 'react-native';
 import {withNavigation} from 'react-navigation';
 
 import Icon from 'react-native-vector-icons/EvilIcons';
@@ -13,17 +13,18 @@ const styles = StyleSheet.create({
 	title: {
 		marginBottom: 10,
 		color: '#bbb',
-		fontSize: 14, fontWeight: 'bold',
+		fontSize: 14, fontFamily: 'GothamPro-Medium',
 		textTransform: 'uppercase',
 	},
 	save: {
 		marginTop: 15, padding: 15,
 		borderRadius: 100,
-		backgroundColor: 'red',
+		backgroundColor: '#f40000',
 	},
 	save_text: {
+		paddingTop: 3,
 		color: '#fff',
-		fontSize: 20,
+		fontSize: 18, fontFamily: 'GothamPro-Medium',
 		textAlign: 'center',
 	},
 });
@@ -34,7 +35,7 @@ export default withNavigation(class LoyaltyCardsList extends Component {
 	};
 
 	componentDidMount() {
-		console.log(this.props.user.loyalty_card);
+		console.log(this.props.retailer_list);
 	}
 
 	componentDidUpdate(prev_props) {
@@ -48,13 +49,15 @@ export default withNavigation(class LoyaltyCardsList extends Component {
 		let navigation = this.props.navigation;
 		let state = this.state;
 
+		let list = props.user.loyalty_card;
+
 		return (
 			<View style={styles.container}>
 				<Text style={styles.title}>Карты лояльности</Text>
 				<FlatList
-					data={state.data}
-					renderItem={({item}) => (<Item data={item} />)}
-					keyExtractor={item => ''+item.id}
+					data={list}
+					renderItem={({item}) => <Item data={item} retailer_list={props.retailer_list} remove={props.remove} />}
+					keyExtractor={item => ''+item.retailer_id}
 					ListEmptyComponent={_ => <Empty/>}
 				/>
 				<TouchableOpacity style={styles.save} onPress={_ => navigation.push('settings_add_loyalty_card')}>
@@ -74,7 +77,7 @@ const item_styles = StyleSheet.create({
 	},
 	image: {
 		height: 50, width: 50,
-		borderRadius: 50,
+		borderRadius: 25,
 		backgroundColor: '#ddd',
 	},
 	area: {
@@ -84,7 +87,8 @@ const item_styles = StyleSheet.create({
 		// backgroundColor: '#ddd',
 	},
 	title: {
-		fontSize: 16,
+		paddingTop: 5,
+		fontSize: 16, fontFamily: 'GothamPro',
 	},
 	about: {
 		flexDirection: 'row',
@@ -93,7 +97,7 @@ const item_styles = StyleSheet.create({
 	},
 	number: {
 		marginBottom: 3,
-		fontSize: 16, fontWeight: 'bold',
+		fontSize: 16, fontFamily: 'GothamPro-Medium',
 	},
 	remove: {
 		color: '#ee0007',
@@ -101,30 +105,36 @@ const item_styles = StyleSheet.create({
 	},
 });
 
-const Item = (props) => (
-	<View style={item_styles.container}>
-		<View style={item_styles.image}></View>
-		<View style={item_styles.area}>
-			<Text style={item_styles.title}>{props.data.retailer.name}</Text>
-			<View style={item_styles.about}>
-				<Text style={item_styles.number}>{props.data.number}</Text>
-				<TouchableOpacity><Text style={item_styles.remove}><Icon name="close" style={{color:'red'}} size={30} /></Text></TouchableOpacity>
+const Item = ({data,retailer_list,remove}) => {
+	let retailer = retailer_list?.find(e => e.id==data.retailer_id) || {id:0};
+
+	return (
+		<View style={item_styles.container}>
+			<Image style={item_styles.image} source={{uri:retailer.image_url}} />
+			<View style={item_styles.area}>
+				<Text style={item_styles.title}>{retailer.title}</Text>
+				<View style={item_styles.about}>
+					<Text style={item_styles.number}>{data.number}</Text>
+					<TouchableOpacity onPress={_=>remove(retailer.id)}>
+						<Text style={item_styles.remove}><Icon name="close" style={{color:'red'}} size={30} /></Text>
+					</TouchableOpacity>
+				</View>
 			</View>
 		</View>
-	</View>
-);
+	);
+}
 
 const empty_styles = StyleSheet.create({
 	container: {
-		paddingVertical: 15,
+		paddingVertical: 10,
 	},
 	text: {
-		fontSize: 14,
+		fontSize: 14, fontFamily: 'GothamPro',
 	},
 });
 
 const Empty = () => (
-	<View styles={empty_styles.container}>
-		<Text styles={empty_styles.text}>Добавьте карты лояльности торговых сетей, чтобы ваши покупки автоматически учитывались в акциях.</Text>
+	<View style={empty_styles.container}>
+		<Text style={empty_styles.text}>Добавьте карты лояльности торговых сетей, чтобы ваши покупки автоматически учитывались в акциях.</Text>
 	</View>
 );

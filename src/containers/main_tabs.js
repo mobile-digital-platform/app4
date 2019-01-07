@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'baseline',
-		height: 45, width: 258,
+		height: 45, width: 282,
 		marginBottom: 10,
 		borderWidth: 1, borderColor: '#ccc',
 		borderRadius: 100,
@@ -25,7 +25,8 @@ const styles = StyleSheet.create({
 		backgroundColor: 'red',
 	},
 	text: {
-		fontSize: 16,
+		paddingTop: 3,
+		fontSize: 16, fontFamily: 'GothamPro',
 	},
 	text_selected: {
 		color: '#fff',

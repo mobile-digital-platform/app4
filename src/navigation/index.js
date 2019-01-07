@@ -11,7 +11,8 @@ const light = {
 		color: '#fff',
 	},
 	headerTitleStyle: {
-		fontSize: 20, fontWeight: 'bold',
+		paddingVertical: 3,
+		fontSize: 20, fontFamily: 'GothamPro-Bold',
 	},
 };
 
@@ -28,7 +29,8 @@ const dark = {
 		color: '#000',
 	},
 	headerTitleStyle: {
-		fontSize: 20, fontWeight: 'bold',
+		paddingVertical: 3,
+		fontSize: 20, fontFamily: 'GothamPro-Bold',
 	},
 };
 
