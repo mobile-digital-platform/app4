@@ -58,3 +58,6 @@ buck-out/
 # native
 ios/*
 android/*
+
+# assets
+assets/*

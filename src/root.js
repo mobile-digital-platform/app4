@@ -1,5 +1,5 @@
-import React,{Component}			from 'react';
-import {AsyncStorage,StatusBar}		from 'react-native';
+import React,{Component}				from 'react';
+import {AsyncStorage,Linking,StatusBar}	from 'react-native';
 import {
 	createStackNavigator,
 	createAppContainer
@@ -10,6 +10,7 @@ import config						from './config';
 
 import Smoke						from './containers/smoke';
 
+import Empty						from './screens/empty';
 import Onboarding					from './screens/onboarding';
 import Splash						from './screens/splash';
 
@@ -28,6 +29,9 @@ import SettingsAddLoyaltyCardScreen	from './screens/settings/add_loyalty_card';
 import WebScreen					from './screens/web';
 
 import store						from './redux';
+import {request}					from './redux/reducers/settings';
+
+import alert						from './services/alert';
 
 StatusBar.setBarStyle('light-content',true);
 
@@ -59,15 +63,47 @@ var Navigator = createAppContainer(createStackNavigator(
 		// initialRouteName: 'web',
 	}
 ));
-
+// cocacolapromo://confirm_mail/123
 export default class Router extends Component {
 	state = {
-		page: 'onboarding',
+		page: 'start',
 	};
 
 	async componentDidMount() {
-		let data = JSON.parse(await AsyncStorage.getItem(config.storage_name));
-		this.set_page('splash');
+		Linking.addEventListener('url',this.handle_open_url);
+		Linking.getInitialURL().then(url => {
+			this.handle_open_url({url});
+		});
+
+		// await AsyncStorage.removeItem(config.storage_name);
+		// console.log(await AsyncStorage.getItem(config.storage_name));
+		// return;
+		let data = JSON.parse(await AsyncStorage.getItem(config.storage_name)) ?? {};
+		// console.log(data);
+		if(Object.keys(data).length)	this.set_page('splash');
+		else							this.set_page('onboarding');
+	}
+	componentWillUnmount() {
+		Linking.removeEventListener('url',this.handle_open_url);
+	}
+
+	handle_open_url = async ({url}) => {
+		if(url) {
+			let route = url.replace(/.*?:\/\//g,'');
+			let [method,code] = route.split('/');
+			if(method == 'confirm_mail') {
+				let user_id = JSON.parse(await AsyncStorage.getItem(config.storage_name))?.user?.id;
+				if(user_id) {
+					let {response,error} = await request.mail_confirm({user_id,code});
+					if(response) {
+						await alert('Адрес почты успешно подтвержден');
+					}
+					if(error) {
+						await alert('Ошибка при подтверждении адреса почты',error.message);
+					}
+				}
+			}
+		}
 	}
 
 	set_page = (page) => this.setState({page});
@@ -75,6 +111,7 @@ export default class Router extends Component {
 	render() {
 		return (
 			<Provider store={store}>
+				{this.state.page == 'start'			? (<Empty />)	: null}
 				{this.state.page == 'onboarding'	? (<Onboarding	set_page={this.set_page} />)	: null}
 				{this.state.page == 'splash'		? (<Splash		set_page={this.set_page} />)	: null}
 				{this.state.page == 'navigator'		? (<Navigator/>) : null}

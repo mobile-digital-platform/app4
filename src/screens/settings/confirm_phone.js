@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
 	},
 });
 let theme = JSON.parse(JSON.stringify(light));
-theme.headerTitleStyle.fontSize = 17;
+theme.headerTitleStyle.fontSize = 16;
 
 export default class MainList extends Component {
 	static navigationOptions = ({navigation}) => ({

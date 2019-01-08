@@ -16,34 +16,35 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff',
 	},
 	container_error: {
-		borderColor: 'red',
+		borderColor: '#f40000',
 	},
 	left: {
 		flex: 1,
 	},
 	title: {
-		marginTop: 10,
+		marginTop: 10, paddingTop: 3,
 		// backgroundColor: '#eee',
 		color: '#bbb',
-		fontSize: 14,
+		fontSize: 14, fontFamily: 'GothamPro',
 	},
 	title_active: {
-		marginTop: 0,
-		fontSize: 20,
+		marginTop: 0, paddingTop: 3,
+		fontSize: 18, fontFamily: 'GothamPro',
 	},
 	input: {
 		width: '100%',
-		marginBottom: 8, paddingVertical: 3,
-		fontSize: 18,
+		marginBottom: 8,
+		paddingTop: 6, paddingBottom: 3,
+		fontSize: 18, fontFamily: 'GothamPro',
 	},
 	right: {
 		width: 20,
 		textAlign: 'right',
 	},
 	error_text: {
-		marginLeft: 20, marginBottom: 10,
-		fontSize: 14,
-		color: 'red',
+		marginLeft: 20, marginBottom: 10, paddingTop: 3,
+		fontSize: 14, fontFamily: 'GothamPro',
+		color: '#f40000',
 	},
 });
 

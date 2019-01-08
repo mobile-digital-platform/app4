@@ -27,20 +27,34 @@ export const ReducerRecord = () => ({
 // Постоянные
 export const module = 'settings';
 
-export const UPDATE_USER	= config.name+'/'+module+'/UPDATE_USER';
-export const LOG_OUT		= config.name+'/'+module+'/LOG_OUT';
+export const UPDATE_USER			= config.name+'/'+module+'/UPDATE_USER';
+export const ADD_LOYALTY_CARD		= config.name+'/'+module+'/ADD_LOYALTY_CARD';
+export const REMOVE_LOYALTY_CARD	= config.name+'/'+module+'/REMOVE_LOYALTY_CARD';
+export const LOG_OUT				= config.name+'/'+module+'/LOG_OUT';
 
 // Редуктор
 export default function reducer(st = ReducerRecord(),action) {
 	const {type,payload,error} = action;
-	console.log("ACTION",type);
-	console.log("STATE",st);
+	// console.log("ACTION",type);
+	// console.log("STATE",st);
 
 	switch(type) {
 		// Установка данных в местное хранилище
 		case UPDATE_USER:
 			if(payload.phone) payload.phone = (+f.parse_int(payload.phone) || '')+'';
 			return {...st,...payload};
+
+		case ADD_LOYALTY_CARD:
+			return {
+				...st,
+				loyalty_card: [...st.loyalty_card,payload],
+			};
+
+		case REMOVE_LOYALTY_CARD:
+			return {
+				...st,
+				loyalty_card: st.loyalty_card.filter(e => e.retailer_id!=payload.id),
+			};
 
 		case LOG_OUT:
 			storage.set('user',{});
@@ -51,11 +65,14 @@ export default function reducer(st = ReducerRecord(),action) {
 }
 
 // Действия
-export const update_user	= (payload) => ({type:UPDATE_USER,payload});
-export const log_out		= (payload) => ({type:LOG_OUT,payload});
+export const update_user			= (payload) => ({type:UPDATE_USER,payload});
+export const add_loyalty_card		= (payload) => ({type:ADD_LOYALTY_CARD,payload});
+export const remove_loyalty_card	= (payload) => ({type:REMOVE_LOYALTY_CARD,payload});
+export const log_out				= (payload) => ({type:LOG_OUT,payload});
 
 // Запросы
 export const request = {
+	// Регистрация
 	register: async (data) => {
 		data.push_token = '';
 		let {response,error} = await API('/Register',{
@@ -76,6 +93,7 @@ export const request = {
 			return {error};
 		}
 	},
+	// Вход
 	authorize: async (data) => {
 		let {response,error} = await API('/Authorize',{Phone:f.parse_int(data.phone),Password:data.password});
 		if(response) {
@@ -86,6 +104,7 @@ export const request = {
 			return {error};
 		}
 	},
+	// Получение данных
 	get: async (id) => {
 		let {response,error} = await API('/UserDataGet',{UserID:id});
 		if(response) {
@@ -101,7 +120,10 @@ export const request = {
 				gender:				response.Gender,
 				city_id:			response.City,
 				city_name:			city.find_city(response.City),
-				loyalty_card:		response.Cards,
+				loyalty_card:		response.Cards.map(e => ({
+					retailer_id:		e.NetworkID,
+					number:				e.CardNum,
+				})),
 				push_token:			response.PushToken,
 			}};
 		}
@@ -110,6 +132,7 @@ export const request = {
 			return {error};
 		}
 	},
+	// Сохранение данных
 	save: async (data) => {
 		let {response,error} = await API('/UserDataEdit',{
 			UserID:	data.id,
@@ -117,6 +140,7 @@ export const request = {
 			MName:	data.father,
 			LName:	data.family,
 			Gender:	data.gender,
+			Email:	data.mail,
 			City:	data.city_id,
 		});
 		if(response) {
@@ -127,16 +151,7 @@ export const request = {
 			return {error};
 		}
 	},
-	phone_send_code: async (id) => {
-		let {response,error} = await API('/PhoneSendCode',{UserID:id});
-		if(response) {
-			return {response:{code:response.Code}};
-		}
-		if(error) {
-			console.log('error',error);
-			return {error};
-		}
-	},
+	// Запрос пароля
 	phone_send_password: async (phone) => {
 		let {response,error} = await API('/PhoneSendPassword',{Phone:f.parse_int(phone)});
 		if(response) {
@@ -147,6 +162,18 @@ export const request = {
 			return {error};
 		}
 	},
+	// Запрос кода подтверждения
+	phone_send_code: async (id) => {
+		let {response,error} = await API('/PhoneSendCode',{UserID:id});
+		if(response) {
+			return {response:{code:response.Code}};
+		}
+		if(error) {
+			console.log('error',error);
+			return {error};
+		}
+	},
+	// Подтверждение номера телефона
 	phone_confirm: async (data) => {
 		let {response,error} = await API('/PhoneConfirm',{UserID:data.user_id,Code:data.code});
 		if(response) {
@@ -157,8 +184,20 @@ export const request = {
 			return {error};
 		}
 	},
-	add_loyalty_card: async (data) => {
-		let {response,error} = await API('/AddLoyalityCard',{UserID:data.user_id,NetworkID:data.network_id,CardNum:data.number});
+	// Запрос письма подтверждения
+	mail_send_code: async (id) => {
+		let {response,error} = await API('/MailSendCode',{UserID:id});
+		if(response) {
+			return {response:{code:response.Code}};
+		}
+		if(error) {
+			console.log('error',error);
+			return {error};
+		}
+	},
+	// Подтверждение почты
+	mail_confirm: async (data) => {
+		let {response,error} = await API('/EmailConfirm',{UserID:data.user_id,Code:data.code});
 		if(response) {
 			return {response:1};
 		}
@@ -167,8 +206,20 @@ export const request = {
 			return {error};
 		}
 	},
+	// Добавление карты лояльности
+	add_loyalty_card: async (data) => {
+		let {response,error} = await API('/AddLoyalityCard',{UserID:data.user_id,NetworkID:data.retailer_id,CardNum:data.number});
+		if(response) {
+			return {response:1};
+		}
+		if(error) {
+			console.log('error',error);
+			return {error};
+		}
+	},
+	// Удаление карты лояльности
 	remove_loyalty_card: async (data) => {
-		let {response,error} = await API('/AddDeleteLoyalityCard',{UserID:data.user_id,NetworkID:data.network_id});
+		let {response,error} = await API('/DeleteLoyalityCard',{UserID:data.user_id,NetworkID:data.retailer_id});
 		if(response) {
 			return {response:1};
 		}
@@ -180,40 +231,3 @@ export const request = {
 };
 
 export const saga = function*() {}
-
-/*
-
-// Регистрация
-export const register_request			= async (data) => {
-	data.push_token = (await get_push_token()) ?? '';
-	return await API('/Register',{
-		Phone:		data.phone,
-		Name:		data.name,
-		MName:		data.father,
-		LName:		data.family,
-		Gender:		data.gender,
-		Email:		data.mail,
-		City:		data.city_id,
-		PushToken:	data.push_token,
-	});
-}
-// Авторизация
-export const authorize_request			= async (data) => await API('/Authorize',{Phone:data.phone,Password:data.password}));
-// Получение данных с сервера
-export const get_personal_request		= async (id)   => await API('/UserDataGet',{UserID:id});
-// Сохранение данных на сервер
-export const save_personal_request		= async (data) => {
-	return await API('/UserDataEdit',{
-		UserID:	data.id,
-		Name:	data.name,
-		MName:	data.father,
-		LName:	data.family,
-		Gender:	data.gender,
-		City:	data.city,
-	});
-}
-// Запрос кода по смс
-export const phone_send_code_request	= async (id)   => await API('/PhoneSendCode',{UserID:id});
-// Подтверждение кода по смс
-export const phone_confirm_request		= async (data) => await API('/PhoneConfirm',{UserID:data.user_id,Code:data.code});
-*/

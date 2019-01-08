@@ -15,27 +15,28 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff',
 	},
 	container_error: {
-		borderColor: 'red',
+		borderColor: '#f40000',
 	},
 	title: {
-		marginTop: 10,
+		marginTop: 10, paddingTop: 3,
 		// backgroundColor: '#eee',
 		color: '#bbb',
-		fontSize: 14,
+		fontSize: 14, fontFamily: 'GothamPro',
 	},
 	title_active: {
-		marginTop: 0,
-		fontSize: 20,
+		marginTop: 0, paddingTop: 3,
+		fontSize: 18, fontFamily: 'GothamPro',
 	},
 	input: {
 		width: '100%',
-		marginBottom: 8, paddingVertical: 3,
-		fontSize: 18,
+		marginBottom: 8,
+		paddingTop: 6, paddingBottom: 3,
+		fontSize: 18, fontFamily: 'GothamPro',
 	},
 	error_text: {
-		marginLeft: 20, marginBottom: 10,
-		fontSize: 14,
-		color: 'red',
+		marginLeft: 20, marginBottom: 10, paddingTop: 3,
+		fontSize: 14, fontFamily: 'GothamPro',
+		color: '#f40000',
 	},
 });
 
@@ -71,13 +72,17 @@ export default withNavigation(class InputCard extends Component {
 		await this.setState({active:true});
 		this.input.current._inputElement.focus();
 
-		if(this.props.keyboard_options) {
-			this.props.keyboard_options.scroll.current.scrollTo({x:0,y:this.props.keyboard_options.offset,animated:true});
-		}
+		this.scroll();
 	}
 	reset_active = () => {
 		if(!this.state.value.length) this.setState({active:false});
 		if(this.props.send) this.props.send(this.state.value);
+	}
+
+	scroll = () => {
+		if(this.props.keyboard_options) {
+			this.props.keyboard_options.scroll.current.scrollTo({y:this.props.keyboard_options.offset});
+		}
 	}
 
 	render() {
@@ -90,14 +95,15 @@ export default withNavigation(class InputCard extends Component {
 					<View style={[styles.container,state.error?styles.container_error:{}]}>
 						<Text style={styles.title}>{this.props.title}</Text>
 						{props.disabled ? (
-							<Text style={styles.input}>{state.value}</Text>
+							<Text style={[styles.input,props.style]}>{state.value}</Text>
 						) : (
 							<TextInputMask
 								ref={this.input}
-								style={styles.input}
+								style={[styles.input,props.style]}
 								value={state.value}
 								disabled={props.disabled}
 								keyboardType="number-pad"
+								onFocus={this.scroll}
 								onChangeText={this.set_value}
 								onBlur={this.reset_active}
 								type={'custom'}

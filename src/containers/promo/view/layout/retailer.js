@@ -25,7 +25,8 @@ const styles = StyleSheet.create({
 		// backgroundColor: '#eee',
 	},
 	title: {
-		fontSize: 20, fontWeight: 'bold',
+		paddingTop: 3,
+		fontSize: 20, fontFamily: 'GothamPro-Medium',
 	},
 	about: {
 		flexDirection: 'row-reverse',
@@ -38,8 +39,8 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	link: {
-		marginBottom: 5,
-		fontSize: 16,
+		marginBottom: 5, paddingTop: 3,
+		fontSize: 16, fontFamily: 'GothamPro',
 	},
 	participate: {
 		paddingVertical: 10, paddingHorizontal: 20,
@@ -47,31 +48,32 @@ const styles = StyleSheet.create({
 		backgroundColor: 'red',
 	},
 	participate_text: {
+		paddingTop: 3,
 		color: '#fff',
-		fontSize: 16, fontWeight: 'bold',
+		fontSize: 16, fontFamily: 'GothamPro-Medium',
 	},
 });
 
 export default withNavigation(({navigation,data,extra}) => {
-	// if(!data.network.image_url) data.network.image_url = 'https://www.sostav.ru/images/news/2018/04/20/on5vjvly.jpg';
+	if(!data.retailer.image_url) data.retailer.image_url = 'https://www.sostav.ru/images/news/2018/04/20/on5vjvly.jpg';
 
 	return (
 		<TouchableOpacity style={styles.container} onPress={_=>navigation.push('promo_details',{data,promo:extra})}>
 			<View style={styles.image_area}>
-			{data.network.image_url ? (
-			 	<Image style={styles.image} source={{uri:data.network.image_url}} />
+			{data.retailer.image_url ? (
+			 	<Image style={styles.image} source={{uri:data.retailer.image_url}} />
 			) : null}
 			</View>
 			<View style={styles.area}>
-				<Text style={styles.title}>{data.network.name.toUpperCase()}</Text>
+				<Text style={styles.title}>{data.retailer.name.toUpperCase()}</Text>
 				<View style={styles.about}>
 					<TouchableOpacity style={styles.participate} onPress={_=>navigation.push('promo_details',{data,promo:extra})}>
 						<Text style={styles.participate_text}>Подробнее</Text>
 					</TouchableOpacity>
-					{data.link ? (
+					{data.site_link ? (
 					<TouchableOpacity
 						style={styles.link_area}
-						onPress={_=>Linking.openURL(data.link)/*navigation.push('web',{title:'Сайт акции',source:data.link})*/}
+						onPress={_=>Linking.openURL(data.site_link)/*navigation.push('web',{title:'Сайт акции',source:data.link})*/}
 					>
 						<Text style={styles.link}>Сайт акции</Text>
 						<Icon name="chevron-right" style={{color:'red'}} size={30} />

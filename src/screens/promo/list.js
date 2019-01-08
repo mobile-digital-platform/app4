@@ -12,7 +12,7 @@ import MyPromoList		from '../../containers/promo/my';
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		paddingTop: 10,
+		paddingTop: 20,
 		backgroundColor: '#fff',
 	},
 });
@@ -26,6 +26,18 @@ export default class MainList extends Component {
 
 	state = {
 		my: false,
+	}
+	
+	componentDidUpdate(prev_props) {
+		let prev_my = prev_props.navigation.getParam('my',false);
+		let this_my = this.props.navigation.getParam('my',false);
+		if(prev_my != this_my) this.setState({my:this_my});
+	}
+
+	componentDidUpdate(prev_props) {
+		let prev_my = prev_props.navigation.getParam('my',false);
+		let this_my = this.props.navigation.getParam('my',false);
+		if(prev_my != this_my) this.setState({my:this_my});
 	}
 
 	render() {

@@ -13,7 +13,6 @@ export const CLOSE	= config.name+'/'+module+'/CLOSE';
 // Редуктор
 export default function reducer(st = ReducerRecord(),action) {
 	const {type,payload,error} = action;
-	console.log(type);
 
 	if(type == OPEN) {
 		return {visible:true};

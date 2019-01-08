@@ -19,8 +19,8 @@ const styles = StyleSheet.create({
 		// backgroundColor: '#eee',
 	},
 	list_text: {
-		marginLeft: 10,
-		fontSize: 16, fontWeight: 'bold',
+		marginLeft: 10, paddingTop: 3,
+		fontSize: 16, fontFamily: 'GothamPro-Medium',
 	},
 });
 
@@ -28,16 +28,21 @@ export default withNavigation(({navigation,...props}) => (
 	<View style={styles.container}>
 		<SubTitle style={{paddingVertical:10,paddingHorizontal:10}} text="Учетная запись" />
 		<View style={styles.list}>
-			<TouchableOpacity style={styles.list_item} onPress={_=>{
-
-				navigation.push('settings_authorization');
-			}}>
-				<Icon name="user-alt" style={{color:'red'}} size={20} />
-				<Text style={styles.list_text}>Сменить пользователя</Text>
+			<TouchableOpacity style={styles.list_item} onPress={_=>navigation.push('settings_authorization')}>
+				<Icon name="user-alt" style={{color:'#f40000'}} size={20} />
+				<Text style={styles.list_text}>{props.user.id ? 'Сменить пользователя' : 'Войти в профиль'}</Text>
+			</TouchableOpacity>
+<<<<<<< HEAD
+			{/*
+=======
+>>>>>>> 90cb72bff6426a5f10893161faf26c9b1b2dc4da
+			<TouchableOpacity style={styles.list_item} onPress={_=>props.log_out()}>
+				<Icon name="user-alt" style={{color:'#f40000'}} size={20} />
+				<Text style={styles.list_text}>Выйти</Text>
 			</TouchableOpacity>
 			{/*
 			<TouchableOpacity style={styles.list_item} onPress={_=>navigation.push('settings_change_password')}>
-				<Icon name="unlock" style={{color:'red'}} size={40} />
+				<Icon name="unlock" style={{color:'#f40000'}} size={40} />
 				<Text style={styles.list_text}>Изменить пароль</Text>
 			</TouchableOpacity>
 			*/}

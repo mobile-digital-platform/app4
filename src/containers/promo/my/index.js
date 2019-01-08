@@ -1,18 +1,16 @@
+// Список моих акций на главном экране
+
 import {connect} from 'react-redux';
 
-import {get_data,module as promo_module} from '../../../redux/reducers/promo/my';
+import {module as promo_module}		from '../../../redux/reducers/promo';
+import {module as settings_module}	from '../../../redux/reducers/settings';
 import Component from './component';
 
 const mapStateToProps = state => ({
-	loading:		state[promo_module].loading,
-	loaded:			state[promo_module].loaded,
-	error:			state[promo_module].error,
-	initialized:	state[promo_module].initialized,
-	data:			state[promo_module].data,
+	data: state[promo_module].promo_list,
+	user: state[settings_module],
 });
 
-const mapDispatchToProps = {
-	get_data,
-};
+const mapDispatchToProps = {};
 
 export default connect(mapStateToProps,mapDispatchToProps)(Component);

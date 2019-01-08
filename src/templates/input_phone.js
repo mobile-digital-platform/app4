@@ -15,34 +15,36 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff',
 	},
 	container_error: {
-		borderColor: 'red',
+		borderColor: '#f40000',
 	},
 	title: {
-		marginTop: 10,
+		marginTop: 10, paddingTop: 3,
 		// backgroundColor: '#eee',
 		color: '#bbb',
-		fontSize: 14,
+		fontSize: 14, fontFamily: 'GothamPro',
 	},
 	title_active: {
-		marginTop: 0,
-		fontSize: 20,
+		marginTop: 0, paddingTop: 3,
+		fontSize: 18, fontFamily: 'GothamPro',
 	},
 	input: {
 		width: '100%',
-		marginBottom: 8, paddingVertical: 3,
-		fontSize: 18,
+		marginBottom: 8,
+		paddingTop: 6, paddingBottom: 3,
+		fontSize: 18, fontFamily: 'GothamPro',
 	},
 	error_text: {
-		marginLeft: 20, marginBottom: 10,
-		fontSize: 14,
-		color: 'red',
+		marginLeft: 20, marginBottom: 10, paddingTop: 3,
+		fontSize: 14, fontFamily: 'GothamPro',
+		color: '#f40000',
 	},
 	confirm: {
 		marginTop: 10, paddingHorizontal: 20,
 	},
 	confirm_text: {
+		paddingTop: 3,
 		color: '#bbb',
-		fontSize: 16,
+		fontSize: 16, fontFamily: 'GothamPro',
 	},
 	confirm_enter: {
 		flexDirection: 'row',
@@ -51,9 +53,9 @@ const styles = StyleSheet.create({
 		marginVertical: 5,
 	},
 	confirm_enter_text: {
-		marginBottom: 3,
-		color: 'red',
-		fontSize: 18, fontWeight: 'bold',
+		marginBottom: 3, paddingTop: 3,
+		color: '#f40000',
+		fontSize: 18, fontFamily: 'GothamPro-Medium',
 	},
 });
 
@@ -89,9 +91,7 @@ export default withNavigation(class InputPhone extends Component {
 		await this.setState({active:true});
 		this.input.current._inputElement.focus();
 
-		if(this.props.keyboard_options) {
-			this.props.keyboard_options.scroll.current.scrollTo({y:this.props.keyboard_options.offset});
-		}
+		this.scroll();
 
 		// console.log("XSS!");
 
@@ -111,6 +111,12 @@ export default withNavigation(class InputPhone extends Component {
 		if(this.props.send) this.props.send(this.state.value);
 	}
 
+	scroll = () => {
+		if(this.props.keyboard_options) {
+			this.props.keyboard_options.scroll.current.scrollTo({y:this.props.keyboard_options.offset});
+		}
+	}
+
 	render() {
 		let props = this.props,state = this.state;
 		let navigation = this.props.navigation;
@@ -121,17 +127,18 @@ export default withNavigation(class InputPhone extends Component {
 					<View style={[styles.container,state.error?styles.container_error:{}]}>
 						<Text style={styles.title}>{this.props.title}</Text>
 						{props.disabled ? (
-							<Text style={styles.input}>{
+							<Text style={[styles.input,this.props.style]}>{
 								'+'+props.value.substr(0,1)+'('+props.value.substr(1,3)+')'+
 								props.value.substr(4,3)+'-'+props.value.substr(7,2)+'-'+props.value.substr(9,2)
 								}</Text>
 						) : (
 							<TextInputMask
 								ref={this.input}
-								style={styles.input}
+								style={[styles.input,props.style]}
 								value={state.value}
 								disabled={props.disabled}
 								keyboardType="phone-pad"
+								onFocus={this.scroll}
 								onChangeText={this.set_value}
 								onBlur={this.reset_active}
 								type={'custom'}

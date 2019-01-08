@@ -15,34 +15,34 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff',
 	},
 	container_error: {
-		borderColor: 'red',
+		borderColor: '#f40000',
 	},
 	left: {
 		flex: 1,
 	},
 	title: {
-		marginTop: 10,
+		marginTop: 10, paddingTop: 3,
 		// backgroundColor: '#eee',
 		color: '#bbb',
-		fontSize: 14,
+		fontSize: 14, fontFamily: 'GothamPro',
 	},
 	title_active: {
-		marginTop: 0,
-		fontSize: 20,
+		marginTop: 0, paddingTop: 3,
+		fontSize: 18, fontFamily: 'GothamPro',
 	},
 	input: {
 		width: '100%',
 		paddingVertical: 3,
-		fontSize: 18,
+		fontSize: 18, fontFamily: 'GothamPro',
 	},
 	right: {
 		width: 20,
 		textAlign: 'right',
 	},
 	error_text: {
-		marginLeft: 20, marginBottom: 10,
-		fontSize: 14,
-		color: 'red',
+		marginLeft: 20, marginBottom: 10, paddingTop: 3,
+		fontSize: 14, fontFamily: 'GothamPro',
+		color: '#f40000',
 	},
 
 	modal_area: {
@@ -58,16 +58,22 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff',
 	},
 	select_text: {
-		fontSize: 20,
+		paddingTop: 3,
+		fontSize: 20, fontFamily: 'GothamPro',
+	},
+	item: {
+		fontFamily: 'GothamPro',
 	},
 	scroll: {
 		backgroundColor: '#eee',
 	},
 });
 
-export default class SelectNetwork extends Component {
+export default class SelectRetailer extends Component {
 	constructor(props) {
 		super(props);
+
+		console.log(props);
 
 		this.state = {
 			active: false,
@@ -108,8 +114,10 @@ export default class SelectNetwork extends Component {
 					<Picker
 						selectedValue={this.state.value}
 						onValueChange={(value,i) => this.select(value)}
+						itemStyle={styles.item}
 					>
-						{this.props.data.map((e,i) => (<Picker.Item key={i} value={e.id} label={e.name} />))}
+						<Picker.Item value={-1} label='Выберите торговую сеть' />
+						{this.props.data.map((e,i) => (<Picker.Item key={i} value={e.id} label={e.title} />))}
 					</Picker>
 				</View>
 			</TouchableOpacity>
@@ -130,8 +138,10 @@ export default class SelectNetwork extends Component {
 				bottom: 0,
 				opacity: 0,
 			}}
+			itemStyle={styles.item}
 		>
-			{this.props.data.map((e,i) => (<Picker.Item key={i} value={e.id} label={e.name} />))}
+			<Picker.Item value={-1} label='Выберите торговую сеть' />
+			{this.props.data.map((e,i) => (<Picker.Item key={i} value={e.id} label={e.title} />))}
 		</Picker>
 	);
 
@@ -143,7 +153,7 @@ export default class SelectNetwork extends Component {
 			<View>
 				<TouchableOpacity style={[styles.container,props.error?styles.container_error:{}]} onPress={this.open}>
 					<View style={styles.left}>
-						<Text style={styles.input} numberOfLines={1}>{props.data.find(e => e.id==state.value)?.name ?? 'Выберите торговую сеть'}</Text>
+						<Text style={styles.input} numberOfLines={1}>{props.data.find(e => e.id==state.value)?.title ?? 'Выберите торговую сеть'}</Text>
 					</View>
 					<Text styles={styles.right}><Icon name="chevron-down" style={{color:'red'}} size={40}/></Text>
 				</TouchableOpacity>

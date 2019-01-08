@@ -12,10 +12,11 @@ const styles = StyleSheet.create({
 	},
 	input: {
 		marginVertical: 10,
-		paddingVertical: 15, paddingHorizontal: 20,
+		paddingTop: 18, paddingBottom: 15,
+		paddingHorizontal: 20,
 		borderWidth: 1, borderColor: '#ccc',
 		borderRadius: 100,
-		fontSize: 20,
+		fontSize: 18, fontFamily: 'GothamPro',
 	},
 	list: {
 		marginVertical: 10, paddingHorizontal: 20,
@@ -24,11 +25,11 @@ const styles = StyleSheet.create({
 		paddingBottom: 20,
 	},
 	item_text: {
-		fontSize: 20,
+		fontSize: 18, fontFamily: 'GothamPro',
 	},
 	tint: {
 		marginVertical: 10, paddingHorizontal: 20,
-		fontSize: 16,
+		fontSize: 16, fontFamily: 'GothamPro',
 	},
 });
 

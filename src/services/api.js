@@ -1,4 +1,5 @@
 import {NetInfo} from 'react-native';
+import check_data from './check_data';
 
 var domain = 'http://api.emg.ru/cc_v1/WebServiceCC.asmx';
 
@@ -22,6 +23,9 @@ export default async function(method,data = {}) {
 			});
 
 			// yield new Promise(resolve => setTimeout(resolve,1000));
+
+			let found_error = await check_data(data);
+			if(found_error) return found_error;
 
 			if(res.status == 200) {
 				let data = (await res.json()).d.Data.data;

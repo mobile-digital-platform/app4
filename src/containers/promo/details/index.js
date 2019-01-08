@@ -1,8 +1,14 @@
 import React from 'react';
-import {StyleSheet,FlatList,ImageBackground,ScrollView,Text,TouchableOpacity,View} from 'react-native';
+<<<<<<< HEAD
+import {Platform,StyleSheet,FlatList,Image,ImageBackground,ScrollView,Text,TouchableOpacity,View,WebView} from 'react-native';
+=======
+import {StyleSheet,FlatList,Image,ImageBackground,ScrollView,Text,TouchableOpacity,View,WebView} from 'react-native';
+>>>>>>> 90cb72bff6426a5f10893161faf26c9b1b2dc4da
 import {withNavigation} from 'react-navigation';
 
-import SubTitle		from '../../../templates/subtitle';
+import SubTitle from '../../../templates/subtitle';
+
+import promo_date_diff from '../../../services/promo_date_diff';
 
 const styles = StyleSheet.create({
 	container: {
@@ -17,13 +23,24 @@ const styles = StyleSheet.create({
 	title: {
 		marginBottom: 20,
 		color: '#fff',
-		fontSize: 24, fontWeight: 'bold',
+		fontSize: 24, fontFamily: 'GothamPro-Medium',
 		textShadowRadius: 5, textShadowColor: '#111',
 	},
 	ending: {
 		color: '#fff',
 		fontSize: 18,
 		textShadowRadius: 5, textShadowColor: '#111',
+	},
+	retailer_area: {
+		alignItems: 'flex-end',
+		width: '100%',
+		marginTop: -25, marginBottom: -15,
+		paddingRight: 10,
+	},
+	retailer_image: {
+		height: 40, width: 40,
+		borderRadius: 20,
+		backgroundColor: '#eee',
 	},
 
 	area: {
@@ -51,10 +68,41 @@ const styles = StyleSheet.create({
 		backgroundColor: 'red',
 	},
 	participate_text: {
+		paddingTop: 3,
 		color: '#fff',
-		fontSize: 16, fontWeight: 'bold',
+		fontSize: 18, fontFamily: 'GothamPro-Medium',
 	},
 });
+
+const stylize = (html) => (
+`
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style>
+html {
+	border: 0;
+}
+body {
+	margin: 0;
+	font-size: `+Platform.select({ios:'36px',android:'14px'})+`;
+	font-family: "GothamPro";
+}
+p,li {
+}
+img {
+	max-width: 100%;
+}
+</style>`+
+html
+// '<p>'+html+'</p>'+
+// '<p><b>Второй</b> абзац самого <i>длинного</i> текста, взятого не из апи.</p>'+
+// '<ul>'+
+// 	'<li>1'+
+// 	'<li>2'+
+// 	'<li>3'+
+// '</ul>'+
+// '<img src="https://www.sostav.ru/images/news/2018/04/20/on5vjvly.jpg" />'+
+// '<p><b>Второй</b> абзац самого <i>длинного</i> текста, взятого не из апи.</p>'
+);
 
 export default withNavigation(({navigation}) => {
 	let data  = navigation.getParam('data');
@@ -62,27 +110,9 @@ export default withNavigation(({navigation}) => {
 
 	if(!data.image_url) data.image_url = promo.image_url || 'https://www.sostav.ru/images/news/2018/04/20/on5vjvly.jpg';
 
-	data.diff = Math.ceil(((+new Date(data.end))-(+new Date()))/(24*60*60*1000));
-	if(data.diff >= 0) {
-		if(data.diff == 0) {
-			data.diff_text = 'сегодня';
-		} else if(data.diff == 1) {
-			data.diff_text = 'завтра';
-		} else {
-			let day = 'день';
-			if(data.diff > 1 && data.diff < 5)													day = 'дня';	// от 2 до 4
-			else if(data.diff == 0 || data.diff > 4 && data.diff < 21)							day = 'дней';	// от 5 до 20 и 0
-			else if(data.diff.toString().substr(-1) > 1 && data.diff.toString().substr(-1) < 5)	day = 'дня';	// с последней цифрой от 2 до 5
-			else if(data.diff.toString().substr(-1) != 1)										day = 'дней';	// с последней цифрой 0 и от 6 до 9
+	data = promo_date_diff(data);
 
-			data.diff_text = 'через '+data.diff+' '+day;
-		}
-		data.diff_text = 'Заканчивается '+data.diff_text;
-	} else {
-		data.diff_text = 'Акция закончилась';
-		data.can_participate = false;
-	}
-
+	// navigation.push('promo_participate',{data});
 
 	return (
 		<View style={styles.container}>
@@ -92,19 +122,26 @@ export default withNavigation(({navigation}) => {
 					<Text style={styles.ending}>{data.diff_text}</Text>
 				) : null}
 			</ImageBackground>
+			<View style={styles.retailer_area}>
+				<Image style={styles.retailer_image} source={{uri:data.retailer.image_url}} />
+			</View>
 			{data.description?.length ? (
 			<View style={styles.area}>
-				<SubTitle style={{paddingBottom:10}} text="Условия акции" />
-				<ScrollView style={styles.description_area} scrollEnabled={data.description.length>1000}>
-					<Text style={styles.description}>{data.description+'\n'}</Text>
-				</ScrollView>
+				<SubTitle style={{paddingBottom:10}} text="Условия акции" useWebKit={true} />
+				<WebView style={styles.description_area} source={{html:stylize(data.description)}} />
 			</View>
 			) : null}
 			{data.can_participate ? (
 			<View style={styles.participate_area}>
-				<TouchableOpacity style={styles.participate_button} onPress={_=>{return;navigation.push('promo_participate',{data})}}>
-					<Text style={styles.participate_text}>Участвовать</Text>
-				</TouchableOpacity>
+				{data.participation ? (
+					<TouchableOpacity style={styles.participate_button} onPress={_=>navigation.push('promo_my_view',{data})}>
+						<Text style={styles.participate_text}>Перейти к акции</Text>
+					</TouchableOpacity>
+				) : (
+					<TouchableOpacity style={styles.participate_button} onPress={_=>navigation.push('promo_participate',{data})}>
+						<Text style={styles.participate_text}>Участвовать</Text>
+					</TouchableOpacity>
+				)}
 			</View>
 			) : null}
 		</View>

@@ -16,13 +16,13 @@ const styles = StyleSheet.create({
 	wrong: {
 		color: '#bbb',
 	},
-	points: {
+	scores: {
 		textAlign: 'center',
 	},
-	points_number: {
+	scores_number: {
 		fontSize: 22, fontWeight: 'bold',
 	},
-	points_text: {
+	scores_text: {
 		fontSize: 14,
 	},
 	area: {
@@ -45,20 +45,20 @@ const styles = StyleSheet.create({
 	},
 });
 
-let check_state = (state) => ['проверяется','принят','не принят'][state];
-let date = (timestamp) => '01.11.2018'; // (new Date(timestamp).getDay())+'.'+(new Date(timestamp).getMonth())+'.'+(new Date(timestamp).getYear());
+let check_state = (state) => ['проверяется','подтвержден','не принят'][state];
+// let date = (timestamp) => '01.11.2018'; // (new Date(timestamp).getDay())+'.'+(new Date(timestamp).getMonth())+'.'+(new Date(timestamp).getYear());
 
 export default withNavigation(({navigation,data}) => (
 	<View style={styles.container}>
-		<Text style={[styles.points,(data.state==1 ? styles.right : styles.wrong)]}>
-			<Text style={styles.points_number}>{data.points>0 ? '+' : ''}{data.points}</Text>
+		<Text style={[styles.scores,(data.state==1 ? styles.right : styles.wrong)]}>
+			<Text style={styles.scores_number}>{data.scores>0 ? '+' : ''}{data.scores}</Text>
 			{'\n'}
-			<Text style={styles.points_text}>баллов</Text>
+			<Text style={styles.scores_text}>баллов</Text>
 		</Text>
 		<View style={styles.area}>
 			<View>
 				<Text style={[styles.number,(data.state==1 ? styles.right : styles.wrong)]}>{data.number}</Text>
-				<Text style={styles.state}>{date(data.timestamp)} — чек {check_state(data.state)}</Text>
+				<Text style={styles.state}>{data.date} — {data.state}</Text>
 			</View>
 			{data.state==2 ? (
 				<TouchableOpacity style={styles.fail}><Icon name="question" style={{color:'red'}} size={30} /></TouchableOpacity>

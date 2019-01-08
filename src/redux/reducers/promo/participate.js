@@ -61,51 +61,23 @@ export default function reducer(st = ReducerRecord(),action) {
 	return {...st};
 }
 
-// Действие
-export const set_data		= (payload) => ({type:SET,payload});
-export const get_retailers	= (payload) => ({type:REQUEST,payload});
+// Действия
 
-// Сага
-export const fetch_data_saga = function*({payload}) {
-	// let data = {
-	// 	id: payload.id,
-	// 	title: 'Акция '+Math.ceil(Math.random()*100),
-	// 	ending: Math.ceil(Math.random()*20),
-	// 	description: 'Описание условий акции описание условий акции описание условий акции описание условий акции',
-	// 	retailer: [
-	// 		{
-	// 			id: 1,
-	// 			name: 'Ашан',
-	// 			link: 'ссылка на промо сайт',
-	// 		},
-	// 		{
-	// 			id: 2,
-	// 			name: 'Пятерочка',
-	// 			link: 'ссылка на промо сайт',
-	// 		},
-	// 	],
-	// };
-	let {response,error} = yield call(API,'/PromoList',{PromoGroupID:payload});
-	if(response) {
-		yield put({
-			type: SUCCESS,
-			payload: {
-				...payload,
-				data: response.Data.data,
-			}
+// Запросы
+export const request = {
+	send: async (data) => {
+		let {response,error} = await API('/JoinPromo',{
+			UserID: data.user_id,
+			PromoID: data.promo_id,
 		});
-	}
-	if(error) {
-		console.log('error',error);
-		yield put({
-			type: ERROR,
-			error,
-		});
-	}
+		if(response) {
+			return {response:1};
+		}
+		if(error) {
+			console.log('error',error);
+			return {error};
+		}
+	},
 };
 
-export const saga = function*() {
-	yield all([
-		takeEvery(REQUEST,fetch_data_saga),
-	]);
-};
+export const saga = function*() {};

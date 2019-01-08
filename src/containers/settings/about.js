@@ -10,7 +10,8 @@ import config from '../../config';
 
 const styles = StyleSheet.create({
 	container: {
-		padding: 10, paddingHorizontal: 30,
+		paddingTop: 30, paddingBottom: 10,
+		paddingHorizontal: 30,
 	},
 	list: {
 		paddingBottom: 10,
@@ -23,8 +24,8 @@ const styles = StyleSheet.create({
 	},
 	list_text: {
 		flex: 1,
-		marginLeft: 10,
-		fontSize: 16, fontWeight: 'bold',
+		marginLeft: 10, paddingTop: 3,
+		fontSize: 16, fontFamily: 'GothamPro-Medium',
 	},
 	bottom: {
 		marginTop: 20, marginBottom: 30,
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
 		fontSize: 18,
 	},
 	support_number: {
-		fontSize: 22, fontWeight: 'bold',
+		fontSize: 22, fontFamily: 'GothamPro-Medium',
 	}
 });
 
