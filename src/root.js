@@ -19,6 +19,12 @@ import PromoViewScreen				from './screens/promo/view';
 import PromoDetailsScreen			from './screens/promo/details';
 import PromoParticipateScreen		from './screens/promo/participate';
 import PromoMyListScreen			from './screens/promo/my';
+import PromoAddCheckScreen			from './screens/promo/add_check';
+import PromoGetPrizeScreen			from './screens/promo/get_prize';
+import PromoChoosePrizeScreen		from './screens/promo/choose_prize';
+import PromoMyPrizeScreen			from './screens/promo/my_prize';
+import PromoAsk						from './screens/promo/ask';
+import PromoPassport				from './screens/promo/passport';
 
 import SettingsScreen				from './screens/settings/main';
 import ConfirmPhoneScreen			from './screens/settings/confirm_phone';
@@ -42,6 +48,13 @@ var Navigator = createAppContainer(createStackNavigator(
 		promo_details:				PromoDetailsScreen,
 		promo_participate:			PromoParticipateScreen,
 		promo_my_view:				PromoMyListScreen,
+		promo_add_check:			PromoAddCheckScreen,
+		promo_get_prize:			PromoGetPrizeScreen,
+		promo_choose_prize:			PromoChoosePrizeScreen,
+		promo_my_prize:				PromoMyPrizeScreen,
+		promo_ask:					PromoAsk,
+		promo_passport: 			PromoPassport,
+
 		settings:					SettingsScreen,
 		settings_confirm_phone:		ConfirmPhoneScreen,
 		settings_authorization:		AuthorizationScreen,
@@ -50,11 +63,20 @@ var Navigator = createAppContainer(createStackNavigator(
 		web:						WebScreen,
 	},
 	{
-		initialRouteName: 'promo_list',
+		//initialRouteName: 'promo_list',
 		// initialRouteName: 'promo_view',
 		// initialRouteName: 'promo_details',
 		// initialRouteName: 'promo_participate',
 		// initialRouteName: 'promo_my_view',
+
+		 initialRouteName: 'promo_add_check', 		// кассовый чек
+		// initialRouteName: 'promo_get_prize',			// получить выигрыш
+		// initialRouteName: 'promo_passport', 			// паспортные данные
+		// initialRouteName: 'promo_choose_prize',		// выбор приза
+		// initialRouteName: 'promo_my_prize', 			// мои призы
+		// initialRouteName: 'promo_ask', 				// задать вопрос
+
+		
 		// initialRouteName: 'settings',
 		// initialRouteName: 'settings_confirm_phone',
 		// initialRouteName: 'settings_authorization',

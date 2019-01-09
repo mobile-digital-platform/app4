@@ -9,14 +9,16 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff',
 	},
 	input: {
+		color: '#bbb',
 		height: 110, width: '100%',
 		marginTop: 15, marginBottom: 15,
-		fontSize: 18,
+		fontSize: 18, fontFamily: 'GothamPro', lineHeight: 18,
+		textAlignVertical: 'top', justifyContent: 'flex-start',
 	},
 });
 
 export default (props) => (
 	<View style={styles.container}>
-		<TextInput style={styles.input} multiline={true} value={props.value} placeholder="Укажите адрес постоянной регистрации (как в паспорте)" />
+		<TextInput style={[styles.input, props.style]} multiline={true} value={props.value} placeholder={props.title ? props.title : "Укажите адрес постоянной регистрации (как в паспорте)"} />
 	</View>
 );

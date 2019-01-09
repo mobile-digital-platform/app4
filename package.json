@@ -30,8 +30,8 @@
   "rnpm": {
     "assets": [
       "./assets/",
-	  "./assets/fonts/",
-	  "./assets/onboarding_screen/",
+      "./assets/fonts/",
+      "./assets/onboarding_screen/",
       "./assets/splash_screen/"
     ]
   }
