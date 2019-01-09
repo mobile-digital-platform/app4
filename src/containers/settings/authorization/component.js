@@ -21,10 +21,7 @@ const styles = StyleSheet.create({
 		marginBottom: 20, marginHorizontal: 20,
 		color: '#111',
 		fontSize: 16, fontFamily: 'GothamPro',
-<<<<<<< HEAD
 		lineHeight: 18,
-=======
->>>>>>> 90cb72bff6426a5f10893161faf26c9b1b2dc4da
 		textAlign: 'center',
 	},
 	main_input: {

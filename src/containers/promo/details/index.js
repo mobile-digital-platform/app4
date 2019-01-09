@@ -1,9 +1,5 @@
 import React from 'react';
-<<<<<<< HEAD
 import {Platform,StyleSheet,FlatList,Image,ImageBackground,ScrollView,Text,TouchableOpacity,View,WebView} from 'react-native';
-=======
-import {StyleSheet,FlatList,Image,ImageBackground,ScrollView,Text,TouchableOpacity,View,WebView} from 'react-native';
->>>>>>> 90cb72bff6426a5f10893161faf26c9b1b2dc4da
 import {withNavigation} from 'react-navigation';
 
 import SubTitle from '../../../templates/subtitle';

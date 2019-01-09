@@ -87,10 +87,7 @@ export default class Personal extends Component {
 	componentDidMount() {
 		this.setState(this.props.user);
 		this.setState({last_mail:this.props.user.mail});
-<<<<<<< HEAD
 		if(awailability()<0.5) this.reset();
-=======
->>>>>>> 90cb72bff6426a5f10893161faf26c9b1b2dc4da
 	}
 	componentDidUpdate(prev_props) {
 		if(!Object.is(this.props.user,prev_props.user)) {

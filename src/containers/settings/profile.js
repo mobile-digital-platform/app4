@@ -32,10 +32,7 @@ export default withNavigation(({navigation,...props}) => (
 				<Icon name="user-alt" style={{color:'#f40000'}} size={20} />
 				<Text style={styles.list_text}>{props.user.id ? 'Сменить пользователя' : 'Войти в профиль'}</Text>
 			</TouchableOpacity>
-<<<<<<< HEAD
 			{/*
-=======
->>>>>>> 90cb72bff6426a5f10893161faf26c9b1b2dc4da
 			<TouchableOpacity style={styles.list_item} onPress={_=>props.log_out()}>
 				<Icon name="user-alt" style={{color:'#f40000'}} size={20} />
 				<Text style={styles.list_text}>Выйти</Text>

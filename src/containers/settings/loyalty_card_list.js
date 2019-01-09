@@ -130,10 +130,7 @@ const empty_styles = StyleSheet.create({
 	},
 	text: {
 		fontSize: 14, fontFamily: 'GothamPro',
-<<<<<<< HEAD
 		lineHeight: 16,
-=======
->>>>>>> 90cb72bff6426a5f10893161faf26c9b1b2dc4da
 	},
 });
 

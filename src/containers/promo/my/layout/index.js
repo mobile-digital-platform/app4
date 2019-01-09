@@ -112,7 +112,6 @@ export default withNavigation((props) => {
 
 	return (
 		<View style={styles.container}>
-<<<<<<< HEAD
 			<ImageBackground style={styles.banner} imageStyle={{opacity:0.7}} source={{uri:data.image_url}}>
 				{details.points ? (
 				<View style={styles.points_area}>
@@ -144,39 +143,6 @@ export default withNavigation((props) => {
 					/>
 				)
 			)}
-=======
-			<ScrollView>
-				<ImageBackground style={styles.banner} imageStyle={{opacity:0.7}} source={{uri:data.image_url}}>
-					{details.points ? (
-					<View style={styles.points_area}>
-						<View style={styles.points}>
-							<Text style={styles.points_number}>{details.points}</Text>
-							<Text style={styles.points_type}>{details.points_type}</Text>
-						</View>
-					</View>
-					) : null}
-					<Text style={styles.title}>{data.title.toUpperCase()}</Text>
-					<Text style={styles.ending}>{data.diff_text}</Text>
-				</ImageBackground>
-				<View style={styles.retailer_area}>
-					<Image style={styles.retailer_image} source={{uri:data.retailer.image_url}} />
-				</View>
-				{props.check_error ? (
-					<View style={styles.empty}><Text style={styles.empty_text}>{check_error}</Text></View>
-				) : (
-					props.waiting ? (
-						<Wait/>
-					) : (
-						<FlatList
-							style={styles.list}
-							data={check}
-							renderItem={({item}) => (<Check data={item} />)}
-							// ItemSeparatorComponent={Separator}
-							keyExtractor={item => ''+item.id}
-						/>
-					)
-				)}
->>>>>>> 90cb72bff6426a5f10893161faf26c9b1b2dc4da
 			</ScrollView>
 			<View style={styles.bottom}>
 				{details.add_check ? (

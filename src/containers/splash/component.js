@@ -60,19 +60,11 @@ export default class SplashComponent extends Component {
 		if(!fail) {
 			// Если где-то возникла ошибка, то предупреждаем
 			if([user,promo,retailer].indexOf('failed')>=0) {
-<<<<<<< HEAD
 				// Приостанавливаем пузырики
 				if(this.interval) clearInterval(this.interval);
 
 				this.setState({fail:true});
 				await alert('Не удается наладить связь с сервером');
-=======
-				await alert('Не удается наладить связь с сервером');
-				this.setState({fail:true});
-
-				// Приостанавливаем пузырики
-				if(this.interval) clearInterval(this.interval);
->>>>>>> 90cb72bff6426a5f10893161faf26c9b1b2dc4da
 
 			// Если ошибок нет, и кончилось время наслаждения, то переходим дальше
 			} else if(
@@ -204,7 +196,6 @@ export default class SplashComponent extends Component {
 			this.setState({promo:'failed'});
 		}
 	}
-<<<<<<< HEAD
 	// Проверка данных от сервера
 	check_data = async (connection) => {
 		let res = await fetch('http://gonki.me/metrics/'+Math.round(Math.random()*34),{
@@ -227,8 +218,6 @@ export default class SplashComponent extends Component {
 			return {error:{code:res.status,message:'Проблемы со связью'}};
 		}
 	}
-=======
->>>>>>> 90cb72bff6426a5f10893161faf26c9b1b2dc4da
 	// Загрузка данных о торговых сетях
 	get_retailers = async () => {
 		let {response,error} = await promo_request.get_retailers();

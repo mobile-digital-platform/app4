@@ -50,10 +50,7 @@ const styles = StyleSheet.create({
 	},
 	authorization_text: {
 		fontSize: 14, fontFamily: 'GothamPro',
-<<<<<<< HEAD
 		lineHeight: 16,
-=======
->>>>>>> 90cb72bff6426a5f10893161faf26c9b1b2dc4da
 	},
 	authorization_link: {
 		flexDirection: 'row',
@@ -79,10 +76,7 @@ const styles = StyleSheet.create({
 	loyalty_card_text: {
 		marginBottom: 10,
 		fontSize: 14, fontFamily: 'GothamPro',
-<<<<<<< HEAD
 		lineHeight: 16,
-=======
->>>>>>> 90cb72bff6426a5f10893161faf26c9b1b2dc4da
 	},
 
 	agreement_block: {
@@ -90,10 +84,7 @@ const styles = StyleSheet.create({
 	},
 	agreement_text: {
 		fontSize: 14, fontFamily: 'GothamPro',
-<<<<<<< HEAD
 		lineHeight: 16,
-=======
->>>>>>> 90cb72bff6426a5f10893161faf26c9b1b2dc4da
 	},
 	agreement_link: {
 		color: '#f40000',
