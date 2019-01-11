@@ -14,7 +14,6 @@ import Separator	from './separator';
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		justifyContent: 'center',
 	},
 	banner: {
 		padding: 20, paddingTop: 0,
@@ -56,6 +55,11 @@ const styles = StyleSheet.create({
 		height: 40, width: 40,
 		borderRadius: 20,
 		backgroundColor: '#eee',
+	},
+
+	main_area: {
+		flex: 1,
+		justifyContent: 'center',
 	},
 
 	list: {
@@ -127,23 +131,35 @@ export default withNavigation((props) => {
 			<View style={styles.retailer_area}>
 				<Image style={styles.retailer_image} source={{uri:data.retailer.image_url}} />
 			</View>
-			<ScrollView>
+			<View style={styles.main_area}>
 			{props.check_error ? (
 				<View style={styles.empty}><Text style={styles.empty_text}>{check_error}</Text></View>
 			) : (
 				props.waiting ? (
 					<Wait/>
 				) : (
-					<FlatList
-						style={styles.list}
-						data={check}
-						renderItem={({item}) => (<Check data={item} />)}
-						// ItemSeparatorComponent={Separator}
-						keyExtractor={item => ''+item.id}
-					/>
+					check.length ? (
+						<ScrollView><FlatList
+							style={styles.list}
+							data={check}
+							renderItem={({item}) => (<Check data={item} />)}
+							// ItemSeparatorComponent={Separator}
+							keyExtractor={item => ''+item.id}
+						/></ScrollView>
+					) : (
+						<View style={styles.empty}><Text style={styles.empty_text}>
+							Пока у вас нет ни одной покупки по акции.{'\n\n'}
+							{details.add_check ? (
+								'Вы можете вручную добавить кассовый чек, нажав кнопку «Добавить»'
+							) : (
+								'Зарегистрируйте карту лояльности магазина, и используйте ее при покупке.\n'+
+								'Данные по покупкам добавятся автоматически.'
+							)}
+						</Text></View>
+					)
 				)
 			)}
-			</ScrollView>
+			</View>
 			<View style={styles.bottom}>
 				{details.add_check ? (
 					<TouchableOpacity style={styles.add_button}><Text style={styles.add_button_text}>Добавить чек</Text></TouchableOpacity>
