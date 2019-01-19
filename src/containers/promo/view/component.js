@@ -17,7 +17,7 @@ export default withNavigation(class PromoViewComponent extends Component {
 	}
 
 	render() {
-		console.log("Component Promo View",this.state);
+		console.log("Component Promo View",this.state.data);
 
 		return (
 			<Layout

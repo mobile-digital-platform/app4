@@ -79,8 +79,9 @@ html {
 }
 body {
 	margin: 0;
-	font-size: `+Platform.select({ios:'36px',android:'14px'})+`;
+	font-size: `+Platform.select({ios:'42px',android:'14px'})+`;
 	font-family: "GothamPro";
+	line-height: `+Platform.select({ios:'54px',android:'18px'})+`;
 }
 p,li {
 }
@@ -118,9 +119,11 @@ export default withNavigation(({navigation}) => {
 					<Text style={styles.ending}>{data.diff_text}</Text>
 				) : null}
 			</ImageBackground>
+			{data.retailer.image_url ? (
 			<View style={styles.retailer_area}>
 				<Image style={styles.retailer_image} source={{uri:data.retailer.image_url}} />
 			</View>
+			) : null}
 			{data.description?.length ? (
 			<View style={styles.area}>
 				<SubTitle style={{paddingBottom:10}} text="Условия акции" useWebKit={true} />

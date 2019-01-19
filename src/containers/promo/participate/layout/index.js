@@ -175,15 +175,19 @@ export default withNavigation(class Participate extends Component {
 
 	async componentDidMount() {
 		await this.setState(this.props.user);
-		let loyalty_card_number = this.find_loyalty_card()?.number;
-		if(loyalty_card_number && loyalty_card_number != this.state.loyalty_card_number) await this.setState({loyalty_card_number});
+		if(this.props.data.retailer.has_loyalty_card) {
+			let loyalty_card_number = this.find_loyalty_card()?.number;
+			if(loyalty_card_number && loyalty_card_number != this.state.loyalty_card_number) await this.setState({loyalty_card_number});
+		}
 		await this.check_ready();
 	}
 	async componentDidUpdate(prev_props) {
 		if(!Object.is(this.props.user,prev_props.user)) {
 			await this.setState(this.props.user);
-			let loyalty_card_number = this.find_loyalty_card()?.number;
-			if(loyalty_card_number && loyalty_card_number != this.state.loyalty_card_number) await this.setState({loyalty_card_number});
+			if(this.props.data.retailer.has_loyalty_card) {
+				let loyalty_card_number = this.find_loyalty_card()?.number;
+				if(loyalty_card_number && loyalty_card_number != this.state.loyalty_card_number) await this.setState({loyalty_card_number});
+			}
 			await this.check_ready();
 		}
 	}
@@ -272,7 +276,7 @@ export default withNavigation(class Participate extends Component {
 	render() {
 		let {navigation,data,user} = this.props;
 		let state = this.state;
-		console.log("participate component",state);
+		console.log("participate component",data);
 
 		if(!data.image_url) data.image_url = 'https://www.sostav.ru/images/news/2018/04/20/on5vjvly.jpg';
 
@@ -283,9 +287,11 @@ export default withNavigation(class Participate extends Component {
 				<ImageBackground style={styles.banner} imageStyle={{opacity:0.7}} source={{uri:data.image_url}}>
 					<Text style={styles.title}>{data.title.toUpperCase()}</Text>
 				</ImageBackground>
+				{data.retailer.image_url ? (
 				<View style={styles.retailer_area}>
 					<Image style={styles.retailer_image} source={{uri:data.retailer.image_url}} />
 				</View>
+				) : null}
 				<ScrollView ref={this.scroll} keyboardShouldPersistTaps="always" keyboardDismissMode="on-drag">
 					{!user.id ? (
 						<View style={styles.authorization}>
@@ -368,6 +374,7 @@ export default withNavigation(class Participate extends Component {
 								error={!state.city_id && state.city_error}
 							/>
 						</View>
+						{data.retailer.has_loyalty_card ? (
 						<View style={styles.loyalty_card_block}>
 							<SubTitle style={{paddingBottom:10}} text="Карта лояльности" />
 							<Text style={styles.loyalty_card_text}>
@@ -384,6 +391,7 @@ export default withNavigation(class Participate extends Component {
 								}}
 							/>
 						</View>
+					) : null}
 						<View style={styles.agreement_block}>
 							<Text style={styles.agreement_text}>
 								Кликая на "Я участвую!", Вы соглашаетесь

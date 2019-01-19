@@ -111,7 +111,10 @@ export default withNavigation(class LoyaltyCardsComponent extends Component {
 		let state = this.state;
 		console.log("LoyaltyCardsComponent",this.props,this.state);
 
-		let retailer_list = props.retailer_list.filter(e => (props.user.loyalty_card.map(g => g.retailer_id).indexOf(e.id)<0));
+		let retailer_list = props.retailer_list.filter(e => (
+			e.has_loyalty_card &&
+			(props.user.loyalty_card.map(g => g.retailer_id).indexOf(e.id)<0)
+		));
 
 		let button_styles		= [styles.main_button,this.state.ready ? styles.active_button : styles.passive_button];
 		let button_text_styles	= [styles.main_button_text,this.state.ready ? styles.active_button_text : styles.passive_button_text];

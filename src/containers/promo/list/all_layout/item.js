@@ -32,14 +32,14 @@ export default withNavigation(class ListItem extends Component {
 		this.state = {
 			image_url: this.props.data.image_url,
 			image_height: styles[(this.props.big ? 'big_' : '')+'image'].height,
-		}
+		};
 	}
 
 	componentDidMount() {
 		Image.getSize(this.state.image_url,(width,height) => {
 			if(0.8*height<this.state.image_height) this.setState({image_height:0.8*height});
 		},error => {
-			this.setState({image:'https://www.sostav.ru/images/news/2018/04/20/on5vjvly.jpg'});
+			this.setState({image_url:'https://www.sostav.ru/images/news/2018/04/20/on5vjvly.jpg'});
 		});
 	}
 

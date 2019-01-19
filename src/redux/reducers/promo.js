@@ -27,11 +27,11 @@ export default function reducer(st = ReducerRecord(),action) {
 
 	switch(type) {
 		case SET_PROMO_LIST:
-			if(!st.promo_list.length)		st.promo_list = [...payload];
+			st.promo_list = payload;
 			break;
 
 		case SET_MY_PROMO_LIST:
-			if(!st.my_promo_list.length)	st.my_promo_list = [...payload];
+			st.my_promo_list = payload;
 			break;
 
 		case ADD_MY_PROMO:
@@ -48,7 +48,7 @@ export default function reducer(st = ReducerRecord(),action) {
 			};
 
 		case SET_RETAILER_LIST:
-			if(!st.retailer_list.length)	st.retailer_list = [...payload];
+			st.retailer_list = payload;
 			break;
 
 		case SET_DETAIL:
@@ -91,9 +91,10 @@ export const request = {
 		if(response) {
 			return {response:{
 				items: response.map(e => ({
-					id:			e.NetworkID,
-					title:		e.Name,
-					image_url:	e.LogoLink,
+					id:					e.NetworkID,
+					title:				e.Name,
+					image_url:			e.LogoLink,
+					has_loyalty_card:	e.HasLoyaltyCard,
 				}))
 			}};
 		}
@@ -117,11 +118,7 @@ export const request = {
 					description:		e.Description,
 					start:				e.Start.substr(0,10),
 					end:				e.Finish.substr(0,10),
-					retailer: {
-						id:					e.NetworkID,
-						name:				e.NetworkName,
-						image_url:			e.NetworkLogoLink,
-					},
+					retailer_id:		e.NetworkID,
 					image_url:			e.BannerLink,
 					site_link:			e.WebSiteLink,
 					rules_link:			e.RulesLink,
@@ -157,9 +154,12 @@ export const request = {
 			PromoID: data.promo_id,
 		});
 		if(response) {
+			let points = response.PointsCount.substr(0,response.PointsCount.indexOf(' ')),
+				points_type = response.PointsCount.substr(response.PointsCount.indexOf(' ')+1);
 			return {response:{
 				prizes:			  response.PrizesCount,
-				points:			  response.PointsCount,
+				points,
+				points_type,
 				add_check:		!!response.AddCheckAvailability,
 				buy_prize:		!!response.BuyPrizesAvailability,
 				show_prizes:	!!response.MyPrizesAvailability,

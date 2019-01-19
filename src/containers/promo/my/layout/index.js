@@ -23,16 +23,17 @@ const styles = StyleSheet.create({
 		alignItems: 'flex-end',
 	},
 	points: {
+		alignItems: 'center',
 		padding: 10,
 		backgroundColor: '#b30000',
 	},
 	points_number: {
 		color: '#fff',
-		fontSize: 18, fontWeight: 'bold',
+		fontSize: 20, fontWeight: 'bold',
 	},
 	points_type: {
 		color: '#fff',
-		fontSize: 9,
+		fontSize: 12,
 	},
 	title: {
 		marginBottom: 10,
@@ -149,25 +150,29 @@ export default withNavigation((props) => {
 					) : (
 						<View style={styles.empty}><Text style={styles.empty_text}>
 							Пока у вас нет ни одной покупки по акции.{'\n\n'}
-							{details.add_check ? (
-								'Вы можете вручную добавить кассовый чек, нажав кнопку «Добавить»'
-							) : (
-								'Зарегистрируйте карту лояльности магазина, и используйте ее при покупке.\n'+
-								'Данные по покупкам добавятся автоматически.'
-							)}
+							{data.retailer.has_loyalty_card ? (
+								details.add_check ? (
+									'Вы можете вручную добавить кассовый чек, нажав кнопку «Добавить»'
+								) : (
+									'Зарегистрируйте карту лояльности магазина в настройках, и используйте ее при покупке.\n'+
+									'Данные по покупкам добавятся автоматически.'
+								)
+							) : null}
 						</Text></View>
 					)
 				)
 			)}
 			</View>
-			<View style={styles.bottom}>
-				{details.add_check ? (
-					<TouchableOpacity style={styles.add_button}><Text style={styles.add_button_text}>Добавить чек</Text></TouchableOpacity>
-				) : null}
-				{details.buy_prize ? (
-					<TouchableOpacity style={styles.get_button}><Text style={styles.get_button_text}>Получить выигрыш</Text></TouchableOpacity>
-				) : null}
-			</View>
+			{details.add_check && details.buy_prize ? (
+				<View style={styles.bottom}>
+					{details.add_check ? (
+						<TouchableOpacity style={styles.add_button}><Text style={styles.add_button_text}>Добавить чек</Text></TouchableOpacity>
+					) : null}
+					{details.buy_prize ? (
+						<TouchableOpacity style={styles.get_button}><Text style={styles.get_button_text}>Получить выигрыш</Text></TouchableOpacity>
+					) : null}
+				</View>
+			) : null}
 		</View>
 	);
 });

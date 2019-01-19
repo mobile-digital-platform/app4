@@ -3,6 +3,12 @@
 import {connect} from 'react-redux';
 
 import {
+	set_promo_list,
+	set_my_promo_list,
+	set_retailer_list,
+	module as promo_module
+} from '../../../redux/reducers/promo';
+import {
 	update_user,
 	log_out,
 	module as settings_module
@@ -16,14 +22,14 @@ import {
 import Component from './component';
 
 const mapStateToProps = state => ({
-	user:			state[settings_module].user,
-	error:			state[settings_module].error,
-	initialized:	state[settings_module].initialized,
-	loading:		state[settings_module].loading,
-	smoke:			state[smoke_module],
+	user:	state[settings_module].user,
+	promo:	state[promo_module],
+	smoke:	state[smoke_module],
 });
 
 const mapDispatchToProps = {
+	set_promo_list,
+	set_my_promo_list,
 	update_user,
 	log_out,
 	open_smoke,

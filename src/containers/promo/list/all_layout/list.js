@@ -42,7 +42,7 @@ export default class List extends Component {
 			{list.length ? (
 				<FlatList
 					data={list}
-					renderItem={({item}) => <Item data={item} big={list.length<3} />}
+					renderItem={({item}) => <Item data={item} big={list.length==1} />}
 					// ListHeaderComponent={Separator}
 					// ItemSeparatorComponent={Separator}
 					ListFooterComponent={this.render_footer}

@@ -1,6 +1,18 @@
 export default (data) => {
-	data.diff = Math.ceil(((+new Date(data.end))-(+new Date()))/(24*60*60*1000));
-	if(data.diff >= 0) {
+	let now		= +new Date(),
+		start	= +new Date(data.start),
+		end		= +new Date(data.end);
+
+	if(end < now) {
+		data.diff_text = 'Акция закончилась';
+		data.can_participate = false;
+	} else {
+		if(now < start) {
+			data.diff = Math.ceil((start-now)/(24*60*60*1000));
+		} else {
+			data.diff = Math.ceil((end-now)/(24*60*60*1000));
+		}
+
 		if(data.diff == 0) {
 			data.diff_text = 'сегодня';
 		} else if(data.diff == 1) {
@@ -14,10 +26,12 @@ export default (data) => {
 
 			data.diff_text = 'через '+data.diff+' '+day;
 		}
-		data.diff_text = 'Заканчивается '+data.diff_text;
-	} else {
-		data.diff_text = 'Акция закончилась';
-		data.can_participate = false;
+		if(now < start) {
+			data.diff_text = 'начинается '+data.diff_text;
+		} else {
+			data.diff_text = 'Заканчивается '+data.diff_text;
+		}
+
 	}
 	return data;
 }

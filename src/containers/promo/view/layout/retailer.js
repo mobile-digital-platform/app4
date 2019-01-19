@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
 });
 
 export default withNavigation(({navigation,data,extra}) => {
-	if(!data.retailer.image_url) data.retailer.image_url = 'https://www.sostav.ru/images/news/2018/04/20/on5vjvly.jpg';
+	// if(!data.retailer.image_url) data.retailer.image_url = 'https://www.sostav.ru/images/news/2018/04/20/on5vjvly.jpg';
 
 	return (
 		<TouchableOpacity style={styles.container} onPress={_=>navigation.push('promo_details',{data,promo:extra})}>
@@ -65,7 +65,7 @@ export default withNavigation(({navigation,data,extra}) => {
 			) : null}
 			</View>
 			<View style={styles.area}>
-				<Text style={styles.title}>{data.retailer.name.toUpperCase()}</Text>
+				<Text style={styles.title}>{data.retailer.title?.toUpperCase()}</Text>
 				<View style={styles.about}>
 					<TouchableOpacity style={styles.participate} onPress={_=>navigation.push('promo_details',{data,promo:extra})}>
 						<Text style={styles.participate_text}>Подробнее</Text>

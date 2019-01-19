@@ -76,7 +76,7 @@ export default withNavigation(class InputPhone extends Component {
 		if(!Object.is(this.props,prevProps)) {
 			this.setState(state => ({
 				active: state.active || this.props.value?.length,
-				value: state.value || this.props.value || '',
+				value: ((this.props.value!=state.value) ? this.props.value : (this.props.value || '')),
 				error: this.props.error,
 			}));
 		}

@@ -5,6 +5,7 @@ import {withNavigation} from 'react-navigation';
 import Icon from 'react-native-vector-icons/EvilIcons';
 
 import SubTitle		from '../../../../templates/subtitle';
+import BackgroundImage from '../../../../templates/background_image';
 
 import Retailer		from './retailer';
 import Separator	from './separator';
@@ -17,7 +18,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'flex-end',
 		height: 140,
 		padding: 20,
-		backgroundColor: '#000',
+		backgroundColor: 'transparent',
 	},
 	title: {
 		marginBottom: 20,
@@ -40,12 +41,11 @@ const styles = StyleSheet.create({
 });
 
 export default withNavigation(({navigation,data}) => {
-	console.log(data);
-	// data.retailer = data.retailer?.filter(e => e.active);
+	if(data.promo_list) data.promo_list = data.promo_list.filter(e => e.retailer.id>0);
 
 	return (
 		<View style={styles.container}>
-			<ImageBackground style={styles.banner} imageStyle={{opacity:0.7}} source={{uri:data.image_url}}>
+			<ImageBackground style={styles.banner} image_style={{opacity:0.7}} source={{uri:data.image_url}}>
 				<Text style={styles.title}>{data.title?.toUpperCase()}</Text>
 			</ImageBackground>
 			<ScrollView>

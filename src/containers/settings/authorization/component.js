@@ -11,7 +11,8 @@ import SubTitle		from '../../../templates/subtitle';
 import alert		from '../../../services/alert';
 import st			from '../../../services/storage';
 
-import {request}	from '../../../redux/reducers/settings';
+import {request as promo_request}		from '../../../redux/reducers/promo';
+import {request as settings_request}	from '../../../redux/reducers/settings';
 
 const styles = StyleSheet.create({
 	main: {
@@ -77,8 +78,9 @@ export default withNavigation(class Authorization extends Component {
 		super(props);
 
 		this.timeout;
+
 		this.state = {
-			phone: '',
+			phone: '+7917',
 			phone_error: false,
 			password: '',
 			password_error: false,
@@ -95,6 +97,7 @@ export default withNavigation(class Authorization extends Component {
 		clearTimeout(this.timeout);
 	}
 
+	// Секундомер
 	timer = async (time) => {
 		await this.setState({timeout:time});
 		if(this.timeout) clearTimeout(this.timeout);
@@ -104,6 +107,7 @@ export default withNavigation(class Authorization extends Component {
 		},1000);
 	}
 
+	// Изменение вводимых данных
 	update = async (state_adjust) => {
 		await this.setState(state_adjust);
 
@@ -114,6 +118,7 @@ export default withNavigation(class Authorization extends Component {
 		if(this.state.phone.length && this.state.password.length)		this.setState({ready:true});
 	}
 
+	// Запрос пароля
 	ask_password = async () => {
 		if(!this.state.phone.length) {
 			alert("Введите номер телефона");
@@ -126,7 +131,7 @@ export default withNavigation(class Authorization extends Component {
 
 			// Запрашиваем код
 			this.props.open_smoke();
-			let {response,error} = await request.phone_send_password(this.state.phone);
+			let {response,error} = await settings_request.phone_send_password(this.state.phone);
 			if(response) {
 				console.log(response);
 				await alert(response.code);
@@ -138,6 +143,7 @@ export default withNavigation(class Authorization extends Component {
 		}
 	}
 
+	// Вход
 	enter = async () => {
 		// Проверяем ввод
 		if(!this.state.phone.length) {
@@ -156,12 +162,12 @@ export default withNavigation(class Authorization extends Component {
 		this.props.open_smoke();
 
 		// Получаем номер
-		let authorize = await request.authorize({phone:this.state.phone,password:this.state.password});
+		let authorize = await settings_request.authorize({phone:this.state.phone,password:this.state.password});
 		if(authorize.response) {
 			this.props.log_out();
 
 			// Получаем данные
-			let user_data = await request.get(authorize.response.user_id);
+			let user_data = await settings_request.get(authorize.response.user_id);
 			if(user_data.response) {
 
 				// Сохраняем
@@ -169,6 +175,8 @@ export default withNavigation(class Authorization extends Component {
 
 				// В асинхронное хранилище изменения тоже записываем
 				st.merge('user',user_data.response);
+
+				await this.get_promo_list(user_data.response);
 
 				this.props.navigation.goBack();
 			}
@@ -180,6 +188,56 @@ export default withNavigation(class Authorization extends Component {
 			await alert(authorize.error.message);
 		}
 		this.props.close_smoke();
+	}
+
+	// Загрузка данных об акциях
+	get_promo_list = async (user) => {
+		console.log(user);
+		let data = await promo_request.get_list({user_id:user.id});
+		if(data.response) {
+			let items = data.response.items;
+			let waiting = [];
+
+			for(let i=0; i<items.length; i++) {
+				let row = items[i];
+
+				// Набираем по всем акциям уточнения внутри торговых сетей
+				waiting.push(new Promise(async (resolve,reject) => {
+					let retailers_data = await promo_request.get_promo_retailers({promo_id:row.id,user_id:user.id});
+					if(retailers_data.response) {
+						items[i].promo_list = retailers_data.response.items.map(e =>({
+							...e,
+							retailer: this.props.promo.retailer_list.find(g => g.id==e.retailer_id),
+						}));
+					}
+					if(retailers_data.error) {
+						this.setState({promo:'failed'});
+					}
+					resolve()
+				}));
+			}
+			await Promise.all(waiting);
+
+			this.props.set_promo_list(items);
+
+			let my_items = [];
+			for(let i=0; i<items.length; i++) {
+				let row = items[i];
+				for(let j=0; j<row.promo_list.length; j++) {
+					let nrow = row.promo_list[j];
+					if(nrow.participation) {
+						nrow.image_url = row.image_url;
+						my_items.push(nrow);
+					}
+				}
+			}
+			this.props.set_my_promo_list(my_items);
+
+			return true;
+		}
+		if(data.error) {
+			return false;
+		}
 	}
 
 	render() {

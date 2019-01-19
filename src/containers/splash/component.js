@@ -46,7 +46,7 @@ export default class SplashComponent extends Component {
 
 	async componentDidMount() {
 		// Даем пользователю насладиться пузырьками из бутылочки
-		this.timer = setTimeout(_ => this.setState({timeout:true}),0);
+		this.timer = setTimeout(_ => this.setState({timeout:true}),2000);
 
 		// Пускаем пузырьки
 		this.interval = setInterval(_ => this.setState(({current_image}) => ({current_image:++current_image%3})),200);
@@ -157,6 +157,7 @@ export default class SplashComponent extends Component {
 		if(data.response) {
 			let items = data.response.items;
 			let waiting = [];
+			let failed = false;
 
 			for(let i=0; i<items.length; i++) {
 				let row = items[i];
@@ -165,22 +166,27 @@ export default class SplashComponent extends Component {
 				waiting.push(new Promise(async (resolve,reject) => {
 					let retailers_data = await promo_request.get_promo_retailers({promo_id:row.id,user_id:this.props.user.id});
 					if(retailers_data.response) {
-						items[i].promo_list = retailers_data.response.items;
+						items[i].promo_list = retailers_data.response.items.map(e =>({
+							...e,
+							retailer: this.props.promo.retailer_list.find(g => g.id==e.retailer_id),
+						}));
 					}
 					if(retailers_data.error) {
 						this.setState({promo:'failed'});
+						failed = true;
 					}
 					resolve()
 				}));
 			}
 			await Promise.all(waiting);
+			console.log(items);
 
 			this.props.set_promo_list(items);
 
 			let my_items = [];
 			for(let i=0; i<items.length; i++) {
 				let row = items[i];
-				for(let j=0; j<row.promo_list.length; j++) {
+				if(row.promo_list) for(let j=0; j<row.promo_list.length; j++) {
 					let nrow = row.promo_list[j];
 					if(nrow.participation) {
 						nrow.image_url = row.image_url;
@@ -190,7 +196,7 @@ export default class SplashComponent extends Component {
 			}
 			this.props.set_my_promo_list(my_items);
 
-			this.setState({promo:'loaded'});
+			this.setState({promo:failed ? 'failed' : 'loaded'});
 		}
 		if(data.error) {
 			this.setState({promo:'failed'});

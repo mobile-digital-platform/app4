@@ -42,7 +42,7 @@ export default class MyList extends Component {
 			{my_list.length ? (
 				<FlatList
 					data={my_list}
-					renderItem={({item}) => <Item data={item} big={my_list.length<3} />}
+					renderItem={({item}) => <Item data={item} big={my_list.length==1} />}
 					// ListHeaderComponent={Separator}
 					// ItemSeparatorComponent={Separator}
 					ListFooterComponent={this.render_footer}
@@ -50,8 +50,8 @@ export default class MyList extends Component {
 					keyExtractor={item => item.id+''}
 					// onEndReached={this.props.load_next}
 					// onEndReachedThreshold={0}
-					onRefresh={this.props.load_new}
-					refreshing={this.props.loading}
+					onRefresh={this.props.reload}
+					refreshing={this.props.state.loading}
 				/>
 			) : (
 				<View style={styles.empty}><Text style={styles.empty_text}>Сейчас вы не участвуете {'\n'} ни в одной акции</Text></View>
