@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {StyleSheet,FlatList,Image,TouchableOpacity,Text,View} from 'react-native';
+import {Platform,StyleSheet,FlatList,Image,TouchableOpacity,Text,View} from 'react-native';
 import {withNavigation} from 'react-navigation';
 
 import Icon from 'react-native-vector-icons/EvilIcons';
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 		backgroundColor: '#f40000',
 	},
 	save_text: {
-		paddingTop: 3,
+		paddingTop: Platform.select({ios:3,android:0}),
 		color: '#fff',
 		fontSize: 18, fontFamily: 'GothamPro-Medium',
 		textAlign: 'center',

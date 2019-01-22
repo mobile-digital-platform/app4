@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Dimensions,Keyboard,StyleSheet,KeyboardAvoidingView,TouchableOpacity,Text,View} from 'react-native';
+import {Dimensions,Keyboard,Platform,StyleSheet,KeyboardAvoidingView,TouchableOpacity,Text,View} from 'react-native';
 
 import Input		from '../../templates/input';
 import InputPhone	from '../../templates/input_phone';
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
 		borderRadius: 100,
 	},
 	save_text: {
-		paddingTop: 3,
+		paddingTop: Platform.select({ios:3,android:0}),
 		fontSize: 22, fontFamily: 'GothamPro-Medium',
 		textAlign: 'center',
 	},

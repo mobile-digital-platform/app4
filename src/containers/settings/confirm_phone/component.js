@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Keyboard,StyleSheet,ScrollView,Text,TouchableOpacity,View} from 'react-native';
+import {Keyboard,Platform,StyleSheet,ScrollView,Text,TouchableOpacity,View} from 'react-native';
 import {withNavigation} from 'react-navigation';
 
 import Icon from 'react-native-vector-icons/EvilIcons';
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 		borderRadius: 40,
 	},
 	main_button_text: {
-		paddingTop: 3,
+		paddingTop: Platform.select({ios:3,android:0}),
 		fontSize: 20, fontFamily: 'GothamPro-Medium',
 		textAlign: 'center',
 	},
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
 		borderRadius: 100,
 	},
 	again_button_text: {
-		paddingTop: 3,
+		paddingTop: Platform.select({ios:3,android:0}),
 		fontSize: 18, fontFamily: 'GothamPro-Medium',
 		textAlign: 'center',
 	},

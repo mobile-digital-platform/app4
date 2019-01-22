@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet,Text,TouchableOpacity,View} from 'react-native';
+import {Platform,StyleSheet,Text,TouchableOpacity,View} from 'react-native';
 import {withNavigation} from 'react-navigation';
 
 const styles = StyleSheet.create({
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
 		backgroundColor: 'red',
 	},
 	text: {
-		paddingTop: 3,
+		paddingTop: Platform.select({ios:3,android:0}),
 		fontSize: 16, fontFamily: 'GothamPro',
 	},
 	text_selected: {

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Linking,StyleSheet,Image,ImageBackground,Text,TouchableOpacity,View} from 'react-native';
+import {Linking,Platform,StyleSheet,Image,ImageBackground,Text,TouchableOpacity,View} from 'react-native';
 import {withNavigation} from 'react-navigation';
 
 import Icon from 'react-native-vector-icons/EvilIcons';
@@ -25,13 +25,14 @@ const styles = StyleSheet.create({
 		// backgroundColor: '#eee',
 	},
 	title: {
-		paddingTop: 3,
+		paddingTop: Platform.select({ios:3,android:0}),
 		fontSize: 20, fontFamily: 'GothamPro-Medium',
 	},
 	about: {
 		flexDirection: 'row-reverse',
 		justifyContent: 'space-between',
 		alignItems: 'center',
+		// flexWrap: 'wrap',
 		marginTop: 5,
 	},
 	link_area: {

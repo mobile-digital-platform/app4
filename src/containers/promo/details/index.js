@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
 	area: {
 		flex: 1,
 		padding: 20,
+		zIndex: -1,
 	},
 	description_area: {
 		flex: 1,
@@ -64,7 +65,7 @@ const styles = StyleSheet.create({
 		backgroundColor: 'red',
 	},
 	participate_text: {
-		paddingTop: 3,
+		paddingTop: Platform.select({ios:3,android:0}),
 		color: '#fff',
 		fontSize: 18, fontFamily: 'GothamPro-Medium',
 	},
@@ -79,6 +80,7 @@ html {
 }
 body {
 	margin: 0;
+	color: #111;
 	font-size: `+Platform.select({ios:'42px',android:'14px'})+`;
 	font-family: "GothamPro";
 	line-height: `+Platform.select({ios:'54px',android:'18px'})+`;
@@ -111,6 +113,8 @@ export default withNavigation(({navigation}) => {
 
 	// navigation.push('promo_participate',{data});
 
+	console.log(data.description);
+
 	return (
 		<View style={styles.container}>
 			<ImageBackground style={styles.banner} imageStyle={{opacity:0.7}} source={{uri:data.image_url}}>
@@ -126,8 +130,8 @@ export default withNavigation(({navigation}) => {
 			) : null}
 			{data.description?.length ? (
 			<View style={styles.area}>
-				<SubTitle style={{paddingBottom:10}} text="Условия акции" useWebKit={true} />
-				<WebView style={styles.description_area} source={{html:stylize(data.description)}} />
+				<SubTitle style={{paddingBottom:10}} text="Условия акции" />
+				<WebView style={styles.description_area} source={{html:stylize(data.description)}} useWebKit={true} />
 			</View>
 			) : null}
 			{data.can_participate ? (

@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {StyleSheet,TouchableOpacity,TextInput,Text,View} from 'react-native';
+import {Platform,StyleSheet,TouchableOpacity,TextInput,Text,View} from 'react-native';
 import {TextInputMask} from 'react-native-masked-text';
 import {withNavigation} from 'react-navigation';
 
@@ -18,13 +18,13 @@ const styles = StyleSheet.create({
 		borderColor: '#f40000',
 	},
 	title: {
-		marginTop: 10, paddingTop: 3,
+		marginTop: 10, paddingTop: Platform.select({ios:3,android:0}),
 		// backgroundColor: '#eee',
 		color: '#bbb',
 		fontSize: 14, fontFamily: 'GothamPro',
 	},
 	title_active: {
-		marginTop: 0, paddingTop: 3,
+		marginTop: 0, paddingTop: Platform.select({ios:3,android:0}),
 		fontSize: 18, fontFamily: 'GothamPro',
 	},
 	input: {
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
 		fontSize: 18, fontFamily: 'GothamPro',
 	},
 	error_text: {
-		marginLeft: 20, marginBottom: 10, paddingTop: 3,
+		marginLeft: 20, marginBottom: 10, paddingTop: Platform.select({ios:3,android:0}),
 		fontSize: 14, fontFamily: 'GothamPro',
 		color: '#f40000',
 	},
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
 		marginTop: 10, paddingHorizontal: 20,
 	},
 	confirm_text: {
-		paddingTop: 3,
+		paddingTop: Platform.select({ios:3,android:0}),
 		color: '#bbb',
 		fontSize: 16, fontFamily: 'GothamPro',
 	},
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
 		marginVertical: 5,
 	},
 	confirm_enter_text: {
-		marginBottom: 3, paddingTop: 3,
+		marginBottom: 3, paddingTop: Platform.select({ios:3,android:0}),
 		color: '#f40000',
 		fontSize: 18, fontFamily: 'GothamPro-Medium',
 	},

@@ -21,13 +21,13 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	title: {
-		marginTop: 10, paddingTop: 3,
+		marginTop: 10, paddingTop: Platform.select({ios:3,android:0}),
 		// backgroundColor: '#eee',
 		color: '#bbb',
 		fontSize: 14, fontFamily: 'GothamPro',
 	},
 	title_active: {
-		marginTop: 0, paddingTop: 3,
+		marginTop: 0, paddingTop: Platform.select({ios:3,android:0}),
 		fontSize: 18, fontFamily: 'GothamPro',
 	},
 	input: {
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
 		textAlign: 'right',
 	},
 	error_text: {
-		marginLeft: 20, marginBottom: 10, paddingTop: 3,
+		marginLeft: 20, marginBottom: 10, paddingTop: Platform.select({ios:3,android:0}),
 		fontSize: 14, fontFamily: 'GothamPro',
 		color: '#f40000',
 	},
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff',
 	},
 	select_text: {
-		paddingTop: 3,
+		paddingTop: Platform.select({ios:3,android:0}),
 		fontSize: 20, fontFamily: 'GothamPro',
 	},
 	item: {

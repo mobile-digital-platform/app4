@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {StyleSheet,Image,Text,TouchableOpacity,View} from 'react-native';
+import {Platform,StyleSheet,Image,Text,TouchableOpacity,View} from 'react-native';
 import {withNavigation} from 'react-navigation';
 
 const styles = StyleSheet.create({
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 		borderWidth: 1, borderTopWidth: 0, borderColor: '#ccc',
 	},
 	title: {
-		margin: 20, paddingTop: 3,
+		margin: 20, paddingTop: Platform.select({ios:3,android:0}),
 		fontSize: 20, fontFamily: 'GothamPro',
 	},
 });

@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {StyleSheet,Image,Text,TouchableOpacity,View} from 'react-native';
+import {Platform,StyleSheet,Image,Text,TouchableOpacity,View} from 'react-native';
 import {withNavigation} from 'react-navigation';
 
 import promo_date_diff from '../../../../services/promo_date_diff';
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
 		borderWidth: 1, borderTopWidth: 0, borderColor: '#ccc',
 	},
 	title: {
-		paddingTop: 3,
+		paddingTop: Platform.select({ios:3,android:0}),
 		fontSize: 20, fontFamily: 'GothamPro',
 	},
 	ending: {

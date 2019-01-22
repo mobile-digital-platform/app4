@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet,TouchableOpacity,Text,View} from 'react-native';
+import {Platform,StyleSheet,TouchableOpacity,Text,View} from 'react-native';
 import {withNavigation} from 'react-navigation';
 
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
 		// backgroundColor: '#eee',
 	},
 	list_text: {
-		marginLeft: 10, paddingTop: 3,
+		marginLeft: 10, paddingTop: Platform.select({ios:3,android:0}),
 		fontSize: 16, fontFamily: 'GothamPro-Medium',
 	},
 });

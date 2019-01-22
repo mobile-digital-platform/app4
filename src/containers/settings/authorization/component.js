@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Alert,Keyboard,StyleSheet,ScrollView,Text,TouchableOpacity,View} from 'react-native';
+import {Alert,Keyboard,Platform,StyleSheet,ScrollView,Text,TouchableOpacity,View} from 'react-native';
 import {withNavigation} from 'react-navigation';
 
 import Icon			from 'react-native-vector-icons/EvilIcons';
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
 		backgroundColor: '#f40000',
 	},
 	button_text: {
-		paddingTop: 3,
+		paddingTop: Platform.select({ios:3,android:0}),
 		color: '#fff',
 		fontSize: 20, fontFamily: 'GothamPro-Medium',
 		textAlign: 'center',
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
 		borderRadius: 40,
 	},
 	reset_button_text: {
-		paddingTop: 3,
+		paddingTop: Platform.select({ios:3,android:0}),
 		color: '#f40000',
 		fontSize: 18, fontFamily: 'GothamPro',
 		textAlign: 'center',
@@ -80,7 +80,7 @@ export default withNavigation(class Authorization extends Component {
 		this.timeout;
 
 		this.state = {
-			phone: '+7917',
+			phone: '',
 			phone_error: false,
 			password: '',
 			password_error: false,

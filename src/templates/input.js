@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {StyleSheet,TouchableOpacity,TextInput,Text,View} from 'react-native';
+import {Platform,StyleSheet,TouchableOpacity,TextInput,Text,View} from 'react-native';
 
 const styles = StyleSheet.create({
 	container: {
@@ -14,12 +14,12 @@ const styles = StyleSheet.create({
 		borderColor: '#f40000',
 	},
 	title: {
-		marginTop: 10, paddingTop: 3,
+		marginTop: 10, paddingTop: Platform.select({ios:3,android:0}),
 		color: '#bbb',
 		fontSize: 14, fontFamily: 'GothamPro',
 	},
 	title_active: {
-		marginTop: 0, paddingTop: 3,
+		marginTop: 0, paddingTop: Platform.select({ios:3,android:0}),
 		fontSize: 18, fontFamily: 'GothamPro',
 	},
 	input: {
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
 		fontSize: 18, fontFamily: 'GothamPro',
 	},
 	error_text: {
-		marginLeft: 25, marginBottom: 10, paddingTop: 3,
+		marginLeft: 25, marginBottom: 10, paddingTop: Platform.select({ios:3,android:0}),
 		fontSize: 14, fontFamily: 'GothamPro',
 		color: '#f40000',
 	},
