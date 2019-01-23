@@ -1,10 +1,5 @@
-import React from 'react';
+import React,{Component} from 'react';
 import {StyleSheet,FlatList,ImageBackground,ScrollView,Text,TouchableOpacity,View,Image} from 'react-native';
-import {withNavigation} from 'react-navigation';
-
-import Input		from './input';
-import SelectCity	from './select_city';
-import InputPhone	from './input_phone';
 
 const styles = StyleSheet.create({
 	container: {
@@ -29,27 +24,27 @@ const styles = StyleSheet.create({
 		marginBottom: 10,
 		color: '#3D3D3D',
 	},
-	point_info:{
+	score_info:{
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		marginBottom: 15, marginTop: 5,
 	},
-	point_block:{
+	score_block:{
 		flexDirection: 'row',
 		alignItems: 'center',
 	},
-	point_number:{
+	score_number:{
 		fontWeight: 'bold',
 		marginRight: 5,
 		fontSize: 16,
 	},
-	point_balance: {
+	score_balance: {
 		fontWeight: 'bold',
 		marginLeft: 5,
 		fontSize: 16,
 		color: 'red',
 	},
-	point_text:{
+	score_text:{
 		flexDirection: 'row',
 		fontSize: 16,
 	},
@@ -83,31 +78,39 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default withNavigation(({navigation,data}) => (
-	<View style={styles.container}>
-		<Image
-			style={styles.image}
-			source={{uri: ''}}
-		/>
-		<View style={styles.area}>
-			<Text style={styles.title}>Название приза, может быть длинным</Text>
-			{ true || (<View style={styles.point_info}>
-				<View style={styles.point_block}>
-					<Text style={styles.point_number}>20</Text>
-					<Text style={styles.point_text}>баллов</Text>
+export default class Prize extends Component {
+	constructor(props) {
+		super(props);
+	}
+
+	render() {
+		return (
+			<View style={styles.container}>
+				<Image
+					style={styles.image}
+					source={{uri: ''}}
+				/>
+				<View style={styles.area}>
+					<Text style={styles.title}>{this.props.title}</Text>
+					{ true || (<View style={styles.score_info}>
+						<View style={styles.score_block}>
+							<Text style={styles.score_number}>20</Text>
+							<Text style={styles.score_text}>баллов</Text>
+						</View>
+						<View style={styles.score_block}>
+							<Text style={styles.score_text}>Осталось:</Text>
+							<Text style={styles.score_balance}>12 шт.</Text>
+						</View>
+					</View>)}
+					{ false || (<Text style={styles.check_info}>За чеки:  11111, 222222, 333333</Text>)}
+					{ false || (<Text style={styles.status_text_grey}>Продолжайте копить баллы</Text>)}
+					{ true || (<Text style={styles.status_text_red}>Отправлено. Смотреть статус</Text>)}
+					{ true || (<TouchableOpacity style={styles.button}>
+						<Text style={styles.button_text}>Выбрать</Text>
+					</TouchableOpacity>)
+					}
 				</View>
-				<View style={styles.point_block}>
-					<Text style={styles.point_text}>Осталось:</Text>
-					<Text style={styles.point_balance}>12 шт.</Text>
-				</View>
-			</View>)}
-			{ false || (<Text style={styles.check_info}>За чеки:  11111, 222222, 333333</Text>)}
-			{ false || (<Text style={styles.status_text_grey}>Продолжайте копить баллы</Text>)}
-			{ true || (<Text style={styles.status_text_red}>Отправлено. Смотреть статус</Text>)}
-			{ true || (<TouchableOpacity style={styles.button}>
-				<Text style={styles.button_text}>Выбрать</Text>
-			</TouchableOpacity>)
-			}
-		</View>
-	</View>
-));
+			</View>
+		);
+	}
+}

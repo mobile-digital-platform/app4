@@ -63,15 +63,15 @@ var Navigator = createAppContainer(createStackNavigator(
 		web:						WebScreen,
 	},
 	{
-		initialRouteName: 'promo_list',
+		//initialRouteName: 'promo_list',
 		// initialRouteName: 'promo_view',
 		// initialRouteName: 'promo_details',
 		// initialRouteName: 'promo_participate',
 		// initialRouteName: 'promo_my_view',
 
 		// initialRouteName: 'promo_add_check', 		// кассовый чек
-		// initialRouteName: 'promo_get_prize',			// получить выигрыш
-		// initialRouteName: 'promo_passport', 			// паспортные данные
+		//initialRouteName: 'promo_get_prize',			// получить выигрыш
+		 initialRouteName: 'promo_passport', 			// паспортные данные
 		// initialRouteName: 'promo_choose_prize',		// выбор приза
 		// initialRouteName: 'promo_my_prize', 			// мои призы
 		// initialRouteName: 'promo_ask', 				// задать вопрос
@@ -133,12 +133,17 @@ export default class Router extends Component {
 	render() {
 		return (
 			<Provider store={store}>
-				{this.state.page == 'start'			? (<Empty />)	: null}
-				{this.state.page == 'onboarding'	? (<Onboarding	set_page={this.set_page} />)	: null}
-				{this.state.page == 'splash'		? (<Splash		set_page={this.set_page} />)	: null}
+				{this.state.page == 'start'			? (<Navigator/>) : null}
+				{this.state.page == 'onboarding'	? (<Navigator/>) : null}
+				{this.state.page == 'splash'		? (<Navigator/>) : null}
 				{this.state.page == 'navigator'		? (<Navigator/>) : null}
 				<Smoke/>
 			</Provider>
 		);
 	}
 }
+
+/* {this.state.page == 'start'			? (<Empty />)	: null}
+{this.state.page == 'onboarding'	? (<Onboarding	set_page={this.set_page} />)	: null}
+{this.state.page == 'splash'		? (<Splash		set_page={this.set_page} />)	: null}
+{this.state.page == 'navigator'		? (<Navigator/>) : null} */

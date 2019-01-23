@@ -3,30 +3,30 @@ import {StyleSheet,FlatList,ImageBackground,ScrollView,Text,TouchableOpacity,Vie
 import {withNavigation} from 'react-navigation';
 
 import Input		from '../../../../templates/input';
-import Date	from '../../../../templates/date';
-import TextArea	from '../../../../templates/textarea';
+import SelectCity	from '../../../../templates/select_city';
 import MainText		from '../../../../templates/main_text';
-import SubTitle		from '../../../../templates/subtitle';
 
 const styles = StyleSheet.create({
 	container: {
-		paddingVertical: 25, paddingHorizontal: 20,
+		paddingVertical: 25,
 		backgroundColor: '#fff',
 	},
-	title: {
-		marginBottom: 25,
+	area: {
 		paddingHorizontal: 20,
 	},
 	main_text: {
-		marginBottom: 25,	
+		paddingBottom: 20,
 	},
 	block: {
-		marginBottom: 30,
+		paddingBottom: 20,
 	},
-	textarea_container: {
-		marginBottom: 25,
+	map: {
+		height: 250,
+		marginVertical: 5,
+		backgroundColor: '#bbb',
 	},
 	save: {
+		marginHorizontal: 20, marginVertical: 20,
 		padding: 15,
 		borderRadius: 100,
 		backgroundColor: '#f1f1f1',
@@ -40,21 +40,23 @@ const styles = StyleSheet.create({
 
 export default withNavigation(({navigation,data}) => (
 	<ScrollView style={styles.container}>
-		<MainText style={styles.main_text} text="Заполните форму для получения выигрыша." />
-		<View style={styles.block}>
-			<Input title="Имя" />
-			<Input title="Отчество" />
-			<Input title="Фамилия" />
-		</View>
-		<View style={styles.block}>
-			<Input title="E-mail" />
-			<Date title="Дата рождения" />
-		</View>
-		<SubTitle style={styles.title} text="Адрес регистрации" />
-		<View style={styles.textarea_container}><TextArea /></View>
-		<MainText style={styles.main_text} text="Текст, описывающий особенности получения выигрыша, правила и какие-то хитрости. Может занимать несколько строчек." />
-		<TouchableOpacity style={styles.save} onPress={this.send}>
-			<Text style={styles.save_text}>Отправить</Text>
-		</TouchableOpacity>
+			<View style={styles.area}>
+				<MainText style={styles.main_text} text="Заполните форму для получения выигрыша в Центре выдачи призов." />
+				<View style={styles.block}>
+					<Input title="Имя" />
+					<Input title="Отчество" />
+					<Input title="Фамилия" />
+				</View>
+				<View style={styles.block}>
+					<Input title="E-mail" />
+					<SelectCity/>
+				</View>
+			</View>
+			<TouchableOpacity style={styles.map} onPress={this.send}>
+				{/* map */}
+			</TouchableOpacity>
+			<TouchableOpacity style={styles.save} onPress={this.send}>
+				<Text style={styles.save_text}>Отправить</Text>
+			</TouchableOpacity>
 	</ScrollView>
 ));

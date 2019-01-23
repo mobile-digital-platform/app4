@@ -13,7 +13,7 @@ export default withNavigation(class PromoParticipaateComponent extends Component
 	}
 
 	render() {
-		console.log("Component",this.props);
+		console.log("Component Addcheck",this.props);
 
 		return (
 			<Layout

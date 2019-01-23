@@ -64,17 +64,16 @@ export default class Date extends Component {
 		}
 	}
 
-	set_value = (date) => {
-		const day = date.getDate() < 10 ? '0'+date.getDate() : date.getDate();
-		const month = date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1;
-		const year = date.getFullYear();
-		const selectedDate = day+' . '+month+' . '+year;
-		console.log('A date has been picked: ', selectedDate);
-
-		this.setState({active:true, value:selectedDate, error:false, isDateTimePickerVisible: false});
-		console.log(this.state);
+	set_value = (time) => {
+		const hour = time.getHours() < 10 ? '0'+time.getHours() : time.getHours();
+		const minutes = time.getMinutes() < 10 ? '0'+time.getMinutes() : time.getMinutes();
+		const selectedTime = hour+' : '+minutes;
+		console.log('A time has been picked: ', selectedTime);
+		
+		this.setState({active:true, value:selectedTime, error:false, isDateTimePickerVisible: false});
 		//if(this.props.update) this.props.update(selectedDate);
 	}
+	// непонятно, как добавить кнопку очистки времени в picker
 	clear_value = () => {
 		this.setState({ active:false, value:'', error:false, isDateTimePickerVisible: false});
 		//if(this.props.send) this.props.send(this.state.value);
@@ -85,13 +84,13 @@ export default class Date extends Component {
 
 	render() {
 		let state = this.state;
-		console.log('time_date',this);
+		console.log('time_this',this);
 		return (
 			<View style={this.props.style}>
 				{state.active ? (
 					<View style={[styles.container,state.error?styles.container_error:{}]}>
 						<View>
-							<Text style={styles.title}>Дата</Text>
+							<Text style={styles.title}>{this.props.title}</Text>
 							<TextInput
 								ref="input"
 								style={styles.input}
@@ -106,7 +105,7 @@ export default class Date extends Component {
 					</View>
 				) : (
 					<TouchableOpacity style={[styles.container,state.error?styles.container_error:{}]} onPress={() => this.visible_picker(true)}>
-						<Text style={[styles.title,styles.title_active]}>Дата</Text>
+						<Text style={[styles.title,styles.title_active]}>{this.props.title}</Text>
 					</TouchableOpacity>
 				)}
 				{state.error ? (<Text style={styles.error_text}>{state.error}</Text>) : null}
@@ -114,6 +113,7 @@ export default class Date extends Component {
 					isVisible={this.state.isDateTimePickerVisible}
 					onConfirm={this.set_value}
 					onCancel={() => this.visible_picker(false)}
+					mode="time"
 				/>
 			</View>
 		);

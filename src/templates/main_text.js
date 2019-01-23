@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
 	title: {
 		color: '#3D3D3D',
 		fontSize: 18, fontFamily: 'GothamPro',
-		lineHeight: 22,
+		lineHeight: 26,
 		textAlign: 'center',
 	},
 });

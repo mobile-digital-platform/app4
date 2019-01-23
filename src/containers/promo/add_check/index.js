@@ -1,18 +1,17 @@
 import {connect} from 'react-redux';
 
-import {get_data,module as promo_module} from '../../../redux/reducers/promo/participate';
+import {change_camera,change_qr,module as promo_module} from '../../../redux/reducers/promo/add_check';
 import Component from './component';
 
 const mapStateToProps = state => ({
-	loading:		state[promo_module].loading,
-	loaded:			state[promo_module].loaded,
-	error:			state[promo_module].error,
-	initialized:	state[promo_module].initialized,
-	data:			state[promo_module].data,
+	scan_list: state[promo_module].scan_photos,
+	camera_visible: state[promo_module].camera_visible,
+	qr_visible: state[promo_module].qr_visible,
 });
 
 const mapDispatchToProps = {
-	get_data,
+	change_camera,
+	change_qr,
 };
 
 export default connect(mapStateToProps,mapDispatchToProps)(Component);
