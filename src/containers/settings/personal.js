@@ -6,6 +6,7 @@ import InputPhone	from '../../templates/input_phone';
 import Textarea		from '../../templates/textarea';
 import SelectCity	from '../../templates/select_city';
 import SubTitle		from '../../templates/subtitle';
+import AnimatedButton		from '../../templates/animated_button';
 
 const styles = StyleSheet.create({
 	container: {
@@ -179,12 +180,19 @@ export default class Personal extends Component {
 		this.setState({last_mail:state.mail,waiting:false});
 	}
 
+	cs = () => {
+		this.setState({state:'waiting'});
+		setTimeout(_=>this.setState({state:Math.random()>0.5 ? 'success' : 'error'}),5000);
+		setTimeout(_=>this.setState({state:'initial'}),10000);
+	}
+
 	render() {
 		let state = this.state;
 
 		return (
 			<View style={styles.container}>
 				<View style={styles.block}>
+					<AnimatedButton active={1} state={this.state.state} onPress={this.cs}>xs</AnimatedButton>
 					<SubTitle style={{paddingBottom:10,paddingHorizontal:25}} text="Персональные данные" />
 					<Input
 						id={this.inputs.name.ref}

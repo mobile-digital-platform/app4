@@ -2,14 +2,15 @@ import React,{Component} from 'react';
 import {Alert,Keyboard,Platform,StyleSheet,ScrollView,Text,TouchableOpacity,View} from 'react-native';
 import {withNavigation} from 'react-navigation';
 
-import Icon			from 'react-native-vector-icons/EvilIcons';
+import Icon				from 'react-native-vector-icons/EvilIcons';
 
-import Input		from '../../../templates/input';
-import InputPhone	from '../../../templates/input_phone';
-import SubTitle		from '../../../templates/subtitle';
+import AnimatedButton	from '../../../templates/animated_button';
+import Input			from '../../../templates/input';
+import InputPhone		from '../../../templates/input_phone';
+import SubTitle			from '../../../templates/subtitle';
 
-import alert		from '../../../services/alert';
-import st			from '../../../services/storage';
+import alert			from '../../../services/alert';
+import st				from '../../../services/storage';
 
 import {request as promo_request}		from '../../../redux/reducers/promo';
 import {request as settings_request}	from '../../../redux/reducers/settings';
@@ -88,6 +89,7 @@ export default withNavigation(class Authorization extends Component {
 			code: '',
 			timeout: 0,
 			state: 'starting',
+			enter_state: 'initial',
 		};
 	}
 
@@ -264,9 +266,7 @@ export default withNavigation(class Authorization extends Component {
 							update={password => this.update({password})}
 						/>
 					</View>
-					<TouchableOpacity style={state.ready ? styles.button : styles.button_disabled} onPress={this.enter}>
-						<Text style={state.ready ? styles.button_text : styles.button_disabled_text}>Войти</Text>
-					</TouchableOpacity>
+					<AnimatedButton active={state.ready} state={state.enter_state} onPress={this.enter}>Войти</AnimatedButton>
 				</View>
 				<View style={styles.reset}>
 					<SubTitle text="Я забыл пароль" />

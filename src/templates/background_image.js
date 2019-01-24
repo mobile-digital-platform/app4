@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import {ImageEditor,NativeModules,StyleSheet,FlatList,Image,ImageBackground,ScrollView,Text,TouchableOpacity,View} from 'react-native';
 
-import ImagePicker from 'react-native-image-crop-picker';
+// import ImagePicker from 'react-native-image-crop-picker';
 
 const styles = StyleSheet.create({
 	container: {

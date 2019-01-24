@@ -13,7 +13,7 @@ export default withNavigation(class PromoListComponent extends Component {
 	};
 
 	componentDidMount() {
-		// this.props.navigation.push('settings');
+		this.props.navigation.push('settings');
 	}
 
 	reload = () => {

@@ -89,6 +89,7 @@ var Navigator = createAppContainer(createStackNavigator(
 export default class Router extends Component {
 	state = {
 		page: 'start',
+		// page: 'navigator',
 	};
 
 	async componentDidMount() {
