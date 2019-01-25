@@ -1,61 +1,73 @@
 import React,{Component} from 'react';
-import {Platform,StyleSheet,TouchableOpacity,TextInput,Text,View} from 'react-native';
+import {Platform,Image,TouchableOpacity,TextInput,Text,View} from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 import {TextInputMask} from 'react-native-masked-text';
 import {withNavigation} from 'react-navigation';
 
-import Icon from 'react-native-vector-icons/EvilIcons';
+import Arrow		from '../../assets/ui/right_arrow.png';
+import Exclamation	from '../../assets/ui/exclamation.png';
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
 	container: {
 		justifyContent: 'center',
-		minHeight: 65,
-		marginVertical: 5, paddingHorizontal: 25,
+		height: 50,
+		marginVertical: 5, paddingHorizontal: 20,
 		borderWidth: 1, borderColor: '#ccc',
 		borderRadius: 100,
 		backgroundColor: '#fff',
 	},
 	container_error: {
-		borderColor: '#f40000',
+		borderColor: '$red',
 	},
 	title: {
-		marginTop: 10, paddingTop: Platform.select({ios:3,android:0}),
-		// backgroundColor: '#eee',
+		marginTop: 8,
 		color: '#bbb',
-		fontSize: 14, fontFamily: 'GothamPro',
+		fontSize: 10, fontFamily: 'GothamPro',
+		lineHeight: 12,
 	},
 	title_active: {
 		marginTop: 0, paddingTop: Platform.select({ios:3,android:0}),
-		fontSize: 18, fontFamily: 'GothamPro',
+		fontSize: 14, fontFamily: 'GothamPro',
+		lineHeight: 18,
 	},
 	input: {
 		width: '100%',
-		marginBottom: 8,
-		paddingTop: 6, paddingBottom: 3,
-		fontSize: 18, fontFamily: 'GothamPro',
+		paddingTop: 4, paddingBottom: 5,
+		fontSize: 14, fontFamily: 'GothamPro-Medium',
 	},
 	error_text: {
 		marginLeft: 20, marginBottom: 10, paddingTop: Platform.select({ios:3,android:0}),
 		fontSize: 14, fontFamily: 'GothamPro',
-		color: '#f40000',
+		color: '$red',
 	},
 	confirm: {
 		marginTop: 10, paddingHorizontal: 20,
 	},
+	confirm_text_area: {
+		flexDirection: 'row',
+		alignItems: 'center',
+	},
+	exclamation: {
+		height: 18, width: 18,
+		marginRight: 8,
+	},
 	confirm_text: {
 		paddingTop: Platform.select({ios:3,android:0}),
-		color: '#bbb',
-		fontSize: 16, fontFamily: 'GothamPro',
+		color: '$red',
+		fontSize: 12, fontFamily: 'GothamPro',
 	},
 	confirm_enter: {
 		flexDirection: 'row',
-		justifyContent: 'flex-start',
 		alignItems: 'center',
 		marginVertical: 5,
 	},
 	confirm_enter_text: {
 		marginBottom: 3, paddingTop: Platform.select({ios:3,android:0}),
-		color: '#f40000',
-		fontSize: 18, fontFamily: 'GothamPro-Medium',
+		color: '$red',
+		fontSize: 14, fontFamily: 'GothamPro-Medium',
+	},
+	arrow: {
+		marginLeft: 5, marginBottom: 1,
 	},
 });
 
@@ -68,17 +80,25 @@ export default withNavigation(class InputPhone extends Component {
 		this.state = {
 			active: !!(props.value?.length),
 			value: props.value ?? '',
-			error: props.error,
+			error: props.error ?? '',
 		};
 	}
 
 	componentDidUpdate(prevProps) {
 		if(!Object.is(this.props,prevProps)) {
-			this.setState(state => ({
-				active: state.active || this.props.value?.length,
-				value: ((this.props.value!=state.value) ? this.props.value : (this.props.value || '')),
-				error: this.props.error,
-			}));
+			if(this.props.clear) {
+				this.setState({
+					active: 0,
+					value: '',
+					error: '',
+				});
+			} else {
+				this.setState(state => ({
+					active: state.active || this.props.value?.length,
+					value: ((this.props.value!=state.value) ? this.props.value : (this.props.value || '')),
+					error: this.props.error,
+				}));
+			}
 		}
 	}
 
@@ -165,10 +185,13 @@ export default withNavigation(class InputPhone extends Component {
 				{state.error ? (<Text style={styles.error_text}>{state.error}</Text>) : null}
 				{this.props.need_confirm ? (
 				<View style={styles.confirm}>
-					<Text style={styles.confirm_text}>Вам необходимо подтвердить номер телефона по СМС</Text>
+					<View style={styles.confirm_text_area}>
+						<Image style={styles.exclamation} source={Exclamation} />
+						<Text style={styles.confirm_text}>На номер отправлено СМС{'\n'}с кодом подтверждения</Text>
+					</View>
 					<TouchableOpacity style={styles.confirm_enter} onPress={_=>navigation.push('settings_confirm_phone')}>
 						<Text style={styles.confirm_enter_text}>Ввести код подтверждения</Text>
-						<Icon name="chevron-right" style={{color:'red'}} size={40}/>
+						<Image style={styles.arrow} source={Arrow} />
 					</TouchableOpacity>
 				</View>
 			) : null}

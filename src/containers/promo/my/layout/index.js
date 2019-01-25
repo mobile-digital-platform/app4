@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet,FlatList,Image,ImageBackground,ScrollView,Text,TouchableOpacity,View} from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 import {withNavigation} from 'react-navigation';
 
 import Icon from 'react-native-vector-icons/EvilIcons';
@@ -11,29 +12,33 @@ import Wait			from '../../../../templates/wait';
 import Check		from './check';
 import Separator	from './separator';
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
 	container: {
 		flex: 1,
 	},
 	banner: {
+		height: 120,
 		padding: 20, paddingTop: 0,
 		backgroundColor: '#000',
 	},
 	points_area: {
 		alignItems: 'flex-end',
+		marginRight: -10,
 	},
 	points: {
+		justifyContent: 'center',
 		alignItems: 'center',
-		padding: 10,
+		height: 45, width: 50,
 		backgroundColor: '#b30000',
 	},
 	points_number: {
+		paddingBottom: 3,
 		color: '#fff',
-		fontSize: 20, fontWeight: 'bold',
+		fontSize: 18, fontFamily: 'GothamPro', fontWeight: 'bold',
 	},
 	points_type: {
 		color: '#fff',
-		fontSize: 12,
+		fontSize: 9, fontFamily: 'GothamPro',
 	},
 	title: {
 		marginBottom: 10,
@@ -49,7 +54,7 @@ const styles = StyleSheet.create({
 	retailer_area: {
 		alignItems: 'flex-end',
 		width: '100%',
-		marginTop: -25, marginBottom: -15,
+		marginTop: -30, marginBottom: -10,
 		paddingRight: 10,
 	},
 	retailer_image: {
@@ -75,8 +80,9 @@ const styles = StyleSheet.create({
 	empty_text: {
 		paddingBottom: '20%',
 		color: '#555',
-		fontSize: 16,
+		fontSize: 14,
 		textAlign: 'center',
+		lineHeight: 16,
 	},
 
 	bottom: {
@@ -88,25 +94,25 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		width: '100%',
 		marginVertical: 5,
-		paddingVertical: 15, paddingHorizontal: 50,
+		paddingVertical: 10, paddingHorizontal: 50,
 		borderRadius: 100,
-		backgroundColor: '#f40000',
+		backgroundColor: '$red',
 	},
 	add_button_text: {
 		color: '#fff',
-		fontSize: 16, fontWeight: 'bold',
+		fontSize: 14, fontWeight: 'bold',
 	},
 	get_button: {
 		alignItems: 'center',
 		width: '100%',
 		marginVertical: 5,
-		paddingVertical: 15, paddingHorizontal: 50,
-		borderWidth: 1, borderColor: '#f40000', borderRadius: 100,
+		paddingVertical: 10, paddingHorizontal: 50,
+		borderWidth: 1, borderColor: '$red', borderRadius: 100,
 		backgroundColor: '#fff',
 	},
 	get_button_text: {
-		color: '#f40000',
-		fontSize: 16,
+		color: '$red',
+		fontSize: 14,
 	},
 });
 

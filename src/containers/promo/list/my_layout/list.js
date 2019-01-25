@@ -1,5 +1,6 @@
-import React,{Component}				from 'react';
-import {StyleSheet,FlatList,Text,View}	from 'react-native';
+import React,{Component}	from 'react';
+import {FlatList,Text,View}	from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 import config		from '../../../../config';
 
@@ -9,21 +10,20 @@ import Item			from './item';
 import Separator	from './separator';
 import Error		from './error';
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
 	container: {
 		flex: 1,
 		justifyContent: 'center',
-		// backgroundColor: '#ddd',
 	},
 	empty: {
 		alignItems: 'center',
-		// backgroundColor: '#eee',
 	},
 	empty_text: {
 		paddingBottom: '20%',
-		color: '#555',
+		color: '#3d3d3d',
 		fontSize: 16, fontFamily: 'GothamPro',
 		textAlign: 'center',
+		lineHeight: 16,
 	},
 });
 

@@ -1,11 +1,13 @@
 import React from 'react';
-import {Platform,StyleSheet,Text,View} from 'react-native';
+import {Platform,Text,View} from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
 	title: {
+		marginBottom: 9,
 		paddingTop: Platform.select({ios:3,android:0}),
-		color: '#bbb',
-		fontSize: 14, fontFamily: 'GothamPro-Medium',
+		color: '#b3b3b3',
+		fontSize: 10, fontFamily: 'GothamPro-Bold',
 	},
 });
 

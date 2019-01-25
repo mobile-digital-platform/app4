@@ -1,5 +1,6 @@
 import React from 'react';
-import {Linking,Platform,StyleSheet,TouchableOpacity,Text,View} from 'react-native';
+import {Linking,Platform,TouchableOpacity,Text,View} from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 import {withNavigation} from 'react-navigation';
 
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -8,14 +9,14 @@ import SubTitle from '../../templates/subtitle';
 
 import config from '../../config';
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
 	container: {
-		paddingTop: 30, paddingBottom: 10,
+		paddingBottom: 10,
 		paddingHorizontal: 30,
 	},
 	text: {
-		fontSize: 14, fontFamily: 'GothamPro',
-		lineHeight: 16,
+		fontSize: 12, fontFamily: 'GothamPro',
+		lineHeight: 14,
 	},
 	list: {
 		paddingBottom: 10,
@@ -23,33 +24,34 @@ const styles = StyleSheet.create({
 	list_item: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		paddingVertical: 15,
+		paddingVertical: 5,
 		// backgroundColor: '#eee',
 	},
 	list_text: {
 		flex: 1,
 		marginLeft: 10, paddingTop: Platform.select({ios:3,android:0}),
-		fontSize: 16, fontFamily: 'GothamPro-Medium',
+		fontSize: 14, fontFamily: 'GothamPro-Bold',
+		lineHeight: 16,
 	},
 	bottom: {
 		marginTop: 20, marginBottom: 30,
 	},
 	version: {
 		marginBottom: 15,
-		fontSize: 18,
+		fontSize: 14, fontFamily: 'GothamPro',
 	},
 	support: {
 		marginVertical: 5,
-		fontSize: 18,
+		fontSize: 14,
 	},
 	support_number: {
-		fontSize: 22, fontFamily: 'GothamPro-Medium',
+		fontSize: 21, fontFamily: 'GothamPro-Medium',
 	}
 });
 
 export default withNavigation((props) => (
 	<View style={styles.container}>
-		<SubTitle style={{paddingVertical:15}} text="О приложении" />
+		<SubTitle style={{paddingTop:15,paddingBottom:10}} text="О приложении" />
 		<Text style={styles.text}>
 			Регистрируясь, пользователь соглашается на обработку персональных данных на всех активностях, анонсированных в данном приложении
 		</Text>

@@ -1,8 +1,9 @@
 import React,{Component} from 'react';
 import {Dimensions,Keyboard,Linking,StyleSheet,FlatList,Image,ImageBackground,ScrollView,Text,TouchableOpacity,View} from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 import {withNavigation} from 'react-navigation';
 
-import Icon from 'react-native-vector-icons/EvilIcons';
+import Arrow from '../../../../../assets/ui/right_arrow.png';
 
 import Input		from '../../../../templates/input';
 import InputPhone	from '../../../../templates/input_phone';
@@ -12,29 +13,31 @@ import SubTitle		from '../../../../templates/subtitle';
 
 import promo_date_diff from '../../../../services/promo_date_diff';
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
 	container: {
 		flex: 1,
 	},
 	banner: {
-		padding: 20, paddingTop: 50,
+		justifyContent: 'flex-end',
+		height: 120,
+		padding: 20, paddingBottom: 10,
 		backgroundColor: '#000',
 	},
 	title: {
-		marginBottom: 10,
 		color: '#fff',
-		fontSize: 24, fontFamily: 'GothamPro-Bold',
+		fontSize: 18, fontFamily: 'GothamPro-Medium',
 		textShadowRadius: 5, textShadowColor: '#111',
+		lineHeight: 21,
 	},
 	ending: {
 		color: '#fff',
-		fontSize: 18, fontFamily: 'GothamPro',
+		fontSize: 14,
 		textShadowRadius: 5, textShadowColor: '#111',
 	},
 	retailer_area: {
 		alignItems: 'flex-end',
 		width: '100%',
-		marginTop: -25, marginBottom: -15,
+		marginTop: -30, marginBottom: -10,
 		paddingRight: 10,
 		zIndex: 1,
 	},
@@ -45,20 +48,25 @@ const styles = StyleSheet.create({
 	},
 
 	authorization: {
-		paddingVertical: 20, paddingHorizontal: 40,
-		backgroundColor: '#f1f1f1',
+		paddingVertical: 18, paddingHorizontal: 40,
+		backgroundColor: '#f4f4f4',
 	},
 	authorization_text: {
-		fontSize: 14, fontFamily: 'GothamPro',
+		fontSize: 12, fontFamily: 'GothamPro',
 		lineHeight: 16,
 	},
 	authorization_link: {
 		flexDirection: 'row',
 		alignItems: 'center',
+		paddingTop: 9,
 	},
 	authorization_link_text: {
-		marginBottom: 3,
-		fontSize: 16, fontFamily: 'GothamPro-Medium',
+		marginTop: 1,
+		fontSize: 12, fontFamily: 'GothamPro-Medium',
+		lineHeight: 16,
+	},
+	authorization_link_arrow: {
+		marginLeft: 10,
 	},
 
 	area: {
@@ -70,12 +78,12 @@ const styles = StyleSheet.create({
 
 	loyalty_card_block: {
 		padding: 20,
-		borderRadius: 20,
+		borderRadius: 25,
 		backgroundColor: '#f4f4f4',
 	},
 	loyalty_card_text: {
 		marginBottom: 10,
-		fontSize: 14, fontFamily: 'GothamPro',
+		fontSize: 12, fontFamily: 'GothamPro',
 		lineHeight: 16,
 	},
 
@@ -83,17 +91,17 @@ const styles = StyleSheet.create({
 		padding: 20,
 	},
 	agreement_text: {
-		fontSize: 14, fontFamily: 'GothamPro',
-		lineHeight: 16,
+		fontSize: 12, fontFamily: 'GothamPro',
+		lineHeight: 14,
 	},
 	agreement_link: {
-		color: '#f40000',
+		color: '$red',
 	},
 
 	button: {
 		marginBottom: 10, padding: 15,
 		borderRadius: 40,
-		backgroundColor: 'red',
+		backgroundColor: '$red',
 	},
 	button_text: {
 		color: '#fff',
@@ -106,9 +114,10 @@ const styles = StyleSheet.create({
 		backgroundColor: '#f4f4f4',
 	},
 	button_disabled_text: {
-		color: '#999',
-		fontSize: 18, fontFamily: 'GothamPro-Medium',
+		color: '#e0e0e0',
+		fontSize: 16, fontFamily: 'GothamPro-Medium',
 		textAlign: 'center',
+		lineHeight: 19,
 	},
 });
 
@@ -300,7 +309,7 @@ export default withNavigation(class Participate extends Component {
 							</Text>
 							<TouchableOpacity style={styles.authorization_link} onPress={_=>navigation.push('settings_authorization')}>
 								<Text style={styles.authorization_link_text}>Авторизация</Text>
-								<Icon name="chevron-right" style={{color:'red'}} size={40} />
+								<Image style={styles.authorization_link_arrow} source={Arrow} />
 							</TouchableOpacity>
 						</View>
 					) : null}
@@ -376,7 +385,7 @@ export default withNavigation(class Participate extends Component {
 						</View>
 						{data.retailer.has_loyalty_card ? (
 						<View style={styles.loyalty_card_block}>
-							<SubTitle style={{paddingBottom:10}} text="Карта лояльности" />
+							<SubTitle style={{marginTop:-2,paddingTop:0,paddingBottom:10}} text="Карта лояльности" />
 							<Text style={styles.loyalty_card_text}>
 								Если у вас есть карта лояльности, то покупки по ней будут автоматически участвовать в акции.
 							</Text>

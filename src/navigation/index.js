@@ -1,24 +1,30 @@
+import React from 'react';
+import {Dimensions,Image,View,} from 'react-native';
+
+import config from '../config';
+
+import BackButton from '../containers/back_button';
+
+const scale = Dimensions.get('window').width/config.base_width;
+
 const light = {
 	headerStyle: {
-		height: 70,
+		height: 50*scale,
 		borderBottomWidth: 0,
-		backgroundColor: '#ee0007',
+		backgroundColor: '#f40000',
 	},
 	headerTintColor: '#fff',
-	headerBackTitle: ' ',
-	headerLeftContainerStyle: {
-		padding: 10,
-		color: '#fff',
-	},
+	headerLeft: (<BackButton/>),
 	headerTitleStyle: {
+		width: 200*scale,
 		paddingVertical: 3,
-		fontSize: 20, fontFamily: 'GothamPro-Bold',
+		fontSize: 16*scale, fontFamily: 'GothamPro', fontWeight: 'bold',
 	},
 };
 
 const dark = {
 	headerStyle: {
-		height: 70,
+		height: 50*scale,
 		borderBottomWidth: 0,
 		backgroundColor: '#fff',
 	},
@@ -29,8 +35,9 @@ const dark = {
 		color: '#000',
 	},
 	headerTitleStyle: {
+		width: 200*scale,
 		paddingVertical: 3,
-		fontSize: 20, fontFamily: 'GothamPro-Bold',
+		fontSize: 16*scale, fontFamily: 'GothamPro', fontWeight: 'bold',
 	},
 };
 

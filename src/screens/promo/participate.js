@@ -15,14 +15,11 @@ const styles = StyleSheet.create({
 	},
 });
 
-let theme = JSON.parse(JSON.stringify(light));
-theme.headerTitleStyle.fontSize = 17;
-
 export default class PromoView extends Component {
 	static navigationOptions = ({navigation}) => ({
 		title: 'Принять участие'.toUpperCase(),
 		headerRight: (<Settings_Button navigation={navigation} style={{color:'#fff'}} />),
-		...theme,
+		...light,
 	});
 
 	render() {

@@ -1,12 +1,14 @@
-import React,{Component}				from 'react';
-import {AsyncStorage,Linking,StatusBar}	from 'react-native';
+import React,{Component}							from 'react';
+import {AsyncStorage,Dimensions,Linking,StatusBar}	from 'react-native';
 import {
 	createStackNavigator,
 	createAppContainer
 }									from 'react-navigation';
 import {Provider}					from 'react-redux';
+import EStyleSheet					from 'react-native-extended-stylesheet';
 
 import config						from './config';
+import colors						from './config/colors';
 
 import Smoke						from './containers/smoke';
 
@@ -19,12 +21,6 @@ import PromoViewScreen				from './screens/promo/view';
 import PromoDetailsScreen			from './screens/promo/details';
 import PromoParticipateScreen		from './screens/promo/participate';
 import PromoMyListScreen			from './screens/promo/my';
-import PromoAddCheckScreen			from './screens/promo/add_check';
-import PromoGetPrizeScreen			from './screens/promo/get_prize';
-import PromoChoosePrizeScreen		from './screens/promo/choose_prize';
-import PromoMyPrizeScreen			from './screens/promo/my_prize';
-import PromoAsk						from './screens/promo/ask';
-import PromoPassport				from './screens/promo/passport';
 
 import SettingsScreen				from './screens/settings/main';
 import ConfirmPhoneScreen			from './screens/settings/confirm_phone';
@@ -39,8 +35,18 @@ import {request}					from './redux/reducers/settings';
 
 import alert						from './services/alert';
 
+console.log(Dimensions.get('window'));
+
+// Глобальные стили
+EStyleSheet.build({
+	$scale: 1*Dimensions.get('window').width/config.base_width,
+	...colors,
+});
+
+// Полоска вверху экрана
 StatusBar.setBarStyle('light-content',true);
 
+// Страницы приложения
 var Navigator = createAppContainer(createStackNavigator(
 	{
 		promo_list:					PromoListScreen,
@@ -48,12 +54,6 @@ var Navigator = createAppContainer(createStackNavigator(
 		promo_details:				PromoDetailsScreen,
 		promo_participate:			PromoParticipateScreen,
 		promo_my_view:				PromoMyListScreen,
-		promo_add_check:			PromoAddCheckScreen,
-		promo_get_prize:			PromoGetPrizeScreen,
-		promo_choose_prize:			PromoChoosePrizeScreen,
-		promo_my_prize:				PromoMyPrizeScreen,
-		promo_ask:					PromoAsk,
-		promo_passport: 			PromoPassport,
 
 		settings:					SettingsScreen,
 		settings_confirm_phone:		ConfirmPhoneScreen,
@@ -69,14 +69,6 @@ var Navigator = createAppContainer(createStackNavigator(
 		// initialRouteName: 'promo_participate',
 		// initialRouteName: 'promo_my_view',
 
-		// initialRouteName: 'promo_add_check', 		// кассовый чек
-		// initialRouteName: 'promo_get_prize',			// получить выигрыш
-		// initialRouteName: 'promo_passport', 			// паспортные данные
-		// initialRouteName: 'promo_choose_prize',		// выбор приза
-		// initialRouteName: 'promo_my_prize', 			// мои призы
-		// initialRouteName: 'promo_ask', 				// задать вопрос
-
-
 		// initialRouteName: 'settings',
 		// initialRouteName: 'settings_confirm_phone',
 		// initialRouteName: 'settings_authorization',
@@ -85,7 +77,7 @@ var Navigator = createAppContainer(createStackNavigator(
 		// initialRouteName: 'web',
 	}
 ));
-// cocacolapromo://confirm_mail/123
+
 export default class Router extends Component {
 	state = {
 		page: 'start',
@@ -93,11 +85,13 @@ export default class Router extends Component {
 	};
 
 	async componentDidMount() {
+		// Обрабатываем заход по ссылке
 		Linking.addEventListener('url',this.handle_open_url);
 		Linking.getInitialURL().then(url => {
 			this.handle_open_url({url});
 		});
 
+		// Это чтобы все стереть
 		// await AsyncStorage.removeItem(config.storage_name);
 		// console.log(await AsyncStorage.getItem(config.storage_name));
 		// return;
@@ -114,6 +108,8 @@ export default class Router extends Component {
 		if(url) {
 			let route = url.replace(/.*?:\/\//g,'');
 			let [method,code] = route.split('/');
+
+			// Если перешел сюда по ссылке из письма, то отправляем подтверждение почты
 			if(method == 'confirm_mail') {
 				let user_id = JSON.parse(await AsyncStorage.getItem(config.storage_name))?.user?.id;
 				if(user_id) {

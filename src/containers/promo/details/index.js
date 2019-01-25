@@ -1,37 +1,39 @@
 import React from 'react';
 import {Platform,StyleSheet,FlatList,Image,ImageBackground,ScrollView,Text,TouchableOpacity,View,WebView} from 'react-native';
 import {withNavigation} from 'react-navigation';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 import SubTitle from '../../../templates/subtitle';
 
 import promo_date_diff from '../../../services/promo_date_diff';
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
 	container: {
 		flex: 1,
 	},
 	banner: {
 		justifyContent: 'flex-end',
-		height: 140,
-		padding: 20, paddingTop: 50,
+		height: 120,
+		padding: 20, paddingBottom: 10,
 		backgroundColor: '#000',
 	},
 	title: {
-		marginBottom: 20,
 		color: '#fff',
-		fontSize: 24, fontFamily: 'GothamPro-Medium',
+		fontSize: 18, fontFamily: 'GothamPro-Medium',
 		textShadowRadius: 5, textShadowColor: '#111',
+		lineHeight: 21,
 	},
 	ending: {
 		color: '#fff',
-		fontSize: 18,
+		fontSize: 14,
 		textShadowRadius: 5, textShadowColor: '#111',
 	},
 	retailer_area: {
 		alignItems: 'flex-end',
 		width: '100%',
-		marginTop: -25, marginBottom: -15,
+		marginTop: -30, marginBottom: -10,
 		paddingRight: 10,
+		zIndex: 1,
 	},
 	retailer_image: {
 		height: 40, width: 40,
@@ -41,7 +43,6 @@ const styles = StyleSheet.create({
 
 	area: {
 		flex: 1,
-		padding: 20,
 		zIndex: -1,
 	},
 	description_area: {
@@ -67,40 +68,52 @@ const styles = StyleSheet.create({
 	participate_text: {
 		paddingTop: Platform.select({ios:3,android:0}),
 		color: '#fff',
-		fontSize: 18, fontFamily: 'GothamPro-Medium',
+		fontSize: 14, fontFamily: 'GothamPro-Medium',
 	},
 });
 
 const stylize = (html) => (
 `
+<html>
+<head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <style>
+@font-face {
+	font-family: "GothamPro"; src: url('file:///assets/fonts/GothamPro.ttf') format('truetype');
+}
 html {
-	border: 0;
 }
 body {
-	margin: 0;
 	color: #111;
-	font-size: `+Platform.select({ios:'42px',android:'14px'})+`;
-	font-family: "GothamPro";
-	line-height: `+Platform.select({ios:'54px',android:'18px'})+`;
+	font-size: `+(14*Platform.select({ios:(3*EStyleSheet.value('$scale')),android:(EStyleSheet.value('$scale'))}))+`px;
+	font-family: "GothamPro",Arial;
+	line-height: `+(18*Platform.select({ios:(3*EStyleSheet.value('$scale')),android:(EStyleSheet.value('$scale'))}))+`px;
 }
 p,li {
 }
 img {
 	max-width: 100%;
 }
-</style>`+
-html
-// '<p>'+html+'</p>'+
-// '<p><b>Второй</b> абзац самого <i>длинного</i> текста, взятого не из апи.</p>'+
-// '<ul>'+
-// 	'<li>1'+
-// 	'<li>2'+
-// 	'<li>3'+
-// '</ul>'+
-// '<img src="https://www.sostav.ru/images/news/2018/04/20/on5vjvly.jpg" />'+
-// '<p><b>Второй</b> абзац самого <i>длинного</i> текста, взятого не из апи.</p>'
+.container {
+	margin: `+(20*Platform.select({ios:(3*EStyleSheet.value('$scale')),android:(EStyleSheet.value('$scale'))}))+`px;
+}
+.mobile_title {
+	margin-bottom: 9px;
+	color: #b3b3b3;
+	font-size: `+(10*Platform.select({ios:(3*EStyleSheet.value('$scale')),android:(EStyleSheet.value('$scale'))}))+`px;
+	font-family: "GothamPro",Arial; font-weight: bold;
+	text-transform: uppercase;
+}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="mobile_title">Где проводится</div>
+`+html+`
+</div>
+</body>
+</html>
+`
 );
 
 export default withNavigation(({navigation}) => {
@@ -113,7 +126,7 @@ export default withNavigation(({navigation}) => {
 
 	// navigation.push('promo_participate',{data});
 
-	console.log(data.description);
+	console.log(stylize(data.description));
 
 	return (
 		<View style={styles.container}>
@@ -130,7 +143,6 @@ export default withNavigation(({navigation}) => {
 			) : null}
 			{data.description?.length ? (
 			<View style={styles.area}>
-				<SubTitle style={{paddingBottom:10}} text="Условия акции" />
 				<WebView style={styles.description_area} source={{html:stylize(data.description)}} useWebKit={true} />
 			</View>
 			) : null}

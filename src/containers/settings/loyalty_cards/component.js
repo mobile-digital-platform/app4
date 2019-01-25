@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
-import {Platform,StyleSheet,ScrollView,Text,TouchableOpacity,View} from 'react-native';
+import {Platform,ScrollView,Text,TouchableOpacity,View} from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 import {withNavigation} from 'react-navigation';
 
 import Icon from 'react-native-vector-icons/EvilIcons';
@@ -12,13 +13,14 @@ import st				from '../../../services/storage';
 
 import {request}		from '../../../redux/reducers/settings';
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
 	main: {
 		padding: 20,
 	},
 	main_text: {
-		fontSize: 16,
+		fontSize: 14, fontFamily: 'GothamPro',
 		textAlign: 'center',
+		lineHeight: 18,
 	},
 	main_input: {
 		paddingVertical: 15,
@@ -29,12 +31,12 @@ const styles = StyleSheet.create({
 	},
 	main_button_text: {
 		paddingTop: Platform.select({ios:3,android:0}),
-		fontSize: 18, fontFamily: 'GothamPro-Medium',
+		fontSize: 16, fontFamily: 'GothamPro-Medium',
 		textAlign: 'center',
 	},
 
 	active_button: {
-		backgroundColor: '#f40000',
+		backgroundColor: '$red',
 	},
 	active_button_text: {
 		color: '#fff',

@@ -1,12 +1,12 @@
 import React,{Component} from 'react';
 import {Platform,StyleSheet,Image,Text,TouchableOpacity,View} from 'react-native';
 import {withNavigation} from 'react-navigation';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
 	container: {
 		alignItems: 'flex-start',
 		margin: 10,
-		// backgroundColor: '#eee',
 	},
 	image: {
 		height: 150, width: '100%',
@@ -21,7 +21,8 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		margin: 20, paddingTop: Platform.select({ios:3,android:0}),
-		fontSize: 20, fontFamily: 'GothamPro',
+		fontSize: 14, fontFamily: 'GothamPro-Medium',
+		lineHeight: 19,
 	},
 });
 

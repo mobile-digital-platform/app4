@@ -1,10 +1,11 @@
 import React,{Component} from 'react';
 import {Platform,StyleSheet,Image,Text,TouchableOpacity,View} from 'react-native';
 import {withNavigation} from 'react-navigation';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 import promo_date_diff from '../../../../services/promo_date_diff';
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
 	container: {
 		alignItems: 'flex-start',
 		margin: 10,
@@ -35,11 +36,12 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		paddingTop: Platform.select({ios:3,android:0}),
-		fontSize: 20, fontFamily: 'GothamPro',
+		fontSize: 14, fontFamily: 'GothamPro-Medium',
+		lineHeight: 19,
 	},
 	ending: {
 		marginTop: 6,
-		fontSize: 16, fontFamily: 'GothamPro',
+		fontSize: 12, fontFamily: 'GothamPro',
 	},
 });
 

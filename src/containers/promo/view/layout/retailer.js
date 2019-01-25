@@ -1,10 +1,11 @@
 import React from 'react';
-import {Linking,Platform,StyleSheet,Image,ImageBackground,Text,TouchableOpacity,View} from 'react-native';
+import {Linking,Platform,Image,ImageBackground,Text,TouchableOpacity,View} from 'react-native';
 import {withNavigation} from 'react-navigation';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
-import Icon from 'react-native-vector-icons/EvilIcons';
+import Arrow from '../../../../../assets/ui/right_arrow.png';
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
@@ -12,8 +13,8 @@ const styles = StyleSheet.create({
 		padding: 20,
 	},
 	image_area: {
-		height: 50, width: 50,
-		borderRadius: 25,
+		height: 40, width: 40,
+		borderRadius: 20,
 		backgroundColor: '#fff',
 	},
 	image: {
@@ -21,18 +22,19 @@ const styles = StyleSheet.create({
 	},
 	area: {
 		flex: 1,
-		marginLeft: 20,
+		marginLeft: 10,
 		// backgroundColor: '#eee',
 	},
 	title: {
 		paddingTop: Platform.select({ios:3,android:0}),
-		fontSize: 20, fontFamily: 'GothamPro-Medium',
+		color: '#3d3d3d',
+		fontSize: 16, fontFamily: 'GothamPro-Bold',
+		lineHeight: 19,
 	},
 	about: {
 		flexDirection: 'row-reverse',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		// flexWrap: 'wrap',
 		marginTop: 5,
 	},
 	link_area: {
@@ -40,18 +42,23 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	link: {
-		marginBottom: 5, paddingTop: 3,
-		fontSize: 16, fontFamily: 'GothamPro',
+		marginBottom: 2, paddingTop: 3,
+		fontSize: 14, fontFamily: 'GothamPro-Medium',
+		lineHeight: 16,
+	},
+	link_arrow: {
+		marginLeft: 10,
 	},
 	participate: {
-		paddingVertical: 10, paddingHorizontal: 20,
+		paddingVertical: 7, paddingHorizontal: 16,
 		borderRadius: 50,
 		backgroundColor: 'red',
 	},
 	participate_text: {
-		paddingTop: 3,
+		paddingTop: Platform.select({ios:3,android:0}),
 		color: '#fff',
-		fontSize: 16, fontFamily: 'GothamPro-Medium',
+		fontSize: 14, fontFamily: 'GothamPro-Medium',
+		lineHeight: 16,
 	},
 });
 
@@ -77,7 +84,7 @@ export default withNavigation(({navigation,data,extra}) => {
 						onPress={_=>Linking.openURL(data.site_link)/*navigation.push('web',{title:'Сайт акции',source:data.link})*/}
 					>
 						<Text style={styles.link}>Сайт акции</Text>
-						<Icon name="chevron-right" style={{color:'red'}} size={30} />
+						<Image style={styles.link_arrow} source={Arrow} />
 					</TouchableOpacity>
 					) : null}
 				</View>

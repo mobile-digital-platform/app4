@@ -1,42 +1,43 @@
 import React,{Component} from 'react';
-import {Platform,StyleSheet,TouchableOpacity,TextInput,Text,View} from 'react-native';
+import {Platform,TouchableOpacity,TextInput,Text,View} from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 import {TextInputMask} from 'react-native-masked-text';
 import {withNavigation} from 'react-navigation';
 
 import Icon from 'react-native-vector-icons/EvilIcons';
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
 	container: {
 		justifyContent: 'center',
-		minHeight: 65,
-		marginVertical: 5, paddingHorizontal: 25,
+		height: 50,
+		marginVertical: 5, paddingHorizontal: 20,
 		borderWidth: 1, borderColor: '#ccc',
 		borderRadius: 100,
 		backgroundColor: '#fff',
 	},
 	container_error: {
-		borderColor: '#f40000',
+		borderColor: '$red',
 	},
 	title: {
-		marginTop: 10, paddingTop: Platform.select({ios:3,android:0}),
-		// backgroundColor: '#eee',
+		marginTop: 8,
 		color: '#bbb',
-		fontSize: 14, fontFamily: 'GothamPro',
+		fontSize: 10, fontFamily: 'GothamPro',
+		lineHeight: 12,
 	},
 	title_active: {
 		marginTop: 0, paddingTop: Platform.select({ios:3,android:0}),
-		fontSize: 18, fontFamily: 'GothamPro',
+		fontSize: 14, fontFamily: 'GothamPro',
+		lineHeight: 18,
 	},
 	input: {
 		width: '100%',
-		marginBottom: 8,
-		paddingTop: 6, paddingBottom: 3,
-		fontSize: 18, fontFamily: 'GothamPro',
+		paddingTop: 4, paddingBottom: 5,
+		fontSize: 14, fontFamily: 'GothamPro-Medium',
 	},
 	error_text: {
 		marginLeft: 20, marginBottom: 10, paddingTop: Platform.select({ios:3,android:0}),
 		fontSize: 14, fontFamily: 'GothamPro',
-		color: '#f40000',
+		color: '$red',
 	},
 });
 

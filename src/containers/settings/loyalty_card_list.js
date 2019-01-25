@@ -1,30 +1,28 @@
 import React,{Component} from 'react';
-import {Platform,StyleSheet,FlatList,Image,TouchableOpacity,Text,View} from 'react-native';
+import {Platform,FlatList,Image,TouchableOpacity,Text,View} from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 import {withNavigation} from 'react-navigation';
 
 import Icon from 'react-native-vector-icons/EvilIcons';
 
-const styles = StyleSheet.create({
+import SubTitle from '../../templates/subtitle';
+
+const styles = EStyleSheet.create({
 	container: {
+		marginBottom: 30,
 		padding: 30,
 		borderRadius: 20,
 		backgroundColor: '#f4f4f4',
 	},
-	title: {
-		marginBottom: 10,
-		color: '#bbb',
-		fontSize: 14, fontFamily: 'GothamPro-Medium',
-		textTransform: 'uppercase',
-	},
 	save: {
-		marginTop: 15, padding: 15,
+		marginTop: 15, padding: 10,
 		borderRadius: 100,
 		backgroundColor: '#f40000',
 	},
 	save_text: {
 		paddingTop: Platform.select({ios:3,android:0}),
 		color: '#fff',
-		fontSize: 18, fontFamily: 'GothamPro-Medium',
+		fontSize: 14, fontFamily: 'GothamPro-Medium',
 		textAlign: 'center',
 	},
 });
@@ -53,7 +51,7 @@ export default withNavigation(class LoyaltyCardsList extends Component {
 
 		return (
 			<View style={styles.container}>
-				<Text style={styles.title}>Карты лояльности</Text>
+				<SubTitle style={{marginBottom:10}} text="Карты лояльности" />
 				<FlatList
 					data={list}
 					renderItem={({item}) => <Item data={item} retailer_list={props.retailer_list} remove={props.remove} />}
@@ -68,7 +66,7 @@ export default withNavigation(class LoyaltyCardsList extends Component {
 	}
 });
 
-const item_styles = StyleSheet.create({
+const item_styles = EStyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
@@ -84,11 +82,10 @@ const item_styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'space-between',
 		marginLeft: 10,
-		// backgroundColor: '#ddd',
 	},
 	title: {
 		paddingTop: 5,
-		fontSize: 16, fontFamily: 'GothamPro',
+		fontSize: 12, fontFamily: 'GothamPro',
 	},
 	about: {
 		flexDirection: 'row',
@@ -97,11 +94,11 @@ const item_styles = StyleSheet.create({
 	},
 	number: {
 		marginBottom: 3,
-		fontSize: 16, fontFamily: 'GothamPro-Medium',
+		fontSize: 14, fontFamily: 'GothamPro-Medium',
 	},
 	remove: {
-		color: '#ee0007',
-		fontSize: 16,
+		color: '$red',
+		fontSize: 14,
 	},
 });
 
@@ -124,13 +121,13 @@ const Item = ({data,retailer_list,remove}) => {
 	);
 }
 
-const empty_styles = StyleSheet.create({
+const empty_styles = EStyleSheet.create({
 	container: {
 		paddingVertical: 10,
 	},
 	text: {
-		fontSize: 14, fontFamily: 'GothamPro',
-		lineHeight: 16,
+		fontSize: 12, fontFamily: 'GothamPro',
+		lineHeight: 14,
 	},
 });
 

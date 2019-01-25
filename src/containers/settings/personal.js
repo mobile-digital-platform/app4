@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
-import {Dimensions,Keyboard,Platform,StyleSheet,KeyboardAvoidingView,TouchableOpacity,Text,View} from 'react-native';
+import {Dimensions,Keyboard,Platform,KeyboardAvoidingView,TouchableOpacity,Text,View} from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 import Input		from '../../templates/input';
 import InputPhone	from '../../templates/input_phone';
@@ -8,7 +9,7 @@ import SelectCity	from '../../templates/select_city';
 import SubTitle		from '../../templates/subtitle';
 import AnimatedButton		from '../../templates/animated_button';
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
 	container: {
 		padding: 10,
 	},
@@ -21,8 +22,9 @@ const styles = StyleSheet.create({
 	},
 	save_text: {
 		paddingTop: Platform.select({ios:3,android:0}),
-		fontSize: 22, fontFamily: 'GothamPro-Medium',
+		fontSize: 16, fontFamily: 'GothamPro-Medium',
 		textAlign: 'center',
+		lineHeight: 19,
 	},
 
 	active_button: {
@@ -180,11 +182,12 @@ export default class Personal extends Component {
 		this.setState({last_mail:state.mail,waiting:false});
 	}
 
-	cs = () => {
-		this.setState({state:'waiting'});
-		setTimeout(_=>this.setState({state:Math.random()>0.5 ? 'success' : 'error'}),5000);
-		setTimeout(_=>this.setState({state:'initial'}),10000);
-	}
+	// cs = () => {
+	// 	this.setState({state:'waiting'});
+	// 	setTimeout(_=>this.setState({state:Math.random()>0.5 ? 'success' : 'error'}),5000);
+	// 	setTimeout(_=>this.setState({state:'initial'}),10000);
+	// }
+	// <AnimatedButton active={1} state={this.state.state} onPress={this.cs}>xs</AnimatedButton>
 
 	render() {
 		let state = this.state;
@@ -192,8 +195,7 @@ export default class Personal extends Component {
 		return (
 			<View style={styles.container}>
 				<View style={styles.block}>
-					<AnimatedButton active={1} state={this.state.state} onPress={this.cs}>xs</AnimatedButton>
-					<SubTitle style={{paddingBottom:10,paddingHorizontal:25}} text="Персональные данные" />
+					<SubTitle style={{paddingBottom:4,paddingHorizontal:20}} text="Персональные данные" />
 					<Input
 						id={this.inputs.name.ref}
 						title="Имя"
@@ -229,7 +231,7 @@ export default class Personal extends Component {
 				</View>
 				*/}
 				<View style={styles.block}>
-					<SubTitle style={{paddingBottom:10,paddingHorizontal:25}} text="Контакты" />
+					<SubTitle style={{paddingBottom:4,paddingHorizontal:20}} text="Контакты" />
 					<InputPhone
 						id={this.inputs.phone.ref}
 						title="Мобильный телефон"

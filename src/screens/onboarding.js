@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
-import {Dimensions,StyleSheet,Image,StatusBar,TouchableOpacity,Text,View} from 'react-native';
+import {Dimensions,Platform,Image,StatusBar,TouchableOpacity,Text,View} from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 import Swiper from 'react-native-swiper';
 
 import st from '../services/storage';
@@ -9,10 +10,10 @@ import Image2	from '../../assets/onboarding_screen/2.png';
 import Image3	from '../../assets/onboarding_screen/3.png';
 import Image4	from '../../assets/onboarding_screen/4.png';
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#f40000',
+		backgroundColor: '$red',
 	},
 	area: {
 		// backgroundColor: '#d20',
@@ -24,8 +25,8 @@ const styles = StyleSheet.create({
 		paddingVertical: 60, paddingHorizontal: 20,
 	},
 	image: {
-		// height: Dimensions.get('window').width*0.6,
-		// width:  Dimensions.get('window').width*0.6,
+		height: 200,
+		width: 200,
 		marginTop: 40,
 		resizeMode: 'contain',
 	},
@@ -33,6 +34,7 @@ const styles = StyleSheet.create({
 		color: '#fff',
 		fontSize: 18, fontFamily: 'GothamPro-Medium',
 		textAlign: 'center',
+		lineHeight: 19,
 	},
 	button_area: {
 		padding: 60, paddingTop: 0,
@@ -48,8 +50,10 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff',
 	},
 	button_text: {
-		fontSize: 20,
+		paddingTop: Platform.select({ios:3,android:0}),
+		fontSize: 16,
 		textAlign: 'center',
+		lineHeight: 16,
 	},
 	dark_button_text: {
 		color: '#fff',
@@ -61,30 +65,22 @@ const styles = StyleSheet.create({
 });
 
 const slide = [
-	(
-		<View key={0} style={styles.window}>
-			<Image style={styles.image} source={Image1} />
-			<Text style={styles.text}>Все акции Кока-Колы{'\n'}в одном приложении!{'\n'}Узнавай и участвуй!</Text>
-		</View>
-	),
-	(
-		<View key={1} style={styles.window}>
-			<Image style={styles.image} source={Image2} />
-			<Text style={styles.text}>Регистрируйся{'\n'}и выигрывай призы!</Text>
-		</View>
-	),
-	(
-		<View key={2} style={styles.window}>
-			<Image style={styles.image} source={Image3} />
-			<Text style={styles.text}>Легко сканируй QR-коды{'\n'}и загружай чеки с помощью{'\n'}встроенного функционала</Text>
-		</View>
-	),
-	(
-		<View key={3} style={styles.window}>
-			<Image style={styles.image} source={Image4} />
-			<Text style={styles.text}>Получай уведомления{'\n'}и будь в курсе самого{'\n'}интересного!</Text>
-		</View>
-	),
+	{
+		image: Image1,
+		text: 'Все акции Кока-Колы\nв одном приложении!\nУзнавай и участвуй!',
+	},
+	{
+		image: Image2,
+		text: 'Регистрируйся\nи выигрывай призы!',
+	},
+	{
+		image: Image3,
+		text: 'Легко сканируй QR-коды\nи загружай чеки с помощью\nвстроенного функционала',
+	},
+	{
+		image: Image4,
+		text: 'Получай уведомления\nи будь в курсе самого\nинтересного!',
+	},
 ];
 
 export default class Onboarding extends Component {
@@ -115,7 +111,12 @@ export default class Onboarding extends Component {
 					style={styles.area}
 					onMomentumScrollEnd={(e,state) => this.setState({index:+state?.index})}
 				>
-					{slide}
+					{slide.map((e,i) => (
+						<View key={i} style={styles.window}>
+							<Image style={styles.image} source={e.image} />
+							<Text style={styles.text}>{e.text}</Text>
+						</View>
+					))}
 				</Swiper>
 				<View style={styles.button_area}>
 				{this.state.index<3 ? (

@@ -1,50 +1,53 @@
 import React from 'react';
-import {Keyboard,Platform,StyleSheet,TouchableOpacity,Text,View} from 'react-native';
+import {Keyboard,Platform,Image,TouchableOpacity,Text,View} from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 import {withNavigation} from 'react-navigation';
 
-import Icon from 'react-native-vector-icons/EvilIcons';
+import Arrow from '../../assets/ui/right_arrow.png';
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'center',
-		minHeight: 65,
-		marginVertical: 5, paddingLeft: 25, paddingRight: 5,
+		height: 50,
+		marginVertical: 5, paddingLeft: 20, paddingRight: 5,
 		borderWidth: 1, borderColor: '#ccc',
 		borderRadius: 100,
 		backgroundColor: '#fff',
 	},
 	container_error: {
-		borderColor: '#f40000',
+		borderColor: '$red',
 	},
 	left: {
 		flex: 1,
 	},
 	title: {
-		marginTop: 10, paddingTop: Platform.select({ios:3,android:0}),
-		// backgroundColor: '#eee',
+		marginTop: 10,
 		color: '#bbb',
-		fontSize: 14, fontFamily: 'GothamPro',
+		fontSize: 10, fontFamily: 'GothamPro',
+		lineHeight: 12,
 	},
 	title_active: {
 		marginTop: 0, paddingTop: Platform.select({ios:3,android:0}),
-		fontSize: 18, fontFamily: 'GothamPro',
+		fontSize: 14, fontFamily: 'GothamPro',
+		lineHeight: 18,
 	},
 	input: {
 		width: '100%',
-		marginBottom: 8,
-		paddingTop: 6, paddingBottom: 3,
-		fontSize: 18, fontFamily: 'GothamPro',
+		paddingBottom: 7,
+		fontSize: 14, fontFamily: 'GothamPro-Medium',
+		lineHeight: 18,
 	},
 	right: {
-		width: 20,
-		textAlign: 'right',
+	},
+	right_arrow: {
+		marginHorizontal: 10,
 	},
 	error_text: {
 		marginLeft: 20, marginBottom: 10, paddingTop: Platform.select({ios:3,android:0}),
 		fontSize: 14, fontFamily: 'GothamPro',
-		color: '#f40000',
+		color: '$red',
 	},
 });
 
@@ -64,7 +67,7 @@ export default withNavigation(({navigation,...props}) => (
 				<Text style={[styles.title,styles.title_active]}>Город</Text>
 			)}
 			</View>
-			<Text styles={styles.right}><Icon name="chevron-right" style={{color:'red'}} size={40}/></Text>
+			<View styles={styles.right}><Image style={styles.right_arrow} source={Arrow} /></View>
 		</TouchableOpacity>
 		{props.error ? (<Text style={styles.error_text}>{props.error}</Text>) : null}
 	</View>

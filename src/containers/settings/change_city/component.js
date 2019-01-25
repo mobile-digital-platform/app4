@@ -1,14 +1,14 @@
 import React,{Component} from 'react';
-import {Platform,StyleSheet,FlatList,KeyboardAvoidingView,Text,TextInput,TouchableOpacity,View} from 'react-native';
+import {Platform,FlatList,KeyboardAvoidingView,Text,TextInput,TouchableOpacity,View} from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 import {withNavigation} from 'react-navigation';
 
 import city from '../../../services/city';
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
 	container: {
 		flex: 1,
 		padding: 20, paddingBottom: 0,
-		// backgroundColor: '#eee',
 	},
 	input: {
 		marginVertical: 10,
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 20,
 		borderWidth: 1, borderColor: '#ccc',
 		borderRadius: 100,
-		fontSize: 18, fontFamily: 'GothamPro',
+		fontSize: 14, fontFamily: 'GothamPro',
 	},
 	list: {
 		marginVertical: 10, paddingHorizontal: 20,
@@ -25,11 +25,12 @@ const styles = StyleSheet.create({
 		paddingBottom: 20,
 	},
 	item_text: {
-		fontSize: 18, fontFamily: 'GothamPro',
+		fontSize: 14, fontFamily: 'GothamPro',
 	},
 	tint: {
 		marginVertical: 10, paddingHorizontal: 20,
-		fontSize: 16, fontFamily: 'GothamPro',
+		fontSize: 12, fontFamily: 'GothamPro',
+		lineHeight: 14,
 	},
 });
 

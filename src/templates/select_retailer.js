@@ -1,48 +1,50 @@
 import React,{Component} from 'react';
-import {Platform,StyleSheet,Modal,Picker,TouchableOpacity,Text,View} from 'react-native';
+import {Keyboard,Platform,Image,Modal,Picker,TouchableOpacity,Text,View} from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
-import Icon from 'react-native-vector-icons/EvilIcons';
+import Arrow from '../../assets/ui/down_arrow.png';
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'center',
-		minHeight: 65,
-		marginVertical: 5, paddingLeft: 25, paddingRight: 5,
+		height: 50,
+		marginVertical: 5, paddingLeft: 20, paddingRight: 5,
 		borderWidth: 1, borderColor: '#ccc',
 		borderRadius: 100,
 		backgroundColor: '#fff',
 	},
 	container_error: {
-		borderColor: '#f40000',
+		borderColor: '$red',
 	},
 	left: {
 		flex: 1,
 	},
 	title: {
 		marginTop: 10, paddingTop: Platform.select({ios:3,android:0}),
-		// backgroundColor: '#eee',
 		color: '#bbb',
 		fontSize: 14, fontFamily: 'GothamPro',
 	},
 	title_active: {
 		marginTop: 0, paddingTop: Platform.select({ios:3,android:0}),
-		fontSize: 18, fontFamily: 'GothamPro',
+		fontSize: 14, fontFamily: 'GothamPro',
 	},
 	input: {
 		width: '100%',
-		paddingVertical: 3,
-		fontSize: 18, fontFamily: 'GothamPro',
+		paddingTop: Platform.select({ios:3,android:0}),
+		fontSize: 14, fontFamily: 'GothamPro-Medium',
 	},
 	right: {
-		width: 20,
-		textAlign: 'right',
+	},
+	right_arrow: {
+		height: 20, width: 20,
+		marginRight: 10,
 	},
 	error_text: {
 		marginLeft: 20, marginBottom: 10, paddingTop: Platform.select({ios:3,android:0}),
 		fontSize: 14, fontFamily: 'GothamPro',
-		color: '#f40000',
+		color: '$red',
 	},
 
 	modal_area: {
@@ -59,10 +61,10 @@ const styles = StyleSheet.create({
 	},
 	select_text: {
 		paddingTop: Platform.select({ios:3,android:0}),
-		fontSize: 20, fontFamily: 'GothamPro',
+		fontSize: 16, fontFamily: 'GothamPro',
 	},
 	item: {
-		fontFamily: 'GothamPro',
+		fontSize: 16, fontFamily: 'GothamPro',
 	},
 	scroll: {
 		backgroundColor: '#eee',
@@ -72,8 +74,6 @@ const styles = StyleSheet.create({
 export default class SelectRetailer extends Component {
 	constructor(props) {
 		super(props);
-
-		console.log(props);
 
 		this.state = {
 			active: false,
@@ -91,7 +91,10 @@ export default class SelectRetailer extends Component {
 		}
 	}
 
-	open  = () => this.setState({active:true});
+	open  = () => {
+		Keyboard.dismiss();
+		this.setState({active:true});
+	}
 	close = () => this.setState({active:false});
 
 	select = (value) => {
@@ -146,16 +149,19 @@ export default class SelectRetailer extends Component {
 	);
 
 	render() {
-		let state = this.state;
-		let props = this.props;
+		let {props,state} = this;
 
 		return (
 			<View>
 				<TouchableOpacity style={[styles.container,props.error?styles.container_error:{}]} onPress={this.open}>
 					<View style={styles.left}>
-						<Text style={styles.input} numberOfLines={1}>{props.data.find(e => e.id==state.value)?.title ?? 'Выберите торговую сеть'}</Text>
+						<Text style={styles.input} numberOfLines={1}>{
+							props.data.length
+							? (props.data.find(e => e.id==state.value)?.title ?? 'Выберите торговую сеть')
+							: ('Больше торговых сетей нет')
+						}</Text>
 					</View>
-					<Text styles={styles.right}><Icon name="chevron-down" style={{color:'red'}} size={40}/></Text>
+					{props.data.length ? (<View styles={styles.right}><Image style={styles.right_arrow} source={Arrow} /></View>) : null}
 				</TouchableOpacity>
 				{props.error ? (<Text style={styles.error_text}>{props.error}</Text>) : null}
 				{Platform.OS == 'ios'		? this.ios_picker()		: null}

@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 import {Alert,Keyboard,Platform,StyleSheet,ScrollView,Text,TouchableOpacity,View} from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 import {withNavigation} from 'react-navigation';
 
 import Icon				from 'react-native-vector-icons/EvilIcons';
@@ -15,19 +16,22 @@ import st				from '../../../services/storage';
 import {request as promo_request}		from '../../../redux/reducers/promo';
 import {request as settings_request}	from '../../../redux/reducers/settings';
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
 	main: {
 		padding: 20,
 	},
 	main_text: {
-		marginBottom: 20, marginHorizontal: 20,
+		marginBottom: 15, marginHorizontal: 20,
 		color: '#111',
-		fontSize: 16, fontFamily: 'GothamPro',
+		fontSize: 14, fontFamily: 'GothamPro',
 		lineHeight: 18,
 		textAlign: 'center',
 	},
 	main_input: {
 		// paddingVertical: 10,
+	},
+	phone: {
+		paddingTop: 0, paddingBottom: 4,
 	},
 	button: {
 		marginVertical: 10, padding: 15,
@@ -37,7 +41,7 @@ const styles = StyleSheet.create({
 	button_text: {
 		paddingTop: Platform.select({ios:3,android:0}),
 		color: '#fff',
-		fontSize: 20, fontFamily: 'GothamPro-Medium',
+		fontSize: 16, fontFamily: 'GothamPro-Medium',
 		textAlign: 'center',
 	},
 	button_disabled: {
@@ -46,30 +50,31 @@ const styles = StyleSheet.create({
 		backgroundColor: '#f1f1f1',
 	},
 	button_disabled_text: {
+		paddingTop: Platform.select({ios:3,android:0}),
 		color: '#d5d5d5',
-		fontSize: 20, fontFamily: 'GothamPro-Medium',
+		fontSize: 16, fontFamily: 'GothamPro-Medium',
 		textAlign: 'center',
 	},
 	reset: {
-		paddingVertical: 20, paddingHorizontal: 40,
+		paddingVertical: 10, paddingHorizontal: 40,
 		borderTopWidth: 1, borderTopColor: '#ccc',
 	},
 	reset_wait: {
 		paddingVertical: 10,
-		color: '#f40000',
+		color: '$red',
 	},
 	reset_wait_hide: {
 		color: 'transparent',
 	},
 	reset_button: {
 		marginVertical: 20, padding: 15,
-		borderWidth: 1, borderColor: '#f40000',
+		borderWidth: 1, borderColor: '$red',
 		borderRadius: 40,
 	},
 	reset_button_text: {
 		paddingTop: Platform.select({ios:3,android:0}),
 		color: '#f40000',
-		fontSize: 18, fontFamily: 'GothamPro',
+		fontSize: 14, fontFamily: 'GothamPro-Medium',
 		textAlign: 'center',
 	},
 });
@@ -81,7 +86,7 @@ export default withNavigation(class Authorization extends Component {
 		this.timeout;
 
 		this.state = {
-			phone: '',
+			phone: '+7',
 			phone_error: false,
 			password: '',
 			password_error: false,
@@ -252,6 +257,7 @@ export default withNavigation(class Authorization extends Component {
 					<View style={styles.main_input}>
 						<InputPhone
 							title="Мобильный телефон"
+							style={styles.phone}
 							value={state.phone}
 							error={state.phone_error}
 							update={phone => this.update({phone})}
@@ -266,10 +272,12 @@ export default withNavigation(class Authorization extends Component {
 							update={password => this.update({password})}
 						/>
 					</View>
-					<AnimatedButton active={state.ready} state={state.enter_state} onPress={this.enter}>Войти</AnimatedButton>
+					<TouchableOpacity style={state.ready ? styles.button : styles.button_disabled} onPress={this.enter}>
+						<Text style={state.ready ? styles.button_text : styles.button_disabled_text}>Войти</Text>
+					</TouchableOpacity>
 				</View>
 				<View style={styles.reset}>
-					<SubTitle text="Я забыл пароль" />
+					<SubTitle style={{marginTop:20}} text="Я забыл пароль" />
 					{this.state.state != 'starting' ? (
 						<Text style={[styles.reset_wait,this.state.state=='expired' ? styles.reset_wait_hide : {}]}>
 							Отправить код повторно можно через {this.state.timeout} сек.

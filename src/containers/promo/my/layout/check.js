@@ -20,10 +20,10 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 	},
 	scores_number: {
-		fontSize: 22, fontWeight: 'bold',
+		fontSize: 18, fontWeight: 'bold',
 	},
 	scores_text: {
-		fontSize: 14,
+		fontSize: 12,
 	},
 	area: {
 		flex: 1,
@@ -34,11 +34,11 @@ const styles = StyleSheet.create({
 	},
 	number: {
 		marginBottom: 8,
-		fontSize: 14,
+		fontSize: 12,
 	},
 	state: {
 		color: '#bbb',
-		fontSize: 14,
+		fontSize: 12,
 	},
 	fail: {
 		marginBottom: -5,
@@ -50,17 +50,17 @@ let check_state = (state) => ['проверяется','подтвержден',
 
 export default withNavigation(({navigation,data}) => (
 	<View style={styles.container}>
-		<Text style={[styles.scores,(data.state==1 ? styles.right : styles.wrong)]}>
+		<Text style={[styles.scores,(data.state=="Подтвержден" ? styles.right : styles.wrong)]}>
 			<Text style={styles.scores_number}>{data.scores>0 ? '+' : ''}{data.scores}</Text>
 			{'\n'}
 			<Text style={styles.scores_text}>баллов</Text>
 		</Text>
 		<View style={styles.area}>
 			<View>
-				<Text style={[styles.number,(data.state==1 ? styles.right : styles.wrong)]}>{data.number}</Text>
+				<Text style={[styles.number,(data.state=="Подтвержден" ? styles.right : styles.wrong)]}>{data.number}</Text>
 				<Text style={styles.state}>{data.date} — {data.state}</Text>
 			</View>
-			{data.state==2 ? (
+			{data.state=="Отклонен" ? (
 				<TouchableOpacity style={styles.fail}><Icon name="question" style={{color:'red'}} size={30} /></TouchableOpacity>
 			) : null}
 		</View>

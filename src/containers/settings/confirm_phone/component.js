@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 import {Keyboard,Platform,StyleSheet,ScrollView,Text,TouchableOpacity,View} from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 import {withNavigation} from 'react-navigation';
 
 import Icon from 'react-native-vector-icons/EvilIcons';
@@ -12,13 +13,15 @@ import st			from '../../../services/storage';
 
 import {request}	from '../../../redux/reducers/settings';
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
 	main: {
 		padding: 20,
 	},
 	main_text: {
-		fontSize: 16, fontFamily: 'GothamPro',
+		color: '#3d3d3d',
+		fontSize: 14, fontFamily: 'GothamPro',
 		textAlign: 'center',
+		lineHeight: 18,
 	},
 	main_input: {
 		paddingVertical: 15,
@@ -29,7 +32,7 @@ const styles = StyleSheet.create({
 	},
 	main_button_text: {
 		paddingTop: Platform.select({ios:3,android:0}),
-		fontSize: 20, fontFamily: 'GothamPro-Medium',
+		fontSize: 16, fontFamily: 'GothamPro-Medium',
 		textAlign: 'center',
 	},
 	again: {
@@ -37,24 +40,26 @@ const styles = StyleSheet.create({
 		borderTopWidth: 1, borderTopColor: '#ccc',
 	},
 	again_wait: {
-		paddingVertical: 10,
-		color: '#f40000',
+		color: '$red',
+		fontSize: 12,
+		lineHeight: 14,
 	},
 	again_wait_hide: {
 		color: 'transparent',
 	},
 	again_button: {
-		marginVertical: 10, padding: 15,
+		marginVertical: 15, padding: 10,
 		borderRadius: 100,
 	},
 	again_button_text: {
 		paddingTop: Platform.select({ios:3,android:0}),
-		fontSize: 18, fontFamily: 'GothamPro-Medium',
+		fontSize: 14, fontFamily: 'GothamPro-Medium',
 		textAlign: 'center',
+		lineHeight: 16,
 	},
 
 	active_button: {
-		backgroundColor: '#f40000',
+		backgroundColor: '$red',
 	},
 	active_button_text: {
 		color: '#fff',
@@ -162,7 +167,7 @@ export default withNavigation(class ConfirmPhoneComponent extends Component {
 		return (
 			<ScrollView keyboardShouldPersistTaps='always' keyboardDismissMode='on-drag'>
 				<View style={styles.main}>
-					<Text style={styles.main_text}>На ваш телефон отправлено SMS-сообщение с кодом подтверждения. Введите этот код в поле:</Text>
+					<Text style={styles.main_text}>На ваш телефон отправлено СМС-сообщение с кодом подтверждения. Введите этот код в поле:</Text>
 					<View style={styles.main_input}><Input title="Код из SMS" value={state.code} type="numeric" update={code => this.setState({code})} /></View>
 					<TouchableOpacity style={main_button_styles} onPress={this.send}>
 						<Text style={main_button_text_styles}>Подтвердить</Text>
@@ -171,7 +176,7 @@ export default withNavigation(class ConfirmPhoneComponent extends Component {
 				<View style={styles.again}>
 					<SubTitle text="Я не получил SMS-сообщение" />
 					<Text style={[styles.again_wait,this.state.state=='expired' ? styles.again_wait_hide : {}]}>
-						Отправить код повторно можно через {this.state.timeout} сек.
+						Отправить код повторно можно{'\n'}через {this.state.timeout} сек.
 					</Text>
 					<TouchableOpacity style={again_button_styles} onPress={this.again}>
 						<Text style={again_button_text_styles}>Повторить</Text>
