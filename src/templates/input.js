@@ -82,6 +82,7 @@ export default class Input extends Component {
 
 	render() {
 		let state = this.state;
+		console.log('input this',this);
 
 		return (
 			<View>

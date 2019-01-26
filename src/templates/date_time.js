@@ -1,13 +1,13 @@
 import React,{Component} from 'react';
 import {StyleSheet,TouchableOpacity,TextInput,Text,View} from 'react-native';
 
-import Date from './date';
-import Time from './time';
+import Date		from './date';
+import Time		from './time';
 
 const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
-		justifyContent: 'space-between', alignItems: 'stretch',
+		justifyContent: 'space-between',
 	},
 	date: {
 		flex: 3,
@@ -27,33 +27,55 @@ export default class DateTime extends Component {
 	constructor(props) {
 		super(props);
 
-		this.input = React.createRef();
-
 		this.state = {
-			active: !!(props.value?.length),
-			value: props.value ?? '',
-			error: props.error,
+			date:		 		props.date,
+			time: 		 		props.time,
+			date_error:	 		props.dateError,
+			time_error:  		props.timeError,
+			date_time_error: 	props.error,
 		};
 	}
-
 	componentDidUpdate(prevProps) {
 		if(!Object.is(this.props,prevProps)) {
 			this.setState(state => ({
-				active: state.active || this.props.value?.length,
-				value: state.value || this.props.value || '',
-				error: this.props.error,
+				date:		 		((this.props.date!=state.date) ? this.props.date : (this.props.date || '')),
+				time: 		 		((this.props.time!=state.time) ? this.props.time : (this.props.time || '')),
+				date_error:			this.props.dateError,
+				time_error:  		this.props.timeError,
+				date_time_error:    this.props.error,
 			}));
 		}
 	}
+	update = (value) =>{
+		//this.setState(value);
+		this.props.update({
+			value,
+			date_error:			false,
+			time_error:  		false,
+			data_time_error: 	false,
+		});
+	}
+	
 
 	render() {
 		let state = this.state;
-
 		return (
 			<View>
 				<View style={styles.container}>
-					<Date title="Дата" value={this.props.date} style={styles.date}/>
-					<Time title="Время" value={this.props.time} style={styles.time}/>
+					<Date
+						title="Дата"
+						style={styles.date}
+						value={state.date}
+						update={(value) => this.update({date:value})}
+						error={state.date_error}
+					/>
+					<Time
+						title="Время"
+						style={styles.time}
+						value={state.time}
+						update={(value) => this.update({time:value})}
+						error={state.time_error}
+					/>
 				</View>
 				{state.error ? (<Text style={styles.error_text}>{state.error}</Text>) : null}
 			</View>

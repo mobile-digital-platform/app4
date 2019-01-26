@@ -18,7 +18,6 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		marginTop: 10,
-		// backgroundColor: '#eee',
 		color: '#bbb',
 		fontSize: 14,
 	},
@@ -42,50 +41,44 @@ export default class Date extends Component {
 	constructor(props) {
 		super(props);
 
-		this.input = React.createRef();
-
 		this.state = {
+			visible: 	false,
 			active: !!(props.value?.length),
 			value: props.value ?? '',
 			error: props.error,
-			isDateTimePickerVisible: false,
 		};
 	}
 
 	componentDidUpdate(prevProps) {
-
 		if(!Object.is(this.props,prevProps)) {
 			this.setState(state => ({
 				active: state.active || this.props.value?.length,
-				value: state.value || this.props.value || '',
+				value: ((this.props.value!=state.value) ? this.props.value : (this.props.value || '')),
 				error: this.props.error,
-				isDateTimePickerVisible: false,
 			}));
 		}
 	}
-
+	change_picker = async (value) => {
+		await this.setState({ visible:value });
+	}
 	set_value = (date) => {
 		const day = date.getDate() < 10 ? '0'+date.getDate() : date.getDate();
 		const month = date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1;
 		const year = date.getFullYear();
 		const selectedDate = day+' . '+month+' . '+year;
-		console.log('A date has been picked: ', selectedDate);
 
-		this.setState({active:true, value:selectedDate, error:false, isDateTimePickerVisible: false});
-		console.log(this.state);
-		//if(this.props.update) this.props.update(selectedDate);
+		//this.setState({active:true, value:selectedDate, error:false, visible:false});
+		this.change_picker(true);
+		this.props.update(selectedDate);
 	}
 	clear_value = () => {
-		this.setState({ active:false, value:'', error:false, isDateTimePickerVisible: false});
-		//if(this.props.send) this.props.send(this.state.value);
+		this.setState({ active:false, value:'', error:false, visible:false});
+		this.props.update('');
 	}
-	visible_picker = (visible) => {
-		this.setState({ isDateTimePickerVisible: visible});
-	}
-
+	
 	render() {
+		console.log('date_this',this);
 		let state = this.state;
-		console.log('time_date',this);
 		return (
 			<View style={this.props.style}>
 				{state.active ? (
@@ -93,27 +86,23 @@ export default class Date extends Component {
 						<View>
 							<Text style={styles.title}>Дата</Text>
 							<TextInput
-								ref="input"
 								style={styles.input}
 								value={state.value}
-								onFocus={this.show_picker}
-								//onFocus={this.scroll}
-								//onChangeText={this.set_value}
-								//onBlur={this.reset_active}
+								onFocus={() => this.change_picker(true)}
 							/>
 						</View>
 						<Icon name="check" style={{color: '#7ED321'}} size={25} />
 					</View>
 				) : (
-					<TouchableOpacity style={[styles.container,state.error?styles.container_error:{}]} onPress={() => this.visible_picker(true)}>
+					<TouchableOpacity style={[styles.container,state.error?styles.container_error:{}]} onPress={() => this.change_picker(true)}>
 						<Text style={[styles.title,styles.title_active]}>Дата</Text>
 					</TouchableOpacity>
 				)}
-				{state.error ? (<Text style={styles.error_text}>{state.error}</Text>) : null}
+				{(state.error && state.error!='пусто') ? (<Text style={styles.error_text}>{state.error}</Text>) : null}
 				<DateTimePicker
-					isVisible={this.state.isDateTimePickerVisible}
+					isVisible={state.visible}
 					onConfirm={this.set_value}
-					onCancel={() => this.visible_picker(false)}
+					onCancel={() => this.change_picker(false)}
 				/>
 			</View>
 		);

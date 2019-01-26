@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, FlatList, ImageBackground, ScrollView, Dimensions, Text, TouchableOpacity, View, Image, Modal } from 'react-native';
+import { StyleSheet, FlatList, ImageBackground, ScrollView, Dimensions, Text, TouchableOpacity, View, Image, Modal, Alert } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import { QRscanner } from 'react-native-qr-scanner';
@@ -27,20 +27,28 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default withNavigation(class AddCheck extends Component {
+export default withNavigation(class QR extends Component {
 	constructor(props) {
 		super(props);
 		this.state= {
-			visible: props.visible,
+			visible: this.props.visible
 		};
-		console.log('конструктор камеры');
+		console.log('конструктор qr');
 	}
 
+	componentDidUpdate(prevProps) {
+		if(!Object.is(prevProps,this.props)){
+			this.setState({
+				visible: this.props.visible
+			})
+		}
+	}
 	closeScanner = () =>{
-		this.props.change_qr(false);
+		//this.setState({visible: false});
+		this.props.changeScanner({visible: false});
 	}
 	readCode(res) {
-		// qr.data = t=20170426T100348&s=259.00&fn=8710000100388285&i=1472&fp=1421230762&n=1
+		// res.data = t=20170426T100348&s=259.00&fn=8710000100388285&i=1472&fp=1421230762&n=1
 		var check = {};
 		res.data.split('&').forEach(function (item) {
 			item = item.split('=');
@@ -63,8 +71,8 @@ export default withNavigation(class AddCheck extends Component {
 			minutes: check.t.substr(11, 2),
 		}
 		var data = {
-			date: time.day + ' . ' + time.month + ' . ' + time.year,
-			time: time.hour + ' : ' + time.minutes,
+			date: time.day+' . '+time.month+' . '+time.year,
+			time: time.hour+' : '+time.minutes,
 
 			summa: check.s,
 			fn: check.fn,
@@ -72,6 +80,8 @@ export default withNavigation(class AddCheck extends Component {
 			fp: check.fp,
 		}
 		console.log('QR-data: ', data);
+		this.closeScanner();
+		this.props.addCheckData(data);
 	}
 
 	render() {
@@ -80,7 +90,7 @@ export default withNavigation(class AddCheck extends Component {
 			<Modal
 				animationType="slide"
 				transparent={true}
-				visible={this.props.visible}
+				visible={this.state.visible}
 				onRequestClose={this.closeScanner}>
 				<View style={styles.modal}>
 					<TouchableOpacity style={styles.close} onPress={this.closeScanner}>
@@ -91,7 +101,7 @@ export default withNavigation(class AddCheck extends Component {
 						onRead={this.readCode}
 						flashMode={true}
 						finderX={0}
-						finderY={-50}
+						finderY={-60}
 						maskColor="rgba(0,0,0,0.5)"
 						rectHeight={220}
 						rectWidth={220}

@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 		height: 100, width: 100,
 		borderRadius: 30,
 	},
-	photo_delete: {
+	remove: {
 		backgroundColor: 'red',
 		borderRadius: 50,
 		height: 50, width: 50,
@@ -32,38 +32,22 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default class Check extends Component {
-	constructor(props) {
-		super(props);
-
-	}
-
-	camera_open = () => {
-		this.props.change_camera(true);
-	}
-	photo_delete = () => null;
-
-	render() {
-		console.log('camera this', this);
-
-		return (
-			<View>
-				{this.props.selected ? (
-					<View style={[styles.selected]}>
-						<Image
-							style={styles.photo}
-							source={{uri: 'https://cs7.pikabu.ru/post_img/big/2017/12/30/12/1514665429137170972.jpg'}}
-						/>
-						<TouchableOpacity style={styles.photo_delete} onPress={this.photo_delete}>
-							<Icon name="close" style={{color: 'white'}} size={36} />
-						</TouchableOpacity>
-					</View>
-				) : (
-					<TouchableOpacity style={[styles.not_selected]} onPress={this.camera_open}>
-						<Icon name="camera" style={{color: 'white'}} size={85} />
-					</TouchableOpacity>
-				)}
+export default withNavigation((props) => (
+	<View>
+		{props.selected ? (
+			<View style={styles.selected}>
+				<Image
+					style={styles.photo}
+					source={require(props.data.value)}
+				/>
+				<TouchableOpacity style={styles.remove} onPress={_ => props.remove(props.data)}>
+					<Icon name="close" style={{ color: 'white' }} size={36} />
+				</TouchableOpacity>
 			</View>
-		);
-	}
-}
+		) : (
+				<TouchableOpacity style={styles.not_selected} onPress={_ => props.changeCamera(true)}>
+					<Icon name="camera" style={{ color: 'white' }} size={85} />
+				</TouchableOpacity>
+		)}
+	</View>
+));

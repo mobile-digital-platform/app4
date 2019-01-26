@@ -41,26 +41,52 @@ const styles = StyleSheet.create({
 export default withNavigation(class Camera extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			visible: props.visible,
+		this.state= {
+			visible: this.props.visible
 		};
-		console.log('конструктор камеры');
+		console.log('конструктор Camera');
 	}
-	
-	takePicture = (data) => {
-		console.log(data);
+
+	componentDidUpdate(prevProps) {
+		console.log('didupdate ');
+		if(!Object.is(prevProps,this.props)){
+			this.setState({
+				visible: this.props.visible
+			})
+		}
+	}
+	closeCamera = () =>{
+		//this.setState({visible: false});
+		this.props.changeCamera({visible: false});
+	}
+	capture =  async function() {
+		if (this.camera) {
+			const date =  new Date();
+			const day = date.getDate() < 10 ? '0'+date.getDate() : date.getDate();
+			const month = date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1;
+			const year = date.getFullYear();
+			const hour = time.getHours() < 10 ? '0'+time.getHours() : time.getHours();
+			const minutes = time.getMinutes() < 10 ? '0'+time.getMinutes() : time.getMinutes();
+			const seconds = time.getSeconds() < 10 ? '0' + time.getSeconds() : time.getSeconds();
+			const currentDate = Number(year+''+month+''+day+''+hour+''+minutes+''+seconds);
+
+			let data = await this.camera.takePhotoAsync({exif:true});
+			this.props.changeCamera({visible: false});
+			this.props.addPhoto({
+				id:  currentDate,
+				value: data.uri
+			});
+		  // сохранение фото в галлерею
+		}
 	};
-	closeCamera = () => {
-		console.log('close_camera', this);
-		this.props.change_camera(false);
-	}
+
 	render() {
-    console.log('camera this', this);
+    console.log('Render_camera this',this);
 		return (
 			<Modal
 				animationType="slide"
 				transparent={true}
-				visible={this.props.visible}
+ 				visible={this.state.visible}
 				onRequestClose={this.closeCamera}>
 				<View style={styles.modal}>
 					<TouchableOpacity style={styles.close} onPress={this.closeCamera}>
@@ -68,12 +94,12 @@ export default withNavigation(class Camera extends Component {
 					</TouchableOpacity>
 					<RNCamera
 						flashMode={RNCamera.Constants.FlashMode.on}
-						ref={(cam) => {
-							this.camera = cam;
-						}}
+						ref={ref => {
+							this.camera = ref;
+						  }}
 						style={styles.camera}>
 					</RNCamera>
-					<TouchableOpacity style={styles.capture} onPress={this.takePicture}>
+					<TouchableOpacity style={styles.capture} onPress={this.capture.bind(this)}>
 						<Text style={styles.capture_text}>Сделать снимок</Text>
 					</TouchableOpacity>
 				</View>
