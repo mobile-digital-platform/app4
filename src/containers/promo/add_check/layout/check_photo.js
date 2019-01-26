@@ -4,14 +4,16 @@ import { withNavigation } from 'react-navigation';
 
 import Scan from '../../../../templates/scan';
 import MainText from '../../../../templates/main_text';
+import Camera from '../../../../templates/camera';
+
 
 const styles = StyleSheet.create({
 	container: {
-		paddingVertical: 25, paddingHorizontal: 0,
+		paddingVertical: 25, paddingHorizontal: 20,
 		backgroundColor: '#fff',
 	},
 	text: {
-		paddingBottom: 20, paddingHorizontal: 25,
+		paddingBottom: 10, paddingHorizontal: 5,
 	},
 	photos: {
 		flex: 1,
@@ -19,29 +21,76 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		flexWrap: 'wrap',
 	},
+	error_text: {
+		marginLeft: 20, marginBottom: 10,
+		fontSize: 14,
+		color: 'red',
+	},
 });
 
 export default withNavigation(class CheckPhoto extends Component {
 	constructor(props) {
 		super(props);
+
+		this.state = {
+			camera_visible: false,
+			photos: props.state.photos,
+			photo_error: false,
+		}
+	}
+
+	componentDidUpdate(prevProps) {
+		let props = this.props.state;
+		if(!Object.is(prevProps,this.props)){
+			this.setState({
+				photos: props.photos,
+				photos_error:  props.photos_error,
+			})
+		}
+	}
+	changeCamera = (value) =>{
+		this.setState({camera_visible: value});
+	}
+	addPhoto = async(photo) =>{
+
+		let data = {
+			...this.state.photos,
+			photo,
+			photos_error: false,
+		}
+		await this.setState({data})
+		this.props.update_data(data);
+	}
+	removePhoto = async(photo) =>{
+
+		let data = {
+			photos: this.state.photos.filter((item) => item.id != photo.id),
+			photos_error: false,
+		}
+		await this.setState({data})
+		this.props.update_data(data);
 	}
 
 	render() {
 		console.log("CheckPhoto", this);
-
+		let state = this.state;
 		return (
 			<View style={styles.container}>
 				<MainText style={styles.text} text="Сфотографируйте чек так, чтобы были видны название магазина, список товаров, сумма, дата, фискальные данные (ФН, ФД, ФП), и QR-код." />
-				<View style={styles.photos}>
-					<Scan
-						selected={true}
-						change_camera={this.props.change_camera}
-					/>
-					<Scan
-						selected={false}
-						change_camera={this.props.change_camera}
-					/>
-				</View>
+				<FlatList
+					data={state.photos}
+					renderItem={({ item }) =>  <Scan data={item} selectd={true}  remove={this.removePhoto}/>}
+					ListFooterComponent={() => <Scan selected={false} changeCamera={this.changeCamera}/>}
+					keyExtractor={item => '' + item.id}
+					//ListEmptyComponent={_ => <Empty />}
+					contentContainerStyle={styles.photos}
+				/>
+				<Camera
+					visible={state.camera_visible}
+					changeCamera={this.changeCamera}
+					addPhoto={this.addPhoto}
+				/>
+				{state.photos_error ? (<Text style={styles.photos_error}>{state.photos_error}</Text>) : null}
 			</View>
 		);
 	}

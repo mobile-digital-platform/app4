@@ -69,9 +69,9 @@ var Navigator = createAppContainer(createStackNavigator(
 		// initialRouteName: 'promo_participate',
 		// initialRouteName: 'promo_my_view',
 
-		// initialRouteName: 'promo_add_check', 		// кассовый чек
+		 initialRouteName: 'promo_add_check', 		// кассовый чек
 		//initialRouteName: 'promo_get_prize',			// получить выигрыш
-		 initialRouteName: 'promo_passport', 			// паспортные данные
+		// initialRouteName: 'promo_passport', 			// паспортные данные
 		// initialRouteName: 'promo_choose_prize',		// выбор приза
 		// initialRouteName: 'promo_my_prize', 			// мои призы
 		// initialRouteName: 'promo_ask', 				// задать вопрос

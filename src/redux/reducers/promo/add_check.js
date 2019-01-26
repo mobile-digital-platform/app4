@@ -4,9 +4,7 @@ import config from '../../../config';
 import API from '../../../services/api';
 
 export const ReducerRecord = () => ({
-	scan_list: ['https://cs7.pikabu.ru/post_img/big/2017/12/30/12/1514665429137170972.jpg'],
-	camera_visible: false,
-	qr_visible: false,
+	photos: [],
 	date: '',
 	time: '',
 	summa: '',
@@ -18,26 +16,17 @@ export const ReducerRecord = () => ({
 // Постоянные
 export const module = 'add_check';
 
-export const CHANGE_CAMERA = config.name + '/' + module + '/CHANGE_CAMERA';
-export const CHANGE_QR = config.name + '/' + module + '/CHANGE_QR';
+export const UPDATE_CHECK = config.name + '/' + module + '/UPDATE_CHECK';
 
 // Редуктор
 export default function reducer(st = ReducerRecord(), action) {
 	const { type, payload, error } = action;
-	// console.log("ACTION",type);
-	// console.log("STATE",st);
 
 	switch (type) {
 		// Установка данных в местное хранилище
-		case CHANGE_CAMERA:
+		case UPDATE_CHECK:
 			return {
-				...st,
-				camera_visible: payload,
-			};
-		case CHANGE_QR:
-			return {
-				...st,
-				qr_visible: payload,
+				...st,...payload,
 			};
 	}
 
@@ -45,5 +34,4 @@ export default function reducer(st = ReducerRecord(), action) {
 }
 
 // Действия
-export const change_camera = (payload) => ({ type: CHANGE_CAMERA, payload });
-export const change_qr = (payload) => ({ type: CHANGE_QR, payload });
+export const update_check = (payload) => ({ type: UPDATE_CHECK, payload });

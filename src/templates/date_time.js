@@ -47,13 +47,14 @@ export default class DateTime extends Component {
 		}
 	}
 	update = (value) =>{
-		//this.setState(value);
-		this.props.update({
+		let data = {
 			value,
 			date_error:			false,
 			time_error:  		false,
 			data_time_error: 	false,
-		});
+		}
+		//this.setState(data);
+		this.props.update(data);
 	}
 	
 
