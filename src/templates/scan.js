@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import {StyleSheet,TouchableOpacity,TextInput,Text,View,Image} from 'react-native';
 import Icon from 'react-native-vector-icons/EvilIcons';
+import {withNavigation} from 'react-navigation';
 
 const styles = StyleSheet.create({
 	container: {
@@ -38,7 +39,7 @@ export default withNavigation((props) => (
 			<View style={styles.selected}>
 				<Image
 					style={styles.photo}
-					source={require(props.data.value)}
+					source={{uri: props.data.value}}
 				/>
 				<TouchableOpacity style={styles.remove} onPress={_ => props.remove(props.data)}>
 					<Icon name="close" style={{ color: 'white' }} size={36} />

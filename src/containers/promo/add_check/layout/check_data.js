@@ -126,7 +126,7 @@ export default withNavigation(class CheckData extends Component {
 		return (
 			<View style={styles.container}>
 				<SubTitle style={styles.title} text="Фискальные данные чека" />
-				<TouchableOpacity style={styles.scan} onPress={() => state.changeScanner(true)}>
+				<TouchableOpacity style={styles.scan} onPress={() => this.changeScanner(true)}>
 					<Icon name="qrcode" style={{ color: 'white' }} size={25} />
 					<Text style={styles.scan_text}>Сканировать QR-код</Text>
 				</TouchableOpacity>
@@ -173,8 +173,8 @@ export default withNavigation(class CheckData extends Component {
 				/>
 				<QR_scanner
 					visible={state.scanner_visible}
-					changeScanner={(value) => this.changeScanner(value)}
-					addCheckData={addCheckData}
+					changeScanner={this.changeScanner}
+					addCheckData={this.addCheckData}
 				 />
 			</View>
 		);

@@ -133,17 +133,12 @@ export default class Router extends Component {
 	render() {
 		return (
 			<Provider store={store}>
-				{this.state.page == 'start'			? (<Navigator/>) : null}
-				{this.state.page == 'onboarding'	? (<Navigator/>) : null}
-				{this.state.page == 'splash'		? (<Navigator/>) : null}
-				{this.state.page == 'navigator'		? (<Navigator/>) : null}
+				{this.state.page == 'start' ? (<Empty />) : null}
+				{this.state.page == 'onboarding' ? (<Onboarding set_page={this.set_page} />) : null}
+				{this.state.page == 'splash' ? (<Splash set_page={this.set_page} />) : null}
+				{this.state.page == 'navigator' ? (<Navigator />) : null}
 				<Smoke/>
 			</Provider>
 		);
 	}
 }
-
-/* {this.state.page == 'start'			? (<Empty />)	: null}
-{this.state.page == 'onboarding'	? (<Onboarding	set_page={this.set_page} />)	: null}
-{this.state.page == 'splash'		? (<Splash		set_page={this.set_page} />)	: null}
-{this.state.page == 'navigator'		? (<Navigator/>) : null} */

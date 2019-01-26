@@ -82,7 +82,7 @@ export default withNavigation(class CheckPhoto extends Component {
 					renderItem={({ item }) =>  <Scan data={item} selectd={true}  remove={this.removePhoto}/>}
 					ListFooterComponent={() => <Scan selected={false} changeCamera={this.changeCamera}/>}
 					keyExtractor={item => '' + item.id}
-					//ListEmptyComponent={_ => <Empty />}
+					//ListEmptyComponent={() => <Scan selected={false} changeCamera={this.changeCamera}/>}
 					contentContainerStyle={styles.photos}
 				/>
 				<Camera

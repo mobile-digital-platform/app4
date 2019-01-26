@@ -39,13 +39,13 @@ export default withNavigation(class AddCheck extends Component {
 		this.state = {
 			disabled:			false,
 			waiting:			false,
-			photos:				'',
-			date: 				'',
-			time: 				'',
-			summa: 				'',
-			fn: 				'',
-			fd: 				'',
-			fp: 				'',
+			photos:				props.photos,
+			date: 				props.date,
+			time: 				props.time,
+			summa: 				props.summa,
+			fn: 				props.fn,
+			fd: 				props.fd,
+			fp: 				props.fp,
 			photos_error:		false,
 			date_time_error: 	false,
 			date_error: 		false,
@@ -57,10 +57,11 @@ export default withNavigation(class AddCheck extends Component {
 		}
 	}
 
-	componentDidMount() {
+	/* componentDidMount() {
 		this.setState(this.props.check);
-	}
+	} */
 	componentDidUpdate(prevProps) {
+		let props = this.props;
 		if(!Object.is(prevProps,this.props)){
 			this.setState({
 				photos:		props.photos,
@@ -73,7 +74,7 @@ export default withNavigation(class AddCheck extends Component {
 			})
 		}
 		// делаем кнопку активной или неактивной для отправки данных на сервер
-		if (photos_error || date_time_error || summa_error || fn_error || fd_error || fp_error){ 
+		if (props.photos_error || props.date_time_error || props.summa_error || props.fn_error || props.fd_error || props.fp_error){ 
 			this.setState({ disabled: true });
 		} else{
 			this.setState({ disabled: false });

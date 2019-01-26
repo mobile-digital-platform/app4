@@ -4,7 +4,7 @@ import {update_check,module as promo_module} from '../../../redux/reducers/promo
 import Component from './component';
 
 const mapStateToProps = state => ({
-	check: state[promo_module],
+	...state[promo_module]
 });
 
 const mapDispatchToProps = {
