@@ -57,7 +57,7 @@ export default withNavigation(class Camera extends Component {
 	}
 	closeCamera = () =>{
 		//this.setState({visible: false});
-		this.props.changeCamera({visible: false});
+		this.props.changeCamera(false);
 	}
 	capture =  async function() {
 		if (this.camera) {
@@ -65,13 +65,13 @@ export default withNavigation(class Camera extends Component {
 			const day = date.getDate() < 10 ? '0'+date.getDate() : date.getDate();
 			const month = date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1;
 			const year = date.getFullYear();
-			const hour = time.getHours() < 10 ? '0'+time.getHours() : time.getHours();
-			const minutes = time.getMinutes() < 10 ? '0'+time.getMinutes() : time.getMinutes();
-			const seconds = time.getSeconds() < 10 ? '0' + time.getSeconds() : time.getSeconds();
+			const hour = date.getHours() < 10 ? '0'+date.getHours() : date.getHours();
+			const minutes = date.getMinutes() < 10 ? '0'+date.getMinutes() : date.getMinutes();
+			const seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
 			const currentDate = Number(year+''+month+''+day+''+hour+''+minutes+''+seconds);
 
-			let data = await this.camera.takePhotoAsync({exif:true});
-			this.props.changeCamera({visible: false});
+			let data = await this.camera.takePictureAsync();
+			this.props.changeCamera(false);
 			this.props.addPhoto({
 				id:  currentDate,
 				value: data.uri

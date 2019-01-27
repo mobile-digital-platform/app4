@@ -39,7 +39,8 @@ export default withNavigation((props) => (
 			<View style={styles.selected}>
 				<Image
 					style={styles.photo}
-					source={{uri: props.data.value}}
+					source={{uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'}}
+					//source={require(props.data.value)}
 				/>
 				<TouchableOpacity style={styles.remove} onPress={_ => props.remove(props.data)}>
 					<Icon name="close" style={{ color: 'white' }} size={36} />

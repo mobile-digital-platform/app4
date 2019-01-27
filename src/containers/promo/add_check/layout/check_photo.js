@@ -34,7 +34,7 @@ export default withNavigation(class CheckPhoto extends Component {
 
 		this.state = {
 			camera_visible: false,
-			photos: props.state.photos,
+			photos: props.photos,
 			photo_error: false,
 		}
 	}
@@ -51,23 +51,19 @@ export default withNavigation(class CheckPhoto extends Component {
 	changeCamera = (value) =>{
 		this.setState({camera_visible: value});
 	}
-	addPhoto = async(photo) =>{
-
-		let data = {
-			...this.state.photos,
-			photo,
-			photos_error: false,
+	addPhoto = async(data) =>{
+		data = {
+			photos: [...this.state.photos, data]
 		}
-		await this.setState({data})
+		await this.setState(data);
+		console.log(data);
 		this.props.update_data(data);
 	}
-	removePhoto = async(photo) =>{
-
-		let data = {
-			photos: this.state.photos.filter((item) => item.id != photo.id),
-			photos_error: false,
+	removePhoto = async(data) =>{
+		data = {
+			photos: this.state.photos.filter((item) => item.id != data.id),
 		}
-		await this.setState({data})
+		await this.setState(data);
 		this.props.update_data(data);
 	}
 
@@ -79,7 +75,7 @@ export default withNavigation(class CheckPhoto extends Component {
 				<MainText style={styles.text} text="Сфотографируйте чек так, чтобы были видны название магазина, список товаров, сумма, дата, фискальные данные (ФН, ФД, ФП), и QR-код." />
 				<FlatList
 					data={state.photos}
-					renderItem={({ item }) =>  <Scan data={item} selectd={true}  remove={this.removePhoto}/>}
+					renderItem={({ item }) =>  <Scan data={item} selected={true}  remove={this.removePhoto}/>}
 					ListFooterComponent={() => <Scan selected={false} changeCamera={this.changeCamera}/>}
 					keyExtractor={item => '' + item.id}
 					//ListEmptyComponent={() => <Scan selected={false} changeCamera={this.changeCamera}/>}

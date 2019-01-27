@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {StyleSheet,TouchableOpacity,TextInput,Text,View} from 'react-native';
+import {StyleSheet,TouchableOpacity,TextInput,Text,View,Dimensions} from 'react-native';
 
 import Date		from './date';
 import Time		from './time';
@@ -35,29 +35,23 @@ export default class DateTime extends Component {
 			date_time_error: 	props.error,
 		};
 	}
+
 	componentDidUpdate(prevProps) {
 		if(!Object.is(this.props,prevProps)) {
 			this.setState(state => ({
-				date:		 		((this.props.date!=state.date) ? this.props.date : (this.props.date || '')),
-				time: 		 		((this.props.time!=state.time) ? this.props.time : (this.props.time || '')),
+				date:		 		this.props.date,
+				time: 		 		this.props.time,
 				date_error:			this.props.dateError,
 				time_error:  		this.props.timeError,
 				date_time_error:    this.props.error,
 			}));
 		}
 	}
-	update = (value) =>{
-		let data = {
-			value,
-			date_error:			false,
-			time_error:  		false,
-			data_time_error: 	false,
-		}
+	update = (data) =>{
 		//this.setState(data);
 		this.props.update(data);
 	}
 	
-
 	render() {
 		let state = this.state;
 		return (

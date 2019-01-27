@@ -98,6 +98,7 @@ export default class Personal extends Component {
 			if(this.props.user.city_id		&& this.state.city_error)	this.setState({city_error:''});
 			if(this.props.user.phone.length	&& this.state.phone_error)	this.setState({phone_error:''});
 		}
+		
 	}
 
 	reset = async () => {

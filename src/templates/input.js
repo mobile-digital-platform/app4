@@ -56,10 +56,11 @@ export default class Input extends Component {
 				error: this.props.error,
 			}));
 		}
+		//console.log('input did',this);
 	}
 
 	set_value = (value) => {
-		this.setState({value,error:false});
+		//this.setState({value,error:false});
 		if(this.props.update) this.props.update(value);
 	}
 
@@ -82,7 +83,6 @@ export default class Input extends Component {
 
 	render() {
 		let state = this.state;
-		console.log('input this',this);
 
 		return (
 			<View>

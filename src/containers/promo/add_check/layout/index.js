@@ -61,36 +61,34 @@ export default withNavigation(class AddCheck extends Component {
 		this.setState(this.props.check);
 	} */
 	componentDidUpdate(prevProps) {
-		let props = this.props;
 		if(!Object.is(prevProps,this.props)){
+			let props = this.props;
+			let disabled = this.state.disabled;
+			// если абсолютно все поля заполнены - убираем предупреждения и делаем кнопку кликабельной
 			this.setState({
-				photos:		props.photos,
-				date: 		props.date,
-				time: 		props.time,
-				summa: 		props.summa,
-				fn: 		props.fn,
-				fd: 		props.fd,
-				fp: 		props.fp,
+				disabled:			!(disabled && props.photos.length && props.date.length && props.time.length && props.summa.length && props.fn.length && props.fd.length && props.fp.length),
+				photos:				props.photos,
+				date: 				props.date,
+				time: 				props.time,
+				summa: 				props.summa,
+				fn: 				props.fn,
+				fd: 				props.fd,
+				fp: 				props.fp,
+				photos_error:		!!(!props.photos.length && disabled),
+				date_time_error: 	!!(!props.date.length && props.date.length && disabled),
+				date_error: 		!!(!props.date.length && disabled),
+				time_error: 		!!(!props.time.length && disabled),
+				summa_error: 		!!(!props.summa.length && disabled),
+				fn_error: 			!!(!props.fn.length && disabled),
+				fd_error: 			!!(!props.fd.length && disabled),
+				fp_error: 			!!(!props.fp.length && disabled),
 			})
 		}
-		// делаем кнопку активной или неактивной для отправки данных на сервер
-		if (props.photos_error || props.date_time_error || props.summa_error || props.fn_error || props.fd_error || props.fp_error){ 
-			this.setState({ disabled: true });
-		} else{
-			this.setState({ disabled: false });
-		}
 	}
-	update_data = async (state_adjust) => {
-		await this.setState({state_adjust});
-		this.props.update_data({
-			photos:		state.photos,
-			date: 		state.date,
-			time: 		state.time,
-			summa: 		state.summa,
-			fn: 		state.fn,
-			fd: 		state.fd,
-			fp: 		state.fp,
-		});
+	
+	update_data = async (data) => {
+		await this.setState(data);
+		this.props.set_data(data);
 	}
 	send_data = async () =>{
 		let state = this.state;
@@ -154,8 +152,8 @@ export default withNavigation(class AddCheck extends Component {
 		}
 
 		// Отправляем изменения
-		await this.setState({disabled:false, waiting:true});
-		await this.props.send_data({
+		await this.setState({waiting:true});
+		await this.props.save_data({
 			photos: state.photos,
 			date: 	state.date,
 			time: 	state.time,
@@ -176,12 +174,12 @@ export default withNavigation(class AddCheck extends Component {
 				<CheckPhoto
 					{...this.props}
 					state={this.state}
-					update={this.update_data}
+					update_data={this.update_data}
 				/>
 				<CheckData
 					{...this.props}
 					state={this.state}
-					update={this.update_data}
+					update_data={this.update_data}
 				/>
 				<TouchableOpacity style={[styles.save,styles[((state.waiting || state.disabled) ? 'passive' : 'active')+'_button']]} onPress={this.send_data}>
 					<Text style={[styles.save_text,styles[((state.waiting || state.disabled) ? 'passive' : 'active')+'_button_text']]}>Сохранить чек</Text>

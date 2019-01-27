@@ -43,13 +43,13 @@ export default withNavigation(class QR extends Component {
 			})
 		}
 	}
-	closeScanner = () =>{
-		//this.setState({visible: false});
-		this.props.changeScanner({visible: false});
+	closeScanner =  () =>{
+		// this.setState({visible: false});
+		this.props.changeScanner(false);
 	}
 	readCode(res) {
 		// res.data = t=20170426T100348&s=259.00&fn=8710000100388285&i=1472&fp=1421230762&n=1
-		var check = {};
+		var check = {};;
 		res.data.split('&').forEach(function (item) {
 			item = item.split('=');
 			check[item[0]] = item[1];
@@ -79,7 +79,7 @@ export default withNavigation(class QR extends Component {
 			fd: check.i,
 			fp: check.fp,
 		}
-		console.log('QR-data: ', data);
+		console.log('QR-data',data);
 		this.closeScanner();
 		this.props.addCheckData(data);
 	}
@@ -98,7 +98,7 @@ export default withNavigation(class QR extends Component {
 					</TouchableOpacity>
 					<QRscanner
 					    isRepeatScan={true}
-						onRead={this.readCode}
+						onRead={this.readCode.bind(this)}
 						flashMode={true}
 						finderX={0}
 						finderY={-60}
@@ -114,7 +114,7 @@ export default withNavigation(class QR extends Component {
 						hintText=""
 					/>
 					<View style={styles.footer}>
-						<Text style={styles.footer_text}>Поднесите камеру к шртих-коду</Text>
+						<Text style={styles.footer_text}>Поднесите камеру к штрих-коду</Text>
 					</View>
 				</View>
 			</Modal>

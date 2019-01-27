@@ -26,12 +26,15 @@ export default function reducer(st = ReducerRecord(), action) {
 		// Установка данных в местное хранилище
 		case UPDATE_CHECK:
 			return {
-				...st,...payload,
+				...st,
+				...payload,
 			};
 	}
-
 	return { ...st };
 }
 
 // Действия
-export const update_check = (payload) => ({ type: UPDATE_CHECK, payload });
+export const update_check = (payload) => {
+	console.log('payload',payload);
+	return { type: UPDATE_CHECK, payload }
+}

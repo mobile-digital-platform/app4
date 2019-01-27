@@ -43,7 +43,7 @@ export default class Time extends Component {
 
 		this.state = {
 			visible: false,
-			active: !!(props.value?.length),
+			active: !!props.value?.length,
 			value: props.value ?? '',
 			error: props.error,
 		};
@@ -52,14 +52,14 @@ export default class Time extends Component {
 	componentDidUpdate(prevProps) {
 		if(!Object.is(this.props,prevProps)) {
 			this.setState(state => ({
-				active: state.active || this.props.value?.length,
-				value: this.props.value,
+				active: state.active || !!this.props.value?.length,
+				value: ((this.props.value!=state.value) ? this.props.value : (this.props.value || '')),
 				error: this.props.error,
 			}));
 		}
 	}
 	change_picker = async (value) => {
-		await this.setState({ visible:value });
+		await this.setState({visible:value});
 	}
 	set_value = (time) => {
 		const hour = time.getHours() < 10 ? '0'+time.getHours() : time.getHours();
@@ -67,7 +67,7 @@ export default class Time extends Component {
 		const selectedTime = hour+' : '+minutes;
 		
 		//this.setState({active:true, value:selectedTime, error:false, visible:false});
-		this.change_picker(true);
+		this.change_picker(false);
 		this.props.update(selectedTime);
 	}
 	clear_value = () => {

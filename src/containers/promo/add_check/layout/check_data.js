@@ -62,12 +62,12 @@ export default withNavigation(class CheckData extends Component {
 
 		this.state = {
 			scanner_visible: 	false,
-			date: 				props.state.date,
-			time: 				props.state.time,
-			summa: 				props.state.summa,
-			fn: 				props.state.fn,
-			fd: 				props.state.fd,
-			fp: 				props.state.fp,
+			date: 				props.date,
+			time: 				props.time,
+			summa: 				props.summa,
+			fn: 				props.fn,
+			fd: 				props.fd,
+			fp: 				props.fp,
 			date_time_error: 	false,
 			date_error: 		false,
 			time_error: 		false,
@@ -101,22 +101,12 @@ export default withNavigation(class CheckData extends Component {
 	changeScanner = (value) =>{
 		this.setState({scanner_visible: value});
 	}
-	update = async (value) => {
-		await this.setState({value})
-		this.props.update_data(value);
+	update = (data) => {
+		// this.setState(data);
+		this.props.update_data(data);
 	}
-	addCheckData = async (check) => {
-		let data = {
-			...check,
-			date_time_error: 	false,
-			date_error: 		false,
-			time_error: 		false,
-			summa_error: 		false,
-			fn_error: 			false,
-			fd_error: 			false,
-			fp_error: 			false,
-		}
-		await this.setState({data})
+	addCheckData = async (data) => {
+		await this.setState(data)
 		this.props.update_data(data);
 	}
 
@@ -132,7 +122,7 @@ export default withNavigation(class CheckData extends Component {
 				</TouchableOpacity>
 				<DateTime
 					id={this.inputs.date_time.ref}
-					data={state.date}
+					date={state.date}
 					time={state.time}
 					update={value => this.update(value)}
 					error={state.date_time_error}
@@ -144,7 +134,7 @@ export default withNavigation(class CheckData extends Component {
 					title="Сумма"
 					type="numeric"
 					value={state.summa}
-					update={value => this.update({summa:value, summa_error:false})}
+					update={value => this.update({summa:value})}
 					error={state.summa_error}
 				/>
 				<Input
@@ -152,7 +142,7 @@ export default withNavigation(class CheckData extends Component {
 					title="ФН"
 					type="numeric"
 					value={state.fn}
-					update={value => this.update({fn:value, fn_error:false})}
+					update={value => this.update({fn:value})}
 					error={state.fn_error}
 				/>
 				<Input
@@ -160,7 +150,7 @@ export default withNavigation(class CheckData extends Component {
 					title="ФД"
 					type="numeric"
 					value={state.fd}
-					update={value => this.update({fd:value, fd_error:false})}
+					update={value => this.update({fd:value})}
 					error={state.fd_error}
 				/>
 				<Input
@@ -168,7 +158,7 @@ export default withNavigation(class CheckData extends Component {
 					title="ФП"
 					type="numeric"
 					value={state.fp}
-					update={value => this.update({fp:value, fp_error:false})}
+					update={value => this.update({fp:value})}
 					error={state.fp_error}
 				/>
 				<QR_scanner

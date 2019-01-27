@@ -7,7 +7,7 @@ import Layout from './layout';
 export default withNavigation(class PromoAddCheckComponent extends Component {
 	constructor(props) {
 		super(props);
-
+		console.log('Component this', this);
 		this.scroll = React.createRef();
 	}
 
@@ -26,8 +26,8 @@ export default withNavigation(class PromoAddCheckComponent extends Component {
 				<Layout 
 					{...this.props}
 					scroll={this.scroll}
-					update={this.set_data}
-					save={this.save_data}
+					set_data={this.set_data}
+					save_data={this.save_data}
 				/>
 			</ScrollView>
 		);

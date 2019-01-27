@@ -42,8 +42,8 @@ export default class Date extends Component {
 		super(props);
 
 		this.state = {
-			visible: 	false,
-			active: !!(props.value?.length),
+			visible: false,
+			active: !!props.value?.length,
 			value: props.value ?? '',
 			error: props.error,
 		};
@@ -52,14 +52,14 @@ export default class Date extends Component {
 	componentDidUpdate(prevProps) {
 		if(!Object.is(this.props,prevProps)) {
 			this.setState(state => ({
-				active: state.active || this.props.value?.length,
+				active: state.active || !!this.props.value?.length,
 				value: ((this.props.value!=state.value) ? this.props.value : (this.props.value || '')),
 				error: this.props.error,
 			}));
 		}
 	}
-	change_picker = async (value) => {
-		await this.setState({ visible:value });
+	change_picker = (value) => {
+		this.setState({visible:value});
 	}
 	set_value = (date) => {
 		const day = date.getDate() < 10 ? '0'+date.getDate() : date.getDate();
@@ -68,7 +68,7 @@ export default class Date extends Component {
 		const selectedDate = day+' . '+month+' . '+year;
 
 		//this.setState({active:true, value:selectedDate, error:false, visible:false});
-		this.change_picker(true);
+		this.change_picker(false);
 		this.props.update(selectedDate);
 	}
 	clear_value = () => {
@@ -77,8 +77,8 @@ export default class Date extends Component {
 	}
 	
 	render() {
-		console.log('date_this',this);
 		let state = this.state;
+		console.log('date_this',this);
 		return (
 			<View style={this.props.style}>
 				{state.active ? (
