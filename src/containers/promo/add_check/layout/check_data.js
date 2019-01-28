@@ -105,8 +105,8 @@ export default withNavigation(class CheckData extends Component {
 		// this.setState(data);
 		this.props.update_data(data);
 	}
-	addCheckData = async (data) => {
-		await this.setState(data)
+	addCheckData =  (data) => {
+		//this.setState(data)
 		this.props.update_data(data);
 	}
 

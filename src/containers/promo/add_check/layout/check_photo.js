@@ -51,19 +51,18 @@ export default withNavigation(class CheckPhoto extends Component {
 	changeCamera = (value) =>{
 		this.setState({camera_visible: value});
 	}
-	addPhoto = async(data) =>{
+	addPhoto = (data) =>{
 		data = {
 			photos: [...this.state.photos, data]
 		}
-		await this.setState(data);
-		console.log(data);
+		//this.setState(data);
 		this.props.update_data(data);
 	}
-	removePhoto = async(data) =>{
+	removePhoto = (data) =>{
 		data = {
 			photos: this.state.photos.filter((item) => item.id != data.id),
 		}
-		await this.setState(data);
+		//this.setState(data);
 		this.props.update_data(data);
 	}
 

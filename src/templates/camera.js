@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, FlatList, ImageBackground, ScrollView, Text, TouchableOpacity, View, Image, Modal, CameraRoll } from 'react-native';
+import { StyleSheet, FlatList, ImageBackground, ScrollView, Text, TouchableOpacity, View, Image, Modal, CameraRoll, PermissionsAndroid} from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { RNCamera } from 'react-native-camera';
 import Icon from 'react-native-vector-icons/EvilIcons';
@@ -59,6 +59,23 @@ export default withNavigation(class Camera extends Component {
 		//this.setState({visible: false});
 		this.props.changeCamera(false);
 	}
+	requestPermission = async (photo) => {
+		try {
+			const granted = await PermissionsAndroid.requestMultiple(
+				[PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+				PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
+				]);
+			if (granted['android.permission.WRITE_EXTERNAL_STORAGE'] == 'granted') {
+				CameraRoll.saveToCameraRoll(photo.uri);
+				console.log('Permisiion successfully got', granted, photo.uri);
+			} else {
+				console.log('CameraRoll permission denied', granted, photo.uri);
+			}
+		} catch (err) {
+			console.error('Failed to request permission ', err);
+			return null;
+		}
+	};
 	capture =  async function() {
 		if (this.camera) {
 			const date =  new Date();
@@ -72,8 +89,9 @@ export default withNavigation(class Camera extends Component {
 
 			let photo = await this.camera.takePictureAsync({skipProcessing: true});
 			this.props.changeCamera(false);
-			CameraRoll.saveToCameraRoll(photo.uri);
+			this.requestPermission(photo);
 			console.log('камера отработала',photo);
+			
 			this.props.addPhoto({
 				id:  currentDate,
 				path: photo.uri
