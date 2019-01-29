@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {StyleSheet,TouchableOpacity,TextInput,Text,View} from 'react-native';
+import {StyleSheet,TouchableOpacity,TextInput,Text,View,Keyboard} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 
@@ -59,6 +59,7 @@ export default class Date extends Component {
 		}
 	}
 	change_picker = (value) => {
+		Keyboard.dismiss();
 		this.setState({visible:value});
 	}
 	set_value = (date) => {

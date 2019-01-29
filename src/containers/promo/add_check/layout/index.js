@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, FlatList, ImageBackground, ScrollView, Text, TouchableOpacity, View, Image, Alert } from 'react-native';
+import { StyleSheet, FlatList, ImageBackground, ScrollView, Text, TouchableOpacity, View, Image, Alert,Keyboard } from 'react-native';
 import { withNavigation } from 'react-navigation';
 
 import CheckPhoto from './check_photo';
@@ -37,7 +37,7 @@ export default withNavigation(class AddCheck extends Component {
 		super(props);
 
 		this.state = {
-			disabled:			false,
+			disabled:			true,
 			waiting:			false,
 			photos:				props.photos,
 			date: 				props.date,
@@ -56,16 +56,14 @@ export default withNavigation(class AddCheck extends Component {
 			fp_error: 			false,
 		}
 	}
-
-	/* componentDidMount() {
-		this.setState(this.props.check);
-	} */
+	
 	componentDidUpdate(prevProps) {
 		if(!Object.is(prevProps,this.props)){
 			let props = this.props;
 			let state = this.state;
-			// если поле с ошибкой заполнено - убираем предупреждение
-			let tempState = {
+			// если абсолютно все поля заполнены - делаем кнопку кликабельной
+			this.setState({
+				disabled:			!(props.photos?.length && props.date?.length && props.time?.length && props.summa?.length && props.fn?.length && props.fd?.length && props.fp?.length),
 				photos:				props.photos,
 				date: 				props.date,
 				time: 				props.time,
@@ -73,19 +71,14 @@ export default withNavigation(class AddCheck extends Component {
 				fn: 				props.fn,
 				fd: 				props.fd,
 				fp: 				props.fp,
-				photos_error:		!props.photos?.length && state.photos_error,
-				date_error: 		!props.date?.length && state.date_error,
-				time_error: 		!props.time?.length && state.time_error,
-				summa_error: 		!props.summa?.length && state.summa_error,
-				fn_error: 			!props.fn?.length && state.fn_error,
-				fd_error: 			!props.fd?.length && state.fd_error,
-				fp_error: 			!props.fp?.length && state.fp_error,
-			};
-			// если абсолютно все поля заполнены - делаем кнопку кликабельной
-			this.setState({
-				...tempState,
-				disabled:			!!(tempState.photos_error || tempState.date_error || tempState.time_error || tempState.summa_error || tempState.fn_error || tempState.fp_error || tempState.fd_error),
-				date_time_error: 	(tempState.date_error || tempState.time_error) && state.date_time_error,
+				photos_error:		false,
+				date_time_error: 	false,
+				date_error: 		false,
+				time_error: 		false,
+				summa_error: 		false,
+				fn_error: 			false,
+				fd_error: 			false,
+				fp_error: 			false,
 			})
 		}
 	}
@@ -98,62 +91,6 @@ export default withNavigation(class AddCheck extends Component {
 		let state = this.state;
 		Keyboard.dismiss();
 		if(state.waiting || state.disabled) return;
-
-		// Проверяем наличие фотографии чека
-		if(!state.photos.length) {
-			this.setState({photo_error:'Добавьте фотографию чека'});
-			return;
-		} else {
-			await this.setState({photo_error:false});
-		}
-		// Проверяем дату и время покупки
-		if(!state.date.length && !state.time.length) {
-			this.props.scroll.current.scrollTo({y:this.inputs.date_time.offset});
-			this.setState({date_time_error:'Введите дату и время',date_error:'пусто',time_error:'пусто'});
-			return;
-		} else if(!state.date.length){
-			this.props.scroll.current.scrollTo({y:this.inputs.date_time.offset});
-			this.setState({date_time_error:'Введите дату',date_error:'пусто',time_error:false});
-			return;
-		} else if(!state.time.length ){
-			this.props.scroll.current.scrollTo({y:this.inputs.date_time.offset});
-			this.setState({date_time_error:'Введите время',date_error:false,time_error:'пусто'});
-			return;
-		} else {
-			await this.setState({date_time_error:false,date_error:false,time_error:false});
-		}
-		// Проверяем сумму покупки
-		if(!state.summa.length) {
-			this.props.scroll.current.scrollTo({y:this.inputs.summa.offset});
-			this.setState({summa_error:'Введите сумму покупки'});
-			return;
-		} else {
-			await this.setState({summa_error:false});
-		}
-		// Проверяем ФН
-		if(!state.fn) {
-			this.props.scroll.current.scrollTo({y:this.inputs.fn.offset});
-			this.setState({fn_error:'Введите номер фискального накопителя (ФН)'});
-			return;
-		} else {
-			await this.setState({fn_error:false});
-		}
-		// Проверяем ФД
-		if(!state.fd) {
-			this.props.scroll.current.scrollTo({y:this.inputs.fd.offset});
-			this.setState({fd_error:'Введите номер фискального документа (ФД)'});
-			return;
-		} else {
-			await this.setState({fd_error:false});
-		}
-		// Проверяем ФП
-		if(!state.fp) {
-			this.props.scroll.current.scrollTo({y:this.inputs.fp.offset});
-			this.setState({fp_error:'Введите номер фискального признака (ФП)'});
-			return;
-		} else {
-			await this.setState({fp_error:false});
-		}
 
 		// Отправляем изменения
 		await this.setState({waiting:true});

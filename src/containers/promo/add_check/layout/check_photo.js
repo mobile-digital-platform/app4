@@ -35,7 +35,7 @@ export default withNavigation(class CheckPhoto extends Component {
 		this.state = {
 			camera_visible: false,
 			photos: props.photos,
-			photo_error: false,
+			photos_error: false,
 		}
 	}
 
@@ -86,7 +86,7 @@ export default withNavigation(class CheckPhoto extends Component {
 					changeCamera={this.changeCamera}
 					addPhoto={this.addPhoto}
 				/>
-				{state.photos_error ? (<Text style={styles.photos_error}>{state.photos_error}</Text>) : null}
+				{state.photos_error ? (<Text style={styles.error_text}>{state.photos_error}</Text>) : null}
 			</View>
 		);
 	}
