@@ -84,7 +84,7 @@ export default withNavigation(class QR extends Component {
 		});
 		this.closeScanner();
 		// проверяем, содержит ли qr нужные данные или же там закодирована ссылка на сайт
-		if(!check.fn){
+		if(!check.t || !check.s || !check.fn || !check.i || !check.fp || !check.n){
 			Alert.alert('Увы, данный QR-код не подходит :(\nПоищите на чеке другой');
 			console.log('QR-data',res);
 		} else{

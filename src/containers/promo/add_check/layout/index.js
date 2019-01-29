@@ -63,10 +63,9 @@ export default withNavigation(class AddCheck extends Component {
 	componentDidUpdate(prevProps) {
 		if(!Object.is(prevProps,this.props)){
 			let props = this.props;
-			let disabled = this.state.disabled;
-			// если абсолютно все поля заполнены - убираем предупреждения и делаем кнопку кликабельной
-			this.setState({
-				disabled:			!(disabled && props.photos.length && props.date.length && props.time.length && props.summa.length && props.fn.length && props.fd.length && props.fp.length),
+			let state = this.state;
+			// если поле с ошибкой заполнено - убираем предупреждение
+			let tempState = {
 				photos:				props.photos,
 				date: 				props.date,
 				time: 				props.time,
@@ -74,20 +73,25 @@ export default withNavigation(class AddCheck extends Component {
 				fn: 				props.fn,
 				fd: 				props.fd,
 				fp: 				props.fp,
-				photos_error:		!!(!props.photos.length && disabled),
-				date_time_error: 	!!(!props.date.length && props.date.length && disabled),
-				date_error: 		!!(!props.date.length && disabled),
-				time_error: 		!!(!props.time.length && disabled),
-				summa_error: 		!!(!props.summa.length && disabled),
-				fn_error: 			!!(!props.fn.length && disabled),
-				fd_error: 			!!(!props.fd.length && disabled),
-				fp_error: 			!!(!props.fp.length && disabled),
+				photos_error:		!props.photos?.length && state.photos_error,
+				date_error: 		!props.date?.length && state.date_error,
+				time_error: 		!props.time?.length && state.time_error,
+				summa_error: 		!props.summa?.length && state.summa_error,
+				fn_error: 			!props.fn?.length && state.fn_error,
+				fd_error: 			!props.fd?.length && state.fd_error,
+				fp_error: 			!props.fp?.length && state.fp_error,
+			};
+			// если абсолютно все поля заполнены - делаем кнопку кликабельной
+			this.setState({
+				...tempState,
+				disabled:			!!(tempState.photos_error || tempState.date_error || tempState.time_error || tempState.summa_error || tempState.fn_error || tempState.fp_error || tempState.fd_error),
+				date_time_error: 	(tempState.date_error || tempState.time_error) && state.date_time_error,
 			})
 		}
 	}
 	
-	update_data = async (data) => {
-		await this.setState(data);
+	update_data =  (data) => {
+		//this.setState(data);
 		this.props.set_data(data);
 	}
 	send_data = async () =>{
