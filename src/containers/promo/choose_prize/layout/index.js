@@ -2,9 +2,9 @@ import React,{Component} from 'react';
 import { StyleSheet,FlatList,ImageBackground,ScrollView,Text,TouchableOpacity,View,Image,Modal,Alert} from 'react-native';
 import {withNavigation} from 'react-navigation';
 
-import MainText		from '../../../../templates/main_text';
-import SubTitle		from '../../../../templates/subtitle';
-import Prize		from '../../../../templates/prize';
+import MainText						from '../../../../templates/main_text';
+import SubTitle						from '../../../../templates/subtitle';
+import {AvailablePrize,Empty}		from '../../../../templates/prize';
 
 const styles = StyleSheet.create({
 	container: {
@@ -12,18 +12,18 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff',
 		paddingVertical: 25, paddingHorizontal: 10,
 	},
-	score_info:{
+	balance:{
 		flexDirection: 'row',
 		justifyContent: 'center',
 		marginBottom: 30,
 	},
-	score_text:{
+	balance_text:{
 		flexDirection: 'row',
 		alignItems: 'center',
 		fontSize: 18,
 		color: '#3D3D3D',
 	},
-	score_number:{
+	balance_num:{
 		fontWeight: 'bold',
 		marginLeft: 5,
 		fontSize: 18,
@@ -86,68 +86,60 @@ const styles = StyleSheet.create({
 export default withNavigation(class ChoosePrize extends Component {
 	constructor(props) {
 		super(props);
+
+		this.state = {
+			modalVisible: false,
+			balance: props.balance,
+			data: props.prizes,
+		};
 	}
 
-	state = {
-		modalVisible: true,
-	};
-
-	setModalVisible(visible) {
-		this.setState({ modalVisible: visible });
+	componentDidUpdate(prevProps) {
+		if(!Object.is(prevProps,this.props)){
+			this.setState({
+				balance: props.balance,
+				data: props.prizes,
+			})
+		}
+	}
+	changeModal = (value) =>{
+		this,setState({modalVisible: value});
+	}
+	choosePrize = (data) =>{
+		this,setState({modalVisible: true});
+		this.props.sendChoose(data);
 	}
 	render() {
-
+		let state = this.state;
 		return (
 			<View style={styles.container}>
-				<View style={styles.score_info}>
-					<Text style={styles.score_text}>Твои баллы:</Text>
-					<Text style={styles.score_number}>50</Text>
+				<View style={styles.balance}>
+					<Text style={styles.balance_text}>Твои баллы:</Text>
+					<Text style={styles.balance_num}>{state.balance}</Text>
 				</View>
 				<FlatList
-					data={[
-						{
-							title: 'Название приза, может быть длинным'
-						},
-						{
-							title: 'two'
-						},
-						{
-							title: 'three'
-						},
-						{
-							title: 'four'
-						},
-						{
-							title: 'five'
-						},
-					]}
-					renderItem={({ item }) => <Prize title={item.title} />}
-					// ListHeaderComponent={Separator}
-					// ItemSeparatorComponent={Separator}
-					// ListFooterComponent={this.render_footer}
-					// extraData={this.props}
-					// keyExtractor={item => item.id+''}
-					// onEndReached={this.props.load_next}
-					// onEndReachedThreshold={0}
-					// onRefresh={this.props.load_new}
-					// refreshing={this.props.loading}
+					data={state.data}
+					keyExtractor={item => '' + item.id}
+					renderItem={({ item }) => <AvailablePrize prize={item} changeModal={this.changeModal} />}
+					ListEmptyComponent={() => <Empty />}
 				/>
 				<Modal
 					animationType="slide"
 					transparent={true}
-					visible={this.state.modalVisible}>
+					visible={state.modalVisible}
+					onRequestClose={this.closeCamera}>
 					<View style={styles.modal}>
 						<View style={styles.modal_container}>
 							<Image
 								style={styles.modal_image}
 								source={{ uri: '' }}
 							/>
-							<MainText style={styles.modal_text} text="Ты выбрал «фигню из двух разделочных досок». Подтвержаешь свой выбор?" />
+							<MainText style={styles.modal_text} text={`Ты выбрал {}. Подтвержаешь свой выбор?`} />
 							<View style={styles.buttons}>
-								<TouchableOpacity style={styles.button_ok}>
+								<TouchableOpacity style={styles.button_ok} onPress={_=>this.props.navigation.push('promo_my_prize',{data})}>
 									<Text style={styles.button_ok_text}>Да</Text>
 								</TouchableOpacity>
-								<TouchableOpacity style={styles.button_no}>
+								<TouchableOpacity style={styles.button_no} onPress={_=>this.changeModal(false)}>
 									<Text style={styles.button_no_text}>Нет</Text>
 								</TouchableOpacity>
 							</View>

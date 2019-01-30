@@ -1,8 +1,7 @@
-import React from 'react';
-import {Keyboard,StyleSheet,TouchableOpacity,Text,View} from 'react-native';
-import {withNavigation} from 'react-navigation';
-
+import React, { Component } from 'react';
+import { StyleSheet, TouchableOpacity, TextInput, Text, View, Keyboard, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/EvilIcons';
+import ModalFilterPicker from 'react-native-modal-filter-picker';
 
 const styles = StyleSheet.create({
 	container: {
@@ -22,13 +21,13 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	title: {
-		marginTop: 10, paddingTop: 3,
+		marginTop: 10, paddingTop: Platform.select({ ios: 3, android: 0 }),
 		// backgroundColor: '#eee',
 		color: '#bbb',
 		fontSize: 14, fontFamily: 'GothamPro',
 	},
 	title_active: {
-		marginTop: 0, paddingTop: 3,
+		marginTop: 0, paddingTop: Platform.select({ ios: 3, android: 0 }),
 		fontSize: 18, fontFamily: 'GothamPro',
 	},
 	input: {
@@ -42,30 +41,99 @@ const styles = StyleSheet.create({
 		textAlign: 'right',
 	},
 	error_text: {
-		marginLeft: 20, marginBottom: 10, paddingTop: 3,
+		marginLeft: 20, marginBottom: 10, paddingTop: Platform.select({ ios: 3, android: 0 }),
 		fontSize: 14, fontFamily: 'GothamPro',
 		color: '#f40000',
 	},
+	modal: {
+		position: 'absolute',
+		top: 0,
+		left: 0,
+		right: 0,
+		bottom: 0,
+		backgroundColor: 'rgba(0,0,0,0.9)',
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	modal_cancel_button: {
+		alignSelf: 'center',
+		paddingHorizontal: 30, paddingVertical: 15,
+		borderRadius: 100,
+		backgroundColor: 'red',
+	},
+	modal_cancel_text: {
+		color: '#fff',
+		fontSize: 20,
+	},
 });
 
-export default withNavigation(({navigation,...props}) => (
-	<View>
-		<TouchableOpacity style={[styles.container,props.error?styles.container_error:{}]} onPress={_ => {
-			Keyboard.dismiss();
-			navigation.push('settings_change_city');
-		}}>
-			<View style={styles.left}>
-			{props.value ? (
-				<View>
-					<Text style={styles.title}>Город</Text>
-					<Text style={styles.input} numberOfLines={1}>{props.name}</Text>
-				</View>
-			) : (
-				<Text style={[styles.title,styles.title_active]}>Город</Text>
-			)}
+export default class Date extends Component {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			visible: false,
+			value: props.value ?? '',
+			error: props.error,
+		};
+	}
+
+	componentDidUpdate(prevProps) {
+		if (!Object.is(this.props, prevProps)) {
+			this.setState(state => ({
+				value: ((this.props.value != state.value) ? this.props.value : (this.props.value || '')),
+				error: this.props.error,
+			}));
+		}
+	}
+	change_picker = (value) => {
+		this.setState({visible: value});
+	}
+	set_value = (value) => {
+		//this.setState({active:true, value:selectedDate, error:false, visible:false});
+		this.change_picker(false);
+		this.props.update(value);
+	}
+	clear_value = () => {
+		this.setState({ active: false, value: '', error: false, visible: false });
+		this.props.update('');
+	}
+
+	render() {
+		let state = this.state;
+		let props = this.props;
+		return (
+			<View>
+				<TouchableOpacity style={[styles.container, props.error ? styles.container_error : {}]} onPress={_ => this.change_picker(true)}>
+					<View style={styles.left}>
+						{state.value ? (
+							<View>
+								<Text style={styles.title}>{props.title}</Text>
+								<Text style={styles.input} numberOfLines={1}>{state.value}</Text>
+							</View>
+						) : (
+								<Text style={[styles.title, styles.title_active]}>{props.title}</Text>
+							)}
+					</View>
+					<Text styles={styles.right}><Icon name="chevron-down" style={{ color: 'red' }} size={40} /></Text>
+				</TouchableOpacity>
+				{state.error ? (<Text style={styles.error_text}>{prstateops.error}</Text>) : null}
+				<ModalFilterPicker
+					visible={state.visible}
+					onSelect={this.set_value}
+					onCancel={_ => this.change_picker(false)}
+					options={props.data}
+					placeholderText="Начните набирать текст..."
+					noResultsText="Ничего не найдено"
+					cancelButtonText="Отмена"
+					title={props.title}
+					modal={{transparent: true, animationType: "slide"}}
+					overlayStyle={styles.modal}
+					filterTextInputStyle={{fontSize: 18, paddingLeft: 20}}
+					cancelButtonStyle={styles.modal_cancel_button}
+					cancelButtonTextStyle={styles.modal_cancel_text}
+				/>
 			</View>
-			<Text styles={styles.right}><Icon name="chevron-down" style={{color:'red'}} size={40}/></Text>
-		</TouchableOpacity>
-		{props.error ? (<Text style={styles.error_text}>{props.error}</Text>) : null}
-	</View>
-));
+		);
+	}
+}

@@ -4,9 +4,8 @@ import {withNavigation} from 'react-navigation';
 import ModalFilterPicker from 'react-native-modal-filter-picker';
 
 import Input		from '../../../../templates/input';
-import SelectCity	from '../../../../templates/select_city';
+import Select	from '../../../../templates/select';
 import MainText		from '../../../../templates/main_text';
-import Datetime		from '../../../../templates/date_time';
 
 const styles = StyleSheet.create({
 	container: {
@@ -40,6 +39,49 @@ const styles = StyleSheet.create({
 	}
 });
 
+const options = [
+	{
+		key: 'kenya',
+		label: 'Kenya',
+	},
+	{
+		key: 'uganda',
+		label: 'Uganda',
+	},
+	{
+		key: 'libya',
+		label: 'Libya',
+	},
+	{
+		key: 'morocco',
+		label: 'Morocco',
+	},
+	{
+		key: 'estonia',
+		label: 'Estonia',
+	},
+	{
+		key: 'kenya',
+		label: 'Kenya',
+	},
+	{
+		key: 'uganda',
+		label: 'Uganda',
+	},
+	{
+		key: 'libya',
+		label: 'Libya',
+	},
+	{
+		key: 'morocco',
+		label: 'Morocco',
+	},
+	{
+		key: 'estonia',
+		label: 'Estonia',
+	},
+];
+
 export default class GetPrize extends Component {
 	constructor(props) {
 		super(props);
@@ -47,7 +89,6 @@ export default class GetPrize extends Component {
 
 	render() {
 		let state = this.state;
-
 		return (
 			<ScrollView style={styles.container}>
 				<View style={styles.area}>
@@ -57,10 +98,9 @@ export default class GetPrize extends Component {
 						<Input title="Отчество" />
 						<Input title="Фамилия" />
 					</View>
-					<Datetime />
 					<View style={styles.block}>
 						<Input title="E-mail" />
-						<SelectCity />
+						<Select title="Выберите центр выдачи" data={options} />
 					</View>
 				</View>
 				<TouchableOpacity style={styles.map} onPress={this.send}>

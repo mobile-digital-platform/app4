@@ -1,34 +1,44 @@
 import React,{Component} from 'react';
-import {StyleSheet,TouchableOpacity,TextInput,Text,View,Keyboard} from 'react-native';
+import {StyleSheet,TouchableOpacity,TextInput,Text,View,Platform} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1, flexDirection: 'row',
-		justifyContent: 'space-between', alignItems: 'center',
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
 		minHeight: 65,
-		marginVertical: 5, paddingHorizontal: 25,
+		marginVertical: 5, paddingLeft: 25, paddingRight: 5,
 		borderWidth: 1, borderColor: '#ccc',
 		borderRadius: 100,
 		backgroundColor: '#fff',
 	},
 	container_error: {
-		borderColor: 'red',
+		borderColor: '#f40000',
 	},
 	title: {
-		marginTop: 10,
+		marginTop: 10, paddingTop: Platform.select({ ios: 3, android: 0 }),
+		// backgroundColor: '#eee',
 		color: '#bbb',
-		fontSize: 14,
+		fontSize: 14, fontFamily: 'GothamPro',
 	},
 	title_active: {
-		marginTop: 0,
-		fontSize: 20,
+		marginTop: 0, paddingTop: Platform.select({ ios: 3, android: 0 }),
+		fontSize: 18, fontFamily: 'GothamPro',
 	},
 	input: {
 		width: '100%',
-		marginBottom: 8, paddingVertical: 3,
-		fontSize: 18,
+		marginBottom: 8,
+		paddingTop: 6, paddingBottom: 3,
+		fontSize: 18, fontFamily: 'GothamPro',
+	},
+	left: {
+		flex: 1,
+	},
+	right: {
+		width: 20,
+		textAlign: 'right',
 	},
 	error_text: {
 		marginLeft: 20, marginBottom: 10,
@@ -43,7 +53,6 @@ export default class Time extends Component {
 
 		this.state = {
 			visible: false,
-			active: !!props.value?.length,
 			value: props.value ?? '',
 			error: props.error,
 		};
@@ -52,57 +61,50 @@ export default class Time extends Component {
 	componentDidUpdate(prevProps) {
 		if(!Object.is(this.props,prevProps)) {
 			this.setState(state => ({
-				active: state.active || !!this.props.value?.length,
 				value: ((this.props.value!=state.value) ? this.props.value : (this.props.value || '')),
 				error: this.props.error,
 			}));
 		}
 	}
-	change_picker = async (value) => {
-		Keyboard.dismiss();
-		await this.setState({visible:value});
+	change_picker =  (value) => {
+		this.setState({visible:value});
 	}
 	set_value = (time) => {
 		const hour = time.getHours() < 10 ? '0'+time.getHours() : time.getHours();
 		const minutes = time.getMinutes() < 10 ? '0'+time.getMinutes() : time.getMinutes();
 		const selectedTime = hour+' : '+minutes;
 		
-		//this.setState({active:true, value:selectedTime, error:false, visible:false});
+		//this.setState({value:selectedTime, error:false, visible:false});
 		this.change_picker(false);
 		this.props.update(selectedTime);
 	}
 	clear_value = () => {
-		this.setState({ active:false, value:'', error:false, visible:false});
+		this.setState({value:'', error:false, visible:false});
 		this.props.update('');
 	}
 	
 	render() {
 		let state = this.state;
-		console.log('time_this',this);
 		return (
 			<View style={this.props.style}>
-				{state.active ? (
-					<View style={[styles.container,state.error?styles.container_error:{}]}>
-						<View>
-							<Text style={styles.title}>{this.props.title}</Text>
-							<TextInput
-								style={styles.input}
-								value={state.value}
-								onFocus={() => this.change_picker(true)}
-							/>
-						</View>
-						<Icon name="check" style={{color: '#7ED321'}} size={25} />
+				<TouchableOpacity style={[styles.container, state.error ? styles.container_error : {}]} onPress={_ => this.change_picker(true)}>
+					<View style={styles.left}>
+						{state.value ? (
+							<View>
+								<Text style={styles.title}>{props.title}</Text>
+								<Text style={styles.input}>{state.value}</Text>
+							</View>
+						) : (
+							<Text style={[styles.title, styles.title_active]}>{props.title}</Text>
+						)}
 					</View>
-				) : (
-					<TouchableOpacity style={[styles.container,state.error?styles.container_error:{}]} onPress={() => this.change_picker(true)}>
-						<Text style={[styles.title,styles.title_active]}>{this.props.title}</Text>
-					</TouchableOpacity>
-				)}
-				{(state.error && state.error!='пусто') ? (<Text style={styles.error_text}>{state.error}</Text>) : null}
+					<Text styles={styles.right}><Icon name="check" style={{ color: '#7ED321' }} size={25} /></Text>
+				</TouchableOpacity>
+				{state.error ? (<Text style={styles.error_text}>{state.error}</Text>) : null}
 				<DateTimePicker
 					isVisible={state.visible}
 					onConfirm={this.set_value}
-					onCancel={() => this.change_picker(false)}
+					onCancel={_ => this.change_picker(false)}
 					mode="time"
 				/>
 			</View>

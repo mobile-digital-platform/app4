@@ -74,19 +74,19 @@ export default withNavigation(class CheckPhoto extends Component {
 				<MainText style={styles.text} text="Сфотографируйте чек так, чтобы были видны название магазина, список товаров, сумма, дата, фискальные данные (ФН, ФД, ФП), и QR-код." />
 				<FlatList
 					data={state.photos}
+					keyExtractor={item => '' + item.id}
 					renderItem={({ item }) =>  <Scan photo={item} selected={true}  remove={this.removePhoto}/>}
 					ListFooterComponent={() => <Scan selected={false} changeCamera={this.changeCamera}/>}
-					keyExtractor={item => '' + item.id}
 					//ListEmptyComponent={() => <Scan selected={false} changeCamera={this.changeCamera}/>}
 					contentContainerStyle={styles.photos}
 					//numColumns={3}
 				/>
+				{state.photos_error ? (<Text style={styles.error_text}>{state.photos_error}</Text>) : null}
 				<Camera
 					visible={state.camera_visible}
 					changeCamera={this.changeCamera}
 					addPhoto={this.addPhoto}
 				/>
-				{state.photos_error ? (<Text style={styles.error_text}>{state.photos_error}</Text>) : null}
 			</View>
 		);
 	}

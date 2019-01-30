@@ -38,7 +38,6 @@ export default withNavigation(class AddCheck extends Component {
 
 		this.state = {
 			disabled:			true,
-			waiting:			false,
 			photos:				props.photos,
 			date: 				props.date,
 			time: 				props.time,
@@ -90,10 +89,10 @@ export default withNavigation(class AddCheck extends Component {
 	send_data = async () =>{
 		let state = this.state;
 		Keyboard.dismiss();
-		if(state.waiting || state.disabled) return;
+		if(state.disabled) return;
 
 		// Отправляем изменения
-		await this.setState({waiting:true});
+		await this.setState({disabled:true});
 		await this.props.save_data({
 			photos: state.photos,
 			date: 	state.date,
@@ -103,7 +102,7 @@ export default withNavigation(class AddCheck extends Component {
 			fd: 	state.fd,
 			fp: 	state.fp,
 		});
-		this.setState({waiting:false});
+		this.setState({disabled:false});
 		Alert.alert('Данные успешно сохранены!');
 	}
 

@@ -1,18 +1,15 @@
 import {connect} from 'react-redux';
 
-import {get_data,module as promo_module} from '../../../redux/reducers/promo/participate';
+import {get_prizes,send_choice,module as promo_module} from '../../../redux/reducers/promo/choose_prize';
 import Component from './component';
 
 const mapStateToProps = state => ({
-	loading:		state[promo_module].loading,
-	loaded:			state[promo_module].loaded,
-	error:			state[promo_module].error,
-	initialized:	state[promo_module].initialized,
-	data:			state[promo_module].data,
+	...state[promo_module]
 });
 
 const mapDispatchToProps = {
-	get_data,
+	get_prizes,
+	send_choice,
 };
 
 export default connect(mapStateToProps,mapDispatchToProps)(Component);
