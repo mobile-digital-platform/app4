@@ -1,45 +1,71 @@
 import React,{Component} from 'react';
-import {StyleSheet,ScrollView,TouchableOpacity,View,Text} from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
+import Swiper from 'react-native-swiper';
 import {withNavigation} from 'react-navigation';
 
-import {request} from '../../../redux/reducers/promo';
+import Tabs			from '../../main_tabs';
 
-import AllLayout from './all_layout/list';
-import MyLayout  from './my_layout/list';
+import AllLayout	from './all_layout/list';
+import MyLayout		from './my_layout/list';
 
 export default withNavigation(class PromoListComponent extends Component {
-	state = {
-		loading: false,
-	};
+	constructor(props) {
+		super(props);
+
+		this.swipe;
+		this.state = {
+			loading: false,
+			page: 0,
+			focus: -1,
+		};
+	}
 
 	componentDidMount() {
 		// this.props.navigation.push('settings');
 	}
+	componentDidUpdate(prev_props) {
+		// Страница по умолчанию, сюда можно перейти из принятия участия в акции
+		let prev_page = prev_props.navigation.getParam('page',0);
+		let this_page = this.props.navigation.getParam('page',0);
+		if(prev_page != this_page) this.change_page(this_page);
 
+		if(prev_props.focus != this.props.focus && this.state.focus != this.props.focus && this.props.focus>=0) {
+			this.setState({focus:this.props.focus});
+		}
+	}
+
+	change_page = (page) => {
+		console.log(page,this.state.page);
+		let diff = page-this.state.page;
+		this.setState({page});
+		if(diff != 0) this.swipe.scrollBy(diff);
+	}
 	reload = () => {
-	}
-	load_new = () => {
-	}
-	load_next = () => {
+		this.setState({loading:true});
+		setTimeout(_=>this.setState({loading:false}),1000);
 	}
 
 	render() {
-		console.log("Promo List Component",this.props);
+		let {props,state} = this;
+
+		let list = [
+			(<AllLayout key={0} {...props} loading={state.loading} reload={this.reload} />),
+			(<MyLayout  key={1} {...props} loading={state.loading} reload={this.reload} focus={state.focus} />),
+		];
 
 		return (
-			this.props.my ? (
-				<MyLayout
-					{...this.props}
-					state={this.state}
-					reload={this.reload}
-				/>
-			) : (
-				<AllLayout
-					{...this.props}
-					state={this.state}
-					reload={this.reload}
-				/>
-			)
+			<>
+				<Tabs page={state.page} change_page={this.change_page} />
+				<Swiper
+					ref={ref => this.swipe=ref}
+					loop={false}
+					autoplay={false}
+					showsPagination={false}
+					onMomentumScrollEnd={(e,state) => this.setState({page:state?.index})}
+				>
+					{list}
+				</Swiper>
+			</>
 		);
 	}
 });

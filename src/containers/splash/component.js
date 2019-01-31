@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
-import {NetInfo,StyleSheet,Image,View,Text} from 'react-native';
+import {NetInfo,Image,View,Text} from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 import alert	from '../../services/alert';
 import st		from '../../services/storage';
@@ -12,16 +13,28 @@ import Bubbles0	from '../../../assets/splash_screen/bubbles0.png';
 import Bubbles1	from '../../../assets/splash_screen/bubbles1.png';
 import Bubbles2	from '../../../assets/splash_screen/bubbles2.png';
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
 	container: {
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
 	},
-	bubbles0: {marginBottom:1},
-	bubbles1: {marginBottom:0},
-	bubbles2: {marginBottom:7},
-	bottle:   {marginTop:2},
+	bubbles0: {
+		height: 42, width: 21,
+		marginBottom: 1,
+	},
+	bubbles1: {
+		height: 43, width: 21,
+		marginBottom: 0,
+	},
+	bubbles2: {
+		height: 36, width: 21,
+		marginBottom: 7,
+	},
+	bottle: {
+		height: 124, width: 34,
+		marginTop: 2,
+	},
 	update: {
 		padding: 20,
 		color: '#fff',
@@ -179,7 +192,6 @@ export default class SplashComponent extends Component {
 				}));
 			}
 			await Promise.all(waiting);
-			console.log(items);
 
 			this.props.set_promo_list(items);
 

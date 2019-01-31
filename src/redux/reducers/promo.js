@@ -35,7 +35,9 @@ export default function reducer(st = ReducerRecord(),action) {
 			break;
 
 		case ADD_MY_PROMO:
-			return {
+			let existing = st.my_promo_list.find(e => e.id==payload.id);
+			if(existing) return {...st};
+			else return {
 				...st,
 				promo_list: st.promo_list.map(promo => {
 					promo.promo_list.forEach(e => {if(e.id==payload.id) e.participation=true});
@@ -154,8 +156,9 @@ export const request = {
 			PromoID: data.promo_id,
 		});
 		if(response) {
-			let points = response.PointsCount.substr(0,response.PointsCount.indexOf(' ')),
-				points_type = response.PointsCount.substr(response.PointsCount.indexOf(' ')+1);
+			console.log(response);
+			let points = response.PointsCount?.substr(0,response.PointsCount.indexOf(' ')),
+				points_type = response.PointsCount?.substr(response.PointsCount.indexOf(' ')+1);
 			return {response:{
 				prizes:			  response.PrizesCount,
 				points,

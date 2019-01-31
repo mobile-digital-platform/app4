@@ -1,9 +1,10 @@
 import React,{Component} from 'react';
 import {Animated,Easing,Platform,StyleSheet,Text,TouchableOpacity,View} from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 import {Svg,Path,G} from 'react-native-svg';
 import {AnimatedCircularProgress,CircularProgress} from 'react-native-circular-progress';
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
 	container: {
 		justifyContent: 'center',
 		alignItems: 'center',
@@ -12,18 +13,20 @@ const styles = StyleSheet.create({
 		// backgroundColor: '#ddd',
 	},
 	button: {
-		height: 52.5, width: '100%',
+		alignItems: 'center',
+		height: 50, width: '100%',
 		padding: 15,
 		borderRadius: 40,
 	},
 	button_text: {
 		paddingTop: Platform.select({ios:3,android:0}),
-		fontSize: 20, fontFamily: 'GothamPro-Medium',
+		fontSize: 16, fontFamily: 'GothamPro-Medium',
 		textAlign: 'center',
+		lineHeight: 19,
 	},
 
 	active_button: {
-		backgroundColor: '#f40000',
+		backgroundColor: '$red',
 	},
 	active_button_text: {
 		color: '#fff',
@@ -34,80 +37,162 @@ const styles = StyleSheet.create({
 	passive_button_text: {
 		color: '#d5d5d5',
 	},
+
+	tick_area: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		position: 'relative',
+		height: 20, width: 20,
+		// backgroundColor: '#999',
+	},
+	tick: {
+		borderLeftWidth: 5, borderBottomWidth: 5, borderColor: '#fff',
+		backgroundColor: 'transparent',
+		transform: [{rotate:'-45deg'}],
+	},
+	tick_left: {
+		position: 'absolute', bottom: 3.5, right: 9.5,
+		height: 5, width: 12,
+		borderRadius: 5,
+		backgroundColor: '#fff',
+		transform: [{rotate:'45deg'}],
+	},
+	tick_right: {
+		position: 'absolute', bottom: 6, left: 3.5,
+		height: 5, width: 20,
+		borderRadius: 5,
+		backgroundColor: '#fff',
+		transform: [{rotate:'-45deg'}],
+	},
 });
 
-const duration = 3000;
-const ease = Easing.ease;
+const linear = {
+	duration:  300,
+	easing: Easing.linear,
+}
+const circular = {
+	duration: 2000,
+	easing: Easing.ease,
+};
+
+/*
+Состояния:
+0 - начальное
+1 - сужение
+2 - вращение
+3 - расширение
+4 - конец
+*/
 
 export default class AnimatedButton extends Component {
 	constructor(props) {
 		super(props);
 
-		this.interval;
-		this.circular_progress;
 		this.animation;
+		this.circular_progress;
 
 		this.state = {
-			state: 'initial',
-			width_value: new Animated.Value(1),
-			width: '100%',
-			main_color: '#f40000',
-			back_color: '#d5d5d5',
+			button_width_value: new Animated.Value(1),
+			button_width: '100%',
+
+			tick_size_value: new Animated.Value(0),
+
+			// tick_left:   8*EStyleSheet.value("$scale"),
+			// tick_right: 13*EStyleSheet.value("$scale"),
+
+			state: 'ready',
+			main_color: styles.active_button.backgroundColor,
+			back_color: styles.passive_button_text.color,
 		};
 	}
 
 	componentDidMount() {
 		this.setState({
-			width: this.state.width_value.interpolate({
+			button_width: this.state.button_width_value.interpolate({
 				inputRange: [0,1],
-				outputRange: ['18%','100%'],
+				outputRange: ['17%','100%'],
 			}),
+
+			// tick_left: this.state.tick_size_value.interpolate({
+			// 	inputRange: [0,1],
+			// 	outputRange: [ 8*EStyleSheet.value("$scale"),12*EStyleSheet.value("$scale")],
+			// }),
+			// tick_right: this.state.tick_size_value.interpolate({
+			// 	inputRange: [0,1],
+			// 	outputRange: [13*EStyleSheet.value("$scale"),20*EStyleSheet.value("$scale")],
+			// }),
 		});
 	}
 	componentDidUpdate(prev_props) {
-		// Переход в режим ожидания
-		if(prev_props.state != 'waiting' && this.props.state == 'waiting') {
-
-			// Сворачиваем кнопку
-			if(this.animation) this.animation.stop();
-			this.animation = Animated.timing(this.state.width_value,{
-				toValue: 0,
-				duration: 1000,
-				easing: Easing.linear,
-			});
-			this.animation.start();
-
-			// Начинаем крутить крутилку
-			setTimeout(_ => {
-				this.setState({state:'rotating'});
-				this.interval = setInterval(_ => {
-					// Меняем цвета на круге
-					this.setState(state => ({
-						main_color: state.back_color,
-						back_color: state.main_color,
-					}));
-					// Запускаем заново
-					this.circular_progress?.reAnimate(0,100,duration,ease);
-				},duration);
-			},1000);
-		}
-
-		// Переход в окончание
-		if(prev_props.state != 'success' && this.props.state == 'success') {
-			if(this.interval) clearInterval(this.interval);
-			if(this.animation) this.animation.stop();
-			this.animation = Animated.timing(this.state.width_value,{
-				toValue: 1,
-				duration: 1000,
-				easing: Easing.linear,
-			});
-			this.animation.start();
-		}
-
-		if(this.props.state != prev_props.state) this.setState({state:this.props.state});
+		if(prev_props.state == 'ready' && this.props.state == 'waiting') this.shrink();
+		if(['waiting','end'].indexOf(prev_props.state)>=0 && this.props.state == 'ready') this.revert();
 	}
 	componentWillUnmount() {
-		if(this.interval) clearInterval(this.interval);
+		this.animation?.stop();
+	}
+
+	revert = () => {
+		this.setState({state:'ready'});
+	}
+	shrink = () => {
+		this.setState({
+			state: 'shrinking',
+			tick_size_value: new Animated.Value(0),
+		});
+
+		// Сворачиваем кнопку
+		this.animation = Animated.timing(this.state.button_width_value,{
+			toValue: 0,
+			duration: linear.duration,
+			easing: linear.easing,
+		}).start(_=>this.rotate(true));
+	}
+	rotate = (first = false) => {
+		// Прокручиваем в первый раз, затем, если все еще ждем результата
+		if(first || this.props.state == 'waiting') {
+			// Начинаем крутить крутилку
+			this.setState({state:'rotating'});
+
+			// Меняем цвета на круге
+			this.setState(state => ({
+				main_color: state.back_color,
+				back_color: state.main_color,
+			}));
+
+			// Запускаем заново
+			this.circular_progress?.reAnimate(0,100,circular.duration,circular.easing);
+
+			setTimeout(this.rotate,circular.duration);
+
+		// Результат получен
+		} else {
+			this.expand();
+		}
+	}
+	expand = () => {
+		this.setState({state:'expanding'});
+
+		// Расширяем кнопку и галочку
+		this.animation = Animated.timing(this.state.button_width_value,{
+			toValue: 1,
+			duration: linear.duration,
+			easing: linear.easing,
+		}).start(this.end);
+		// Animated.timing(this.state.tick_size_value,{
+		// 	toValue: 1,
+		// 	duration: linear.duration,
+		// 	easing: linear.easing,
+		// });
+	}
+	end = () => {
+		this.setState({state:'ended'});
+		if(this.props.state == 'ready') this.revert();
+	}
+
+	on_press = () => {
+		// console.log(this.state);
+		// console.log(this.props);
+		if(this.props.state == 'ready') this.props.onPress();
 	}
 
 	render() {
@@ -115,71 +200,59 @@ export default class AnimatedButton extends Component {
 
 		let button_styles = [
 			styles.button,
+			props.style?.container,
 			props.active ? styles.active_button : styles.passive_button,
-			{width:this.state.width},
+			{width:this.state.button_width},
 		];
 		let button_text_styles = [
 			styles.button_text,
+			props.style?.text,
 			props.active ? styles.active_button_text : styles.passive_button_text,
 		];
-		console.log(this.state.sector);
 
-		return (
-			<TouchableOpacity style={styles.container} onPress={props.onPress}>
-			{state.state == 'rotating' ? (
-				<AnimatedCircularProgress
-					ref={ref => this.circular_progress=ref}
-					size={52.5}
-					width={5}
-					prefill={0}
-					fill={100}
-					tintColor={state.main_color}
-					backgroundColor={state.back_color}
-					rotation={0}
-					duration={duration}
-					easing={ease}
-					arcSweepAngle={360}
-				/>
-			) : (
-				<Animated.View style={button_styles}>
-				{['initial','waiting'].indexOf(state.state)>=0 ? (
-					<Text style={button_text_styles}>{props.children}</Text>
-				) : (
-					<View style={{alignItems:'center',width:'100%'}}>
-					{{
-						'success': (<Tick/>),
-						'error': (<Cross/>),
-					}[state.state]}
-					</View>
-				)}
-				</Animated.View>
-			)}
-			</TouchableOpacity>
-		);
+		if(['ready','shrinking'].indexOf(state.state)>=0) {
+			return (
+				<TouchableOpacity style={styles.container} onPress={this.on_press}>
+					<Animated.View style={button_styles}>
+						<Text style={button_text_styles}>{props.children}</Text>
+					</Animated.View>
+				</TouchableOpacity>
+			)
+		} else if(state.state == 'rotating') {
+			return (
+				<View style={styles.container}>
+					<AnimatedCircularProgress
+						ref={ref => this.circular_progress=ref}
+						size={styles.button.height}
+						width={styles.button.height/10}
+						prefill={0}
+						fill={100}
+						tintColor={state.main_color}
+						backgroundColor={state.back_color}
+						rotation={0}
+						duration={circular.duration}
+						easing={circular.easing}
+						arcSweepAngle={360}
+					/>
+				</View>
+			);
+		} else if(['expanding','ended'].indexOf(state.state)>=0) {
+			return (
+				<View style={styles.container}>
+					<Animated.View style={button_styles}>
+					{props.state == 'end' ? (
+						<View style={styles.tick_area}>
+							{/*<View style={tick_styles} />*/}
+							<Animated.View style={[styles.tick_left]} />
+							<Animated.View style={[styles.tick_right]} />
+						</View>
+					) : null}
+					{/*props.state == 'ready' ? (
+						<Text style={button_text_styles}>{props.children}</Text>
+					) : null*/}
+					</Animated.View>
+				</View>
+			);
+		}
 	}
 }
-
-const Tick = () => (
-	<View style={{
-		height: 16, width: 33,
-		borderLeftWidth: 5, borderBottomWidth: 5, borderColor: '#fff',
-		backgroundColor: 'transparent',
-		transform: [{rotate:'-45deg'}],
-	}} />
-);
-const Cross = () => (
-	<View style={{height:22,width:22}}>
-		<View style={{
-			position: 'absolute', top: 9, left: -5,
-			height: 5, width: 33,
-			backgroundColor: '#fff',
-			transform: [{rotate:'-45deg'}],
-		}} />
-		<View style={{
-			position: 'absolute', top: 9, left: -5,
-			height: 5, width: 33,
-			backgroundColor: '#fff',
-			transform: [{rotate:'45deg'}],
-		}} />
-	</View>
-);

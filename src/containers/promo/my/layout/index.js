@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet,FlatList,Image,ImageBackground,ScrollView,Text,TouchableOpacity,View} from 'react-native';
+import {FlatList,Image,ImageBackground,ScrollView,Text,TouchableOpacity,View} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {withNavigation} from 'react-navigation';
 
@@ -17,13 +17,14 @@ const styles = EStyleSheet.create({
 		flex: 1,
 	},
 	banner: {
+		justifyContent: 'flex-end',
 		height: 120,
-		padding: 20, paddingTop: 0,
+		padding: 20,
 		backgroundColor: '#000',
 	},
 	points_area: {
 		alignItems: 'flex-end',
-		marginRight: -10,
+		position: 'absolute', top: 0, right: 10,
 	},
 	points: {
 		justifyContent: 'center',
@@ -34,21 +35,21 @@ const styles = EStyleSheet.create({
 	points_number: {
 		paddingBottom: 3,
 		color: '#fff',
-		fontSize: 18, fontFamily: 'GothamPro', fontWeight: 'bold',
+		fontSize: 18, fontFamily: 'GothamPro-Bold',
 	},
 	points_type: {
 		color: '#fff',
 		fontSize: 9, fontFamily: 'GothamPro',
 	},
 	title: {
-		marginBottom: 10,
 		color: '#fff',
-		fontSize: 24, fontWeight: 'bold',
+		fontSize: 18, fontFamily: 'GothamPro-Bold',
 		textShadowRadius: 5, textShadowColor: '#111',
+		lineHeight: 21,
 	},
 	ending: {
 		color: '#fff',
-		fontSize: 18,
+		fontSize: 12, fontFamily: 'GothamPro',
 		textShadowRadius: 5, textShadowColor: '#111',
 	},
 	retailer_area: {
@@ -123,7 +124,7 @@ export default withNavigation((props) => {
 
 	return (
 		<View style={styles.container}>
-			<ImageBackground style={styles.banner} imageStyle={{opacity:0.7}} source={{uri:data.image_url}}>
+			<ImageBackground style={styles.banner} imageStyle={{opacity:0.5}} source={{uri:data.image_url}}>
 				{details.points ? (
 				<View style={styles.points_area}>
 					<View style={styles.points}>
@@ -169,7 +170,7 @@ export default withNavigation((props) => {
 				)
 			)}
 			</View>
-			{details.add_check && details.buy_prize ? (
+			{/*details.add_check && details.buy_prize ? (
 				<View style={styles.bottom}>
 					{details.add_check ? (
 						<TouchableOpacity style={styles.add_button}><Text style={styles.add_button_text}>Добавить чек</Text></TouchableOpacity>
@@ -178,7 +179,7 @@ export default withNavigation((props) => {
 						<TouchableOpacity style={styles.get_button}><Text style={styles.get_button_text}>Получить выигрыш</Text></TouchableOpacity>
 					) : null}
 				</View>
-			) : null}
+			) : null*/}
 		</View>
 	);
 });

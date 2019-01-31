@@ -16,9 +16,10 @@ const light = {
 	headerTintColor: '#fff',
 	headerLeft: (<BackButton/>),
 	headerTitleStyle: {
-		width: 200*scale,
+		width: 220*scale,
+		marginHorizontal: 0,
 		paddingVertical: 3,
-		fontSize: 16*scale, fontFamily: 'GothamPro', fontWeight: 'bold',
+		fontSize: 16*scale, fontFamily: 'GothamPro-Bold',
 	},
 };
 
@@ -35,9 +36,9 @@ const dark = {
 		color: '#000',
 	},
 	headerTitleStyle: {
-		width: 200*scale,
+		width: '100%',
 		paddingVertical: 3,
-		fontSize: 16*scale, fontFamily: 'GothamPro', fontWeight: 'bold',
+		fontSize: 16*scale, fontFamily: 'GothamPro-Bold',
 	},
 };
 

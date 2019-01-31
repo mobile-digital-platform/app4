@@ -1,23 +1,24 @@
 import React from 'react';
-import {TouchableOpacity,Text} from 'react-native';
+import {Image,TouchableOpacity,Text} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
-import Icon from 'react-native-vector-icons/Ionicons';
+import SettingsDark  from '../../assets/ui/settings_dark.png';
+import SettingsLight from '../../assets/ui/settings_light.png';
 
 const styles = EStyleSheet.create({
 	container: {
 		justifyContent: 'center',
 		height: '100%',
-		padding: 15, paddingRight: 0,
+		padding: 15,
+		// backgroundColor: '#eee',
 	},
 	icon: {
-		marginTop: -3, marginRight: 15,
-		color: '#000',
+		height: 20, width: 20,
 	},
 });
 
-export default ({navigation,style = {}}) => (
-	<TouchableOpacity style={styles.container} onPress={_=>navigation.push('settings')}>
-		<Icon name="ios-settings" style={[styles.icon,{...style}]} size={21} />
+export default ({navigation,type = 'dark'}) => (
+	<TouchableOpacity style={styles.container} onPress={_=>navigation.navigate('settings')}>
+		<Image style={styles.icon} source={{dark:SettingsDark,light:SettingsLight}[type]} />
 	</TouchableOpacity>
 );

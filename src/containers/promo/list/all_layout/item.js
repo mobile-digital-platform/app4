@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Platform,StyleSheet,Image,Text,TouchableOpacity,View} from 'react-native';
+import {StyleSheet,Image,Text,TouchableOpacity,View} from 'react-native';
 import {withNavigation} from 'react-navigation';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
@@ -20,8 +20,8 @@ const styles = EStyleSheet.create({
 		borderWidth: 1, borderTopWidth: 0, borderColor: '#ccc',
 	},
 	title: {
-		margin: 20, paddingTop: Platform.select({ios:3,android:0}),
-		fontSize: 14, fontFamily: 'GothamPro-Medium',
+		margin: 20,
+		fontSize: 14, fontFamily: 'GothamPro-Bold',
 		lineHeight: 19,
 	},
 });
@@ -48,7 +48,7 @@ export default withNavigation(class ListItem extends Component {
 		let data = this.props.data;
 
 		return (
-			<TouchableOpacity style={styles.container} onPress={_ => this.props.navigation.push(this.props.my ? 'promo_my_view' : 'promo_view',{data})}>
+			<TouchableOpacity style={styles.container} onPress={_ => this.props.navigation.push('promo_view',{id:data.id})}>
 				<Image style={[styles.image,{height:this.state.image_height}]} source={{uri:this.state.image_url}} />
 				<View style={styles.area}><Text style={styles.title}>{data.title?.toUpperCase()}</Text></View>
 			</TouchableOpacity>

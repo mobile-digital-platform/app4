@@ -7,7 +7,7 @@ import InputPhone	from '../../templates/input_phone';
 import Textarea		from '../../templates/textarea';
 import SelectCity	from '../../templates/select_city';
 import SubTitle		from '../../templates/subtitle';
-import AnimatedButton		from '../../templates/animated_button';
+import AnimatedButton	from '../../templates/animated_button';
 
 const styles = EStyleSheet.create({
 	container: {
@@ -21,7 +21,6 @@ const styles = EStyleSheet.create({
 		borderRadius: 100,
 	},
 	save_text: {
-		paddingTop: Platform.select({ios:3,android:0}),
 		fontSize: 16, fontFamily: 'GothamPro-Medium',
 		textAlign: 'center',
 		lineHeight: 19,
@@ -44,6 +43,14 @@ const styles = EStyleSheet.create({
 export default class Personal extends Component {
 	constructor(props) {
 		super(props);
+
+		/*
+		props: {
+			user - данные о пользователе
+			scroll - ссылка на элемент прокрутки
+			state - состояние запроса: [initial,waiting,succeed,errored]
+		}
+		*/
 
 		let window = Dimensions.get('window');
 
@@ -69,6 +76,7 @@ export default class Personal extends Component {
 		this.state = {
 			waiting:		false,
 			updated:		false,
+
 			name:			'',
 			name_error:		'',
 			father:			'',
@@ -84,6 +92,8 @@ export default class Personal extends Component {
 			mail:			'',
 			mail_confirmed:	false,
 			mail_error:		'',
+
+			button_state: 'ready',
 		};
 	}
 
@@ -93,13 +103,21 @@ export default class Personal extends Component {
 		if(awailability()<0.5) this.reset();
 	}
 	componentDidUpdate(prev_props) {
-		if(!Object.is(this.props.user,prev_props.user)) {
+		// Изменились данные о пользователе
+		if(!Object.is(prev_props.user,this.props.user)) {
 			this.setState(this.props.user);
 
 			// Убираем показ ошибок, если они исправлены
 			if(this.props.user.name.length	&& this.state.name_error)	this.setState({name_error:''});
 			if(this.props.user.city_id		&& this.state.city_error)	this.setState({city_error:''});
 			if(this.props.user.phone.length	&& this.state.phone_error)	this.setState({phone_error:''});
+		}
+
+		// Изменилось состояние запроса
+		if(prev_props.state != this.props.state) {
+			if(this.props.state == 'waiting') this.setState({button_state:'waiting'});
+			if(this.props.state == 'succeed') this.setState({button_state:'end'});
+			if(this.props.state == 'errored') this.setState({button_state:'ready'});
 		}
 	}
 
@@ -121,7 +139,10 @@ export default class Personal extends Component {
 	}
 	update = async (state_adjust) => {
 		await this.setState(state_adjust);
-		this.setState({updated:true});
+		this.setState({
+			updated: true,
+			button_state: 'ready',
+		});
 		this.props.update_data({
 			name:			this.state.name,
 			father:			this.state.father,
@@ -167,7 +188,11 @@ export default class Personal extends Component {
 		}
 
 		// Отправляем изменения
-		await this.setState({waiting:true});
+		await this.setState({
+			waiting: true,
+			updated: false,
+			button_state: 'waiting',
+		});
 		await this.props.send_data({
 			name:			state.name,
 			father:			state.father,
@@ -182,18 +207,13 @@ export default class Personal extends Component {
 		this.setState({last_mail:state.mail,waiting:false});
 	}
 
-	// cs = () => {
-	// 	this.setState({state:'waiting'});
-	// 	setTimeout(_=>this.setState({state:Math.random()>0.5 ? 'success' : 'error'}),5000);
-	// 	setTimeout(_=>this.setState({state:'initial'}),10000);
-	// }
-	// <AnimatedButton active={1} state={this.state.state} onPress={this.cs}>xs</AnimatedButton>
-
 	render() {
 		let state = this.state;
 
 		return (
 			<View style={styles.container}>
+				{/*<Text onPress={_=>this.props.navigation.navigate('settings_confirm_phone',{page:1,scroll_to:2})}>XSS</Text>
+				<Text onPress={_=>this.props.navigation.navigate('promo_list',{page:1,scroll_to:2})}>XSS</Text>*/}
 				<View style={styles.block}>
 					<SubTitle style={{paddingBottom:4,paddingHorizontal:20}} text="Персональные данные" />
 					<Input
@@ -259,9 +279,12 @@ export default class Personal extends Component {
 						}}
 					/>
 				</View>
+				<AnimatedButton active={1} state={this.state.button_state} error={this.state.button_error} onPress={this.send}>Сохранить</AnimatedButton>
+				{/*
 				<TouchableOpacity style={[styles.save,styles[(this.state.waiting ? 'passive' : 'active')+'_button']]} onPress={this.send}>
 					<Text style={[styles.save_text,styles[(this.state.waiting ? 'passive' : 'active')+'_button_text']]}>Сохранить</Text>
 				</TouchableOpacity>
+				*/}
 			</View>
 		);
 	}

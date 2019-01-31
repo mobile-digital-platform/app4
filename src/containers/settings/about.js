@@ -19,7 +19,7 @@ const styles = EStyleSheet.create({
 		lineHeight: 14,
 	},
 	list: {
-		paddingBottom: 10,
+		paddingVertical: 10,
 	},
 	list_item: {
 		flexDirection: 'row',
@@ -29,7 +29,7 @@ const styles = EStyleSheet.create({
 	},
 	list_text: {
 		flex: 1,
-		marginLeft: 10, paddingTop: Platform.select({ios:3,android:0}),
+		marginLeft: 10,
 		fontSize: 14, fontFamily: 'GothamPro-Bold',
 		lineHeight: 16,
 	},

@@ -1,4 +1,6 @@
 export default (data) => {
+	if(!(data instanceof Object)) return {};
+	
 	let now		= +new Date(),
 		start	= +new Date(data.start),
 		end		= +new Date(data.end);

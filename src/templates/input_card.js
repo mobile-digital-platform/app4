@@ -54,8 +54,8 @@ export default withNavigation(class InputCard extends Component {
 		};
 	}
 
-	componentDidUpdate(prevProps) {
-		if(!Object.is(this.props,prevProps)) {
+	componentDidUpdate(prev_props) {
+		if(!Object.is(prev_props,this.props)) {
 			this.setState(state => ({
 				active: state.active || this.props.value?.length,
 				value: state.value || this.props.value || '',

@@ -21,7 +21,7 @@ const styles = EStyleSheet.create({
 	empty_text: {
 		paddingBottom: '20%',
 		color: '#3d3d3d',
-		fontSize: 16, fontFamily: 'GothamPro',
+		fontSize: 12, fontFamily: 'GothamPro',
 		textAlign: 'center',
 		lineHeight: 16,
 	},
@@ -51,7 +51,7 @@ export default class List extends Component {
 					// onEndReached={this.props.load_next}
 					// onEndReachedThreshold={0}
 					onRefresh={this.props.reload}
-					refreshing={this.props.state.loading}
+					refreshing={this.props.loading}
 				/>
 			) : (
 				<View style={styles.empty}><Text style={styles.empty_text}>Сейчас не проводится {'\n'} ни в одной акции</Text></View>

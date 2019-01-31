@@ -26,7 +26,6 @@ const styles = EStyleSheet.create({
 		// backgroundColor: '#eee',
 	},
 	title: {
-		paddingTop: Platform.select({ios:3,android:0}),
 		color: '#3d3d3d',
 		fontSize: 16, fontFamily: 'GothamPro-Bold',
 		lineHeight: 19,
@@ -42,12 +41,12 @@ const styles = EStyleSheet.create({
 		alignItems: 'center',
 	},
 	link: {
-		marginBottom: 2, paddingTop: 3,
+		marginBottom: Platform.select({ios:2,android:5}), paddingTop: 3,
 		fontSize: 14, fontFamily: 'GothamPro-Medium',
 		lineHeight: 16,
 	},
 	link_arrow: {
-		marginLeft: 10,
+		height: 20, width: 20,
 	},
 	participate: {
 		paddingVertical: 7, paddingHorizontal: 16,
@@ -55,9 +54,8 @@ const styles = EStyleSheet.create({
 		backgroundColor: 'red',
 	},
 	participate_text: {
-		paddingTop: Platform.select({ios:3,android:0}),
 		color: '#fff',
-		fontSize: 14, fontFamily: 'GothamPro-Medium',
+		fontSize: 12, fontFamily: 'GothamPro-Medium',
 		lineHeight: 16,
 	},
 });
@@ -66,7 +64,7 @@ export default withNavigation(({navigation,data,extra}) => {
 	// if(!data.retailer.image_url) data.retailer.image_url = 'https://www.sostav.ru/images/news/2018/04/20/on5vjvly.jpg';
 
 	return (
-		<TouchableOpacity style={styles.container} onPress={_=>navigation.push('promo_details',{data,promo:extra})}>
+		<View style={styles.container}>
 			<View style={styles.image_area}>
 			{data.retailer.image_url ? (
 			 	<Image style={styles.image} source={{uri:data.retailer.image_url}} />
@@ -75,13 +73,13 @@ export default withNavigation(({navigation,data,extra}) => {
 			<View style={styles.area}>
 				<Text style={styles.title}>{data.retailer.title?.toUpperCase()}</Text>
 				<View style={styles.about}>
-					<TouchableOpacity style={styles.participate} onPress={_=>navigation.push('promo_details',{data,promo:extra})}>
+					<TouchableOpacity style={styles.participate} onPress={_=>navigation.push('promo_details',{id:data.id,group_id:extra.id})}>
 						<Text style={styles.participate_text}>Подробнее</Text>
 					</TouchableOpacity>
 					{data.site_link ? (
 					<TouchableOpacity
 						style={styles.link_area}
-						onPress={_=>Linking.openURL(data.site_link)/*navigation.push('web',{title:'Сайт акции',source:data.link})*/}
+						onPress={_=>Linking.openURL(data.site_link)}
 					>
 						<Text style={styles.link}>Сайт акции</Text>
 						<Image style={styles.link_arrow} source={Arrow} />
@@ -89,6 +87,6 @@ export default withNavigation(({navigation,data,extra}) => {
 					) : null}
 				</View>
 			</View>
-		</TouchableOpacity>
+		</View>
 	);
 });

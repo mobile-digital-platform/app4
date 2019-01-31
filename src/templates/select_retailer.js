@@ -77,15 +77,15 @@ export default class SelectRetailer extends Component {
 
 		this.state = {
 			active: false,
-			value: props.value ?? -1,
+			value: props.value ?? 0,
 			error: props.error,
 		};
 	}
 
-	componentDidUpdate(prevProps) {
-		if(!Object.is(this.props,prevProps)) {
+	componentDidUpdate(prev_props) {
+		if(!Object.is(prev_props,this.props)) {
 			this.setState(state => ({
-				value: state.value || this.props.value || -1,
+				value: state.value || this.props.value || 0,
 				error: this.props.error,
 			}));
 		}
@@ -119,7 +119,7 @@ export default class SelectRetailer extends Component {
 						onValueChange={(value,i) => this.select(value)}
 						itemStyle={styles.item}
 					>
-						<Picker.Item value={-1} label='Выберите торговую сеть' />
+						<Picker.Item value={0} label='Выберите торговую сеть' />
 						{this.props.data.map((e,i) => (<Picker.Item key={i} value={e.id} label={e.title} />))}
 					</Picker>
 				</View>

@@ -35,8 +35,6 @@ import {request}					from './redux/reducers/settings';
 
 import alert						from './services/alert';
 
-console.log(Dimensions.get('window'));
-
 // Глобальные стили
 EStyleSheet.build({
 	$scale: 1*Dimensions.get('window').width/config.base_width,

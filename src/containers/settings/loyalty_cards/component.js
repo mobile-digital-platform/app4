@@ -30,8 +30,7 @@ const styles = EStyleSheet.create({
 		borderRadius: 40,
 	},
 	main_button_text: {
-		paddingTop: Platform.select({ios:3,android:0}),
-		fontSize: 16, fontFamily: 'GothamPro-Medium',
+		fontSize: 14, fontFamily: 'GothamPro-Medium',
 		textAlign: 'center',
 	},
 
@@ -57,7 +56,6 @@ export default withNavigation(class LoyaltyCardsComponent extends Component {
 			retailer_id: 0,
 			retailer_name: '',
 			retailer_error: '',
-			opened: false,
 			number: '',
 			number_error: '',
 			ready: false,
@@ -68,15 +66,13 @@ export default withNavigation(class LoyaltyCardsComponent extends Component {
 		console.log(this.props);
 	}
 
-	open = () => this.setState({opened:true});
-	choose = (retailer_id) => this.setState({retailer_id,opened:false});
 	update = async (state_adjust) => {
 		await this.setState(state_adjust);
 
 		// Убираем показ ошибок, если они исправлены
 		if(this.state.number.length && this.state.number_error) this.setState({number_error:''});
 
-		if(this.state.retailer_id && this.state.number.length) this.setState({ready:true});
+		this.setState({ready:(this.state.retailer_id && this.state.number.length)});
 	}
 	send = async () => {
 		if(!this.state.retailer_id) {
@@ -100,18 +96,18 @@ export default withNavigation(class LoyaltyCardsComponent extends Component {
 		});
 		if(response) {
 			this.props.add_loyalty_card(obj);
+			this.props.navigation.goBack();
 		}
 		if(error) {
-			await alert("Ошибка","Не удалось добавить карту");
+			await alert("Не удалось добавить карту",error.message);
 		}
 		this.props.close_smoke();
-		this.props.navigation.goBack();
 	}
 
 	render() {
 		let props = this.props;
 		let state = this.state;
-		console.log("LoyaltyCardsComponent",this.props,this.state);
+		// console.log("LoyaltyCardsComponent",this.props,this.state);
 
 		let retailer_list = props.retailer_list.filter(e => (
 			e.has_loyalty_card &&

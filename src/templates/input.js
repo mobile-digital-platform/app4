@@ -50,8 +50,8 @@ export default class Input extends Component {
 		};
 	}
 
-	componentDidUpdate(prevProps) {
-		if(!Object.is(this.props,prevProps)) {
+	componentDidUpdate(prev_props) {
+		if(!Object.is(prev_props,this.props)) {
 			if(this.props.clear) {
 				this.setState({
 					active: 0,

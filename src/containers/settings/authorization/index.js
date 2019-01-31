@@ -5,7 +5,6 @@ import {connect} from 'react-redux';
 import {
 	set_promo_list,
 	set_my_promo_list,
-	set_retailer_list,
 	module as promo_module
 } from '../../../redux/reducers/promo';
 import {

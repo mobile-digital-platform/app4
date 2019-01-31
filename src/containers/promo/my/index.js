@@ -7,7 +7,7 @@ import {module as settings_module}	from '../../../redux/reducers/settings';
 import Component from './component';
 
 const mapStateToProps = state => ({
-	data: state[promo_module].promo_list,
+	promo: state[promo_module].my_promo_list,
 	user: state[settings_module],
 });
 

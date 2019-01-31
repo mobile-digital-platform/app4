@@ -17,13 +17,26 @@ export default withNavigation(class SettingsComponent extends Component {
 		super(props);
 
 		this.scroll = React.createRef();
+
+		this.state = {
+			save_state: 'initial',
+			save_success: false,
+			save_error: false,
+		}
 	}
 
 	set_personal_data = async (data) => {
 		this.props.update_user(data);
 	}
 	save_personal_data = async (data) => {
-		this.props.open_smoke();
+		// this.props.open_smoke();
+		this.setState({save_state:'waiting'});
+		// await new Promise(resolve => setTimeout(_=>{
+		// 	this.setState({save_state:'errored'});
+		// 	alert('Не удалось сохранить изменения');
+		// 	resolve();
+		// },5000));
+		// return;
 		// Если он уже вошел, то сохраняем, иначе регистрируем
 		if(this.props.user?.id) {
 			this.props.update_user(data);
@@ -31,20 +44,27 @@ export default withNavigation(class SettingsComponent extends Component {
 			if(response) {
 				st.merge('user',{...this.props.user,...data});
 
+				// === Пока убрано === \\
+
 				// Указал или поменял почту
-				if(data.mail && !this.props.user.mail_confirmed || data.last_mail != data.mail) {
-					let {response,error} = await request.mail_send_code(this.props.user.id);
-					if(response) {
-						await alert('Изменения сохранены','На почту отправлено письмо подтверждения');
-					}
-					if(error) {
-						// Тут непонятно, что делать
-					}
-				} else {
-					await alert('Изменения сохранены');
-				}
+				// if(data.mail && !this.props.user.mail_confirmed || data.last_mail != data.mail) {
+				// 	let {response,error} = await request.mail_send_code(this.props.user.id);
+				// 	if(response) {
+				// 		this.setState({save_state:'succeed'});
+				// 		await alert('Изменения сохранены','На почту отправлено письмо подтверждения');
+				// 	}
+				// 	if(error) {
+				// 		// Тут непонятно, что делать
+				// 		this.setState({save_state:'errored'});
+				// 		await alert('Не удалось отправить письмо на почту для подтверждения');
+				// 	}
+				// } else {
+					this.setState({save_state:'succeed'});
+					// await alert('Изменения сохранены');
+				// }
 			}
 			if(error) {
+				this.setState({save_state:'errored'});
 				await alert('Не удалось сохранить изменения');
 			}
 		} else {
@@ -57,15 +77,18 @@ export default withNavigation(class SettingsComponent extends Component {
 				// В асинхронное хранилище изменения тоже записываем
 				st.merge('user',{...data,id});
 
+				this.setState({save_state:'succeed'});
+
 				// Отправляем на экран подтверждения телефона
 				await alert('Поздравляем, вы успешно зарегистрировались','Подтвердите свой номер телефона');
 				this.props.navigation.push('settings_confirm_phone');
 			}
 			if(error) {
+				this.setState({save_state:'errored'});
 				await alert('Регистрация не удалась',error.message);
 			}
 		}
-		this.props.close_smoke();
+		// this.props.close_smoke();
 	}
 
 	remove_loyalty_card = async (id) => {
@@ -91,6 +114,7 @@ export default withNavigation(class SettingsComponent extends Component {
 				<Personal
 					{...this.props}
 					scroll={this.scroll}
+					state={this.state.save_state}
 					update_data={this.set_personal_data}
 					send_data={this.save_personal_data}
 				/>

@@ -3,8 +3,6 @@ import {Keyboard,Platform,StyleSheet,ScrollView,Text,TouchableOpacity,View} from
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {withNavigation} from 'react-navigation';
 
-import Icon from 'react-native-vector-icons/EvilIcons';
-
 import Input		from '../../../templates/input';
 import SubTitle		from '../../../templates/subtitle';
 
@@ -31,7 +29,6 @@ const styles = EStyleSheet.create({
 		borderRadius: 40,
 	},
 	main_button_text: {
-		paddingTop: Platform.select({ios:3,android:0}),
 		fontSize: 16, fontFamily: 'GothamPro-Medium',
 		textAlign: 'center',
 	},
@@ -52,7 +49,6 @@ const styles = EStyleSheet.create({
 		borderRadius: 100,
 	},
 	again_button_text: {
-		paddingTop: Platform.select({ios:3,android:0}),
 		fontSize: 14, fontFamily: 'GothamPro-Medium',
 		textAlign: 'center',
 		lineHeight: 16,
@@ -113,8 +109,7 @@ export default withNavigation(class ConfirmPhoneComponent extends Component {
 			this.props.open_smoke();
 			let {response,error} = await request.phone_send_code(this.props.user.id);
 			if(response) {
-				console.log(response);
-				this.setState({code:response.code});
+				// this.setState({code:response.code});
 				if(this.state.state == 'expired') alert("Код отправлен повторно");
 			}
 			if(error) {

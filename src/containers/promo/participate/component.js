@@ -20,18 +20,39 @@ export default withNavigation(class PromoParticipateComponent extends Component 
 		};
 	}
 
+	componentDidMount() {
+		// Если вдруг он уже участвует в этой акции
+		if(this.props.user.id) this.check_if_entered();
+	}
 	componentDidUpdate(prev_props) {
+		// Подтвердил номер телефона и исправил все ошибки
 		if(
-			!Object.is(prev_props,this.props) &&
+			prev_props.user.id && (
+				!prev_props.user.name.length ||
+				!prev_props.user.city_id ||
+				!prev_props.user.phone.length ||
+				!prev_props.user.phone_confirmed
+			) &&
 			this.props.user.id &&
-			this.props.user.name &&
+			this.props.user.name.length &&
 			this.props.user.city_id &&
-			this.props.user.phone &&
+			this.props.user.phone.length &&
 			this.props.user.phone_confirmed &&
 			!this.state.participated
 		) {
 			this.setState({participated:true});
 			this.send();
+		}
+		// Если он войшел в профиль, и оказывается, что уже участвует в этой акции
+		if(this.props.user.id) this.check_if_entered();
+	}
+
+	check_if_entered() {
+		if(this.props.promo.my_promo_list.length) {
+			let existing = this.props.promo.my_promo_list.find(e => e.id==this.state.data.id);
+			if(existing) {
+				this.props.navigation.replace('promo_my_view',{id:this.state.data.id});
+			}
 		}
 	}
 
@@ -75,8 +96,9 @@ export default withNavigation(class PromoParticipateComponent extends Component 
 			promo_id: this.state.data.id,
 		});
 		if(response) {
-			this.props.add_my_promo(this.state.data);
-			this.props.navigation.navigate('promo_list',{my:true});
+			// this.props.add_my_promo(this.state.data);
+			await this.get_promo_list(this.props.user.id,this.state.data.id);
+			this.props.navigation.navigate('promo_list',{page:1/*,scroll_to:this.state.data.id*/});
 		}
 		if(error) {
 			await alert('Не удалось зарегистрироваться в акции');
@@ -122,8 +144,57 @@ export default withNavigation(class PromoParticipateComponent extends Component 
 		this.props.close_smoke();
 	}
 
+	// Загрузка данных об акциях, это тут на время
+	get_promo_list = async (user_id) => {
+		let data = await promo_request.get_list({user_id});
+		if(data.response) {
+			let items = data.response.items;
+			let waiting = [];
+
+			for(let i=0; i<items.length; i++) {
+				let row = items[i];
+
+				// Набираем по всем акциям уточнения внутри торговых сетей
+				waiting.push(new Promise(async (resolve,reject) => {
+					let retailers_data = await promo_request.get_promo_retailers({promo_id:row.id,user_id});
+					if(retailers_data.response) {
+						items[i].promo_list = retailers_data.response.items.map(e =>({
+							...e,
+							retailer: this.props.promo.retailer_list.find(g => g.id==e.retailer_id),
+						}));
+					}
+					if(retailers_data.error) {
+						this.setState({promo:'failed'});
+					}
+					resolve();
+				}));
+			}
+			await Promise.all(waiting);
+
+			this.props.set_promo_list(items);
+
+			let my_items = [];
+			for(let i=0; i<items.length; i++) {
+				let row = items[i];
+				for(let j=0; j<row.promo_list.length; j++) {
+					let nrow = row.promo_list[j];
+					if(nrow.participation) {
+						nrow.image_url = row.image_url;
+						my_items.push(nrow);
+					}
+				}
+			}
+			this.props.set_my_promo_list(my_items);
+
+			return true;
+		}
+		if(data.error) {
+			return false;
+		}
+	}
+
 	render() {
-		console.log("Component Participate",this.state);
+		// console.log("Component Participate",this.state);
 
 		return (
 			<Layout

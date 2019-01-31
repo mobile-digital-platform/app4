@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Animated,Easing,Platform,Text,TouchableOpacity,View} from 'react-native';
+import {Animated,Easing,Text,TouchableOpacity,View} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
 const styles = EStyleSheet.create({
@@ -25,7 +25,8 @@ const styles = EStyleSheet.create({
 	tab: {
 		justifyContent: 'center',
 		height: 40,
-		paddingVertical: 10, paddingHorizontal: 28,
+		marginTop: -1,
+		paddingVertical: 10, paddingHorizontal: 27,
 		zIndex: 1,
 	},
 	left_tab: {
@@ -66,7 +67,7 @@ export default class MainTabs extends Component {
 
 	componentDidUpdate(prev_props) {
 		// Переключили со всех на мои
-		if(!prev_props.my && this.props.my) {
+		if(!prev_props.page && this.props.page) {
 			let animation = Animated.timing(this.state.value,{
 				toValue: 1,
 				duration: this.duration,
@@ -76,7 +77,7 @@ export default class MainTabs extends Component {
 			animation.start();
 		}
 		// Переключили с моих на все
-		if(prev_props.my && !this.props.my) {
+		if(prev_props.page && !this.props.page) {
 			let animation = Animated.timing(this.state.value,{
 				toValue: 0,
 				duration: this.duration,
@@ -90,18 +91,29 @@ export default class MainTabs extends Component {
 	render() {
 		let props = this.props,state = this.state;
 
-		let {my,send} = this.props;
-		let selected = !my;
+		let left_styles			= [styles.tab,styles.left_tab];
+		let left_text_styles	= [styles.text];
+
+		let right_styles		= [styles.tab,styles.right_tab];
+		let right_text_styles	= [styles.text];
+
+		if(props.page == 0) {
+			left_styles.push([styles.tab_selected,{marginRight:-10}]);
+			left_text_styles.push(styles.text_selected);
+		} else if(props.page == 1) {
+			right_styles.push([styles.tab_selected,{marginLeft:-10}]);
+			right_text_styles.push(styles.text_selected);
+		}
 
 		return (
 			<View style={styles.container}>
 				<View style={styles.tab_bar}>
 					<Animated.View style={[styles.background_tab,{width:state.width,left:state.left}]} />
-					<TouchableOpacity style={[styles.tab,styles.left_tab,selected ? [styles.tab_selected,{marginRight:-10}] : {}]} onPress={_=>send(false)}>
-						<Text style={[styles.text,selected ? styles.text_selected : {}]}>Все акции</Text>
+					<TouchableOpacity style={left_styles} onPress={_=>props.change_page(0)}>
+						<Text style={left_text_styles}>Все акции</Text>
 					</TouchableOpacity>
-					<TouchableOpacity style={[styles.tab,styles.right_tab,selected ? {} : [styles.tab_selected,{marginLeft:-10}]]} onPress={_=>send(true)}>
-						<Text style={[styles.text,selected ? {} : styles.text_selected]}>Мои акции</Text>
+					<TouchableOpacity style={right_styles} onPress={_=>props.change_page(1)}>
+						<Text style={right_text_styles}>Мои акции</Text>
 					</TouchableOpacity>
 				</View>
 			</View>

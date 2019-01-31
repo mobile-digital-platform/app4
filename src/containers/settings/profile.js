@@ -1,9 +1,9 @@
 import React from 'react';
-import {Platform,TouchableOpacity,Text,View} from 'react-native';
+import {Image,TouchableOpacity,Text,View} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {withNavigation} from 'react-navigation';
 
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import User from '../../../assets/ui/user.png';
 
 import SubTitle from '../../templates/subtitle';
 
@@ -15,12 +15,15 @@ const styles = EStyleSheet.create({
 	},
 	list_item: {
 		flexDirection: 'row',
-		alignItems: 'center',
+		alignItems: 'flex-end',
 		paddingVertical: 10,
 		// backgroundColor: '#eee',
 	},
+	list_image: {
+		height: 14, width: 13,
+	},
 	list_text: {
-		marginLeft: 10, paddingTop: Platform.select({ios:3,android:0}),
+		marginLeft: 10,
 		fontSize: 14, fontFamily: 'GothamPro-Medium',
 	},
 });
@@ -30,12 +33,12 @@ export default withNavigation(({navigation,...props}) => (
 		<SubTitle style={{paddingVertical:10}} text="Учетная запись" />
 		<View style={styles.list}>
 			<TouchableOpacity style={styles.list_item} onPress={_=>navigation.push('settings_authorization')}>
-				<Icon name="user-alt" style={{color:EStyleSheet.value("$red")}} size={14} />
+				<Image style={styles.list_image} source={User} />
 				<Text style={styles.list_text}>{props.user.id ? 'Сменить пользователя' : 'Войти в профиль'}</Text>
 			</TouchableOpacity>
 			{/*
 			<TouchableOpacity style={styles.list_item} onPress={_=>props.log_out()}>
-				<Icon name="user-alt" style={{color:EStyleSheet.value("$red")}} size={14} />
+				<Image style={styles.list_image} source={User} />
 				<Text style={styles.list_text}>Выйти</Text>
 			</TouchableOpacity>
 			{/*

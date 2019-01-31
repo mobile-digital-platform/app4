@@ -11,6 +11,7 @@ const styles = EStyleSheet.create({
 		padding: 20, paddingBottom: 0,
 	},
 	input: {
+		height: 50,
 		marginVertical: 10,
 		paddingTop: 18, paddingBottom: 15,
 		paddingHorizontal: 20,

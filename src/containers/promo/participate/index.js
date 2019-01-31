@@ -1,6 +1,8 @@
 import {connect} from 'react-redux';
 
 import {
+	set_promo_list,
+	set_my_promo_list,
 	add_my_promo,
 	module as promo_module
 } from '../../../redux/reducers/promo';
@@ -23,6 +25,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
+	set_promo_list,
+	set_my_promo_list,
 	add_my_promo,
 	add_loyalty_card,
 	remove_loyalty_card,

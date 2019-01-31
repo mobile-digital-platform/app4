@@ -20,15 +20,19 @@ const styles = EStyleSheet.create({
 	},
 	window: {
 		flex: 1,
-		justifyContent: 'space-around',
+		justifyContent: 'space-between',
 		alignItems: 'center',
-		paddingVertical: 60, paddingHorizontal: 20,
+		marginTop: 60, paddingHorizontal: 20,
 	},
 	image: {
 		height: 200,
 		width: 200,
-		marginTop: 40,
+		marginTop: 30,
 		resizeMode: 'contain',
+	},
+	text_area: {
+		flex: 1,
+		justifyContent: 'center',
 	},
 	text: {
 		color: '#fff',
@@ -60,7 +64,7 @@ const styles = EStyleSheet.create({
 		fontWeight: 'bold',
 	},
 	light_button_text: {
-		color: '#f40000',
+		color: '$red',
 	},
 });
 
@@ -107,14 +111,15 @@ export default class Onboarding extends Component {
 					autoplay={true}
 					autoplayTimeout={3}
 					showsPagination={false}
-					activeDotColor='#fff'
 					style={styles.area}
 					onMomentumScrollEnd={(e,state) => this.setState({index:+state?.index})}
 				>
 					{slide.map((e,i) => (
 						<View key={i} style={styles.window}>
 							<Image style={styles.image} source={e.image} />
-							<Text style={styles.text}>{e.text}</Text>
+							<View style={styles.text_area}>
+								<Text style={styles.text}>{e.text}</Text>
+							</View>
 						</View>
 					))}
 				</Swiper>

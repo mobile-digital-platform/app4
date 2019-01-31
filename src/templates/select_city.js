@@ -29,7 +29,7 @@ const styles = EStyleSheet.create({
 		lineHeight: 12,
 	},
 	title_active: {
-		marginTop: 0, paddingTop: Platform.select({ios:3,android:0}),
+		marginTop: 0,
 		fontSize: 14, fontFamily: 'GothamPro',
 		lineHeight: 18,
 	},
@@ -42,10 +42,11 @@ const styles = EStyleSheet.create({
 	right: {
 	},
 	right_arrow: {
+		height: 20, width: 20,
 		marginHorizontal: 10,
 	},
 	error_text: {
-		marginLeft: 20, marginBottom: 10, paddingTop: Platform.select({ios:3,android:0}),
+		marginLeft: 20, marginBottom: 10,
 		fontSize: 14, fontFamily: 'GothamPro',
 		color: '$red',
 	},

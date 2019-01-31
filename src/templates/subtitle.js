@@ -11,6 +11,12 @@ const styles = EStyleSheet.create({
 	},
 });
 
-export default (props) => (
-	<Text style={[styles.title,props.style]}>{props.text.toUpperCase()}</Text>
-);
+export default (props) => {
+	const props_styles = EStyleSheet.create({
+		title: props.style,
+	});
+
+	return (
+		<Text style={[styles.title,props_styles.title]}>{props.text.toUpperCase()}</Text>
+	);
+}

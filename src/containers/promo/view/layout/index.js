@@ -22,11 +22,11 @@ const styles = EStyleSheet.create({
 		backgroundColor: '#000',
 	},
 	image: {
-		opacity: 0.7,
+		opacity: 0.5,
 	},
 	title: {
 		color: '#fff',
-		fontSize: 18, fontFamily: 'GothamPro', fontWeight: 'bold',
+		fontSize: 18, fontFamily: 'GothamPro-Bold',
 		textShadowRadius: 5, textShadowColor: '#111',
 		lineHeight: 21,
 	},

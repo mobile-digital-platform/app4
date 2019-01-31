@@ -30,9 +30,6 @@ const styles = EStyleSheet.create({
 	main_input: {
 		// paddingVertical: 10,
 	},
-	phone: {
-		paddingTop: 0, paddingBottom: 4,
-	},
 	button: {
 		marginVertical: 10, padding: 15,
 		borderRadius: 40,
@@ -140,7 +137,6 @@ export default withNavigation(class Authorization extends Component {
 			this.props.open_smoke();
 			let {response,error} = await settings_request.phone_send_password(this.state.phone);
 			if(response) {
-				console.log(response);
 				await alert(response.code);
 			}
 			if(error) {
@@ -199,7 +195,6 @@ export default withNavigation(class Authorization extends Component {
 
 	// Загрузка данных об акциях
 	get_promo_list = async (user) => {
-		console.log(user);
 		let data = await promo_request.get_list({user_id:user.id});
 		if(data.response) {
 			let items = data.response.items;
@@ -257,7 +252,6 @@ export default withNavigation(class Authorization extends Component {
 					<View style={styles.main_input}>
 						<InputPhone
 							title="Мобильный телефон"
-							style={styles.phone}
 							value={state.phone}
 							error={state.phone_error}
 							update={phone => this.update({phone})}

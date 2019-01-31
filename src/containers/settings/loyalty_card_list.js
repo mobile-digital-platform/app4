@@ -15,12 +15,11 @@ const styles = EStyleSheet.create({
 		backgroundColor: '#f4f4f4',
 	},
 	save: {
-		marginTop: 15, padding: 10,
+		marginTop: 15, padding: 15,
 		borderRadius: 100,
-		backgroundColor: '#f40000',
+		backgroundColor: '$red',
 	},
 	save_text: {
-		paddingTop: Platform.select({ios:3,android:0}),
 		color: '#fff',
 		fontSize: 14, fontFamily: 'GothamPro-Medium',
 		textAlign: 'center',
@@ -33,7 +32,6 @@ export default withNavigation(class LoyaltyCardsList extends Component {
 	};
 
 	componentDidMount() {
-		console.log(this.props.retailer_list);
 	}
 
 	componentDidUpdate(prev_props) {
@@ -71,7 +69,7 @@ const item_styles = EStyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'flex-start',
-		paddingVertical: 25,
+		paddingVertical: 15,
 	},
 	image: {
 		height: 50, width: 50,
@@ -113,7 +111,7 @@ const Item = ({data,retailer_list,remove}) => {
 				<View style={item_styles.about}>
 					<Text style={item_styles.number}>{data.number}</Text>
 					<TouchableOpacity onPress={_=>remove(retailer.id)}>
-						<Text style={item_styles.remove}><Icon name="close" style={{color:'red'}} size={30} /></Text>
+						<Text style={item_styles.remove}><Icon name="close" style={{color:EStyleSheet.value("$red")}} size={30} /></Text>
 					</TouchableOpacity>
 				</View>
 			</View>

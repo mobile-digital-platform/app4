@@ -5,11 +5,11 @@ const styles = StyleSheet.create({
 	container: {
 		alignItems: 'center',
 		margin: 10,
-		// backgroundColor: '#eee',
 	},
 	text: {
-		color: '#999',
-		fontSize: 16, fontFamily: 'GothamPro',
+		color: '#3d3d3d',
+		fontSize: 12, fontFamily: 'GothamPro',
+		lineHeight: 16,
 	},
 });
 

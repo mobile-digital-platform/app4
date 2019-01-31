@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Platform,StyleSheet,Image,Text,TouchableOpacity,View} from 'react-native';
+import {StyleSheet,Image,Text,TouchableOpacity,View} from 'react-native';
 import {withNavigation} from 'react-navigation';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
@@ -9,7 +9,6 @@ const styles = EStyleSheet.create({
 	container: {
 		alignItems: 'flex-start',
 		margin: 10,
-		// backgroundColor: '#eee',
 	},
 	image: {
 		height: 150, width: '100%',
@@ -35,8 +34,7 @@ const styles = EStyleSheet.create({
 		borderWidth: 1, borderTopWidth: 0, borderColor: '#ccc',
 	},
 	title: {
-		paddingTop: Platform.select({ios:3,android:0}),
-		fontSize: 14, fontFamily: 'GothamPro-Medium',
+		fontSize: 14, fontFamily: 'GothamPro-Bold',
 		lineHeight: 19,
 	},
 	ending: {
@@ -69,7 +67,7 @@ export default withNavigation(class MyListItem extends Component {
 		data = promo_date_diff(data);
 
 		return (
-			<TouchableOpacity style={styles.container} onPress={_=>this.props.navigation.push('promo_my_view',{data})}>
+			<TouchableOpacity style={styles.container} onPress={_=>this.props.navigation.push('promo_my_view',{id:data.id})}>
 				<Image style={[styles.image,{height:this.state.image_height}]} source={{uri:this.state.image_url}} />
 				<View style={styles.retailer_area}>
 					<Image style={styles.retailer_image} source={{uri:data.retailer.image_url}} />
