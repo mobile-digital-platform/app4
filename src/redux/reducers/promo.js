@@ -156,7 +156,6 @@ export const request = {
 			PromoID: data.promo_id,
 		});
 		if(response) {
-			console.log(response);
 			let points = response.PointsCount?.substr(0,response.PointsCount.indexOf(' ')),
 				points_type = response.PointsCount?.substr(response.PointsCount.indexOf(' ')+1);
 			return {response:{

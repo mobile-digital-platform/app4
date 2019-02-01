@@ -40,6 +40,8 @@ export default withNavigation(class MyPromoListComponent extends Component {
 					promo_id: this.state.data.id,
 				});
 				if(response) {
+					response.add_check = 1;
+					response.buy_prize = 1;
 					this.setState({details:response});
 				}
 				if(error) {

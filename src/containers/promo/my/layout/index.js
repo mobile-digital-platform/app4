@@ -1,7 +1,6 @@
-import React from 'react';
-import {FlatList,Image,ImageBackground,ScrollView,Text,TouchableOpacity,View} from 'react-native';
+import React,{Component} from 'react';
+import {Animated,Easing,FlatList,Image,ImageBackground,ScrollView,Text,TouchableOpacity,View} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import {withNavigation} from 'react-navigation';
 
 import Icon from 'react-native-vector-icons/EvilIcons';
 
@@ -24,7 +23,7 @@ const styles = EStyleSheet.create({
 	},
 	points_area: {
 		alignItems: 'flex-end',
-		position: 'absolute', top: 0, right: 10,
+		position: 'absolute', top: '-100%', right: 10,
 	},
 	points: {
 		justifyContent: 'center',
@@ -88,6 +87,7 @@ const styles = EStyleSheet.create({
 
 	bottom: {
 		alignItems: 'center',
+		marginTop: 0,
 		paddingVertical: 15, paddingHorizontal: 40,
 		borderTopWidth: 1, borderTopColor: '#ccc',
 	},
@@ -117,69 +117,121 @@ const styles = EStyleSheet.create({
 	},
 });
 
-export default withNavigation((props) => {
-	let {navigation,data,details,check} = props;
+export default class MyPromoListLayout extends Component {
+	animation = {
+		points_top: new Animated.Value(0),
+		bottom_top: new Animated.Value(0),
+	};
+	state = {
+		points_top: '-100%',
+		bottom_top: 0,
+	};
 
-	data = promo_date_diff(data);
+	componentDidMount() {
+		this.setState({
+			points_top: this.animation.points_top.interpolate({
+				inputRange: [0,1],
+				outputRange: ['-100%','0%'],
+			}),
+			// bottom_top: this.animation.bottom_top.interpolate({
+			// 	inputRange: [0,1],
+			// 	outputRange: [500,0],
+			// }),
+		});
+	}
+	componentDidUpdate(prev_props) {
+		// Получили данные по очкам
+		if(!prev_props.details.points && this.props.details.points) {
+			setTimeout(_=> {
+				Animated.timing(this.animation.points_top,{
+					toValue: 1,
+					duration: 500,
+					easing: Easing.bezier(0.5,0,0.2,1),
+				}).start();
+			},1000);
+		}
+		// Получили данные по участию
+		/*
+		if(
+			!(prev_props.details.add_check && prev_props.details.buy_prize) &&
+			  this.props.details.add_check && this.props.details.buy_prize
+		) {
+			setTimeout(async _=> {
+				Animated.timing(this.animation.bottom_top,{
+					toValue: 1,
+					duration: 500,
+					easing: Easing.bezier(0.3,0,0.7,1),
+				}).start();
+			},300);
+		}
+		*/
+	}
 
-	return (
-		<View style={styles.container}>
-			<ImageBackground style={styles.banner} imageStyle={{opacity:0.5}} source={{uri:data.image_url}}>
-				{details.points ? (
-				<View style={styles.points_area}>
-					<View style={styles.points}>
-						<Text style={styles.points_number}>{details.points}</Text>
-						<Text style={styles.points_type}>{details.points_type}</Text>
-					</View>
+	render() {
+		let {props,state} = this;
+		let {data,details,check} = props;
+
+		data = promo_date_diff(data);
+
+		return (
+			<View style={styles.container}>
+				<ImageBackground style={styles.banner} imageStyle={{opacity:0.5}} source={{uri:data.image_url}}>
+					{details.points ? (
+					<Animated.View style={[styles.points_area,{top:state.points_top}]}>
+						<View style={styles.points}>
+							<Text style={styles.points_number}>{details.points}</Text>
+							<Text style={styles.points_type}>{details.points_type}</Text>
+						</View>
+					</Animated.View>
+					) : null}
+					<Text style={styles.title}>{data.title.toUpperCase()}</Text>
+					<Text style={styles.ending}>{data.diff_text}</Text>
+				</ImageBackground>
+				<View style={styles.retailer_area}>
+					<Image style={styles.retailer_image} source={{uri:data.retailer.image_url}} />
 				</View>
-				) : null}
-				<Text style={styles.title}>{data.title.toUpperCase()}</Text>
-				<Text style={styles.ending}>{data.diff_text}</Text>
-			</ImageBackground>
-			<View style={styles.retailer_area}>
-				<Image style={styles.retailer_image} source={{uri:data.retailer.image_url}} />
-			</View>
-			<View style={styles.main_area}>
-			{props.check_error ? (
-				<View style={styles.empty}><Text style={styles.empty_text}>{check_error}</Text></View>
-			) : (
-				props.waiting ? (
-					<Wait/>
+				<View style={styles.main_area}>
+				{props.check_error ? (
+					<View style={styles.empty}><Text style={styles.empty_text}>{check_error}</Text></View>
 				) : (
-					check.length ? (
-						<ScrollView><FlatList
-							style={styles.list}
-							data={check}
-							renderItem={({item}) => (<Check data={item} />)}
-							// ItemSeparatorComponent={Separator}
-							keyExtractor={item => ''+item.id}
-						/></ScrollView>
+					props.waiting ? (
+						<Wait/>
 					) : (
-						<View style={styles.empty}><Text style={styles.empty_text}>
-							Пока у вас нет ни одной покупки по акции.{'\n\n'}
-							{data.retailer.has_loyalty_card ? (
-								details.add_check ? (
-									'Вы можете вручную добавить кассовый чек, нажав кнопку «Добавить»'
-								) : (
-									'Зарегистрируйте карту лояльности магазина в настройках, и используйте ее при покупке.\n'+
-									'Данные по покупкам добавятся автоматически.'
-								)
-							) : null}
-						</Text></View>
+						check.length ? (
+							<ScrollView><FlatList
+								style={styles.list}
+								data={check}
+								renderItem={({item}) => (<Check data={item} />)}
+								// ItemSeparatorComponent={Separator}
+								keyExtractor={item => ''+item.id}
+							/></ScrollView>
+						) : (
+							<View style={styles.empty}><Text style={styles.empty_text}>
+								Пока у вас нет ни одной покупки по акции.{'\n\n'}
+								{data.retailer.has_loyalty_card ? (
+									details.add_check ? (
+										'Вы можете вручную добавить кассовый чек, нажав кнопку «Добавить»'
+									) : (
+										'Зарегистрируйте карту лояльности магазина в настройках, и используйте ее при покупке.\n'+
+										'Данные по покупкам добавятся автоматически.'
+									)
+								) : null}
+							</Text></View>
+						)
 					)
-				)
-			)}
-			</View>
-			{/*details.add_check && details.buy_prize ? (
-				<View style={styles.bottom}>
+				)}
+				</View>
+				{details.add_check && details.buy_prize ? (
+				<Animated.View style={[styles.bottom,{marginTop:state.bottom_top}]}>
 					{details.add_check ? (
 						<TouchableOpacity style={styles.add_button}><Text style={styles.add_button_text}>Добавить чек</Text></TouchableOpacity>
 					) : null}
 					{details.buy_prize ? (
 						<TouchableOpacity style={styles.get_button}><Text style={styles.get_button_text}>Получить выигрыш</Text></TouchableOpacity>
 					) : null}
-				</View>
-			) : null*/}
-		</View>
-	);
-});
+				</Animated.View>
+				) : null}
+			</View>
+		);
+	}
+}

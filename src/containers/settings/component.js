@@ -31,12 +31,6 @@ export default withNavigation(class SettingsComponent extends Component {
 	save_personal_data = async (data) => {
 		// this.props.open_smoke();
 		this.setState({save_state:'waiting'});
-		// await new Promise(resolve => setTimeout(_=>{
-		// 	this.setState({save_state:'errored'});
-		// 	alert('Не удалось сохранить изменения');
-		// 	resolve();
-		// },5000));
-		// return;
 		// Если он уже вошел, то сохраняем, иначе регистрируем
 		if(this.props.user?.id) {
 			this.props.update_user(data);

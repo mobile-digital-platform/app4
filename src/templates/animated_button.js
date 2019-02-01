@@ -72,7 +72,7 @@ const linear = {
 }
 const circular = {
 	duration: 2000,
-	easing: Easing.ease,
+	easing: Easing.bezier(0.75,0,0.25,1),
 };
 
 /*
@@ -187,12 +187,11 @@ export default class AnimatedButton extends Component {
 	end = () => {
 		this.setState({state:'ended'});
 		if(this.props.state == 'ready') this.revert();
+		if(this.props.on_end) this.props.on_end();
 	}
 
 	on_press = () => {
-		// console.log(this.state);
-		// console.log(this.props);
-		if(this.props.state == 'ready') this.props.onPress();
+		if(this.props.state == 'ready') this.props.on_press();
 	}
 
 	render() {

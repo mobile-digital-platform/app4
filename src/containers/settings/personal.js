@@ -279,7 +279,7 @@ export default class Personal extends Component {
 						}}
 					/>
 				</View>
-				<AnimatedButton active={1} state={this.state.button_state} error={this.state.button_error} onPress={this.send}>Сохранить</AnimatedButton>
+				<AnimatedButton active={1} state={this.state.button_state} error={this.state.button_error} on_press={this.send}>Сохранить</AnimatedButton>
 				{/*
 				<TouchableOpacity style={[styles.save,styles[(this.state.waiting ? 'passive' : 'active')+'_button']]} onPress={this.send}>
 					<Text style={[styles.save_text,styles[(this.state.waiting ? 'passive' : 'active')+'_button_text']]}>Сохранить</Text>
