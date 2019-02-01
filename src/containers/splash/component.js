@@ -5,6 +5,8 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import alert	from '../../services/alert';
 import st		from '../../services/storage';
 
+import get_promo from '../../services/get_promo';
+
 import {request as promo_request}		from '../../redux/reducers/promo';
 import {request as settings_request}	from '../../redux/reducers/settings';
 
@@ -166,51 +168,12 @@ export default class SplashComponent extends Component {
 	}
 	// Загрузка данных об акциях
 	get_promo_list = async () => {
-		let data = await promo_request.get_list({user_id:this.props.user.id});
-		if(data.response) {
-			let items = data.response.items;
-			let waiting = [];
-			let failed = false;
-
-			for(let i=0; i<items.length; i++) {
-				let row = items[i];
-
-				// Набираем по всем акциям уточнения внутри торговых сетей
-				waiting.push(new Promise(async (resolve,reject) => {
-					let retailers_data = await promo_request.get_promo_retailers({promo_id:row.id,user_id:this.props.user.id});
-					if(retailers_data.response) {
-						items[i].promo_list = retailers_data.response.items.map(e =>({
-							...e,
-							retailer: this.props.promo.retailer_list.find(g => g.id==e.retailer_id),
-						}));
-					}
-					if(retailers_data.error) {
-						this.setState({promo:'failed'});
-						failed = true;
-					}
-					resolve()
-				}));
-			}
-			await Promise.all(waiting);
-
-			this.props.set_promo_list(items);
-
-			let my_items = [];
-			for(let i=0; i<items.length; i++) {
-				let row = items[i];
-				if(row.promo_list) for(let j=0; j<row.promo_list.length; j++) {
-					let nrow = row.promo_list[j];
-					if(nrow.participation) {
-						nrow.image_url = row.image_url;
-						my_items.push(nrow);
-					}
-				}
-			}
-			this.props.set_my_promo_list(my_items);
-
-			this.setState({promo:failed ? 'failed' : 'loaded'});
-		}
-		if(data.error) {
+		let res = await get_promo({user_id:this.props.user.id,retailer_list:this.props.promo.retailer_list});
+		if(res) {
+			this.props.set_promo_list(res.items);
+			this.props.set_my_promo_list(res.my_items);
+			await this.setState({promo:'loaded'});
+		} else {
 			this.setState({promo:'failed'});
 		}
 	}

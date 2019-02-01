@@ -8,6 +8,8 @@ import Tabs			from '../../main_tabs';
 import AllLayout	from './all_layout/list';
 import MyLayout		from './my_layout/list';
 
+import get_promo	from '../../../services/get_promo';
+
 export default withNavigation(class PromoListComponent extends Component {
 	constructor(props) {
 		super(props);
@@ -22,6 +24,7 @@ export default withNavigation(class PromoListComponent extends Component {
 
 	componentDidMount() {
 		// this.props.navigation.push('settings');
+		console.log(this.props);
 	}
 	componentDidUpdate(prev_props) {
 		// Страница по умолчанию, сюда можно перейти из принятия участия в акции
@@ -40,9 +43,14 @@ export default withNavigation(class PromoListComponent extends Component {
 		this.setState({page});
 		if(diff != 0) this.swipe.scrollBy(diff);
 	}
-	reload = () => {
+	reload = async () => {
 		this.setState({loading:true});
-		setTimeout(_=>this.setState({loading:false}),1000);
+		let res = await get_promo({user_id:this.props.user.id,retailer_list:this.props.retailer_list});
+		if(res) {
+			this.props.set_promo_list(res.items);
+			this.props.set_my_promo_list(res.my_items);
+		}
+		this.setState({loading:false});
 	}
 
 	render() {

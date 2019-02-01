@@ -47,6 +47,7 @@ export default withNavigation(class PromoParticipateComponent extends Component 
 		if(this.props.user.id) this.check_if_entered();
 	}
 
+	// Если он вошел и уже участвует в этой акции, то переводим на страницу акции
 	check_if_entered() {
 		if(this.props.promo.my_promo_list.length) {
 			let existing = this.props.promo.my_promo_list.find(e => e.id==this.state.data.id);
@@ -98,7 +99,7 @@ export default withNavigation(class PromoParticipateComponent extends Component 
 		if(response) {
 			// this.props.add_my_promo(this.state.data);
 			await this.get_promo_list(this.props.user.id,this.state.data.id);
-			this.props.navigation.navigate('promo_list',{page:1/*,scroll_to:this.state.data.id*/});
+			this.props.navigation.navigate('promo_list',{page:1,scroll_to:this.state.data.id});
 		}
 		if(error) {
 			await alert('Не удалось зарегистрироваться в акции');
@@ -144,52 +145,12 @@ export default withNavigation(class PromoParticipateComponent extends Component 
 		this.props.close_smoke();
 	}
 
-	// Загрузка данных об акциях, это тут на время
+	// Обновление данных об акциях
 	get_promo_list = async (user_id) => {
-		let data = await promo_request.get_list({user_id});
-		if(data.response) {
-			let items = data.response.items;
-			let waiting = [];
-
-			for(let i=0; i<items.length; i++) {
-				let row = items[i];
-
-				// Набираем по всем акциям уточнения внутри торговых сетей
-				waiting.push(new Promise(async (resolve,reject) => {
-					let retailers_data = await promo_request.get_promo_retailers({promo_id:row.id,user_id});
-					if(retailers_data.response) {
-						items[i].promo_list = retailers_data.response.items.map(e =>({
-							...e,
-							retailer: this.props.promo.retailer_list.find(g => g.id==e.retailer_id),
-						}));
-					}
-					if(retailers_data.error) {
-						this.setState({promo:'failed'});
-					}
-					resolve();
-				}));
-			}
-			await Promise.all(waiting);
-
-			this.props.set_promo_list(items);
-
-			let my_items = [];
-			for(let i=0; i<items.length; i++) {
-				let row = items[i];
-				for(let j=0; j<row.promo_list.length; j++) {
-					let nrow = row.promo_list[j];
-					if(nrow.participation) {
-						nrow.image_url = row.image_url;
-						my_items.push(nrow);
-					}
-				}
-			}
-			this.props.set_my_promo_list(my_items);
-
-			return true;
-		}
-		if(data.error) {
-			return false;
+		let res = await get_promo({user_id,retailer_list:this.props.promo.retailer_list});
+		if(res) {
+			this.props.set_promo_list(res.items);
+			this.props.set_my_promo_list(res.my_items);
 		}
 	}
 

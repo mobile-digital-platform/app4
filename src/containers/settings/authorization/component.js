@@ -3,8 +3,6 @@ import {Alert,Keyboard,Platform,StyleSheet,ScrollView,Text,TouchableOpacity,View
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {withNavigation} from 'react-navigation';
 
-import Icon				from 'react-native-vector-icons/EvilIcons';
-
 import AnimatedButton	from '../../../templates/animated_button';
 import Input			from '../../../templates/input';
 import InputPhone		from '../../../templates/input_phone';
@@ -13,7 +11,8 @@ import SubTitle			from '../../../templates/subtitle';
 import alert			from '../../../services/alert';
 import st				from '../../../services/storage';
 
-import {request as promo_request}		from '../../../redux/reducers/promo';
+import get_promo		from '../../../services/get_promo';
+
 import {request as settings_request}	from '../../../redux/reducers/settings';
 
 const styles = EStyleSheet.create({
@@ -179,7 +178,7 @@ export default withNavigation(class Authorization extends Component {
 				// В асинхронное хранилище изменения тоже записываем
 				st.merge('user',user_data.response);
 
-				await this.get_promo_list(user_data.response);
+				await this.get_promo_list(user_data.response.id);
 
 				this.props.navigation.goBack();
 			}
@@ -194,51 +193,11 @@ export default withNavigation(class Authorization extends Component {
 	}
 
 	// Загрузка данных об акциях
-	get_promo_list = async (user) => {
-		let data = await promo_request.get_list({user_id:user.id});
-		if(data.response) {
-			let items = data.response.items;
-			let waiting = [];
-
-			for(let i=0; i<items.length; i++) {
-				let row = items[i];
-
-				// Набираем по всем акциям уточнения внутри торговых сетей
-				waiting.push(new Promise(async (resolve,reject) => {
-					let retailers_data = await promo_request.get_promo_retailers({promo_id:row.id,user_id:user.id});
-					if(retailers_data.response) {
-						items[i].promo_list = retailers_data.response.items.map(e =>({
-							...e,
-							retailer: this.props.promo.retailer_list.find(g => g.id==e.retailer_id),
-						}));
-					}
-					if(retailers_data.error) {
-						this.setState({promo:'failed'});
-					}
-					resolve()
-				}));
-			}
-			await Promise.all(waiting);
-
-			this.props.set_promo_list(items);
-
-			let my_items = [];
-			for(let i=0; i<items.length; i++) {
-				let row = items[i];
-				for(let j=0; j<row.promo_list.length; j++) {
-					let nrow = row.promo_list[j];
-					if(nrow.participation) {
-						nrow.image_url = row.image_url;
-						my_items.push(nrow);
-					}
-				}
-			}
-			this.props.set_my_promo_list(my_items);
-
-			return true;
-		}
-		if(data.error) {
-			return false;
+	get_promo_list = async (user_id) => {
+		let res = await get_promo({user_id,retailer_list:this.props.promo.retailer_list});
+		if(res) {
+			this.props.set_promo_list(res.items);
+			this.props.set_my_promo_list(res.my_items);
 		}
 	}
 
