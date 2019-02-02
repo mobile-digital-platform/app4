@@ -6,10 +6,10 @@ import DateTimePicker from 'react-native-modal-datetime-picker';
 const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
-		justifyContent: 'center',
+		justifyContent: 'space-between',
 		alignItems: 'center',
 		minHeight: 65,
-		marginVertical: 5, paddingLeft: 25, paddingRight: 5,
+		marginVertical: 5, paddingLeft: 25, paddingRight: 20,
 		borderWidth: 1, borderColor: '#ccc',
 		borderRadius: 100,
 		backgroundColor: '#fff',
@@ -34,11 +34,10 @@ const styles = StyleSheet.create({
 		fontSize: 18, fontFamily: 'GothamPro',
 	},
 	left: {
-		flex: 1,
+		
 	},
 	right: {
-		width: 20,
-		textAlign: 'right',
+
 	},
 	error_text: {
 		marginLeft: 20, marginBottom: 10,
@@ -85,8 +84,9 @@ export default class Time extends Component {
 	
 	render() {
 		let state = this.state;
+		let props = this.props;
 		return (
-			<View style={this.props.style}>
+			<View style={props.style}>
 				<TouchableOpacity style={[styles.container, state.error ? styles.container_error : {}]} onPress={_ => this.change_picker(true)}>
 					<View style={styles.left}>
 						{state.value ? (
@@ -98,7 +98,7 @@ export default class Time extends Component {
 							<Text style={[styles.title, styles.title_active]}>{props.title}</Text>
 						)}
 					</View>
-					<Text styles={styles.right}><Icon name="check" style={{ color: '#7ED321' }} size={25} /></Text>
+					{state.value ? (<Text styles={styles.right}><Icon name="check" style={{ color: '#7ED321' }} size={25} /></Text>) : null}
 				</TouchableOpacity>
 				{state.error ? (<Text style={styles.error_text}>{state.error}</Text>) : null}
 				<DateTimePicker

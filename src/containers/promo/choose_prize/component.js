@@ -4,7 +4,7 @@ import {withNavigation} from 'react-navigation';
 
 import Layout from './layout';
 
-export default withNavigation(class PromoParticipaateComponent extends Component {
+export default withNavigation(class PromoChoosePrizeComponent extends Component {
 	state = {};
 
 	componentDidMount() {

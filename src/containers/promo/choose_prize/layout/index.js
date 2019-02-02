@@ -2,9 +2,8 @@ import React,{Component} from 'react';
 import { StyleSheet,FlatList,ImageBackground,ScrollView,Text,TouchableOpacity,View,Image,Modal,Alert} from 'react-native';
 import {withNavigation} from 'react-navigation';
 
-import MainText						from '../../../../templates/main_text';
-import SubTitle						from '../../../../templates/subtitle';
-import {AvailablePrize,Empty}		from '../../../../templates/prize';
+import MainText								from '../../../../templates/main_text';
+import {AvailablePrize as Prize, Empty}		from '../../../../templates/prize';
 
 const styles = StyleSheet.create({
 	container: {
@@ -88,9 +87,39 @@ export default withNavigation(class ChoosePrize extends Component {
 		super(props);
 
 		this.state = {
+			balance: 13,
+			data: [
+				{
+					id: 1,
+					title: 'Сет из разделочных досок специально для вас',
+					img: 'empty',
+					score_num: 5,
+					quantity: 10,
+				},
+				{
+					id: 2,
+					title: 'Сет из разделочных досок',
+					img: 'empty',
+					score_num: 22,
+					quantity: 0,
+				},
+				{
+					id: 3,
+					title: 'Сет из разделочных досок',
+					img: 'empty',
+					score_num: 1,
+					quantity: 102,
+				},
+				{
+					id: 4,
+					title: 'Сет из разделочных досок',
+					img: 'empty',
+					score_num: 17,
+					quantity: 0,
+				},
+			],
 			modalVisible: false,
-			balance: props.balance,
-			data: props.prizes,
+			selected: null,
 		};
 	}
 
@@ -103,11 +132,10 @@ export default withNavigation(class ChoosePrize extends Component {
 		}
 	}
 	changeModal = (value) =>{
-		this,setState({modalVisible: value});
+		this.setState({modalVisible: value});
 	}
 	choosePrize = (data) =>{
-		this,setState({modalVisible: true});
-		this.props.sendChoose(data);
+		this.setState({modalVisible:true, selected:data});
 	}
 	render() {
 		let state = this.state;
@@ -120,23 +148,23 @@ export default withNavigation(class ChoosePrize extends Component {
 				<FlatList
 					data={state.data}
 					keyExtractor={item => '' + item.id}
-					renderItem={({ item }) => <AvailablePrize prize={item} changeModal={this.changeModal} />}
-					ListEmptyComponent={() => <Empty />}
+					renderItem={({ item }) => <Prize data={item} balance={state.balance} choosePrize={this.choosePrize} />}
+					//ListEmptyComponent={() => <Empty />}
 				/>
 				<Modal
 					animationType="slide"
 					transparent={true}
 					visible={state.modalVisible}
-					onRequestClose={this.closeCamera}>
+					onRequestClose={_=>this.changeModal(false)}>
 					<View style={styles.modal}>
 						<View style={styles.modal_container}>
 							<Image
 								style={styles.modal_image}
-								source={{ uri: '' }}
+								source={{uri: state.selected?.img}}
 							/>
-							<MainText style={styles.modal_text} text={`Ты выбрал {}. Подтвержаешь свой выбор?`} />
+							<MainText style={styles.modal_text} text={`Ты выбрал «${state.selected?.title}». Подтвержаешь свой выбор?`} />
 							<View style={styles.buttons}>
-								<TouchableOpacity style={styles.button_ok} onPress={_=>this.props.navigation.push('promo_my_prize',{data})}>
+								<TouchableOpacity style={styles.button_ok} onPress={_=>this.props.navigation.push('promo_my_prize',state.selected)}>
 									<Text style={styles.button_ok_text}>Да</Text>
 								</TouchableOpacity>
 								<TouchableOpacity style={styles.button_no} onPress={_=>this.changeModal(false)}>

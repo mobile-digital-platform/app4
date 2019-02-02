@@ -19,7 +19,8 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'row',
 		justifyContent: 'center',
-		flexWrap: 'wrap',
+		//flexWrap: 'wrap',
+		//flexBasis: 0,
 	},
 	error_text: {
 		marginLeft: 20, marginBottom: 10,

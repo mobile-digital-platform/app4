@@ -85,6 +85,18 @@ const options = [
 export default class GetPrize extends Component {
 	constructor(props) {
 		super(props);
+		
+
+		this.state = {
+			name: '',
+			family: '',
+			father: '',
+			mail: '',
+			prize_center: '',
+		};
+	}
+	update = (data) =>{
+		this.setState(data);
 	}
 
 	render() {
@@ -94,13 +106,38 @@ export default class GetPrize extends Component {
 				<View style={styles.area}>
 					<MainText style={styles.main_text} text="Заполните форму для получения выигрыша в Центре выдачи призов." />
 					<View style={styles.block}>
-						<Input title="Имя" />
-						<Input title="Отчество" />
-						<Input title="Фамилия" />
+						<Input
+							title="Имя"
+							value={state.name}
+							update={value => this.update({ name: value })}
+							error={state.name_error}
+						/>
+						<Input
+							title="Отчество"
+							value={state.father}
+							update={value => this.update({ father: value })}
+							error={state.father_error}
+						/>
+						<Input
+							title="Фамилия"
+							value={state.family}
+							update={value => this.update({ family: value })}
+							error={state.family_error}
+						/>
 					</View>
 					<View style={styles.block}>
-						<Input title="E-mail" />
-						<Select title="Выберите центр выдачи" data={options} />
+						<Input
+							title="E-mail"
+							value={state.mail}
+							update={value => this.update({ mail: value })}
+							error={state.mail_error}
+						/>
+						<Select 
+							title="Выберите центр выдачи" 
+							data={options}
+							value={state.prize_center}
+							update={value => this.update({ prize_center: value })}
+						/>
 					</View>
 				</View>
 				<TouchableOpacity style={styles.map} onPress={this.send}>

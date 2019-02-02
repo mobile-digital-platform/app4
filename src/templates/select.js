@@ -51,9 +51,20 @@ const styles = StyleSheet.create({
 		left: 0,
 		right: 0,
 		bottom: 0,
-		backgroundColor: 'rgba(0,0,0,0.9)',
+		backgroundColor: 'rgba(0,0,0,0.8)',
 		justifyContent: 'center',
 		alignItems: 'center'
+	},
+	modal_option:{
+		flex: 0,
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
+		paddingVertical: 10,
+		paddingHorizontal: 10,
+		borderBottomWidth: 1,
+		borderBottomColor: '#eee',
+		paddingLeft: 15,
 	},
 	modal_cancel_button: {
 		alignSelf: 'center',
@@ -90,12 +101,12 @@ export default class Date extends Component {
 		this.setState({visible: value});
 	}
 	set_value = (value) => {
-		//this.setState({active:true, value:selectedDate, error:false, visible:false});
+		//this.setState({value, error:false, visible:false});
 		this.change_picker(false);
 		this.props.update(value);
 	}
 	clear_value = () => {
-		this.setState({ active: false, value: '', error: false, visible: false });
+		this.setState({value: '', error: false, visible: false });
 		this.props.update('');
 	}
 
@@ -132,6 +143,7 @@ export default class Date extends Component {
 					filterTextInputStyle={{fontSize: 18, paddingLeft: 20}}
 					cancelButtonStyle={styles.modal_cancel_button}
 					cancelButtonTextStyle={styles.modal_cancel_text}
+					//optionTextStyle={styles.modal_option}
 				/>
 			</View>
 		);

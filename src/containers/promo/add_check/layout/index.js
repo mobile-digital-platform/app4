@@ -121,8 +121,8 @@ export default withNavigation(class AddCheck extends Component {
 					state={this.state}
 					update_data={this.update_data}
 				/>
-				<TouchableOpacity style={[styles.save,styles[((state.waiting || state.disabled) ? 'passive' : 'active')+'_button']]} onPress={this.send_data}>
-					<Text style={[styles.save_text,styles[((state.waiting || state.disabled) ? 'passive' : 'active')+'_button_text']]}>Сохранить чек</Text>
+				<TouchableOpacity style={[styles.save,styles[(state.disabled ? 'passive' : 'active')+'_button']]} onPress={this.send_data}>
+					<Text style={[styles.save_text,styles[(state.disabled ? 'passive' : 'active')+'_button_text']]}>Сохранить чек</Text>
 				</TouchableOpacity>
 			</View>
 		);

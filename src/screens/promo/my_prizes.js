@@ -6,7 +6,7 @@ import {light,dark}			from '../../navigation';
 import Settings_Button		from '../../containers/settings_button';
 import Tabs					from '../../containers/main_tabs';
 
-import Promo_MyPrize		from '../../containers/promo/my_prize';
+import Promo_MyPrizes		from '../../containers/promo/my_prizes';
 
 const styles = StyleSheet.create({
 	container: {
@@ -26,7 +26,7 @@ export default class PromoView extends Component {
 		return (
 			<View style={styles.container}>
 				<StatusBar barStyle="light-content" />
-				<Promo_MyPrize/>
+				<Promo_MyPrizes/>
 			</View>
 		);
 	}

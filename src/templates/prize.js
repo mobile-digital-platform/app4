@@ -1,12 +1,14 @@
 import React,{Component} from 'react';
 import {StyleSheet,FlatList,ImageBackground,ScrollView,Text,TouchableOpacity,View,Image} from 'react-native';
 import {withNavigation} from 'react-navigation';
+import f from '../functions';
+import MainText						from './main_text';
 
 const styles = StyleSheet.create({
-	container: {
+	prize_container: {
 		backgroundColor: '#f1f1f1',
 		flexDirection: 'row',
-		padding: 20,
+		paddingVertical: 20, paddingHorizontal: 15,
 		marginBottom: 30,
 	},
 	image: {
@@ -35,28 +37,27 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	prize_text:{
-		flexDirection: 'row',
-		fontSize: 16,
-	},
-	score_number:{
-		fontWeight: 'bold',
-		marginRight: 5,
 		fontSize: 16,
 	},
 	prize_quantity: {
+		fontSize: 16,
 		fontWeight: 'bold',
 		marginLeft: 5,
-		fontSize: 16,
 		color: 'red',
 	},
-	status_text:{
-		flexDirection: 'row',
+	score_num:{
+		fontSize: 16,
+		fontWeight: 'bold',
+		marginRight: 5,
+		color: 'black',
+	},
+	status_grey:{
 		fontSize: 16,
 		color: '#bbb',
-		marginVertical: 10,
+		marginVertical: 5,
 	},
-	button: {
-		padding: 7,
+	button:{
+		padding: 10,
 		borderRadius: 50,
 		backgroundColor: 'red',
 		width: '50%',
@@ -66,34 +67,59 @@ const styles = StyleSheet.create({
 		fontSize: 18,
 		textAlign: 'center',
 	},
+
+	/* дополнительные стили для страницы "Мои призы" */
+	container: {
+		marginBottom: 20,
+	},
+	enter_container: {
+		paddingHorizontal: 15,
+		paddingBottom: 25,
+	},
+	main_text: {
+		marginBottom: 15,
+		textAlign: 'left'
+	},
+	comment:{
+		fontSize: 17,
+		marginBottom: 20,
+	},
+	status_red:{
+		fontSize: 16,
+		color: 'red',
+		marginVertical: 5,
+	},
 });
 
 export const AvailablePrize = (props) => {
-	let prize = props.prize;
+	let data = props.data;
 	return (
-		<View style={styles.container}>
+		<View style={styles.prize_container}>
 			<Image
 				style={styles.image}
-				source={{ uri: prize.img }}
+				source={{uri: data.img}}
 			/>
 			<View style={styles.area}>
-				<Text style={styles.title}>{prize.title}</Text>
+				<Text style={styles.title}>{data.title}</Text>
 				<View style={styles.prize_info}>
 					<View style={styles.block}>
-						<Text style={styles.score_num}>{prize.score_number}</Text>
-						<Text style={styles.prize_text}>баллов</Text>
+						<Text style={styles.score_num}>{data.score_num}</Text>
+						<Text style={styles.prize_text}>{'балл'+f.number_case(data.score_num,1)}</Text>
 					</View>
 					<View style={styles.block}>
 						<Text style={styles.prize_text}>Осталось:</Text>
-						<Text style={styles.prize_quantity}>{prize.quantity}</Text>
+						<Text style={styles.prize_quantity}>{data.quantity} шт.</Text>
 					</View>
 				</View>
-				{prize.quantity ? (
-					<TouchableOpacity style={styles.button} onPress={this.props.choosePrize(prize)}>
-						<Text style={styles.button_text}>Выбрать</Text>
-					</TouchableOpacity>
-				) : (
-					<Text style={styles.status_text}>Продолжайте копить баллы</Text>
+				{!data.quantity ? (
+					<Text style={styles.status_grey}>Увы, этот товар закончился</Text>
+				) : (data.score_num < props.balance ? (
+						<TouchableOpacity style={styles.button} onPress={_ => props.choosePrize(data)}>
+							<Text style={styles.button_text}>Выбрать</Text>
+						</TouchableOpacity>
+					) : (
+						<Text style={styles.status_grey}>Продолжайте копить балллы</Text>
+					)
 				)}
 			</View>
 		</View>
@@ -101,118 +127,32 @@ export const AvailablePrize = (props) => {
 };
 
 
-/* const styles = StyleSheet.create({
-	container: {
-		backgroundColor: '#f1f1f1',
-		flexDirection: 'row',
-		padding: 20,
-		marginBottom: 30,
-	},
-	image: {
-		borderRadius: 50,
-		borderWidth: 1, borderColor: '#bbb',
-		width: 80, height: 80,
-		backgroundColor: '#fff',
-	},
-	area: {
-		marginLeft: 20,
-		flex: 1
-	},
-	title:{
-		fontSize: 20,
-		fontWeight: 'bold',
-		marginBottom: 10,
-		color: '#3D3D3D',
-	},
-	prize_info:{
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		marginBottom: 15, marginTop: 5,
-	},
-	score_block:{
-		flexDirection: 'row',
-		alignItems: 'center',
-	},
-	score_number:{
-		fontWeight: 'bold',
-		marginRight: 5,
-		fontSize: 16,
-	},
-	score_balance: {
-		fontWeight: 'bold',
-		marginLeft: 5,
-		fontSize: 16,
-		color: 'red',
-	},
-	score_text:{
-		flexDirection: 'row',
-		fontSize: 16,
-	},
-	check_info:{
-		flexDirection: 'row',
-		fontSize: 17,
-		marginBottom: 20,
-	},
-	status_text_grey:{
-		flexDirection: 'row',
-		fontSize: 16,
-		color: '#bbb',
-		marginVertical: 10,
-	},
-	status_text_grey_red:{
-		flexDirection: 'row',
-		fontSize: 16,
-		color: 'red',
-		marginVertical: 10,
-	},
-	button: {
-		padding: 7,
-		borderRadius: 50,
-		backgroundColor: 'red',
-		width: '50%',
-	},
-	button_text: {
-		color: '#fff',
-		fontSize: 18,
-		textAlign: 'center',
-	},
-});
-
-
 export const MyPrize = (props) => {
+	let data = props.data;
 	return (
 		<View style={styles.container}>
-			<Image
-				style={styles.image}
-				source={{ uri: '' }}
-			/>
-			<View style={styles.area}>
-				<Text style={styles.title}>888</Text>
-				{false || (<Text style={styles.check_info}>За чеки:  11111, 222222, 333333</Text>)}
-				{false || (<Text style={styles.status_text_grey}>Продолжайте копить баллы</Text>)}
-				{true || (<Text style={styles.status_text_grey_red}>Отправлено. Смотреть статус</Text>)}
-				{true || (<TouchableOpacity style={styles.button}>
-					<Text style={styles.button_text}>Внести данные</Text>
-				</TouchableOpacity>)
-				}
+			<View style={styles.enter_container}>
+				<MainText style={styles.main_text} text="Чтобы мы могли отправить призы, необходимо внести данные" />
+				<TouchableOpacity style={styles.button}>
+					<Text style={styles.button_text}>Ввести данные</Text>
+				</TouchableOpacity>
+			</View>
+			<View style={styles.prize_container}>
+				<Image
+					style={styles.image}
+					source={{ uri: 'data.img' }}
+				/>
+				<View style={styles.area}>
+					<Text style={styles.title}>888</Text>
+					{false || (<Text style={styles.comment}>{'data.comment'}</Text>)}
+					{false || (<Text style={styles.status_text_grey}>{'data.comment'}</Text>)}
+					{true || (<Text style={styles.status_text_grey_red}>{'data.status'}</Text>)}
+					{true || (<TouchableOpacity style={styles.button}>
+						<Text style={styles.button_text}>Внести данные</Text>
+					</TouchableOpacity>)
+					}
+				</View>
 			</View>
 		</View>
 	)
 };
-
-
-const empty_styles = StyleSheet.create({
-	container: {
-		paddingVertical: 10,
-	},
-	text: {
-		fontSize: 14, fontFamily: 'GothamPro',
-		lineHeight: 16,
-	},
-});
-
-export const Empty = (props) => (
-	<View style={empty_styles.container}>
-		<Text style={empty_styles.text}>{props.text}</Text>
-	</View>
-); */
