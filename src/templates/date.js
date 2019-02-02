@@ -1,38 +1,48 @@
 import React,{Component} from 'react';
-import {StyleSheet,TouchableOpacity,TextInput,Text,View} from 'react-native';
+import {StyleSheet,TouchableOpacity,TextInput,Text,View,Platform} from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 
 const styles = StyleSheet.create({
 	container: {
-		justifyContent: 'center',
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center',
 		minHeight: 65,
-		marginVertical: 5, paddingHorizontal: 25,
+		marginVertical: 5, paddingLeft: 25, paddingRight: 20,
 		borderWidth: 1, borderColor: '#ccc',
 		borderRadius: 100,
 		backgroundColor: '#fff',
 	},
 	container_error: {
-		borderColor: 'red',
+		borderColor: '#f40000',
 	},
 	title: {
-		marginTop: 10,
+		marginTop: 10, paddingTop: Platform.select({ ios: 3, android: 0 }),
 		// backgroundColor: '#eee',
 		color: '#bbb',
-		fontSize: 14,
+		fontSize: 14, fontFamily: 'GothamPro',
 	},
 	title_active: {
-		marginTop: 0,
-		fontSize: 20,
+		marginTop: 0, paddingTop: Platform.select({ ios: 3, android: 0 }),
+		fontSize: 18, fontFamily: 'GothamPro',
 	},
 	input: {
 		width: '100%',
-		marginBottom: 8, paddingVertical: 3,
-		fontSize: 18,
+		marginBottom: 8,
+		paddingTop: 6, paddingBottom: 3,
+		fontSize: 18, fontFamily: 'GothamPro',
+	},
+	left: {
+
+	},
+	right: {
+
 	},
 	error_text: {
-		marginLeft: 20, marginBottom: 10,
-		fontSize: 14,
-		color: 'red',
+		marginLeft: 20, marginBottom: 10, paddingTop: Platform.select({ ios: 3, android: 0 }),
+		fontSize: 14, fontFamily: 'GothamPro',
+		color: '#f40000',
 	},
 });
 
@@ -40,83 +50,63 @@ export default class Date extends Component {
 	constructor(props) {
 		super(props);
 
-		this.input = React.createRef();
-
 		this.state = {
-			active: !!(props.value?.length),
+			visible: false,
 			value: props.value ?? '',
 			error: props.error,
-			isDateTimePickerVisible: false,
 		};
 	}
 
 	componentDidUpdate(prevProps) {
 		if(!Object.is(this.props,prevProps)) {
 			this.setState(state => ({
-				active: state.active || this.props.value?.length,
-				value: state.value || this.props.value || '',
+				value: ((this.props.value!=state.value) ? this.props.value : (this.props.value || '')),
 				error: this.props.error,
 			}));
 		}
 	}
-
-	showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
- 
-  	hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
- 
-  	handleDatePicked = (date) => {
-		console.log('A date has been picked: ', date);
-		this.hideDateTimePicker();
-	};
-
-	set_value = (value) => {
-		this.setState({value,error:false});
-		if(this.props.update) this.props.update(value);
+	change_picker = (value) => {
+		this.setState({visible:value});
 	}
+	set_value = (date) => {
+		const day = date.getDate() < 10 ? '0'+date.getDate() : date.getDate();
+		const month = date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1;
+		const year = date.getFullYear();
+		const selectedDate = day+' . '+month+' . '+year;
 
-	set_active = async () => {
-		await this.setState({active:true});
-		this.input.current.focus();
-
-		if(this.props.keyboard_options) {
-			this.props.keyboard_options.scroll.current.scrollTo({x:0,y:this.props.keyboard_options.offset,animated:true});
-		}
-		this.showDateTimePicker();
+		//this.setState({value:selectedDate, error:false, visible:false});
+		this.change_picker(false);
+		this.props.update(selectedDate);
 	}
-	reset_active = () => {
-		if(!this.state.value.length) this.setState({active:false});
-		if(this.props.send) this.props.send(this.state.value);
+	clear_value = () => {
+		this.setState({value:'', error:false, visible:false});
+		this.props.update('');
 	}
-
+	
 	render() {
 		let state = this.state;
-
+		let props = this.props;
 		return (
-			<View>
-				{state.active ? (
-					<View style={[styles.container,state.error?styles.container_error:{}]}>
-						<Text style={styles.title}>{this.props.title}</Text>
-						<TextInput
-							ref={this.input}
-							style={styles.input}
-							secureTextEntry={this.props.password}
-							value={state.value}
-							keyboardType={this.props.type}
-							onChangeText={this.set_value}
-							onBlur={this.reset_active}
-						/>
-						<DateTimePicker
-							isVisible={this.state.isDateTimePickerVisible}
-							onConfirm={this.handleDatePicked}
-							onCancel={this.hideDateTimePicker}
-						/>
+			<View style={props.style}>
+				<TouchableOpacity style={[styles.container, state.error ? styles.container_error : {}]} onPress={_ => this.change_picker(true)}>
+					<View style={styles.left}>
+						{state.value ? (
+							<View>
+								<Text style={styles.title}>{props.title}</Text>
+								<Text style={styles.input}>{state.value}</Text>
+							</View>
+						) : (
+							<Text style={[styles.title, styles.title_active]}>{props.title}</Text>
+						)}
 					</View>
-				) : (
-					<TouchableOpacity style={[styles.container,state.error?styles.container_error:{}]} onPress={this.set_active}>
-						<Text style={[styles.title,styles.title_active]}>{this.props.title}</Text>
-					</TouchableOpacity>
-				)}
+					{state.value ? (<Text styles={styles.right}><Icon name="check" style={{ color: '#7ED321' }} size={25} /></Text>) : null}
+				</TouchableOpacity>
 				{state.error ? (<Text style={styles.error_text}>{state.error}</Text>) : null}
+				<DateTimePicker
+					isVisible={state.visible}
+					onConfirm={this.set_value}
+					onCancel={_ => this.change_picker(false)}
+				/>
 			</View>
 		);
 	}
