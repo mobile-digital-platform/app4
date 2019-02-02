@@ -1,12 +1,8 @@
 import React,{Component} from 'react';
-import {Animated,Easing,FlatList,Image,ImageBackground,ScrollView,Text,TouchableOpacity,View} from 'react-native';
+import {Animated,Easing,ActivityIndicator,FlatList,Image,ImageBackground,ScrollView,Text,TouchableOpacity,View} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
-import Icon from 'react-native-vector-icons/EvilIcons';
-
 import promo_date_diff from '../../../../services/promo_date_diff';
-
-import Wait			from '../../../../templates/wait';
 
 import Check		from './check';
 import Separator	from './separator';
@@ -195,7 +191,7 @@ export default class MyPromoListLayout extends Component {
 					<View style={styles.empty}><Text style={styles.empty_text}>{check_error}</Text></View>
 				) : (
 					props.waiting ? (
-						<Wait/>
+						<ActivityIndicator size='large' />
 					) : (
 						check.length ? (
 							<ScrollView><FlatList

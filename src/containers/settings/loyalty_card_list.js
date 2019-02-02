@@ -3,7 +3,7 @@ import {Platform,FlatList,Image,TouchableOpacity,Text,View} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {withNavigation} from 'react-navigation';
 
-import Icon from 'react-native-vector-icons/EvilIcons';
+import Cross from '../../../assets/ui/cross.png';
 
 import SubTitle from '../../templates/subtitle';
 
@@ -68,35 +68,38 @@ const item_styles = EStyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		alignItems: 'flex-start',
+		alignItems: 'center',
 		paddingVertical: 15,
 	},
 	image: {
-		height: 50, width: 50,
-		borderRadius: 25,
+		height: 40, width: 40,
+		borderRadius: 20,
 		backgroundColor: '#ddd',
 	},
 	area: {
 		flex: 1,
 		justifyContent: 'space-between',
 		marginLeft: 10,
+		// backgroundColor: '#ddd',
 	},
 	title: {
-		paddingTop: 5,
 		fontSize: 12, fontFamily: 'GothamPro',
+		lineHeight: 14,
 	},
 	about: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		alignItems: 'flex-end',
+		alignItems: 'flex-start',
+		marginTop: 5,
 	},
 	number: {
-		marginBottom: 3,
+		paddingTop: 2,
 		fontSize: 14, fontFamily: 'GothamPro-Medium',
 	},
 	remove: {
-		color: '$red',
-		fontSize: 14,
+	},
+	remove_image: {
+		height: 14, width: 14,
 	},
 });
 
@@ -110,8 +113,8 @@ const Item = ({data,retailer_list,remove}) => {
 				<Text style={item_styles.title}>{retailer.title}</Text>
 				<View style={item_styles.about}>
 					<Text style={item_styles.number}>{data.number}</Text>
-					<TouchableOpacity onPress={_=>remove(retailer.id)}>
-						<Text style={item_styles.remove}><Icon name="close" style={{color:EStyleSheet.value("$red")}} size={30} /></Text>
+					<TouchableOpacity style={item_styles.remove} onPress={_=>remove(retailer.id)}>
+						<Image style={item_styles.remove_image} source={Cross} />
 					</TouchableOpacity>
 				</View>
 			</View>

@@ -2,12 +2,12 @@ import React,{Component} from 'react';
 import {Dimensions,Keyboard,Platform,KeyboardAvoidingView,TouchableOpacity,Text,View} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
-import Input		from '../../templates/input';
-import InputPhone	from '../../templates/input_phone';
-import Textarea		from '../../templates/textarea';
-import SelectCity	from '../../templates/select_city';
-import SubTitle		from '../../templates/subtitle';
 import AnimatedButton	from '../../templates/animated_button';
+import Input			from '../../templates/input';
+import InputPhone		from '../../templates/input_phone';
+import Textarea			from '../../templates/textarea';
+import SelectCity		from '../../templates/select_city';
+import SubTitle			from '../../templates/subtitle';
 
 const styles = EStyleSheet.create({
 	container: {
@@ -24,19 +24,6 @@ const styles = EStyleSheet.create({
 		fontSize: 16, fontFamily: 'GothamPro-Medium',
 		textAlign: 'center',
 		lineHeight: 19,
-	},
-
-	active_button: {
-		backgroundColor: '#f40000',
-	},
-	active_button_text: {
-		color: '#fff',
-	},
-	passive_button: {
-		backgroundColor: '#f1f1f1',
-	},
-	passive_button_text: {
-		color: '#d5d5d5',
 	},
 });
 
@@ -279,7 +266,7 @@ export default class Personal extends Component {
 						}}
 					/>
 				</View>
-				<AnimatedButton active={1} state={this.state.button_state} error={this.state.button_error} on_press={this.send}>Сохранить</AnimatedButton>
+				<AnimatedButton active={true} state={this.state.button_state} on_press={this.send}>Сохранить</AnimatedButton>
 				{/*
 				<TouchableOpacity style={[styles.save,styles[(this.state.waiting ? 'passive' : 'active')+'_button']]} onPress={this.send}>
 					<Text style={[styles.save_text,styles[(this.state.waiting ? 'passive' : 'active')+'_button_text']]}>Сохранить</Text>

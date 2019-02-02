@@ -1,9 +1,10 @@
 import React,{Component} from 'react';
-import {StyleSheet,ScrollView,TouchableOpacity,View,Text} from 'react-native';
 import {withNavigation} from 'react-navigation';
 
-import alert	from '../../../services/alert';
-import st		from '../../../services/storage';
+import alert		from '../../../services/alert';
+import st			from '../../../services/storage';
+
+import get_promo	from '../../../services/get_promo';
 
 import {request as promo_request}		from '../../../redux/reducers/promo';
 import {request as settings_request}	from '../../../redux/reducers/settings';

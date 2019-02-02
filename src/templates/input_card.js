@@ -4,8 +4,6 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import {TextInputMask} from 'react-native-masked-text';
 import {withNavigation} from 'react-navigation';
 
-import Icon from 'react-native-vector-icons/EvilIcons';
-
 const styles = EStyleSheet.create({
 	container: {
 		justifyContent: 'center',

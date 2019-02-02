@@ -1,15 +1,14 @@
 import React from 'react';
-import {StyleSheet,View} from 'react-native';
+import {StyleSheet,ActivityIndicator,View} from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 import {connect} from 'react-redux';
 
 import {open_smoke,close_smoke,module as smoke_module} from '../redux/reducers/smoke';
 
-import Wait from '../templates/wait';
-
 const mapStateToProps = state => ({...state[smoke_module]});
 const mapDispatchToProps = {open_smoke,close_smoke};
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
 	container: {
 		flex: 1,
 		justifyContent: 'center',
@@ -21,6 +20,6 @@ const styles = StyleSheet.create({
 
 export default connect(mapStateToProps,mapDispatchToProps)(({visible}) => visible ? (
 	<View style={styles.container}>
-		<Wait style={{color:'#eee'}} />
+		<ActivityIndicator size='large' />
 	</View>
 ) : null);

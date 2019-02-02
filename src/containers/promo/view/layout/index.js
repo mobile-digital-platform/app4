@@ -3,8 +3,6 @@ import {FlatList,ImageBackground,ScrollView,Text,TouchableOpacity,View} from 're
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {withNavigation} from 'react-navigation';
 
-import Icon from 'react-native-vector-icons/EvilIcons';
-
 import SubTitle		from '../../../../templates/subtitle';
 // import BackgroundImage from '../../../../templates/background_image';
 

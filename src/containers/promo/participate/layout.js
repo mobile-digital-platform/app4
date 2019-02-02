@@ -163,7 +163,7 @@ export default withNavigation(class Participate extends Component {
 		};
 
 		this.state = {
-			name:			'',
+			name:			'x',
 			name_error:		'',
 			father:			'',
 			family:			'',
@@ -171,7 +171,7 @@ export default withNavigation(class Participate extends Component {
 			city_id:		0,
 			city_name:		'',
 			city_error:		'',
-			phone:			'',
+			phone:			'+791700000',
 			phone_confirmed:false,
 			phone_error:	'',
 			mail:			'',

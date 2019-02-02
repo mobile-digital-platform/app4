@@ -14,12 +14,11 @@ const styles = EStyleSheet.create({
 	},
 	button: {
 		alignItems: 'center',
-		height: 50, width: '100%',
+		width: '100%',
 		padding: 15,
 		borderRadius: 40,
 	},
 	button_text: {
-		paddingTop: Platform.select({ios:3,android:0}),
 		fontSize: 16, fontFamily: 'GothamPro-Medium',
 		textAlign: 'center',
 		lineHeight: 19,
@@ -74,6 +73,7 @@ const circular = {
 	duration: 2000,
 	easing: Easing.bezier(0.75,0,0.25,1),
 };
+const end_timeout = 500;
 
 /*
 Состояния:
@@ -92,6 +92,9 @@ export default class AnimatedButton extends Component {
 		this.circular_progress;
 
 		this.state = {
+			layout: null,
+			height: 50,
+
 			button_width_value: new Animated.Value(1),
 			button_width: '100%',
 
@@ -107,12 +110,7 @@ export default class AnimatedButton extends Component {
 	}
 
 	componentDidMount() {
-		this.setState({
-			button_width: this.state.button_width_value.interpolate({
-				inputRange: [0,1],
-				outputRange: ['17%','100%'],
-			}),
-
+		// this.setState({
 			// tick_left: this.state.tick_size_value.interpolate({
 			// 	inputRange: [0,1],
 			// 	outputRange: [ 8*EStyleSheet.value("$scale"),12*EStyleSheet.value("$scale")],
@@ -121,19 +119,35 @@ export default class AnimatedButton extends Component {
 			// 	inputRange: [0,1],
 			// 	outputRange: [13*EStyleSheet.value("$scale"),20*EStyleSheet.value("$scale")],
 			// }),
-		});
+		// });
 	}
-	componentDidUpdate(prev_props) {
+	componentDidUpdate(prev_props,prev_state) {
+		// Кнопка расположилась на экране
+		if(!prev_state.layout && this.state.layout) {
+			let {height,width} = this.state.layout;
+			this.setState({
+				height,
+				button_width: this.state.button_width_value.interpolate({
+					inputRange: [0,1],
+					outputRange: [height,width],
+				}),
+			});
+		}
+		// Началось сужение
 		if(prev_props.state == 'ready' && this.props.state == 'waiting') this.shrink();
+
+		// Кнопка снова готова
 		if(['waiting','end'].indexOf(prev_props.state)>=0 && this.props.state == 'ready') this.revert();
 	}
 	componentWillUnmount() {
 		this.animation?.stop();
 	}
 
+	// Обращение готовое состояние
 	revert = () => {
 		this.setState({state:'ready'});
 	}
+	// Сужение
 	shrink = () => {
 		this.setState({
 			state: 'shrinking',
@@ -147,6 +161,7 @@ export default class AnimatedButton extends Component {
 			easing: linear.easing,
 		}).start(_=>this.rotate(true));
 	}
+	// Вращение
 	rotate = (first = false) => {
 		// Прокручиваем в первый раз, затем, если все еще ждем результата
 		if(first || this.props.state == 'waiting') {
@@ -169,6 +184,7 @@ export default class AnimatedButton extends Component {
 			this.expand();
 		}
 	}
+	// Расширение
 	expand = () => {
 		this.setState({state:'expanding'});
 
@@ -184,10 +200,11 @@ export default class AnimatedButton extends Component {
 		// 	easing: linear.easing,
 		// });
 	}
+	// Конец
 	end = () => {
 		this.setState({state:'ended'});
 		if(this.props.state == 'ready') this.revert();
-		if(this.props.on_end) this.props.on_end();
+		if(this.props.on_end) setTimeout(this.props.on_end,this.props.end_timeout ?? end_timeout);
 	}
 
 	on_press = () => {
@@ -195,35 +212,56 @@ export default class AnimatedButton extends Component {
 	}
 
 	render() {
-		let props = this.props,state = this.state;
+		let {props,state} = this;
 
+		const props_styles = EStyleSheet.create({
+			container:	props.style?.container	?? {},
+			button:		props.style?.button		?? {},
+			text:		props.style?.text		?? {},
+		});
+
+		let container_styles = [
+			styles.container,
+			props_styles.container,
+			{height:state.height*EStyleSheet.value("$scale")},
+		];
 		let button_styles = [
 			styles.button,
-			props.style?.container,
+			props_styles.button,
 			props.active ? styles.active_button : styles.passive_button,
 			{width:this.state.button_width},
 		];
 		let button_text_styles = [
 			styles.button_text,
-			props.style?.text,
+			props_styles.text,
 			props.active ? styles.active_button_text : styles.passive_button_text,
 		];
 
-		if(['ready','shrinking'].indexOf(state.state)>=0) {
+		if(state.state == 'ready') {
 			return (
-				<TouchableOpacity style={styles.container} onPress={this.on_press}>
+				<TouchableOpacity style={container_styles} onPress={this.on_press} onLayout={e => {
+					if(!this.state.layout) this.setState({layout:e.nativeEvent.layout})
+				}}>
 					<Animated.View style={button_styles}>
 						<Text style={button_text_styles}>{props.children}</Text>
 					</Animated.View>
 				</TouchableOpacity>
 			)
+		} else if(state.state == 'shrinking') {
+			return (
+				<View style={container_styles}>
+					<Animated.View style={button_styles}>
+						<Text style={button_text_styles}>{props.children}</Text>
+					</Animated.View>
+				</View>
+			)
 		} else if(state.state == 'rotating') {
 			return (
-				<View style={styles.container}>
+				<View style={container_styles}>
 					<AnimatedCircularProgress
 						ref={ref => this.circular_progress=ref}
-						size={styles.button.height}
-						width={styles.button.height/10}
+						size={state.layout.height}
+						width={state.layout.height/10}
 						prefill={0}
 						fill={100}
 						tintColor={state.main_color}
@@ -237,7 +275,7 @@ export default class AnimatedButton extends Component {
 			);
 		} else if(['expanding','ended'].indexOf(state.state)>=0) {
 			return (
-				<View style={styles.container}>
+				<View style={container_styles}>
 					<Animated.View style={button_styles}>
 					{props.state == 'end' ? (
 						<View style={styles.tick_area}>
@@ -246,9 +284,6 @@ export default class AnimatedButton extends Component {
 							<Animated.View style={[styles.tick_right]} />
 						</View>
 					) : null}
-					{/*props.state == 'ready' ? (
-						<Text style={button_text_styles}>{props.children}</Text>
-					) : null*/}
 					</Animated.View>
 				</View>
 			);

@@ -108,7 +108,7 @@ export default class MainTabs extends Component {
 		return (
 			<View style={styles.container}>
 				<View style={styles.tab_bar}>
-					<Animated.View style={[styles.background_tab,{width:state.width,left:state.left}]} />
+					<Animated.View style={[styles.background_tab,{left:state.left,width:state.width}]} />
 					<TouchableOpacity style={left_styles} onPress={_=>props.change_page(0)}>
 						<Text style={left_text_styles}>Все акции</Text>
 					</TouchableOpacity>

@@ -93,7 +93,7 @@ export default class SelectRetailer extends Component {
 
 	open  = () => {
 		Keyboard.dismiss();
-		this.setState({active:true});
+		if(this.props.data.length) this.setState({active:true});
 	}
 	close = () => this.setState({active:false});
 

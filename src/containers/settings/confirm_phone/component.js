@@ -3,13 +3,14 @@ import {Keyboard,Platform,StyleSheet,ScrollView,Text,TouchableOpacity,View} from
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {withNavigation} from 'react-navigation';
 
-import Input		from '../../../templates/input';
-import SubTitle		from '../../../templates/subtitle';
+import AnimatedButton	from '../../../templates/animated_button';
+import Input			from '../../../templates/input';
+import SubTitle			from '../../../templates/subtitle';
 
-import alert		from '../../../services/alert';
-import st			from '../../../services/storage';
+import alert			from '../../../services/alert';
+import st				from '../../../services/storage';
 
-import {request}	from '../../../redux/reducers/settings';
+import {request}		from '../../../redux/reducers/settings';
 
 const styles = EStyleSheet.create({
 	main: {
@@ -25,12 +26,7 @@ const styles = EStyleSheet.create({
 		paddingVertical: 15,
 	},
 	main_button: {
-		marginBottom: 10, padding: 15,
-		borderRadius: 40,
-	},
-	main_button_text: {
-		fontSize: 16, fontFamily: 'GothamPro-Medium',
-		textAlign: 'center',
+		padding: 15,
 	},
 	again: {
 		paddingVertical: 20, paddingHorizontal: 40,
@@ -77,6 +73,9 @@ export default withNavigation(class ConfirmPhoneComponent extends Component {
 			code: '',
 			timeout: 0,
 			state: 'starting',
+
+			button_state: 'ready',
+			result: false,
 		};
 	}
 
@@ -109,7 +108,7 @@ export default withNavigation(class ConfirmPhoneComponent extends Component {
 			this.props.open_smoke();
 			let {response,error} = await request.phone_send_code(this.props.user.id);
 			if(response) {
-				// this.setState({code:response.code});
+				this.setState({code:response.code});
 				if(this.state.state == 'expired') alert("Код отправлен повторно");
 			}
 			if(error) {
@@ -129,44 +128,54 @@ export default withNavigation(class ConfirmPhoneComponent extends Component {
 			return;
 		}
 
-		this.props.open_smoke();
+		this.setState({button_state:'waiting'});
+		// this.props.open_smoke();
+
 		let {response,error} = await request.phone_confirm({user_id:this.props.user.id,code:this.state.code});
 		this.props.close_smoke();
 		if(response) {
+			this.setState({button_state:'end',result:true});
 			this.props.update_user({phone_confirmed:true});
 			st.merge('user',{phone_confirmed:true});
 			await alert('Номер телефона успешно подтвержден');
-			this.props.navigation.goBack();
 		}
 		if(error) {
-			console.log('error',error);
+			this.setState({button_state:'ready',result:false});
 			await alert(error.message);
 		}
-		this.props.close_smoke();
+		// this.props.close_smoke();
+	}
+	back = () => {
+		if(this.state.result) this.props.navigation.goBack();
 	}
 
 	render() {
 		let state = this.state;
 		// console.log("ConfirmPhoneComponent",this.props,this.state);
 
-		let main_button_styles			= [styles.main_button];
-		let main_button_text_styles		= [styles.main_button_text];
-		let again_button_styles			= [styles.again_button];
-		let again_button_text_styles	= [styles.again_button_text];
-
-		main_button_styles[1]		= styles.active_button;
-		main_button_text_styles[1]	= styles.active_button_text;
-		again_button_styles[1]		= (this.state.state == 'expired') ? styles.active_button		: styles.passive_button;
-		again_button_text_styles[1]	= (this.state.state == 'expired') ? styles.active_button_text	: styles.passive_button_text;
+		let again_button_styles = [
+			styles.again_button,
+			(this.state.state == 'expired') ? styles.active_button		: styles.passive_button,
+		];
+		let again_button_text_styles = [
+			styles.again_button_text,
+			(this.state.state == 'expired') ? styles.active_button_text	: styles.passive_button_text,
+		];
 
 		return (
 			<ScrollView keyboardShouldPersistTaps='always' keyboardDismissMode='on-drag'>
 				<View style={styles.main}>
 					<Text style={styles.main_text}>На ваш телефон отправлено СМС-сообщение с кодом подтверждения. Введите этот код в поле:</Text>
 					<View style={styles.main_input}><Input title="Код из SMS" value={state.code} type="numeric" update={code => this.setState({code})} /></View>
-					<TouchableOpacity style={main_button_styles} onPress={this.send}>
-						<Text style={main_button_text_styles}>Подтвердить</Text>
-					</TouchableOpacity>
+					<AnimatedButton
+						style={{button:styles.main_button}}
+						active={true}
+						state={state.button_state}
+						on_press={this.send}
+						on_end={this.back}
+					>
+						Подтвердить
+					</AnimatedButton>
 				</View>
 				<View style={styles.again}>
 					<SubTitle text="Я не получил SMS-сообщение" />

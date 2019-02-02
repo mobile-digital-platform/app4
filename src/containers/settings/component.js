@@ -20,8 +20,6 @@ export default withNavigation(class SettingsComponent extends Component {
 
 		this.state = {
 			save_state: 'initial',
-			save_success: false,
-			save_error: false,
 		}
 	}
 

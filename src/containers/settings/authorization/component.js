@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Alert,Keyboard,Platform,StyleSheet,ScrollView,Text,TouchableOpacity,View} from 'react-native';
+import {Keyboard,Platform,StyleSheet,ScrollView,Text,TouchableOpacity,View} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {withNavigation} from 'react-navigation';
 
@@ -27,29 +27,9 @@ const styles = EStyleSheet.create({
 		textAlign: 'center',
 	},
 	main_input: {
-		// paddingVertical: 10,
 	},
-	button: {
-		marginVertical: 10, padding: 15,
-		borderRadius: 40,
-		backgroundColor: '#f40000',
-	},
-	button_text: {
-		paddingTop: Platform.select({ios:3,android:0}),
-		color: '#fff',
-		fontSize: 16, fontFamily: 'GothamPro-Medium',
-		textAlign: 'center',
-	},
-	button_disabled: {
-		marginVertical: 10, padding: 15,
-		borderRadius: 100,
-		backgroundColor: '#f1f1f1',
-	},
-	button_disabled_text: {
-		paddingTop: Platform.select({ios:3,android:0}),
-		color: '#d5d5d5',
-		fontSize: 16, fontFamily: 'GothamPro-Medium',
-		textAlign: 'center',
+	main_button: {
+		marginVertical: 10,
 	},
 	reset: {
 		paddingVertical: 10, paddingHorizontal: 40,
@@ -68,8 +48,7 @@ const styles = EStyleSheet.create({
 		borderRadius: 40,
 	},
 	reset_button_text: {
-		paddingTop: Platform.select({ios:3,android:0}),
-		color: '#f40000',
+		color: '$red',
 		fontSize: 14, fontFamily: 'GothamPro-Medium',
 		textAlign: 'center',
 	},
@@ -82,15 +61,19 @@ export default withNavigation(class Authorization extends Component {
 		this.timeout;
 
 		this.state = {
+			waiting: false,
+			ready: false,
+
+			timeout: 0,
+			state: 'starting',
+
 			phone: '+7',
 			phone_error: false,
 			password: '',
 			password_error: false,
-			ready: false,
-			code: '',
-			timeout: 0,
-			state: 'starting',
-			enter_state: 'initial',
+
+			button_state: 'ready',
+			result: false,
 		};
 	}
 
@@ -147,24 +130,29 @@ export default withNavigation(class Authorization extends Component {
 
 	// Вход
 	enter = async () => {
+		let state = this.state;
+
 		// Проверяем ввод
-		if(!this.state.phone.length) {
+		if(!state.phone.length) {
 			// alert("Введите номер телефона!");
 			this.setState({phone_error:'Введите номер телефона'});
 			return;
-		} else if(!this.state.password.length) {
+		} else if(!state.password.length) {
 			// alert("Введите пароль!");
 			this.setState({password_error:'Введите пароль'});
 			return;
-		} else if(this.state.phone_error.length || this.state.password_error.length) {
+		} else if(state.phone_error.length || state.password_error.length) {
 			return;
 		}
 
 		Keyboard.dismiss();
-		this.props.open_smoke();
+		if(state.waiting) return;
+
+		this.setState({waiting:true,button_state:'waiting'});
+		// this.props.open_smoke();
 
 		// Получаем номер
-		let authorize = await settings_request.authorize({phone:this.state.phone,password:this.state.password});
+		let authorize = await settings_request.authorize({phone:state.phone,password:state.password});
 		if(authorize.response) {
 			this.props.log_out();
 
@@ -179,17 +167,19 @@ export default withNavigation(class Authorization extends Component {
 				st.merge('user',user_data.response);
 
 				await this.get_promo_list(user_data.response.id);
-
-				this.props.navigation.goBack();
+				this.setState({button_state:'end',result:true});
 			}
 			if(user_data.error) {
+				this.setState({button_state:'ready',result:false});
 				await alert(user_data.error.message);
 			}
 		}
 		if(authorize.error) {
+			this.setState({button_state:'ready',result:false});
 			await alert(authorize.error.message);
 		}
-		this.props.close_smoke();
+		this.setState({waiting:false});
+		// this.props.close_smoke();
 	}
 
 	// Загрузка данных об акциях
@@ -199,6 +189,10 @@ export default withNavigation(class Authorization extends Component {
 			this.props.set_promo_list(res.items);
 			this.props.set_my_promo_list(res.my_items);
 		}
+	}
+
+	back = () => {
+		if(this.state.result) this.props.navigation.goBack();
 	}
 
 	render() {
@@ -225,9 +219,15 @@ export default withNavigation(class Authorization extends Component {
 							update={password => this.update({password})}
 						/>
 					</View>
-					<TouchableOpacity style={state.ready ? styles.button : styles.button_disabled} onPress={this.enter}>
-						<Text style={state.ready ? styles.button_text : styles.button_disabled_text}>Войти</Text>
-					</TouchableOpacity>
+					<AnimatedButton
+						style={{container:styles.main_button}}
+						active={state.ready}
+						state={state.button_state}
+						on_press={this.enter}
+						on_end={this.back}
+					>
+						Войти
+					</AnimatedButton>
 				</View>
 				<View style={styles.reset}>
 					<SubTitle style={{marginTop:20}} text="Я забыл пароль" />

@@ -4,8 +4,6 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 
 import config		from '../../../../config';
 
-import Wait			from '../../../../templates/wait';
-
 import Item			from './item';
 import Separator	from './separator';
 import Error		from './error';

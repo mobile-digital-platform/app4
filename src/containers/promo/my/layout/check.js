@@ -1,10 +1,11 @@
 import React from 'react';
-import {StyleSheet,ImageBackground,Text,TouchableOpacity,View} from 'react-native';
+import {StyleSheet,Image,Text,TouchableOpacity,View} from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 import {withNavigation} from 'react-navigation';
 
-import Icon from 'react-native-vector-icons/EvilIcons';
+import Question from '../../../../../assets/ui/question.png';
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		alignItems: 'flex-end',
@@ -43,6 +44,9 @@ const styles = StyleSheet.create({
 	fail: {
 		marginBottom: -5,
 	},
+	question: {
+		height: 18, width: 18,
+	},
 });
 
 let check_state = (state) => ['проверяется','подтвержден','не принят'][state];
@@ -61,7 +65,7 @@ export default withNavigation(({navigation,data}) => (
 				<Text style={styles.state}>{data.date} — {data.state}</Text>
 			</View>
 			{data.state=="Отклонен" ? (
-				<TouchableOpacity style={styles.fail}><Icon name="question" style={{color:'red'}} size={30} /></TouchableOpacity>
+				<TouchableOpacity style={styles.fail}><Image style={styles.question} source={Question} /></TouchableOpacity>
 			) : null}
 		</View>
 	</View>

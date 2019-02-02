@@ -1,9 +1,7 @@
 import React,{Component} from 'react';
-import {Platform,StyleSheet,StatusBar,ScrollView,View,Text,WebView} from 'react-native';
+import {ActivityIndicator,ScrollView,StatusBar,View,Text,WebView} from 'react-native';
 
 import {light,dark} from '../navigation';
-
-import Wait from '../templates/wait';
 
 export default class Web extends Component {
 	static navigationOptions = ({navigation}) => ({
@@ -19,7 +17,7 @@ export default class Web extends Component {
 				{src ? (
 					<WebView
 						source={{uri:src}}
-						renderLoading={_=><Wait/>}
+						renderLoading={_=><ActivityIndicator size='large' />}
 						startInLoadingState={true}
 					/>
 				) : null}
