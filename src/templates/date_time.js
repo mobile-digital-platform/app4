@@ -1,10 +1,11 @@
 import React,{Component} from 'react';
-import {StyleSheet,TouchableOpacity,TextInput,Text,View,Dimensions} from 'react-native';
+import {Dimensions,TouchableOpacity,Text,TextInput,View} from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 import Date		from './date';
 import Time		from './time';
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
@@ -19,7 +20,7 @@ const styles = StyleSheet.create({
 	error_text: {
 		marginLeft: 20, marginBottom: 10,
 		fontSize: 14,
-		color: 'red',
+		color: '$red',
 	},
 });
 
@@ -51,7 +52,7 @@ export default class DateTime extends Component {
 		//this.setState(data);
 		this.props.update(data);
 	}
-	
+
 	render() {
 		let state = this.state;
 		return (

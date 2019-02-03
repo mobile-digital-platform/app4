@@ -41,9 +41,8 @@ const styles = EStyleSheet.create({
 });
 
 export default withNavigation(class Camera extends Component {
-	close = () => this.props.close();
 
-	requestPermission = async (photo) => {
+	request_permission = async (photo) => {
 		if(Platform.OS == 'android') try {
 			const granted = await PermissionsAndroid.requestMultiple([
 				PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
@@ -64,7 +63,7 @@ export default withNavigation(class Camera extends Component {
 		if(this.camera) {
 			let photo = await this.camera.takePictureAsync({skipProcessing:true});
 			this.props.close();
-			this.requestPermission(photo);
+			this.request_permission(photo);
 			console.log('камера отработала',photo);
 
 			this.props.add_photo({
@@ -80,11 +79,11 @@ export default withNavigation(class Camera extends Component {
 				animationType="slide"
 				transparent={true}
  				visible={this.props.visible}
-				onRequestClose={this.close}
+				onRequestClose={this.props.close}
 			>
 				<View style={styles.modal}>
-					<TouchableOpacity style={styles.close} onPress={this.close}>
-						<Icon name="close" style={{ color: 'white' }} size={40} />
+					<TouchableOpacity style={styles.close} onPress={this.props.close}>
+						<Icon name="close" style={{color:'white'}} size={40} />
 					</TouchableOpacity>
 					<RNCamera
 						ref={ref => this.camera=ref}

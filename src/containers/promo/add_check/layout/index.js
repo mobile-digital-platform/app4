@@ -12,14 +12,14 @@ const styles = EStyleSheet.create({
 	container: {
 	},
 	save: {
-		marginHorizontal: 20,
-		marginTop: 15, marginBottom: 30,
+		alignItems: 'center',
+		marginTop: 15, marginBottom: 30, marginHorizontal: 20,
 		padding: 15,
 		borderRadius: 100,
 	},
 	save_text: {
-		fontSize: 20, fontFamily: 'GothamPro-Medium',
-		textAlign: 'center',
+		fontSize: 16, fontFamily: 'GothamPro-Medium',
+		lineHeight: 19,
 	},
 	active_button: {
 		backgroundColor: '$red',
@@ -124,11 +124,13 @@ export default withNavigation(class AddCheck extends Component {
 		let state = this.state;
 		return (
 			<View style={styles.container}>
+				{/*
 				<CheckPhoto
 					photo={state.photo}
 					add_photo={this.add_photo}
 					remove_photo={this.remove_photo}
 				/>
+				*/}
 				<CheckData
 					{...this.props}
 					state={this.state}

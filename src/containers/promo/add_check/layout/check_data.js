@@ -1,170 +1,122 @@
-import React, { Component } from 'react';
-import { StyleSheet, FlatList, ImageBackground, ScrollView, Text, TouchableOpacity, View, Image } from 'react-native';
-import { withNavigation } from 'react-navigation';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import React,{Component} from 'react';
+import {FlatList,Image,ImageBackground,ScrollView,Text,TouchableOpacity,View} from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
+import {withNavigation} from 'react-navigation';
 
-import SubTitle from '../../../../templates/subtitle';
-import DateTime from '../../../../templates/date_time';
-import Input from '../../../../templates/input';
-import QR_scanner from '../../../../templates/qr_scanner';
+import QRIcon from '../../../../../assets/ui/qr.png';
 
-const styles = StyleSheet.create({
+import SubTitle		from '../../../../templates/subtitle';
+import DateTime		from '../../../../templates/date_time';
+import Date			from '../../../../templates/date';
+import Time			from '../../../../templates/time';
+import Input		from '../../../../templates/input';
+import QR_scanner	from '../../../../templates/qr_scanner';
+
+const styles = EStyleSheet.create({
 	container: {
+		paddingTop: 25, paddingHorizontal: 20,
 		borderTopWidth: 1, borderTopColor: '#ddd',
-		paddingTop: 20, paddingHorizontal: 20,
 	},
 	title: {
 		paddingHorizontal: 25, paddingVertical: 0,
 	},
 	scan: {
-		padding: 15,
-		marginHorizontal: 20, marginVertical: 20,
-		borderRadius: 100,
-		backgroundColor: 'red',
 		flexDirection: 'row',
+		justifyContent: 'center',
 		alignItems: 'center',
-		justifyContent: 'center'
+		height: 40, width: 240,
+		marginTop: 5, marginBottom: 15, marginHorizontal: 20,
+		borderRadius: 100,
+		backgroundColor: '$red',
+	},
+	scan_image: {
+		height: 12, width: 12,
 	},
 	scan_text: {
+		marginLeft: 5, paddingTop: 2,
 		color: '#fff',
-		fontSize: 20, fontFamily: 'GothamPro-Medium',
-		marginLeft: 10,
+		fontSize: 14, fontFamily: 'GothamPro-Medium',
 	},
-
+	date_time: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+	},
+	date: {
+		width: 150,
+	},
+	time: {
+		width: 120,
+	},
 });
 
 export default withNavigation(class CheckData extends Component {
-	constructor(props) {
-		super(props);
+	state = {
+		scanner_opened: false,
+	};
 
-		this.inputs = {
-			date_time: {
-				ref: React.createRef(),
-				offset: 0,
-			},
-			summa: {
-				ref: React.createRef(),
-				offset: 0,
-			},
-			fn: {
-				ref: React.createRef(),
-				offset: 0,
-			},
-			fd: {
-				ref: React.createRef(),
-				offset: 0,
-			},
-			fp: {
-				ref: React.createRef(),
-				offset: 0,
-			},
-		}
-
-		this.state = {
-			scanner_visible: 	false,
-			date: 				props.date,
-			time: 				props.time,
-			summa: 				props.summa,
-			fn: 				props.fn,
-			fd: 				props.fd,
-			fp: 				props.fp,
-			date_time_error: 	false,
-			date_error: 		false,
-			time_error: 		false,
-			summa_error: 		false,
-			fn_error: 			false,
-			fd_error: 			false,
-			fp_error: 			false,
-		}
-	}
-
-	componentDidUpdate(prevProps) {
-		if(!Object.is(prevProps,this.props)){
-			let props = this.props.state;
-			this.setState({
-				date: 				props.date,
-				time: 				props.time,
-				summa: 				props.summa,
-				fn: 				props.fn,
-				fd: 				props.fd,
-				fp: 				props.fp,
-				date_time_error: 	props.date_time_error,
-				date_error: 		props.date_error,
-				time_error: 		props.time_error,
-				summa_error: 		props.summa_error,
-				fn_error: 			props.fn_error,
-				fd_error: 			props.fd_error,
-				fp_error: 			props.fp_error,
-			})
-		}
-	}
-	changeScanner = (value) =>{
-		this.setState({scanner_visible: value});
-	}
-	update = (data) => {
-		// this.setState(data);
-		this.props.update_data(data);
-	}
-	addCheckData =  (data) => {
-		//this.setState(data)
-		this.props.update_data(data);
-	}
+	open  = () => this.setState({scanner_opened:true});
+	close = () => this.setState({scanner_opened:false});
 
 	render() {
-		console.log("CheckData", this);
-		let state = this.state;
+		let {props,state} = this;
+
 		return (
 			<View style={styles.container}>
 				<SubTitle style={styles.title} text="Фискальные данные чека" />
-				<TouchableOpacity style={styles.scan} onPress={() => this.changeScanner(true)}>
-					<Icon name="qrcode" style={{ color: 'white' }} size={25} />
+				<TouchableOpacity style={styles.scan} onPress={_=>this.open()}>
+					<Image style={styles.scan_image} source={QRIcon} />
 					<Text style={styles.scan_text}>Сканировать QR-код</Text>
 				</TouchableOpacity>
-				<DateTime
-					id={this.inputs.date_time.ref}
-					date={state.date}
-					time={state.time}
-					update={value => this.update(value)}
-					error={state.date_time_error}
-					dateError={state.date_error}
-					timeError={state.time_error}
-				/>
+				<View style={styles.date_time}>
+					<View style={styles.date}>
+						<Date
+							title="Дата"
+							value={state.date}
+							update={props.set_date}
+							error={state.date_error}
+						/>
+					</View>
+					<View style={styles.time}>
+						<Time
+							title="Время"
+							value={state.time}
+							update={props.set_time}
+							error={state.time_error}
+						/>
+					</View>
+				</View>
 				<Input
-					id={this.inputs.summa.ref}
 					title="Сумма"
 					type="numeric"
 					value={state.summa}
-					update={value => this.update({summa:value})}
+					update={sum => this.update({sum})}
 					error={state.summa_error}
 				/>
 				<Input
-					id={this.inputs.fn.ref}
 					title="ФН"
 					type="numeric"
 					value={state.fn}
-					update={value => this.update({fn:value})}
+					update={fn => this.update({fn})}
 					error={state.fn_error}
 				/>
 				<Input
-					id={this.inputs.fd.ref}
 					title="ФД"
 					type="numeric"
 					value={state.fd}
-					update={value => this.update({fd:value})}
+					update={fd => this.update({fd})}
 					error={state.fd_error}
 				/>
 				<Input
-					id={this.inputs.fp.ref}
 					title="ФП"
 					type="numeric"
 					value={state.fp}
-					update={value => this.update({fp:value})}
+					update={fp => this.update({fp})}
 					error={state.fp_error}
 				/>
 				<QR_scanner
-					visible={state.scanner_visible}
-					changeScanner={this.changeScanner}
-					addCheckData={this.addCheckData}
+					visible={state.scanner_opened}
+					close={this.close}
+					send_data={props.add_check_data}
 				 />
 			</View>
 		);

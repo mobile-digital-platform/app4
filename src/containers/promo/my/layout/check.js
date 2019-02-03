@@ -3,7 +3,9 @@ import {StyleSheet,Image,Text,TouchableOpacity,View} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {withNavigation} from 'react-navigation';
 
-import Question from '../../../../../assets/ui/question.png';
+import Question		from '../../../../../assets/ui/question.png';
+import Confirmed	from '../../../../../assets/ui/voucher_confirmed.png';
+import NotConfirmed	from '../../../../../assets/ui/voucher_not_confirmed.png';
 
 const styles = EStyleSheet.create({
 	container: {
@@ -55,7 +57,13 @@ let check_state = (state) => ['проверяется','подтвержден',
 export default withNavigation(({navigation,data}) => (
 	<View style={styles.container}>
 		<Text style={[styles.scores,(data.state=="Подтвержден" ? styles.right : styles.wrong)]}>
-			<Text style={styles.scores_number}>{data.scores>0 ? '+' : ''}{data.scores}</Text>
+			<Text style={styles.scores_number}>
+			{data.scores>0 ? (
+				'+'+data.scores
+			) : (
+				<Image style={styles.scores_voucher} source={data.state=="Подтвержден" ? Confirmed : NotConfirmed} />
+			)}
+			</Text>
 			{'\n'}
 			<Text style={styles.scores_text}>баллов</Text>
 		</Text>
