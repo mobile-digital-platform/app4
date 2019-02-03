@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import {Animated,Easing,ActivityIndicator,FlatList,Image,ImageBackground,ScrollView,Text,TouchableOpacity,View} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import {withNavigation} from 'react-navigation';
 
 import promo_date_diff from '../../../../services/promo_date_diff';
 
@@ -113,7 +114,7 @@ const styles = EStyleSheet.create({
 	},
 });
 
-export default class MyPromoListLayout extends Component {
+export default withNavigation(class MyPromoListLayout extends Component {
 	animation = {
 		points_top: new Animated.Value(0),
 		bottom_top: new Animated.Value(0),
@@ -220,14 +221,18 @@ export default class MyPromoListLayout extends Component {
 				{details.add_check && details.buy_prize ? (
 				<Animated.View style={[styles.bottom,{marginTop:state.bottom_top}]}>
 					{details.add_check ? (
-						<TouchableOpacity style={styles.add_button}><Text style={styles.add_button_text}>Добавить чек</Text></TouchableOpacity>
+						<TouchableOpacity style={styles.add_button} onPress={_=>props.navigation.push('promo_add_check')}>
+							<Text style={styles.add_button_text}>Добавить чек</Text>
+						</TouchableOpacity>
 					) : null}
 					{details.buy_prize ? (
-						<TouchableOpacity style={styles.get_button}><Text style={styles.get_button_text}>Получить выигрыш</Text></TouchableOpacity>
+						<TouchableOpacity style={styles.get_button}>
+							<Text style={styles.get_button_text}>Получить выигрыш</Text>
+						</TouchableOpacity>
 					) : null}
 				</Animated.View>
 				) : null}
 			</View>
 		);
 	}
-}
+});

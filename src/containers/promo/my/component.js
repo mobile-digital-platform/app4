@@ -1,5 +1,4 @@
 import React,{Component} from 'react';
-import {StyleSheet,ScrollView,TouchableOpacity,View,Text} from 'react-native';
 import {withNavigation} from 'react-navigation';
 
 import {request}	from '../../../redux/reducers/promo';

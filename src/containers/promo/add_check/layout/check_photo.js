@@ -1,93 +1,72 @@
-import React, { Component } from 'react';
-import { StyleSheet, FlatList, ImageBackground, ScrollView, Text, TouchableOpacity, View, Image } from 'react-native';
-import { withNavigation } from 'react-navigation';
+import React,{Component} from 'react';
+import {Image,ImageBackground,ScrollView,Text,TouchableOpacity,View} from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
+import {withNavigation} from 'react-navigation';
 
-import Scan from '../../../../templates/scan';
-import MainText from '../../../../templates/main_text';
-import Camera from '../../../../templates/camera';
+import CameraImage	from '../../../../../assets/ui/camera.png';
 
+import Photo	from '../../../../templates/scan';
+import Camera	from '../../../../templates/camera';
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
 	container: {
-		paddingVertical: 25, paddingHorizontal: 20,
-		backgroundColor: '#fff',
+		padding: 20,
 	},
 	text: {
-		paddingBottom: 10, paddingHorizontal: 5,
+		color: '#3d3d3d',
+		fontSize: 14, fontFamily: 'GothamPro',
+		lineHeight: 18,
+		textAlign: 'center',
 	},
-	photos: {
-		flex: 1,
+	photo_area: {
 		flexDirection: 'row',
 		justifyContent: 'center',
-		//flexWrap: 'wrap',
-		//flexBasis: 0,
+		width: '100%',
+		marginTop: 15,
+	},
+	camera_area: {
+		marginHorizontal: 5,
+	},
+	camera: {
+		height: 90, width: 90,
+		borderRadius: 18,
 	},
 	error_text: {
 		marginLeft: 20, marginBottom: 10,
 		fontSize: 14,
-		color: 'red',
+		color: '$red',
 	},
 });
 
 export default withNavigation(class CheckPhoto extends Component {
-	constructor(props) {
-		super(props);
+	state = {
+		camera: false,
+	};
 
-		this.state = {
-			camera_visible: false,
-			photos: props.photos,
-			photos_error: false,
-		}
-	}
-
-	componentDidUpdate(prevProps) {
-		let props = this.props.state;
-		if(!Object.is(prevProps,this.props)){
-			this.setState({
-				photos: props.photos,
-				photos_error:  props.photos_error,
-			})
-		}
-	}
-	changeCamera = (value) =>{
-		this.setState({camera_visible: value});
-	}
-	addPhoto = (data) =>{
-		data = {
-			photos: [...this.state.photos, data]
-		}
-		//this.setState(data);
-		this.props.update_data(data);
-	}
-	removePhoto = (data) =>{
-		data = {
-			photos: this.state.photos.filter((item) => item.id != data.id),
-		}
-		//this.setState(data);
-		this.props.update_data(data);
-	}
+	open_camera  = () => this.setState({camera:true});
+	close_camera = () => this.setState({camera:false});
 
 	render() {
-		console.log("CheckPhoto", this);
-		let state = this.state;
+		let {props,state} = this;
+		console.log("CheckPhoto",state);
+
 		return (
 			<View style={styles.container}>
-				<MainText style={styles.text} text="Сфотографируйте чек так, чтобы были видны название магазина, список товаров, сумма, дата, фискальные данные (ФН, ФД, ФП), и QR-код." />
-				<FlatList
-					data={state.photos}
-					keyExtractor={item => '' + item.id}
-					renderItem={({ item }) =>  <Scan photo={item} selected={true}  remove={this.removePhoto}/>}
-					ListFooterComponent={() => <Scan selected={false} changeCamera={this.changeCamera}/>}
-					//ListEmptyComponent={() => <Scan selected={false} changeCamera={this.changeCamera}/>}
-					contentContainerStyle={styles.photos}
-					//numColumns={3}
-				/>
-				{state.photos_error ? (<Text style={styles.error_text}>{state.photos_error}</Text>) : null}
-				<Camera
-					visible={state.camera_visible}
-					changeCamera={this.changeCamera}
-					addPhoto={this.addPhoto}
-				/>
+				<Text style={styles.text}>
+					Сфотографируйте чек так, чтобы были видны название магазина, список товаров, сумма, дата, фискальные данные (ФН, ФД, ФП), и QR-код.
+				</Text>
+				<View style={styles.photo_area}>
+					{props.photo[0] ? (<Photo photo={props.photo[0]} remove={props.remove_photo} />) : null}
+					{props.photo[1] ? (<Photo photo={props.photo[1]} remove={props.remove_photo} />) : null}
+					{props.photo[2] ? (<Photo photo={props.photo[2]} remove={props.remove_photo} />) : null}
+					{props.photo.length<3 ? (
+						<TouchableOpacity style={styles.camera_area} onPress={this.open_camera}>
+							<Image style={styles.camera} source={CameraImage} />
+						</TouchableOpacity>
+					) : null}
+				</View>
+				{props.photo_error ? (<Text style={styles.error_text}>{props.photo_error}</Text>) : null}
+				<Camera visible={state.camera} add_photo={props.add_photo} close={this.close_camera} />
 			</View>
 		);
 	}

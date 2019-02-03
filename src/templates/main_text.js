@@ -1,11 +1,12 @@
 import React from 'react';
-import {StyleSheet,Text,View} from 'react-native';
+import {Text,View} from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
 	title: {
-		color: '#3D3D3D',
-		fontSize: 18, fontFamily: 'GothamPro',
-		lineHeight: 26,
+		color: '#3d3d3d',
+		fontSize: 14, fontFamily: 'GothamPro',
+		lineHeight: 18,
 		textAlign: 'center',
 	},
 });

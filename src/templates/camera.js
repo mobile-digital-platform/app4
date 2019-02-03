@@ -1,24 +1,31 @@
-import React, { Component } from 'react';
-import { StyleSheet, FlatList, ImageBackground, ScrollView, Text, TouchableOpacity, View, Image, Modal, CameraRoll, PermissionsAndroid} from 'react-native';
-import { withNavigation } from 'react-navigation';
-import { RNCamera } from 'react-native-camera';
+import React,{Component} from 'react';
+import {CameraRoll,PermissionsAndroid,Platform,FlatList,Image,ImageBackground,Modal,ScrollView,Text,TouchableOpacity,View} from 'react-native';
+import {RNCamera} from 'react-native-camera';
+import EStyleSheet from 'react-native-extended-stylesheet';
+import {withNavigation} from 'react-navigation';
+
+import f from '../functions';
+
 import Icon from 'react-native-vector-icons/EvilIcons';
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
 	modal: {
 		flex: 1,
 	},
 	camera: {
 		flex: 1,
-		height: '100%'
+		height: '100%',
+	},
+	close: {
+		position: 'absolute', top: 30, right: 15,
+		zIndex: 10,
 	},
 	capture: {
-		position: 'absolute',
-		bottom: 20,
 		alignSelf: 'center',
-		paddingHorizontal: 25, paddingVertical: 15,
+		position: 'absolute', bottom: 30,
+		paddingVertical: 15, paddingHorizontal: 30,
 		borderRadius: 100,
-		backgroundColor: 'red',
+		backgroundColor: '$red',
 		shadowOffset: {
 			width: 0,
 			height: 2,
@@ -29,43 +36,20 @@ const styles = StyleSheet.create({
 	},
 	capture_text: {
 		color: '#fff',
-		fontSize: 20,
+		fontSize: 18,
 	},
-	close: {
-		position: 'absolute',
-		top: '3%', right: '3%',
-		zIndex: 10
-	}
 });
 
 export default withNavigation(class Camera extends Component {
-	constructor(props) {
-		super(props);
-		this.state= {
-			visible: this.props.visible
-		};
-		console.log('конструктор Camera');
-	}
+	close = () => this.props.close();
 
-	componentDidUpdate(prevProps) {
-		console.log('didupdate ');
-		if(!Object.is(prevProps,this.props)){
-			this.setState({
-				visible: this.props.visible
-			})
-		}
-	}
-	closeCamera = () =>{
-		//this.setState({visible: false});
-		this.props.changeCamera(false);
-	}
 	requestPermission = async (photo) => {
-		try {
-			const granted = await PermissionsAndroid.requestMultiple(
-				[PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+		if(Platform.OS == 'android') try {
+			const granted = await PermissionsAndroid.requestMultiple([
+				PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
 				PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
-				]);
-			if (granted['android.permission.WRITE_EXTERNAL_STORAGE'] == 'granted') {
+			]);
+			if(granted['android.permission.WRITE_EXTERNAL_STORAGE'] == 'granted') {
 				CameraRoll.saveToCameraRoll(photo.uri);
 				console.log('Permisiion successfully got', granted, photo.uri);
 			} else {
@@ -76,49 +60,38 @@ export default withNavigation(class Camera extends Component {
 			return null;
 		}
 	};
-	capture =  async function() {
-		if (this.camera) {
-			const date =  new Date();
-			const day = date.getDate() < 10 ? '0'+date.getDate() : date.getDate();
-			const month = date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1;
-			const year = date.getFullYear();
-			const hour = date.getHours() < 10 ? '0'+date.getHours() : date.getHours();
-			const minutes = date.getMinutes() < 10 ? '0'+date.getMinutes() : date.getMinutes();
-			const seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
-			const currentDate = Number(year+''+month+''+day+''+hour+''+minutes+''+seconds);
-
-			let photo = await this.camera.takePictureAsync({skipProcessing: true});
-			this.props.changeCamera(false);
+	capture = async () => {
+		if(this.camera) {
+			let photo = await this.camera.takePictureAsync({skipProcessing:true});
+			this.props.close();
 			this.requestPermission(photo);
 			console.log('камера отработала',photo);
-			
-			this.props.addPhoto({
-				id:  currentDate,
-				path: photo.uri
+
+			this.props.add_photo({
+				id:  "Coca Cola Promo "+f.date("Y-m-d H:i:s"),
+				path: photo.uri,
 			});
 		}
 	};
 
 	render() {
-    console.log('Render_camera this',this);
 		return (
 			<Modal
 				animationType="slide"
 				transparent={true}
- 				visible={this.state.visible}
-				onRequestClose={this.closeCamera}>
+ 				visible={this.props.visible}
+				onRequestClose={this.close}
+			>
 				<View style={styles.modal}>
-					<TouchableOpacity style={styles.close} onPress={this.closeCamera}>
+					<TouchableOpacity style={styles.close} onPress={this.close}>
 						<Icon name="close" style={{ color: 'white' }} size={40} />
 					</TouchableOpacity>
 					<RNCamera
+						ref={ref => this.camera=ref}
+						style={styles.camera}
 						flashMode={RNCamera.Constants.FlashMode.on}
-						ref={ref => {
-							this.camera = ref;
-						  }}
-						style={styles.camera}>
-					</RNCamera>
-					<TouchableOpacity style={styles.capture} onPress={this.capture.bind(this)}>
+					/>
+					<TouchableOpacity style={styles.capture} onPress={this.capture}>
 						<Text style={styles.capture_text}>Сделать снимок</Text>
 					</TouchableOpacity>
 				</View>
