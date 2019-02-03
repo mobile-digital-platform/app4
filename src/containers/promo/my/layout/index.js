@@ -221,7 +221,7 @@ export default withNavigation(class MyPromoListLayout extends Component {
 				{details.add_check && details.buy_prize ? (
 				<Animated.View style={[styles.bottom,{marginTop:state.bottom_top}]}>
 					{details.add_check ? (
-						<TouchableOpacity style={styles.add_button} onPress={_=>props.navigation.push('promo_add_check')}>
+						<TouchableOpacity style={styles.add_button} onPress={_=>props.navigation.push('promo_add_check',{id:data.id})}>
 							<Text style={styles.add_button_text}>Добавить чек</Text>
 						</TouchableOpacity>
 					) : null}

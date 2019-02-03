@@ -40,7 +40,6 @@ export default class Personal extends Component {
 		*/
 
 		let window = Dimensions.get('window');
-
 		this.inputs = {
 			name: {
 				ref: React.createRef(),
@@ -58,7 +57,7 @@ export default class Personal extends Component {
 				ref: React.createRef(),
 				offset: window.height-300,
 			},
-		}
+		};
 
 		this.state = {
 			waiting:		false,

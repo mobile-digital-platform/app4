@@ -1,14 +1,14 @@
 import {connect} from 'react-redux';
 
-import {update_check,module as promo_module} from '../../../redux/reducers/add_check';
+import {module as promo_module}		from '../../../redux/reducers/promo';
+import {module as settings_module}	from '../../../redux/reducers/settings';
 import Component from './component';
 
 const mapStateToProps = state => ({
-	...state[promo_module]
+	user: state[settings_module],
+	promo: state[promo_module],
 });
 
-const mapDispatchToProps = {
-	update_check,
-};
+const mapDispatchToProps = {};
 
 export default connect(mapStateToProps,mapDispatchToProps)(Component);

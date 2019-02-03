@@ -41,7 +41,7 @@ export default class Input extends Component {
 	constructor(props) {
 		super(props);
 
-		this.input = React.createRef();
+		this.input = this.props.id ?? React.createRef();
 
 		this.state = {
 			active: !!(props.value?.length),
@@ -113,7 +113,7 @@ export default class Input extends Component {
 						<Text style={[styles.title,styles.title_active]}>{props.title}</Text>
 					</TouchableOpacity>
 				)}
-				{state.error ? (<Text style={styles.error_text}>{state.error}</Text>) : null}
+				{state.error.length ? (<Text style={styles.error_text}>{state.error}</Text>) : null}
 			</View>
 		);
 	}

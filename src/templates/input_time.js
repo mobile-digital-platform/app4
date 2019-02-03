@@ -28,7 +28,7 @@ const styles = EStyleSheet.create({
 		lineHeight: 12,
 	},
 	title_active: {
-		marginTop: 0,
+		marginTop: 0, paddingTop: Platform.select({ios:3,android:0}),
 		fontSize: 14, fontFamily: 'GothamPro',
 		lineHeight: 18,
 	},
@@ -46,13 +46,13 @@ const styles = EStyleSheet.create({
 		height: 20, width: 20,
 	},
 	error_text: {
-		marginLeft: 20, marginBottom: 10,
+		marginLeft: 20, marginBottom: 10, paddingTop: Platform.select({ios:3,android:0}),
 		fontSize: 14, fontFamily: 'GothamPro',
 		color: '$red',
 	},
 });
 
-export default class Date extends Component {
+export default class Time extends Component {
 	constructor(props) {
 		super(props);
 
@@ -85,9 +85,10 @@ export default class Date extends Component {
 	open  = () => this.setState({visible:true});
 	close = () => this.setState({visible:false});
 
-	choose = (date) => {
+	choose = (timestamp) => {
+		// Выбирается время сегодняшней даты
 		this.close();
-		this.props.update(date);
+		this.props.update(f.date("H:i"));
 	}
 
 	render() {
@@ -108,10 +109,11 @@ export default class Date extends Component {
 					</View>
 					{state.value ? (<View style={styles.right}><Image style={styles.right_image} source={Tick} /></View>) : null}
 				</TouchableOpacity>
-				{state.error ? (<Text style={styles.error_text}>{state.error}</Text>) : null}
+				{state.error.length ? (<Text style={styles.error_text}>{state.error}</Text>) : null}
 				<DateTimePicker
 					isVisible={state.visible}
-					titleIOS='Выберите дату'
+					mode="time"
+					titleIOS='Выберите время'
 					confirmTextIOS='Выбрать'
 					cancelTextIOS='Отмена'
 					onConfirm={this.choose}

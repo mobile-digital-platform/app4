@@ -315,7 +315,7 @@ f.date = function(format,timestamp) {
 			}
 		},
 
-		// Год
+		// Високосный год
 		L: function() {
 			var y = f.Y();
 			return (!(y & 3) && (y % 1e2 || !(y % 4e2))) ? 1 : 0;
@@ -342,11 +342,10 @@ f.date = function(format,timestamp) {
 			var theSeconds = (jsdate.getHours() * 3600) +
 							 (jsdate.getMinutes() * 60) +
 							  jsdate.getSeconds()+off;
-			var beat:any = Math.floor(theSeconds/86.4);
+			var beat = Math.floor(theSeconds/86.4);
 			if(beat > 1000) beat -= 1000;
-			if(beat < 0) beat += 1000;
-			if((String(beat)).length == 1) beat = "00"+beat;
-			if((String(beat)).length == 2) beat = "0"+beat;
+			if(beat <    0) beat += 1000;
+			beat = pad(beat,3)
 			return beat;
 		},
 		// Часы до 12
@@ -377,7 +376,8 @@ f.date = function(format,timestamp) {
 		// Временная зона
 		O: function() {
 		   var t = pad(Math.abs(jsdate.getTimezoneOffset()/60*100),4);
-		   if (jsdate.getTimezoneOffset() > 0) t = "-"+t; else t = "+"+t;
+		   if(jsdate.getTimezoneOffset() > 0) t = "-"+t;
+		   else t = "+"+t;
 		   return t;
 		},
 		P: function() {
@@ -389,6 +389,8 @@ f.date = function(format,timestamp) {
 		c: function() {
 			return f.Y()+"-"+f.m()+"-"+f.d()+"T"+f.h()+":"+f.i()+":"+f.s()+f.P();
 		},
+
+		// Секунды с 1970 года
 		U: function() {
 			return Math.round(jsdate.getTime()/1000);
 		}

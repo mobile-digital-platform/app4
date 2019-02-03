@@ -195,4 +195,38 @@ export const request = {
 			return {error};
 		}
 	},
+
+	// Добавление чека
+	add_check_data: async (data) => {
+		let {response,error} = await API('/AddCheckData',{
+			UserID:		data.user_id,
+			PromoID:	data.promo_id,
+			Date:		data.datetime,
+			Sum:		data.sum,
+			FN:			data.fn,
+			FD:			data.fd,
+			FP:			data.fp,
+		});
+		if(response) {
+			return {response:{check_id:response.CheckID}};
+		}
+		if(error) {
+			console.log('error',error);
+			return {error};
+		}
+	},
+	// Данные о чеках
+	add_check_photo: async (data) => {
+		let {response,error} = await API('/UploadCheckPhoto',{
+			CheckID: data.check_id,
+			File: data.file,
+		});
+		if(response) {
+			return {response:1};
+		}
+		if(error) {
+			console.log('error',error);
+			return {error};
+		}
+	},
 };

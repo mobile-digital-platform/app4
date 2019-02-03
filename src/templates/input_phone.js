@@ -75,7 +75,7 @@ export default withNavigation(class InputPhone extends Component {
 	constructor(props) {
 		super(props);
 
-		this.input = this.props.id || React.createRef();
+		this.input = this.props.id ?? React.createRef();
 
 		this.state = {
 			active: !!(props.value?.length),
@@ -182,7 +182,7 @@ export default withNavigation(class InputPhone extends Component {
 						<Text style={[styles.title,styles.title_active]}>{this.props.title}</Text>
 					</TouchableOpacity>
 				)}
-				{state.error ? (<Text style={styles.error_text}>{state.error}</Text>) : null}
+				{state.error.length ? (<Text style={styles.error_text}>{state.error}</Text>) : null}
 				{this.props.need_confirm ? (
 				<View style={styles.confirm}>
 					<View style={styles.confirm_text_area}>

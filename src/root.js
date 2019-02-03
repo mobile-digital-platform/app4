@@ -75,13 +75,13 @@ var Navigator = createAppContainer(createStackNavigator(
 		web:						WebScreen,
 	},
 	{
-		// initialRouteName: 'promo_list',
+		initialRouteName: 'promo_list',
 		// initialRouteName: 'promo_view',
 		// initialRouteName: 'promo_details',
 		// initialRouteName: 'promo_participate',
 		// initialRouteName: 'promo_my_view',
 
-		initialRouteName: 'promo_add_check', 		// кассовый чек
+		// initialRouteName: 'promo_add_check', 		// кассовый чек
 		// initialRouteName: 'promo_get_prize',			// получить выигрыш
 		// initialRouteName: 'promo_passport', 			// паспортные данные
 		// initialRouteName: 'promo_choose_prize',		// выбор приза
@@ -99,8 +99,8 @@ var Navigator = createAppContainer(createStackNavigator(
 
 export default class Router extends Component {
 	state = {
-		// page: 'start',
-		page: 'navigator',
+		page: 'start',
+		// page: 'navigator',
 	};
 
 	async componentDidMount() {
@@ -116,8 +116,8 @@ export default class Router extends Component {
 		// return;
 		let data = JSON.parse(await AsyncStorage.getItem(config.storage_name)) ?? {};
 		// console.log(data);
-		// if(Object.keys(data).length)	this.set_page('splash');
-		// else							this.set_page('onboarding');
+		if(Object.keys(data).length)	this.set_page('splash');
+		else							this.set_page('onboarding');
 	}
 	componentWillUnmount() {
 		Linking.removeEventListener('url',this.handle_open_url);

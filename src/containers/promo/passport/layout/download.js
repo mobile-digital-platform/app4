@@ -3,7 +3,7 @@ import {StyleSheet,FlatList,ImageBackground,ScrollView,Text,TouchableOpacity,Vie
 import {withNavigation} from 'react-navigation';
 
 import Input		from '../../../../templates/input';
-import Date			from '../../../../templates/date';
+import DateInput	from '../../../../templates/input_date';
 import TextArea		from '../../../../templates/textarea';
 import SeriaNumber	from '../../../../templates/seria_number';
 import Scan			from '../../../../templates/scan';
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 	scan_text: {
 		color: '#3D3D3D',
 		fontSize: 18, fontFamily: 'GothamPro',
-		lineHeight: 22,	
+		lineHeight: 22,
 		flex: 1,
 		marginLeft: 20
 	},

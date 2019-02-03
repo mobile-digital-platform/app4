@@ -1,35 +1,46 @@
 import React,{Component} from 'react';
-import {StyleSheet,ScrollView,TouchableOpacity,View,Text} from 'react-native';
 import {withNavigation} from 'react-navigation';
+
+import f from '../../../functions';
+
+import alert from '../../../services/alert';
+
+import {request} from '../../../redux/reducers/promo';
 
 import Layout from './layout';
 
 export default withNavigation(class PromoAddCheckComponent extends Component {
 	constructor(props) {
 		super(props);
-		console.log('Component this', this);
-		this.scroll = React.createRef();
+
+		this.promo_id = props.navigation.getParam('id',0);
 	}
 
-	set_data = async (data) => {
-		this.props.update_check(data);
-	}
-	save_data = async (data) => {
-		// await ...
+	send_data = async (data) => {
+		console.log(data);
+		let {response,error} = await request.add_check_data({
+			user_id:	this.props.user.id,
+			promo_id:	this.promo_id,
+			datetime:	f.date("Y-m-d H:i:s",data.datetime),
+			sum:		data.sum,
+			fn:			data.fn,
+			fd:			data.fd,
+			fp:			data.fp,
+		});
+		if(response) {
+			console.log(response.check_id);
+		}
+		if(error) {
+			alert("Не удалось загрузить данные о чеке",error.message);
+		}
 	}
 
 	render() {
-		console.log("Component this",this);
-
 		return (
-			<ScrollView ref={this.scroll} keyboardShouldPersistTaps="always" keyboardDismissMode="on-drag">
-				<Layout 
-					{...this.props}
-					scroll={this.scroll}
-					set_data={this.set_data}
-					save_data={this.save_data}
-				/>
-			</ScrollView>
+			<Layout
+				{...this.props}
+				send_data={this.send_data}
+			/>
 		);
 	}
 });

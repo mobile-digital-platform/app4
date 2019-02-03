@@ -263,30 +263,32 @@ export default withNavigation(class Participate extends Component {
 	}
 	// Отправка формы
 	send = async () => {
+		let state = this.state;
+
 		Keyboard.dismiss();
-		if(this.state.waiting) return;
+		if(state.waiting) return;
 
 		// Проверяем все поля
 		if(!await this.check_completeness()) return;
 
-		if(this.state.id && !this.state.phone_confirmed) {
+		if(state.id && !state.phone_confirmed) {
 			this.scroll.current.scrollTo({y:this.inputs.phone.offset});
 			return;
 		}
 
 		// Если все в порядке, отсылаем
-		if(this.state.ready) {
+		if(state.ready) {
 			await this.setState({waiting:true});
 			await this.props.send_data({
-				name:			this.state.name,
-				father:			this.state.father,
-				family:			this.state.family,
-				gender:			this.state.gender,
-				city_id:		this.state.city_id,
-				city_name:		this.state.city_name,
-				phone:			this.state.phone,
-				mail:			this.state.mail,
-				loyalty_card_number: this.state.loyalty_card_number,
+				name:			state.name,
+				father:			state.father,
+				family:			state.family,
+				gender:			state.gender,
+				city_id:		state.city_id,
+				city_name:		state.city_name,
+				phone:			state.phone,
+				mail:			state.mail,
+				loyalty_card_number: state.loyalty_card_number,
 			});
 			await this.setState({waiting:false});
 		}

@@ -70,6 +70,6 @@ export default withNavigation(({navigation,...props}) => (
 			</View>
 			<View styles={styles.right}><Image style={styles.right_arrow} source={Arrow} /></View>
 		</TouchableOpacity>
-		{props.error ? (<Text style={styles.error_text}>{props.error}</Text>) : null}
+		{props.error.length ? (<Text style={styles.error_text}>{props.error}</Text>) : null}
 	</View>
 ));
