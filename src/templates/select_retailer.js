@@ -163,7 +163,7 @@ export default class SelectRetailer extends Component {
 					</View>
 					{props.data.length ? (<View styles={styles.right}><Image style={styles.right_arrow} source={Arrow} /></View>) : null}
 				</TouchableOpacity>
-				{props.error.length ? (<Text style={styles.error_text}>{props.error}</Text>) : null}
+				{props.error?.length ? (<Text style={styles.error_text}>{props.error}</Text>) : null}
 				{Platform.OS == 'ios'		? this.ios_picker()		: null}
 				{Platform.OS == 'android'	? this.android_picker()	: null}
 			</View>

@@ -1,7 +1,7 @@
 import {NetInfo} from 'react-native';
 import check_data from './check_data';
 
-var domain = 'http://api.emg.ru/cc_v1/WebServiceCC.asmx';
+var domain = 'http://api.emg.ru/cc_v2/WebServiceCC.asmx';
 
 export default async function(method,data = {}) {
 	if(method.substr(-1) == '/') method = method.substr(0,-1);

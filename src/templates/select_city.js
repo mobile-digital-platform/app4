@@ -54,7 +54,7 @@ const styles = EStyleSheet.create({
 
 export default withNavigation(({navigation,...props}) => (
 	<View>
-		<TouchableOpacity style={[styles.container,props.error?styles.container_error:{}]} onPress={_ => {
+		<TouchableOpacity style={[styles.container,props.error?styles.container_error:{}]} onPress={_=>{
 			Keyboard.dismiss();
 			navigation.push('settings_change_city');
 		}}>
@@ -70,6 +70,6 @@ export default withNavigation(({navigation,...props}) => (
 			</View>
 			<View styles={styles.right}><Image style={styles.right_arrow} source={Arrow} /></View>
 		</TouchableOpacity>
-		{props.error.length ? (<Text style={styles.error_text}>{props.error}</Text>) : null}
+		{props.error?.length ? (<Text style={styles.error_text}>{props.error}</Text>) : null}
 	</View>
 ));

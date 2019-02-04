@@ -73,7 +73,7 @@ export default class DateTime extends Component {
 						error={state.time_error}
 					/>
 				</View>
-				{state.date_time_error ? (<Text style={styles.error_text}>{state.date_time_error}</Text>) : null}
+				{state.error?.length ? (<Text style={styles.error_text}>{state.error}</Text>) : null}
 			</View>
 		);
 	}

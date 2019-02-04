@@ -74,11 +74,12 @@ export const request = {
 		if(response) {
 			return {response:{
 				items: response.map(e => ({
-					id:			e.PromoGroupID,
-					title:		e.PromoGroupName,
-					start:		e.Start.substr(0,10),
-					end:		e.Finish.substr(0,10),
-					image_url:	e.BannerLink,
+					id:				e.PromoGroupID,
+					title:			e.PromoGroupName,
+					start:			e.Start.substr(0,10),
+					end:			e.Finish.substr(0,10),
+					image_url:		e.BannerLink,
+					main_image_url: e.MainBannerLink,
 				})),
 			}};
 		}
@@ -223,6 +224,75 @@ export const request = {
 		});
 		if(response) {
 			return {response:1};
+		}
+		if(error) {
+			console.log('error',error);
+			return {error};
+		}
+	},
+	// Список подарков
+	get_user_prizes: async (data) => {
+		let {response,error} = await API('/GetUserPrizes',{
+			UserID: data.user_id,
+			PromoID: data.promo_id,
+		});
+		if(response) {
+			if(!response.length) {
+				response = [
+		            {
+		               'GroupID':1,
+		               'GroupName':'Сертификаты',
+		   			   'GetUserData':2,
+		               'GetTypeID':1,
+		               "Prizes": [
+		                  {
+		                     'PrizeName':'Сертификат в Магнит на 1000 рублей',
+		                     'ImgLink': 'http://api.emg.ru/PrizePhotos/1.jpg',
+		                     'State':'Нужно ввести данные',
+		                     'Details':'',
+		                     'Link':''
+		                  }
+		               ]
+		            },
+		            {
+		               'GroupID':2,
+		               'GroupName':'Коллекционные тарелки',
+		               'GetUserData':-1,
+		   			   'GetTypeID':-1,
+		               "Prizes": [
+		                  {
+		                     'PrizeName':'Коллекционная тарелка',
+		                     'ImgLink': 'http://api.emg.ru/PrizePhotos/2.jpg',
+		                     'State':'Ожидает отправки',
+		                     'Details':'Ваш приз будет доставлен по адресу ХХХ',
+		                     'Link':''
+		                  },
+		                  {
+		                     'PrizeName':'Коллекционная тарелка',
+		                     'ImgLink': 'http://api.emg.ru/PrizePhotos/2.jpg',
+		                     'State':'Отправлено. Смотреть статус',
+		                     'Details':'Ваш приз будет доставлен по адресу ХХХ',
+		   		 			 'Link': 'http://pochta.ru/XXX/?tracknumber=1654454501'
+		                  }
+		               ]
+		            }
+				];
+			}
+			return {response:{
+				items: response.map(e => ({
+					group_id:			e.GroupID,
+					group_name:			e.GroupName,
+					get_user_data_id:	e.GetUserData,
+					get_type_id:		e.GetTypeID,
+					prize_list: e.Prizes.map(g => ({
+						name:		g.PrizeName,
+						image_url:	g.ImgLink,
+						state:		g.State,
+						details:	g.Details,
+						link:		g.Link,
+					})),
+				})),
+			}};
 		}
 		if(error) {
 			console.log('error',error);

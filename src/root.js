@@ -22,12 +22,12 @@ import PromoDetailsScreen			from './screens/promo/details';
 import PromoParticipateScreen		from './screens/promo/participate';
 import PromoMyListScreen			from './screens/promo/my';
 
-import PromoAddCheckScreen			from './screens/promo/add_check';
-import PromoGetPrizeScreen			from './screens/promo/get_prize';
-import PromoChoosePrizeScreen		from './screens/promo/choose_prize';
-import PromoMyPrizesScreen			from './screens/promo/my_prizes';
-import PromoAskScreen				from './screens/promo/ask';
-import PromoPassportScreen			from './screens/promo/passport';
+// import PromoAddCheckScreen			from './screens/promo/add_check';
+// import PromoGetPrizeScreen			from './screens/promo/get_prize';
+// import PromoChoosePrizeScreen		from './screens/promo/choose_prize';
+// import PromoMyPrizesScreen			from './screens/promo/my_prizes';
+// import PromoAskScreen				from './screens/promo/ask';
+// import PromoPassportScreen			from './screens/promo/passport';
 
 import SettingsScreen				from './screens/settings/main';
 import ConfirmPhoneScreen			from './screens/settings/confirm_phone';
@@ -60,12 +60,12 @@ var Navigator = createAppContainer(createStackNavigator(
 		promo_participate:			PromoParticipateScreen,
 		promo_my_view:				PromoMyListScreen,
 
-		promo_add_check:			PromoAddCheckScreen,
-		promo_my_prizes:			PromoMyPrizesScreen,
-		promo_choose_prize:			PromoChoosePrizeScreen,
-		promo_get_prize:			PromoGetPrizeScreen,
-		promo_ask:					PromoAskScreen,
-		promo_passport: 			PromoPassportScreen,
+		// promo_add_check:			PromoAddCheckScreen,
+		// promo_my_prizes:			PromoMyPrizesScreen,
+		// promo_choose_prize:			PromoChoosePrizeScreen,
+		// promo_get_prize:			PromoGetPrizeScreen,
+		// promo_ask:					PromoAskScreen,
+		// promo_passport: 			PromoPassportScreen,
 
 		settings:					SettingsScreen,
 		settings_confirm_phone:		ConfirmPhoneScreen,

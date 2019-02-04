@@ -115,7 +115,7 @@ export default withNavigation(class InputCard extends Component {
 						<Text style={[styles.title,styles.title_active]}>{this.props.title}</Text>
 					</TouchableOpacity>
 				)}
-				{state.error.length ? (<Text style={styles.error_text}>{state.error}</Text>) : null}
+				{state.error?.length ? (<Text style={styles.error_text}>{state.error}</Text>) : null}
 			</View>
 		);
 	}

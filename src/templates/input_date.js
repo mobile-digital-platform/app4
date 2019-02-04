@@ -108,7 +108,7 @@ export default class Date extends Component {
 					</View>
 					{state.value ? (<View style={styles.right}><Image style={styles.right_image} source={Tick} /></View>) : null}
 				</TouchableOpacity>
-				{state.error.length ? (<Text style={styles.error_text}>{state.error}</Text>) : null}
+				{state.error?.length ? (<Text style={styles.error_text}>{state.error}</Text>) : null}
 				<DateTimePicker
 					isVisible={state.visible}
 					titleIOS='Выберите дату'

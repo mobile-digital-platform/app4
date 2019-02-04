@@ -3,6 +3,8 @@ import {Platform,ScrollView,Text,TouchableOpacity,View} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {withNavigation} from 'react-navigation';
 
+import f from '../../../functions';
+
 import AnimatedButton	from '../../../templates/animated_button';
 import InputCard		from '../../../templates/input_card';
 import SelectRetailer	from '../../../templates/select_retailer';
@@ -64,7 +66,7 @@ export default withNavigation(class LoyaltyCardsComponent extends Component {
 
 		let obj = {
 			retailer_id:	state.retailer_id,
-			number:			state.number,
+			number:			f.parse_int(state.number),
 		};
 
 		this.setState({waiting:true,button_state:'waiting'});

@@ -61,10 +61,10 @@ export default class SplashComponent extends Component {
 
 	async componentDidMount() {
 		// Даем пользователю насладиться пузырьками из бутылочки
-		this.timer = setTimeout(_ => this.setState({timeout:true}),2000);
+		this.timer = setTimeout(_=>this.setState({timeout:true}),0);
 
 		// Пускаем пузырьки
-		this.interval = setInterval(_ => this.setState(({current_image}) => ({current_image:++current_image%3})),200);
+		this.interval = setInterval(_=>this.setState(({current_image}) => ({current_image:++current_image%3})),200);
 
 		// Проверяем соединение
 		this.check_connection();

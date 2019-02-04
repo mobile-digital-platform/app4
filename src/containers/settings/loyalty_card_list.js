@@ -93,10 +93,12 @@ const item_styles = EStyleSheet.create({
 		marginTop: 5,
 	},
 	number: {
+		flex: 1,
 		paddingTop: 2,
 		fontSize: 14, fontFamily: 'GothamPro-Medium',
 	},
 	remove: {
+		marginLeft: 10,
 	},
 	remove_image: {
 		height: 14, width: 14,
@@ -106,13 +108,17 @@ const item_styles = EStyleSheet.create({
 const Item = ({data,retailer_list,remove}) => {
 	let retailer = retailer_list?.find(e => e.id==data.retailer_id) || {id:0};
 
+	for(let i=data.number.length-1; i>3; i--) if(!(i%4)) {
+		data.number = data.number.substring(0,i)+' '+data.number.substring(i);
+	}
+
 	return (
 		<View style={item_styles.container}>
 			<Image style={item_styles.image} source={{uri:retailer.image_url}} />
 			<View style={item_styles.area}>
 				<Text style={item_styles.title}>{retailer.title}</Text>
 				<View style={item_styles.about}>
-					<Text style={item_styles.number}>{data.number}</Text>
+					<Text style={item_styles.number} numberOfLines={1}>{data.number}</Text>
 					<TouchableOpacity style={item_styles.remove} onPress={_=>remove(retailer.id)}>
 						<Image style={item_styles.remove_image} source={Cross} />
 					</TouchableOpacity>

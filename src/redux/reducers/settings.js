@@ -208,7 +208,11 @@ export const request = {
 	},
 	// Добавление карты лояльности
 	add_loyalty_card: async (data) => {
-		let {response,error} = await API('/AddLoyalityCard',{UserID:data.user_id,NetworkID:data.retailer_id,CardNum:data.number});
+		let {response,error} = await API('/AddLoyalityCard',{
+			UserID: data.user_id,
+			NetworkID: data.retailer_id,
+			CardNum: data.number,
+		});
 		if(response) {
 			return {response:1};
 		}
