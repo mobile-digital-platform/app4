@@ -136,7 +136,7 @@ export default class PromoAddCheckLayout extends Component {
 			camera_opened:	false,
 			scanner_opened:	false,
 
-			photo: [],
+			photo_list: [],
 			photo_error: '',
 
 			datetime:	'',
@@ -154,6 +154,7 @@ export default class PromoAddCheckLayout extends Component {
 			fd_error:	false,
 			fp_error:	false,
 
+			updated: false,
 			waiting: false,
 			ready: false,
 		};
@@ -168,17 +169,16 @@ export default class PromoAddCheckLayout extends Component {
 	close_scanner	= () => this.setState({scanner_opened:false});
 
 	// Фотографии
-	add_photo		= (data) => this.setState(({photo}) => ({photo:[...photo,data]}));
-	remove_photo	= (id)   => this.setState(({photo}) => ({photo:photo.filter(item => item.id!=id)}));
+	add_photo		= (data) => this.setState(({photo_list}) => ({photo_list:[...photo_list,data],photo_error:''}));
+	remove_photo	= (id)   => this.setState(({photo_list}) => ({photo_list:photo_list.filter(item => item.id!=id)}));
 
 	// Дата и время
-	set_date = (date) => this.setState(state => ({datetime:new Date(date+' '+state.time),date,date_error:false}));
-	set_time = (time) => this.setState(state => ({datetime:new Date(state.date+' '+time),time,time_error:false}));
+	set_date = (date) => this.setState(state => ({datetime:new Date(date+' '+state.time),date,date_error:false,updated:true}));
+	set_time = (time) => this.setState(state => ({datetime:new Date(state.date+' '+time),time,time_error:false,updated:true}));
 
 	// Все остальные поля
 	update = async (adjust) => {
-		await this.setState(adjust);
-		console.log(this.state);
+		await this.setState({...adjust,updated:true});
 
 		// Убираем ошибки
 		for(let field of this.required) if(this.state[field+'_error'] && this.state[field].length) {
@@ -190,23 +190,23 @@ export default class PromoAddCheckLayout extends Component {
 	check_completeness = async () => {
 		let state = this.state;
 
-		// if(!state.photo.length) {
-		// 	this.setState({photo_error:'Прикрепите фотографию чека!',ready:false});
-		// 	this.scroll.current.scrollTo({y:0});
-		// 	await this.setState({ready:false});
-		// 	return false;
-		// }
+		if(!state.photo_list.length) {
+			this.setState({photo_error:'Прикрепите фотографию чека!',ready:false});
+			this.scroll.current.scrollTo({y:0});
+			await this.setState({ready:false});
+			return false;
+		}
 
 		// Указываем на то, что не заполнено
-		let ready = this.required.every(field => state[field].length);
-		for(let field of this.required) {
-			this.setState({[field+'_error']:!state[field].length});
-			if(!state[field].length) {
-				if(this.inputs[field]) this.scroll.current.scrollTo({y:this.inputs[field].offset});
-				await this.setState({ready:false});
-				return false;
-			}
-		}
+		// let ready = this.required.every(field => state[field].length);
+		// for(let field of this.required) {
+		// 	this.setState({[field+'_error']:!state[field].length});
+		// 	if(!state[field].length) {
+		// 		if(this.inputs[field]) this.scroll.current.scrollTo({y:this.inputs[field].offset});
+		// 		await this.setState({ready:false});
+		// 		return false;
+		// 	}
+		// }
 		await this.setState({ready:true});
 		return true;
 	}
@@ -223,14 +223,14 @@ export default class PromoAddCheckLayout extends Component {
 		// Отправляем изменения
 		await this.setState({waiting:true});
 		await this.props.send_data({
-			photo:		state.photo,
+			photo_list:	state.photo_list,
 			datetime: 	state.datetime,
 			sum: 		state.sum,
 			fn: 		state.fn,
 			fd: 		state.fd,
 			fp: 		state.fp,
 		});
-		await this.setState({waiting:false});
+		await this.setState({updated:false,waiting:false});
 	}
 
 	render() {
@@ -243,10 +243,10 @@ export default class PromoAddCheckLayout extends Component {
 						Сфотографируйте чек так, чтобы были видны название магазина, список товаров, сумма, дата, фискальные данные (ФН, ФД, ФП), и QR-код.
 					</Text>
 					<View style={styles.photo_list_area}>
-						{state.photo[0] ? (<Photo photo={state.photo[0]} remove={this.remove_photo} />) : null}
-						{state.photo[1] ? (<Photo photo={state.photo[1]} remove={this.remove_photo} />) : null}
-						{state.photo[2] ? (<Photo photo={state.photo[2]} remove={this.remove_photo} />) : null}
-						{state.photo.length<3 ? (
+						{state.photo_list[0] ? (<Photo photo={state.photo_list[0]} remove={this.remove_photo} />) : null}
+						{state.photo_list[1] ? (<Photo photo={state.photo_list[1]} remove={this.remove_photo} />) : null}
+						{state.photo_list[2] ? (<Photo photo={state.photo_list[2]} remove={this.remove_photo} />) : null}
+						{state.photo_list.length<3 ? (
 							<TouchableOpacity style={styles.camera_area} onPress={this.open_camera}>
 								<Image style={styles.camera} source={CameraImage} />
 							</TouchableOpacity>

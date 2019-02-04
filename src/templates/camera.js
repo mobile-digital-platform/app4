@@ -61,15 +61,14 @@ export default withNavigation(class Camera extends Component {
 	};
 	capture = async () => {
 		if(this.camera) {
-			let photo = await this.camera.takePictureAsync({skipProcessing:true});
-			this.props.close();
+			let photo = await this.camera.takePictureAsync({base64:true,doNotSave:true});
 			this.request_permission(photo);
-			console.log('камера отработала',photo);
 
 			this.props.add_photo({
-				id:  "Coca Cola Promo "+f.date("Y-m-d H:i:s"),
-				path: photo.uri,
+				id: "Coca Cola Promo "+f.date("Y-m-d H:i:s"),
+				...photo,
 			});
+			this.props.close();
 		}
 	};
 

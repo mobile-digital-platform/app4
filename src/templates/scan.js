@@ -27,7 +27,7 @@ const styles = EStyleSheet.create({
 
 export default withNavigation(props => (
 	<View style={styles.container}>
-		<Image style={styles.photo} source={{uri:props.photo.path}} />
+		<Image style={styles.photo} source={{uri:'data:image/jpg;base64,'+props.photo.base64}} />
 		<TouchableOpacity style={styles.remove} onPress={_=>props.remove(props.photo.id)}>
 			<Image style={styles.cross} source={Cross} />
 		</TouchableOpacity>

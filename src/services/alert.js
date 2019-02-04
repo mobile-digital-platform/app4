@@ -4,8 +4,8 @@ import {Alert} from 'react-native';
 export default async (title,message,buttons,options) => new Promise((resolve,reject) => {
 	if(!buttons) buttons = [
 		{
-			text: 'Да',
-			onPress: () => resolve(true),
+			text: 'Хорошо',
+			onPress: () => resolve(),
 		},
 	];
 	if(!options) options = {cancelable:false};

@@ -61,9 +61,9 @@ var Navigator = createAppContainer(createStackNavigator(
 		promo_my_view:				PromoMyListScreen,
 
 		promo_add_check:			PromoAddCheckScreen,
-		promo_get_prize:			PromoGetPrizeScreen,
-		promo_choose_prize:			PromoChoosePrizeScreen,
 		promo_my_prizes:			PromoMyPrizesScreen,
+		promo_choose_prize:			PromoChoosePrizeScreen,
+		promo_get_prize:			PromoGetPrizeScreen,
 		promo_ask:					PromoAskScreen,
 		promo_passport: 			PromoPassportScreen,
 

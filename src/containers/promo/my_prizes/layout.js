@@ -2,8 +2,8 @@ import React,{Component} from 'react';
 import {StyleSheet,FlatList,ImageBackground,ScrollView,Text,TouchableOpacity,View,Image,SectionList} from 'react-native';
 import {withNavigation} from 'react-navigation';
 
-import {MyPrize as Prize,Empty} 	from '../../../../templates/prize';
-import SubTitle						from '../../../../templates/subtitle';
+import {MyPrize as Prize,Empty} 	from '../../../templates/prize';
+import SubTitle						from '../../../templates/subtitle';
 
 const styles = StyleSheet.create({
 	container:{

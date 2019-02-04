@@ -226,7 +226,7 @@ export default withNavigation(class MyPromoListLayout extends Component {
 						</TouchableOpacity>
 					) : null}
 					{details.buy_prize ? (
-						<TouchableOpacity style={styles.get_button}>
+						<TouchableOpacity style={styles.get_button} onPress={_=>props.navigation.push('promo_my_prizes',{id:data.id})}>
 							<Text style={styles.get_button_text}>Получить выигрыш</Text>
 						</TouchableOpacity>
 					) : null}

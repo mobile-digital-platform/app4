@@ -1,4 +1,5 @@
 import React,{Component} from 'react';
+import {ImageStore} from 'react-native';
 import {withNavigation} from 'react-navigation';
 
 import f from '../../../functions';
@@ -14,24 +15,92 @@ export default withNavigation(class PromoAddCheckComponent extends Component {
 		super(props);
 
 		this.promo_id = props.navigation.getParam('id',0);
+
+		this.state = {
+			check_id: '',
+			photo_list: [
+				{state:0,error:''},
+				{state:0,error:''},
+				{state:0,error:''},
+			],
+			error: '',
+		}
 	}
 
 	send_data = async (data) => {
 		console.log(data);
-		let {response,error} = await request.add_check_data({
-			user_id:	this.props.user.id,
-			promo_id:	this.promo_id,
-			datetime:	f.date("Y-m-d H:i:s",data.datetime),
-			sum:		data.sum,
-			fn:			data.fn,
-			fd:			data.fd,
-			fp:			data.fp,
-		});
-		if(response) {
-			console.log(response.check_id);
+
+		// Загружаем чек, если до этого не загружали или поменялись данные
+		if(data.updated || !this.state.check_id) {
+			let check_data = await request.add_check_data({
+				user_id:	this.props.user.id,
+				promo_id:	this.promo_id,
+				datetime:	f.date("Y-m-d H:i:s",data.datetime),
+				sum:		+data.sum,
+				fn:			data.fn,
+				fd:			data.fd,
+				fp:			data.fp,
+			});
+			if(check_data.response) {
+				let {check_id} = check_data.response;
+				await this.setState({check_id});
+			}
+			if(check_data.error) {
+				await alert("Не удалось загрузить данные о чеке",check_data.error.message);
+				return;
+			}
 		}
-		if(error) {
-			alert("Не удалось загрузить данные о чеке",error.message);
+		await this.send_photos(data);
+	}
+
+	send_photos = async (data) => {
+		let {check_id,photo_list} = this.state;
+
+		// Загружаем все фотографии, которые еще не были загружены
+		let waiting = [];
+		for(let i=0; i<data.photo_list.length; i++) {
+			let photo = data.photo_list[i];
+
+			console.log(photo_list[i]);
+			// Если она уже не загружена успешно, то загружаем
+			if(photo_list[i].state != 1) {
+				waiting.push(new Promise(async (resolve) => {
+					let image_data = await request.add_check_photo({
+						check_id,
+						file: photo.base64,
+					});
+					if(image_data.response) {
+						this.setState(({photo_list}) => {
+							photo_list[i] = {
+								state: 1,
+								error: '',
+							};
+							return {photo_list};
+						});
+					}
+					if(image_data.error) {
+						this.setState(({photo_list}) => {
+							photo_list[i] = {
+								state: 2,
+								error: image_data.error.message,
+							};
+							return {photo_list};
+						});
+					}
+					resolve();
+				}));
+			}
+		}
+
+		await Promise.all(waiting);
+		for(let i=0; i<photo_list.length; i++) {
+			let photo = photo_list[i];
+
+			if(photo.state == 2) {
+				this.setState({error:photo.error});
+				await alert("Не удалось загрузить фотографии",photo.error+'\nПопробуйте еще раз');
+				return;
+			}
 		}
 	}
 
