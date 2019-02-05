@@ -37,6 +37,7 @@ const styles = EStyleSheet.create({
 	capture_text: {
 		color: '#fff',
 		fontSize: 18,
+		lineHeight: 19,
 	},
 });
 
@@ -50,19 +51,19 @@ export default withNavigation(class Camera extends Component {
 			]);
 			if(granted['android.permission.WRITE_EXTERNAL_STORAGE'] == 'granted') {
 				CameraRoll.saveToCameraRoll(photo.uri);
-				console.log('Permisiion successfully got', granted, photo.uri);
+				console.log('Permisiion successfully got',granted,photo.uri);
 			} else {
-				console.log('CameraRoll permission denied', granted, photo.uri);
+				console.log('CameraRoll permission denied',granted,photo.uri);
 			}
 		} catch (err) {
-			console.error('Failed to request permission ', err);
+			console.error('Failed to request permission',err);
 			return null;
 		}
 	};
 	capture = async () => {
 		if(this.camera) {
 			let photo = await this.camera.takePictureAsync({base64:true,doNotSave:true});
-			this.request_permission(photo);
+			// await this.request_permission(photo);
 
 			this.props.add_photo({
 				id: "Coca Cola Promo "+f.date("Y-m-d H:i:s"),

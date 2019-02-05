@@ -12,7 +12,7 @@ import TimeInput	from '../../../templates/input_time';
 
 import Photo		from '../../../templates/scan';
 import Camera		from '../../../templates/camera';
-import QR_Scanner	from '../../../templates/qr_scanner';
+// import QR_Scanner	from '../../../templates/qr_scanner';
 
 const styles = EStyleSheet.create({
 	container: {
@@ -334,11 +334,13 @@ export default class PromoAddCheckLayout extends Component {
 				</TouchableOpacity>
 
 				<Camera visible={state.camera_opened} add_photo={this.add_photo} close={this.close_camera} />
+				{/*
 				<QR_Scanner
 					visible={state.scanner_opened}
 					close={this.close_scanner}
 					send_data={this.add_check_data}
 				 />
+				 */}
 			</ScrollView>
 		);
 	}
