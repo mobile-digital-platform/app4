@@ -32,6 +32,18 @@ const styles = EStyleSheet.create({
 	},
 	input: {
 		width: '100%',
+		...Platform.select({
+			ios: {
+				paddingTop: 4, paddingBottom: 5,
+			},
+			android: {
+				padding: 0,
+			},
+		}),
+		fontSize: 14, fontFamily: 'GothamPro-Medium',
+	},
+	text: {
+		width: '100%',
 		paddingTop: 4, paddingBottom: 5,
 		fontSize: 14, fontFamily: 'GothamPro-Medium',
 	},
@@ -147,7 +159,7 @@ export default withNavigation(class InputPhone extends Component {
 					<View style={[styles.container,state.error?styles.container_error:{}]}>
 						<Text style={styles.title}>{this.props.title}</Text>
 						{props.disabled ? (
-							<Text style={[styles.input,this.props.style]}>{
+							<Text style={[styles.text,this.props.style]}>{
 								'+'+props.value.substr(0,1)+'('+props.value.substr(1,3)+')'+
 								props.value.substr(4,3)+'-'+props.value.substr(7,2)+'-'+props.value.substr(9,2)
 								}</Text>

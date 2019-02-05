@@ -27,7 +27,14 @@ const styles = EStyleSheet.create({
 	},
 	input: {
 		width: '100%',
-		paddingTop: 4, paddingBottom: 5,
+		...Platform.select({
+			ios: {
+				paddingTop: 4, paddingBottom: 5,
+			},
+			android: {
+				padding: 0,
+			},
+		}),
 		fontSize: 14, fontFamily: 'GothamPro-Medium',
 	},
 	error_text: {

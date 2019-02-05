@@ -50,7 +50,7 @@ const styles = EStyleSheet.create({
 		transform: [{rotate:'-45deg'}],
 	},
 	tick_left: {
-		position: 'absolute', bottom: 3.5, right: 9.5,
+		position: 'absolute', bottom: 3.5, right: Platform.select({ios:9.5,android:10.5}),
 		height: 5, width: 12,
 		borderRadius: 5,
 		backgroundColor: '#fff',
@@ -251,7 +251,7 @@ export default class AnimatedButton extends Component {
 			return (
 				<View style={container_styles}>
 					<Animated.View style={button_styles}>
-						<Text style={button_text_styles}>{props.children}</Text>
+						<Text style={button_text_styles} />
 					</Animated.View>
 				</View>
 			)
