@@ -198,7 +198,7 @@ export default withNavigation(class MyPromoListLayout extends Component {
 							<ScrollView><FlatList
 								style={styles.list}
 								data={check}
-								renderItem={({item}) => (<Check data={item} />)}
+								renderItem={({item}) => (<Check data={item} extra={details} />)}
 								// ItemSeparatorComponent={Separator}
 								keyExtractor={item => ''+item.id}
 							/></ScrollView>
@@ -207,7 +207,8 @@ export default withNavigation(class MyPromoListLayout extends Component {
 								Пока у вас нет ни одной покупки по акции.{'\n\n'}
 								{data.retailer.has_loyalty_card ? (
 									details.add_check ? (
-										'Вы можете вручную добавить кассовый чек, нажав кнопку «Добавить»'
+										/*'Вы можете вручную добавить кассовый чек, нажав кнопку «Добавить»'*/
+										'Возможность добавления чека скоро появится.\nСледите за обновлениями приложения'
 									) : (
 										'Зарегистрируйте карту лояльности магазина в настройках, и используйте ее при покупке.\n'+
 										'Данные по покупкам добавятся автоматически.'

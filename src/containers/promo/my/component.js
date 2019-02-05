@@ -8,6 +8,7 @@ import Layout from './layout';
 export default withNavigation(class MyPromoListComponent extends Component {
 	constructor(props) {
 		super(props);
+
 		this.state = {
 			data: this.get_data(props.navigation.getParam('id',0)),
 			details: {},

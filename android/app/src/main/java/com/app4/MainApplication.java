@@ -3,8 +3,6 @@ package com.app4;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.lewin.qrcode.QRScanReaderPackage;
-import org.reactnative.camera.RNCameraPackage;
 import com.horcrux.svg.SvgPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -28,8 +26,6 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new QRScanReaderPackage(),
-            new RNCameraPackage(),
             new SvgPackage(),
             new RNGestureHandlerPackage(),
             new VectorIconsPackage()

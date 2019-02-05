@@ -108,9 +108,9 @@ const item_styles = EStyleSheet.create({
 const Item = ({data,retailer_list,remove}) => {
 	let retailer = retailer_list?.find(e => e.id==data.retailer_id) || {id:0};
 
-	for(let i=data.number.length-1; i>3; i--) if(!(i%4)) {
-		data.number = data.number.substring(0,i)+' '+data.number.substring(i);
-	}
+	// for(let i=data.number.length-1; i>3; i--) if(!(i%4)) {
+	// 	data.number = data.number.substring(0,i)+' '+data.number.substring(i);
+	// }
 
 	return (
 		<View style={item_styles.container}>

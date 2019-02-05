@@ -10,7 +10,7 @@ import NotConfirmed	from '../../../../../assets/ui/voucher_not_confirmed.png';
 const styles = EStyleSheet.create({
 	container: {
 		flexDirection: 'row',
-		alignItems: 'flex-end',
+		alignItems: 'center',
 		paddingVertical: 20,
 	},
 	right: {
@@ -27,6 +27,9 @@ const styles = EStyleSheet.create({
 	},
 	scores_text: {
 		fontSize: 12,
+	},
+	scores_voucher: {
+		height: 25, width: 20,
 	},
 	area: {
 		flex: 1,
@@ -54,22 +57,20 @@ const styles = EStyleSheet.create({
 let check_state = (state) => ['проверяется','подтвержден','не принят'][state];
 // let date = (timestamp) => '01.11.2018'; // (new Date(timestamp).getDay())+'.'+(new Date(timestamp).getMonth())+'.'+(new Date(timestamp).getYear());
 
-export default withNavigation(({navigation,data}) => (
+export default withNavigation(({navigation,data,extra}) => (
 	<View style={styles.container}>
-		<Text style={[styles.scores,(data.state=="Подтвержден" ? styles.right : styles.wrong)]}>
-			<Text style={styles.scores_number}>
-			{data.scores>0 ? (
-				'+'+data.scores
-			) : (
-				<Image style={styles.scores_voucher} source={data.state=="Подтвержден" ? Confirmed : NotConfirmed} />
-			)}
+		{data.scores>0 ? (
+			<Text style={[styles.scores,(data.state=="Подтвержден" ? styles.right : styles.wrong)]}>
+				<Text style={styles.scores_number}>{'+'+data.scores}</Text>
+				{'\n'}
+				<Text style={styles.scores_text}>{extra.points_type}</Text>
 			</Text>
-			{'\n'}
-			<Text style={styles.scores_text}>баллов</Text>
-		</Text>
+		) : (
+			<Image style={styles.scores_voucher} source={data.state=="Подтвержден" ? Confirmed : NotConfirmed} />
+		)}
 		<View style={styles.area}>
 			<View>
-				<Text style={[styles.number,(data.state=="Подтвержден" ? styles.right : styles.wrong)]}>{data.number}</Text>
+				{data.number ? (<Text style={[styles.number,(data.state=="Подтвержден" ? styles.right : styles.wrong)]}>{data.number}</Text>) : null}
 				<Text style={styles.state}>{data.date} — {data.state}</Text>
 			</View>
 			{data.state=="Отклонен" ? (

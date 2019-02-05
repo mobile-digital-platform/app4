@@ -157,12 +157,10 @@ export const request = {
 			PromoID: data.promo_id,
 		});
 		if(response) {
-			let points = response.PointsCount?.substr(0,response.PointsCount.indexOf(' ')),
-				points_type = response.PointsCount?.substr(response.PointsCount.indexOf(' ')+1);
 			return {response:{
 				prizes:			  response.PrizesCount,
-				points,
-				points_type,
+				points:			  response.PointsCount,
+				points_type:	  response.PointsName,
 				add_check:		!!response.AddCheckAvailability,
 				buy_prize:		!!response.BuyPrizesAvailability,
 				show_prizes:	!!response.MyPrizesAvailability,
