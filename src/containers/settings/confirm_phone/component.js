@@ -108,7 +108,8 @@ export default withNavigation(class ConfirmPhoneComponent extends Component {
 			this.props.open_smoke();
 			let {response,error} = await request.phone_send_code(this.props.user.id);
 			if(response) {
-				this.setState({code:response.code});
+				// this.setState({code:response.code});
+				console.log(response.code);
 				if(this.state.state == 'expired') alert("Код отправлен повторно");
 			}
 			if(error) {
