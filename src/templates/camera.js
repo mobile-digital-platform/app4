@@ -36,7 +36,7 @@ const styles = EStyleSheet.create({
 	},
 	capture_text: {
 		color: '#fff',
-		fontSize: 18,
+		fontSize: 18, fontFamily: 'GothamPro',
 		lineHeight: 19,
 	},
 });
@@ -62,6 +62,7 @@ export default withNavigation(class Camera extends Component {
 	};
 	capture = async () => {
 		if(this.camera) {
+			this.props.close();
 			let photo = await this.camera.takePictureAsync({base64:true,doNotSave:true});
 			// await this.request_permission(photo);
 
@@ -69,7 +70,6 @@ export default withNavigation(class Camera extends Component {
 				id: "Coca Cola Promo "+f.date("Y-m-d H:i:s"),
 				...photo,
 			});
-			this.props.close();
 		}
 	};
 
@@ -88,7 +88,8 @@ export default withNavigation(class Camera extends Component {
 					<RNCamera
 						ref={ref => this.camera=ref}
 						style={styles.camera}
-						flashMode={RNCamera.Constants.FlashMode.on}
+						captureAudio={false}
+						flashMode={RNCamera.Constants.FlashMode.off}
 					/>
 					<TouchableOpacity style={styles.capture} onPress={this.capture}>
 						<Text style={styles.capture_text}>Сделать снимок</Text>
