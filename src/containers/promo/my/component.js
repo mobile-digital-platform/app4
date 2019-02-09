@@ -10,7 +10,7 @@ export default withNavigation(class MyPromoListComponent extends Component {
 		super(props);
 
 		this.state = {
-			data: this.get_data(props.navigation.getParam('id',0)),
+			data: this.get_promo(props.navigation.getParam('id',0)),
 			details: {},
 			check: [],
 			check_error: '',
@@ -19,7 +19,14 @@ export default withNavigation(class MyPromoListComponent extends Component {
 	}
 
 	async componentDidMount() {
+		this.get_data();
+	}
+
+	get_promo = (id) => this.props.promo.find(e => e.id==id);
+
+	get_data = async () => {
 		this.setState({waiting:true});
+		// await new Promise(res => setTimeout(res,2000));
 		await Promise.all([
 			new Promise(async (resolve) => {
 				let {response,error} = await request.get_checks({
@@ -53,15 +60,9 @@ export default withNavigation(class MyPromoListComponent extends Component {
 		this.setState({waiting:false});
 	}
 
-	get_data = (id) => this.props.promo.find(e => e.id==id);
-
 	render() {
 		// console.log("Component My Promo List",this.state);
 
-		return (
-			<Layout
-				{...this.state}
-			/>
-		);
+		return (<Layout {...this.state} get_data={this.get_data} />);
 	}
 });

@@ -35,8 +35,9 @@ export default withNavigation(class PromoAddCheckComponent extends Component {
 			let check_data = await request.add_check_data({
 				user_id:	this.props.user.id,
 				promo_id:	this.promo_id,
-				datetime:	f.date("Y-m-d H:i:s",data.datetime),
-				sum:		+data.sum,
+				// datetime:	f.date("Y-m-d H:i:s",data.datetime)+'.000',
+				datetime:	f.date("Y-m-d",data.datetime)+'T'+f.date("H:i:s",data.datetime)+'.000Z',
+				sum:		data.sum,
 				fn:			data.fn,
 				fd:			data.fd,
 				fp:			data.fp,

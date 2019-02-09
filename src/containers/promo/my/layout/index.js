@@ -53,6 +53,7 @@ const styles = EStyleSheet.create({
 		width: '100%',
 		marginTop: -30, marginBottom: -10,
 		paddingRight: 10,
+		zIndex: 1,
 	},
 	retailer_image: {
 		height: 40, width: 40,
@@ -72,7 +73,6 @@ const styles = EStyleSheet.create({
 	empty: {
 		alignItems: 'center',
 		padding: 20,
-		// backgroundColor: '#eee',
 	},
 	empty_text: {
 		paddingBottom: '20%',
@@ -191,17 +191,19 @@ export default withNavigation(class MyPromoListLayout extends Component {
 				{props.check_error ? (
 					<View style={styles.empty}><Text style={styles.empty_text}>{check_error}</Text></View>
 				) : (
-					props.waiting ? (
-						<ActivityIndicator size='large' />
+					check.length ? (
+						<FlatList
+							style={styles.list}
+							data={check}
+							renderItem={({item}) => (<Check data={item} extra={details} />)}
+							// ItemSeparatorComponent={Separator}
+							keyExtractor={item => ''+item.id}
+							onRefresh={props.get_data}
+							refreshing={props.waiting}
+						/>
 					) : (
-						check.length ? (
-							<ScrollView><FlatList
-								style={styles.list}
-								data={check}
-								renderItem={({item}) => (<Check data={item} extra={details} />)}
-								// ItemSeparatorComponent={Separator}
-								keyExtractor={item => ''+item.id}
-							/></ScrollView>
+						props.waiting ? (
+							<ActivityIndicator size='large' />
 						) : (
 							<View style={styles.empty}><Text style={styles.empty_text}>
 								Пока у вас нет ни одной покупки по акции.{'\n\n'}

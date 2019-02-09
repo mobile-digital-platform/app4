@@ -142,10 +142,10 @@ export default class PromoAddCheckLayout extends Component {
 			datetime:	'',
 			date:		'',
 			time:		'',
-			sum:		'',
-			fn:			'',
-			fd:			'',
-			fp:			'',
+			sum:		'123.00',
+			fn:			'1232000100023230',
+			fd:			'123302',
+			fp:			'1230303030',
 
 			date_error:	false,
 			time_error:	false,
@@ -198,15 +198,15 @@ export default class PromoAddCheckLayout extends Component {
 		}
 
 		// Указываем на то, что не заполнено
-		// let ready = this.required.every(field => state[field].length);
-		// for(let field of this.required) {
-		// 	this.setState({[field+'_error']:!state[field].length});
-		// 	if(!state[field].length) {
-		// 		if(this.inputs[field]) this.scroll.current.scrollTo({y:this.inputs[field].offset});
-		// 		await this.setState({ready:false});
-		// 		return false;
-		// 	}
-		// }
+		let ready = this.required.every(field => state[field].length);
+		for(let field of this.required) {
+			this.setState({[field+'_error']:!state[field].length});
+			if(!state[field].length) {
+				if(this.inputs[field]) this.scroll.current.scrollTo({y:this.inputs[field].offset});
+				await this.setState({ready:false});
+				return false;
+			}
+		}
 		await this.setState({ready:true});
 		return true;
 	}
