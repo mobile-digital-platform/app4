@@ -126,7 +126,6 @@ export const AvailablePrize = (props) => {
 	)
 };
 
-
 export const MyPrize = (props) => {
 	let data = props.data;
 	return (

@@ -3,9 +3,9 @@ import {StyleSheet,FlatList,ImageBackground,ScrollView,Text,TouchableOpacity,Vie
 import {withNavigation} from 'react-navigation';
 import ModalFilterPicker from 'react-native-modal-filter-picker';
 
-import Input		from '../../../../templates/input';
+import Input	from '../../../../templates/input';
 import Select	from '../../../../templates/select';
-import MainText		from '../../../../templates/main_text';
+import MainText	from '../../../../templates/main_text';
 
 const styles = StyleSheet.create({
 	container: {
@@ -85,7 +85,6 @@ const options = [
 export default class GetPrize extends Component {
 	constructor(props) {
 		super(props);
-		
 
 		this.state = {
 			name: '',
@@ -132,8 +131,8 @@ export default class GetPrize extends Component {
 							update={value => this.update({ mail: value })}
 							error={state.mail_error}
 						/>
-						<Select 
-							title="Выберите центр выдачи" 
+						<Select
+							title="Выберите центр выдачи"
 							data={options}
 							value={state.prize_center}
 							update={value => this.update({ prize_center: value })}

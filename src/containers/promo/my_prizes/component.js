@@ -3,29 +3,40 @@ import {withNavigation} from 'react-navigation';
 
 import {request} from '../../../redux/reducers/promo';
 
+import alert from '../../../services/alert';
+
 import Layout from './layout';
 
 export default withNavigation(class PromoMyPrizesComponent extends Component {
 	state = {
-		prize_list: [],
+		list: [],
+		loading: false,
 	};
 
 	async componentDidMount() {
 		this.id = this.props.navigation.getParam('id',0);
+		this.load_data();
+	}
 
+	load_data = async () => {
+		this.setState({loading:true});
 		let {response,error} = await request.get_user_prizes({user_id:this.props.user.id,promo_id:this.id});
 		if(response) {
 			console.log(response);
+			this.setState({list:response.items});
 		}
 		if(error) {
+			alert("Не удалось загрузить данные",error.code);
 		}
+		this.setState({loading:false});
 	}
 
 	render() {
 		return (
 			<Layout
 				{...this.props}
-				prize_list={this.state.prize_list}
+				{...this.state}
+				reload={this.load_data}
 			/>
 		);
 	}
