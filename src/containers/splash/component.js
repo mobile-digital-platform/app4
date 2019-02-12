@@ -79,7 +79,7 @@ export default class SplashComponent extends Component {
 				if(this.interval) clearInterval(this.interval);
 
 				this.setState({fail:true});
-				await alert('Не удается наладить связь с сервером');
+				await alert('Не удается наладить связь с сервером','Проверьте соединение с интернетом');
 
 			// Если ошибок нет, и кончилось время наслаждения, то переходим дальше
 			} else if(
@@ -102,7 +102,7 @@ export default class SplashComponent extends Component {
 
 		// Нет соединения, предупреждаем
 		if(connection_info.type == 'none') {
-			alert("Нет интернета");
+			alert('Нет интернета','Проверьте связь');
 			this.setState({fail:true});
 			NetInfo.addEventListener('connectionChange',this.connection_changed);
 
