@@ -24,6 +24,7 @@ import PromoMyListScreen			from './screens/promo/my';
 
 import PromoAddCheckScreen			from './screens/promo/add_check';
 import PromoGetPrizeScreen			from './screens/promo/get_prize';
+import ChangeAdressScreen			from './screens/promo/change_adress';
 import PromoChoosePrizeScreen		from './screens/promo/choose_prize';
 import PromoMyPrizesScreen			from './screens/promo/my_prizes';
 import PromoAskScreen				from './screens/promo/ask';
@@ -64,6 +65,7 @@ var Navigator = createAppContainer(createStackNavigator(
 		promo_my_prizes:			PromoMyPrizesScreen,
 		promo_choose_prize:			PromoChoosePrizeScreen,
 		promo_get_prize:			PromoGetPrizeScreen,
+		promo_change_adress:		ChangeAdressScreen,
 		promo_ask:					PromoAskScreen,
 		promo_passport: 			PromoPassportScreen,
 
@@ -80,9 +82,10 @@ var Navigator = createAppContainer(createStackNavigator(
 		// initialRouteName: 'promo_details',
 		// initialRouteName: 'promo_participate',
 		// initialRouteName: 'promo_my_view',
-
 		// initialRouteName: 'promo_add_check', 		// кассовый чек
-		 initialRouteName: 'promo_get_prize',			// получить выигрыш
+		initialRouteName: 'promo_get_prize',			// получить выигрыш
+		// initialRouteName: 'promo_change_adress',		// выбрать центр выдачи
+		 
 		// initialRouteName: 'promo_passport', 			// паспортные данные
 		// initialRouteName: 'promo_choose_prize',		// выбор приза
 		// initialRouteName: 'promo_my_prizes', 		// мои призы
