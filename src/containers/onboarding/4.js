@@ -91,12 +91,16 @@ class Element extends Component {
 	}
 	componentDidUpdate(prev_props) {
 		if(prev_props.state == 'initial' && this.props.state == 'show') {
-			Animated.timing(this.state.value,{
+			this.animation = Animated.timing(this.state.value,{
 				toValue: 1,
 				duration: duration,
 				easing: Easing.bezier(0.6,0,0.4,1),
-			}).start();
+			});
+			this.animation.start();
 		}
+	}
+	componentWillUnmount() {
+		this.animation?.stop();
 	}
 
 	render() {

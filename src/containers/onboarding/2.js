@@ -50,7 +50,7 @@ export default class Onboarding2 extends Component {
 
 			setTimeout(_ => {
 				// Первая прокрутка сразу
-				Animated.timing(this.state.top_value,{
+				this.animation = Animated.timing(this.state.top_value,{
 					toValue: 1,
 					duration: duration,
 					easing: Easing.bezier(0.75,0,0.5,0.75),
@@ -59,15 +59,19 @@ export default class Onboarding2 extends Component {
 
 				// Затем постоянно крутим в разные стороны к 0 или к 1
 				setInterval(_ => {
-					Animated.timing(this.state.top_value,{
+					this.animation = Animated.timing(this.state.top_value,{
 						toValue: !this.state.position,
 						duration: duration,
 						easing: Easing.bezier(0.75,0,0.5,0.75),
-					}).start();
+					});
+					this.animation.start();
 					this.setState(state => ({position:+!state.position}));
 				},interval);
 			},wait);
 		}
+	}
+	componentWillUnmount() {
+		this.animation?.stop();
 	}
 
 	render() {

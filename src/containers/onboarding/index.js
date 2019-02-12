@@ -68,11 +68,6 @@ export default class OnboardingComponent extends Component {
 		index: 0,
 	};
 
-	next = async () => {
-		await st.set('installed',true);
-		this.props.set_page('splash');
-	}
-
 	render() {
 		const slide = [
 			{
@@ -119,7 +114,7 @@ export default class OnboardingComponent extends Component {
 						<Text style={[styles.button_text,styles.dark_button_text]}>Дальше</Text>
 					</TouchableOpacity>
 				) : (
-					<TouchableOpacity style={[styles.button,styles.light_button]} onPress={this.next}>
+					<TouchableOpacity style={[styles.button,styles.light_button]} onPress={this.props.next}>
 						<Text style={[styles.button_text,styles.light_button_text]}>Начать</Text>
 					</TouchableOpacity>
 				)}

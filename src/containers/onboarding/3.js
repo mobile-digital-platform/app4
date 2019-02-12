@@ -62,7 +62,7 @@ export default class Onboarding2 extends Component {
 
 			// Передвигаем фокус туда-сюда по чеку
 			setTimeout(_ => {
-				Animated.sequence([
+				this.animation = Animated.sequence([
 					Animated.timing(this.state.value,{
 						toValue: 1,
 						duration: duration[0],
@@ -78,9 +78,13 @@ export default class Onboarding2 extends Component {
 						duration: duration[2],
 						easing: Easing.bezier(0.7,0,0.3,1),
 					}),
-				]).start();
+				]);
+				this.animation.start();
 			},wait);
 		}
+	}
+	componentWillUnmount() {
+		this.animation?.stop();
 	}
 
 	render() {
