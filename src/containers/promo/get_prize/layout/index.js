@@ -1,40 +1,44 @@
 import React, {Component} from 'react';
-import {StyleSheet,FlatList,ImageBackground,ScrollView,Text,TouchableOpacity,View,Image} from 'react-native';
+import {ImageBackground,FlatList,ScrollView,StyleSheet,Text,TouchableOpacity,View} from 'react-native';
 import {withNavigation} from 'react-navigation';
-import ModalFilterPicker from 'react-native-modal-filter-picker';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 import Input	from '../../../../templates/input';
 import Select	from '../../../../templates/select';
-import MainText	from '../../../../templates/main_text';
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
 	container: {
-		paddingVertical: 25,
+		paddingVertical: 20,
 		backgroundColor: '#fff',
 	},
 	area: {
 		paddingHorizontal: 20,
 	},
-	main_text: {
-		paddingBottom: 20,
+	text: {
+		color: '#3d3d3d',
+		fontSize: 14, fontFamily: 'GothamPro',
+		lineHeight: 18,
+		textAlign: 'center',
 	},
 	block: {
-		paddingBottom: 20,
+		paddingTop: 10,
 	},
 	map: {
 		height: 250,
-		marginVertical: 5,
+		marginTop: 25, marginBottom: 20,
 		backgroundColor: '#bbb',
 	},
 	save: {
-		marginHorizontal: 20, marginVertical: 20,
+		marginHorizontal: 20,
+		marginBottom: 30,
 		padding: 15,
 		borderRadius: 100,
 		backgroundColor: '#f1f1f1',
 	},
 	save_text: {
 		color: '#d5d5d5',
-		fontSize: 20,
+		fontSize: 16,
+		fontFamily: 'GothamPro',
 		textAlign: 'center',
 	}
 });
@@ -103,7 +107,7 @@ export default class GetPrize extends Component {
 		return (
 			<ScrollView style={styles.container}>
 				<View style={styles.area}>
-					<MainText style={styles.main_text} text="Заполните форму для получения выигрыша в Центре выдачи призов." />
+					<Text style={styles.text}>Заполните форму для получения выигрыша в Центре выдачи призов.</Text>
 					<View style={styles.block}>
 						<Input
 							title="Имя"
