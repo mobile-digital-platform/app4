@@ -26,6 +26,9 @@ export default withNavigation(class MyPromoListComponent extends Component {
 
 	get_data = async () => {
 		this.setState({waiting:true});
+		// Если загружаем в первый раз, то не показываем значок загрузки, если она длится менее секунды
+		// if(!this.state.check.length) setTimeout(_=>this.setState(state => ({waiting:!state.check.length})),1000);
+
 		// await new Promise(res => setTimeout(res,2000));
 		await Promise.all([
 			new Promise(async (resolve) => {

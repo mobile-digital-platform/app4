@@ -1,180 +1,105 @@
 import React,{Component} from 'react';
-import { StyleSheet,FlatList,ImageBackground,ScrollView,Text,TouchableOpacity,View,Image,Modal,Alert} from 'react-native';
-import {withNavigation} from 'react-navigation';
+import {FlatList,Text,TouchableOpacity,View,Image,Modal,Alert} from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
-import MainText								from '../../../../templates/main_text';
-import {AvailablePrize as Prize, Empty}		from '../../../../templates/prize';
+import Dialog from '../../../../templates/dialog';
 
-const styles = StyleSheet.create({
+import Item from './item';
+
+const styles = EStyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: '#fff',
-		paddingVertical: 25, paddingHorizontal: 10,
 	},
-	balance:{
-		flexDirection: 'row',
+	balance: {
 		justifyContent: 'center',
-		marginBottom: 30,
+		alignItems: 'center',
+		height: 50,
 	},
-	balance_text:{
+	balance_text: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		fontSize: 18,
-		color: '#3D3D3D',
+		color: '#3d3d3d',
+		fontSize: 14, fontFamily: 'GothamPro',
 	},
-	balance_num:{
-		fontWeight: 'bold',
-		marginLeft: 5,
-		fontSize: 18,
-		color: '#3D3D3D',
+	balance_num: {
+		fontFamily: 'GothamPro-Bold',
 	},
-	modal:{
-		backgroundColor: 'rgba(0,0,0,0.7)',
-		position: 'absolute',
-		left: 0, right: 0, top: 0, bottom: 0,
+	list: {
+		flex: 1,
+		marginTop: -10,
+	},
+	bottom: {
 		alignItems: 'center',
+		marginTop: 0,
+		paddingVertical: 10, paddingHorizontal: 40,
 	},
-	modal_container:{
-		backgroundColor: 'white',
-		paddingVertical: 25, paddingHorizontal: 40,
+	button: {
 		alignItems: 'center',
-		width: '90%', 
-		top: '15%',
+		width: '100%',
+		paddingVertical: 10,
+		borderRadius: 100,
+		backgroundColor: '$red',
 	},
-	modal_image:{
-		borderRadius: 50,
-		borderWidth: 1, borderColor: '#bbb',
-		width: 80, height: 80,
-		backgroundColor: '#fff',
-		marginBottom: 20
-	},
-	modal_text:{
-        width: 300,
-	},
-	buttons: {
-		flexDirection: 'row',
-		alignItems: 'center', justifyContent: 'space-between',
-		marginVertical: 20,
-		width: 280,
-	},
-	button_ok:{
-		padding: 10,
-		borderRadius: 50,
-		backgroundColor: 'red',
-		width: '45%',
-	},
-	button_ok_text:{
-		color: 'white',
-		fontSize: 18,
-		textAlign: 'center',
-	},
-	button_no:{
-		padding: 10,
-		borderRadius: 50,
-		backgroundColor: 'white',
-		width: '45%',
-		borderWidth: 1, borderColor: 'red',
-	},
-	button_no_text:{
-		color: 'red',
-		fontSize: 18,
-		textAlign: 'center',
+	button_text: {
+		color: '#fff',
+		fontSize: 14, fontFamily: 'GothamPro-Medium',
 	},
 });
 
-export default withNavigation(class ChoosePrize extends Component {
+export default class ChoosePrize extends Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			balance: 13,
-			data: [
-				{
-					id: 1,
-					title: 'Сет из разделочных досок специально для вас',
-					img: 'empty',
-					score_num: 5,
-					quantity: 10,
-				},
-				{
-					id: 2,
-					title: 'Сет из разделочных досок',
-					img: 'empty',
-					score_num: 22,
-					quantity: 0,
-				},
-				{
-					id: 3,
-					title: 'Сет из разделочных досок',
-					img: 'empty',
-					score_num: 1,
-					quantity: 102,
-				},
-				{
-					id: 4,
-					title: 'Сет из разделочных досок',
-					img: 'empty',
-					score_num: 17,
-					quantity: 0,
-				},
-			],
-			modalVisible: false,
-			selected: null,
+			modal_visible: false,
+			selected: -1,
 		};
 	}
 
-	componentDidUpdate(prevProps) {
-		if(!Object.is(prevProps,this.props)){
-			this.setState({
-				balance: props.balance,
-				data: props.prizes,
-			})
-		}
+	open  = () => this.setState({modal_visible:true});
+	close = () => this.setState({modal_visible:false});
+
+	select   = (i) => this.setState({modal_visible:true, selected: i});
+	deselect = ()  => this.setState({modal_visible:false,selected:-1});
+
+	buy = () => {
+		this.close();
+		this.props.buy_prize(this.props.list[this.state.selected]);
 	}
-	changeModal = (value) =>{
-		this.setState({modalVisible: value});
-	}
-	choosePrize = (data) =>{
-		this.setState({modalVisible:true, selected:data});
-	}
+
 	render() {
-		let state = this.state;
+		let {props,state} = this;
+
 		return (
 			<View style={styles.container}>
 				<View style={styles.balance}>
-					<Text style={styles.balance_text}>Твои баллы:</Text>
-					<Text style={styles.balance_num}>{state.balance}</Text>
+				{props.available_points_type.length ? (
+					<Text style={styles.balance_text}>
+						Ваши баллы: <Text style={styles.balance_num}>{props.available_points+' '+props.available_points_type}</Text>
+					</Text>
+				) : null}
 				</View>
 				<FlatList
-					data={state.data}
-					keyExtractor={item => '' + item.id}
-					renderItem={({ item }) => <Prize data={item} balance={state.balance} choosePrize={this.choosePrize} />}
-					//ListEmptyComponent={() => <Empty />}
+					style={styles.list}
+					data={props.list}
+					renderItem={({item,index}) => <Item {...item} available_points={props.available_points} select={_=>this.select(index)} />}
+					keyExtractor={item => item.id+''}
+					onRefresh={props.reload}
+					refreshing={props.loading}
 				/>
-				<Modal
-					animationType="slide"
-					transparent={true}
-					visible={state.modalVisible}
-					onRequestClose={_=>this.changeModal(false)}>
-					<View style={styles.modal}>
-						<View style={styles.modal_container}>
-							<Image
-								style={styles.modal_image}
-								source={{uri: state.selected?.img}}
-							/>
-							<MainText style={styles.modal_text} text={`Ты выбрал «${state.selected?.title}». Подтвержаешь свой выбор?`} />
-							<View style={styles.buttons}>
-								<TouchableOpacity style={styles.button_ok} onPress={_=>this.props.navigation.push('promo_my_prize',state.selected)}>
-									<Text style={styles.button_ok_text}>Да</Text>
-								</TouchableOpacity>
-								<TouchableOpacity style={styles.button_no} onPress={_=>this.changeModal(false)}>
-									<Text style={styles.button_no_text}>Нет</Text>
-								</TouchableOpacity>
-							</View>
-						</View>
-					</View>
-				</Modal>
+				<View style={styles.bottom}>
+					<TouchableOpacity style={styles.button} onPress={_=>props.navigation.push('promo_my_prizes',{id:props.promo_id})}>
+						<Text style={styles.button_text}>Все выбранные призы</Text>
+					</TouchableOpacity>
+				</View>
+				<Dialog
+					visible={state.modal_visible}
+					text={(state.selected>=0 ? 'Вы выбрали «'+props.list[state.selected].name+'». ' : '')+'Подтвержаешь свой выбор?'}
+					on_yes={this.buy}
+					on_no={this.deselect}
+				/>
 			</View>
 		);
 	}
-});
+}

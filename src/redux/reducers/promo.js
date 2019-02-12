@@ -228,10 +228,53 @@ export const request = {
 			return {error};
 		}
 	},
+	// Выбор подарка
+	choose_prize: async (data) => {
+		let {response,error} = await API('/GetPrizeList',{
+			UserID:  data.user_id,
+			PromoID: data.promo_id,
+		});
+		if(response) {
+			console.log(response);
+			return {response:{
+				available_points:	   +response.AvailablePoints.substring(0,response.AvailablePoints.indexOf(' ')),
+				available_points_type:	response.AvailablePoints.substring(response.AvailablePoints.indexOf(' ')+1),
+				items: response.Prizes.map(e => ({
+					id:			e.PrizeID,
+					name:		e.PrizeName,
+					image_url:	e.ImageLink,
+					cost:	   +e.Cost.substring(0,e.Cost.indexOf(' ')),
+					cost_type:	e.Cost.substring(e.Cost.indexOf(' ')+1),
+					remains:	e.Remains,
+					available:	e.Available,
+					details:	e.Details,
+				})),
+			}};
+		}
+		if(error) {
+			console.log('error',error);
+			return {error};
+		}
+	},
+	// Покупка подарка
+	buy_prize: async (data) => {
+		let {response,error} = await API('/BuyPrize',{
+			UserID:  data.user_id,
+			PromoID: data.promo_id,
+			PrizeId: data.prize_id,
+		});
+		if(response) {
+			return {response:1};
+		}
+		if(error) {
+			console.log('error',error);
+			return {error};
+		}
+	},
 	// Список подарков
 	get_user_prizes: async (data) => {
 		let {response,error} = await API('/GetUserPrizes',{
-			UserID: data.user_id,
+			UserID:  data.user_id,
 			PromoID: data.promo_id,
 		});
 		if(response) {

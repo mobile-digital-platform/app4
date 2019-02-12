@@ -3,6 +3,8 @@ import {Animated,Easing,ActivityIndicator,FlatList,Image,ImageBackground,ScrollV
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {withNavigation} from 'react-navigation';
 
+import f from '../../../../functions';
+
 import promo_date_diff from '../../../../services/promo_date_diff';
 
 import Check		from './check';
@@ -67,6 +69,7 @@ const styles = EStyleSheet.create({
 	},
 
 	list: {
+		marginTop: 10,
 		paddingHorizontal: 20,
 	},
 
@@ -88,29 +91,28 @@ const styles = EStyleSheet.create({
 		paddingVertical: 15, paddingHorizontal: 40,
 		borderTopWidth: 1, borderTopColor: '#ccc',
 	},
-	add_button: {
+	button: {
 		alignItems: 'center',
 		width: '100%',
 		marginVertical: 5,
-		paddingVertical: 10, paddingHorizontal: 50,
+		paddingVertical: 10,
 		borderRadius: 100,
+	},
+	button_text: {
+		fontSize: 14, fontFamily: 'GothamPro-Medium',
+	},
+	add_button: {
 		backgroundColor: '$red',
 	},
 	add_button_text: {
 		color: '#fff',
-		fontSize: 14, fontWeight: 'bold',
 	},
 	get_button: {
-		alignItems: 'center',
-		width: '100%',
-		marginVertical: 5,
-		paddingVertical: 10, paddingHorizontal: 50,
-		borderWidth: 1, borderColor: '$red', borderRadius: 100,
+		borderWidth: 1, borderColor: '$red',
 		backgroundColor: '#fff',
 	},
 	get_button_text: {
 		color: '$red',
-		fontSize: 14,
 	},
 });
 
@@ -169,15 +171,25 @@ export default withNavigation(class MyPromoListLayout extends Component {
 		let {data,details,check} = props;
 
 		data = promo_date_diff(data);
+		console.log(details);
 
 		return (
 			<View style={styles.container}>
 				<ImageBackground style={styles.banner} imageStyle={{opacity:0.5}} source={{uri:data.image_url}}>
-					{details.points ? (
+					{details.prizes>0 || details.points>0 ? (
 					<Animated.View style={[styles.points_area,{top:state.points_top}]}>
 						<View style={styles.points}>
-							<Text style={styles.points_number}>{details.points}</Text>
-							<Text style={styles.points_type}>{details.points_type}</Text>
+						{details.prizes>0 ? (
+							<>
+								<Text style={styles.points_number}>{details.prizes}</Text>
+								<Text style={styles.points_type}>приз{f.number_case(details.prizes,1)}</Text>
+							</>
+						) : (
+							<>
+								<Text style={styles.points_number}>{details.points}</Text>
+								<Text style={styles.points_type}>{details.points_type}</Text>
+							</>
+						)}
 						</View>
 					</Animated.View>
 					) : null}
@@ -224,13 +236,17 @@ export default withNavigation(class MyPromoListLayout extends Component {
 				{details.add_check && details.buy_prize ? (
 				<Animated.View style={[styles.bottom,{marginTop:state.bottom_top}]}>
 					{details.add_check ? (
-						<TouchableOpacity style={styles.add_button} onPress={_=>props.navigation.push('promo_add_check',{id:data.id})}>
-							<Text style={styles.add_button_text}>Добавить чек</Text>
+						<TouchableOpacity style={[styles.button,styles.add_button]} onPress={_=>props.navigation.push('promo_add_check',{id:data.id})}>
+							<Text style={[styles.button_text,styles.add_button_text]}>Добавить чек</Text>
 						</TouchableOpacity>
 					) : null}
-					{details.buy_prize ? (
-						<TouchableOpacity style={styles.get_button} onPress={_=>props.navigation.push('promo_my_prizes',{id:data.id})}>
-							<Text style={styles.get_button_text}>Получить выигрыш</Text>
+					{0&&details.show_prizes ? (
+						<TouchableOpacity style={[styles.button,styles.get_button]} onPress={_=>props.navigation.push('promo_my_prizes',{id:data.id})}>
+							<Text style={[styles.button_text,styles.get_button_text]}>Посмотреть призы</Text>
+						</TouchableOpacity>
+					) : details.buy_prize ? (
+						<TouchableOpacity style={[styles.button,styles.get_button]} onPress={_=>props.navigation.push('promo_choose_prize',{id:data.id})}>
+							<Text style={[styles.button_text,styles.get_button_text]}>Получить выигрыш</Text>
 						</TouchableOpacity>
 					) : null}
 				</Animated.View>

@@ -1,5 +1,5 @@
-import React,{Component} from 'react';
-import {FlatList,Image,ImageBackground,SectionList,ScrollView,Text,TouchableOpacity,View} from 'react-native';
+import React from 'react';
+import {Text,TouchableOpacity,View} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {withNavigation} from 'react-navigation';
 
@@ -44,6 +44,6 @@ export default withNavigation(({data,navigation}) => (
 				<Text style={styles.button_text}>Внести данные</Text>
 			</TouchableOpacity>
 		</View>
-		{data.prize_list.map((e,i) => (<Item key={i} {...e} />))}
+		{data.prize_list.map((e,i) => (<Item key={i} {...e} link="http://coca-cola.com" />))}
 	</View>
 ));

@@ -6,7 +6,7 @@ import {light,dark}			from '../../navigation';
 import Settings_Button		from '../../containers/settings_button';
 import Tabs					from '../../containers/main_tabs';
 
-import Promo_AddCheck		from '../../containers/promo/choose_prize';
+import PromoChoosePrize		from '../../containers/promo/choose_prize';
 
 const styles = StyleSheet.create({
 	container: {
@@ -17,8 +17,8 @@ const styles = StyleSheet.create({
 
 export default class PromoView extends Component {
 	static navigationOptions = ({navigation}) => ({
-		title: 'Выбор приза',
-		headerRight: (<Settings_Button navigation={navigation} style={{color:'#fff'}} />),
+		title: 'Выбор приза'.toUpperCase(),
+		headerRight: (<Settings_Button navigation={navigation} type='light' />),
 		...light,
 	});
 
@@ -26,7 +26,7 @@ export default class PromoView extends Component {
 		return (
 			<View style={styles.container}>
 				<StatusBar barStyle="light-content" />
-				<Promo_AddCheck/>
+				<PromoChoosePrize/>
 			</View>
 		);
 	}

@@ -4,9 +4,8 @@ import {StatusBar,StyleSheet,View}	from 'react-native';
 import {light,dark}			from '../../navigation';
 
 import Settings_Button		from '../../containers/settings_button';
-import Tabs					from '../../containers/main_tabs';
 
-import Promo_Passport		from '../../containers/promo/passport';
+import PromoPassport		from '../../containers/promo/passport';
 
 const styles = StyleSheet.create({
 	container: {
@@ -17,8 +16,8 @@ const styles = StyleSheet.create({
 
 export default class PromoView extends Component {
 	static navigationOptions = ({navigation}) => ({
-		title: 'Паспортные данные',
-		headerRight: (<Settings_Button navigation={navigation} style={{color:'#fff'}} />),
+		title: 'Паспортные данные'.toUpperCase(),
+		headerRight: (<Settings_Button navigation={navigation} type='light' />),
 		...light,
 	});
 
@@ -26,7 +25,7 @@ export default class PromoView extends Component {
 		return (
 			<View style={styles.container}>
 				<StatusBar barStyle="light-content" />
-				<Promo_Passport/>
+				<PromoPassport/>
 			</View>
 		);
 	}

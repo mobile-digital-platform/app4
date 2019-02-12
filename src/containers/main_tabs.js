@@ -24,9 +24,10 @@ const styles = EStyleSheet.create({
 	},
 	tab: {
 		justifyContent: 'center',
+		alignItems: 'center',
 		height: 40,
 		marginTop: -1,
-		paddingVertical: 10, paddingHorizontal: 27,
+		paddingVertical: 10,
 		zIndex: 1,
 	},
 	left_tab: {
@@ -37,6 +38,7 @@ const styles = EStyleSheet.create({
 	},
 	text: {
 		fontSize: 14, fontFamily: 'GothamPro-Medium',
+		textAlign: 'center',
 	},
 	text_selected: {
 		color: '#fff',

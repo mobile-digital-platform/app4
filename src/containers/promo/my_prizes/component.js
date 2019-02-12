@@ -15,7 +15,7 @@ export default withNavigation(class PromoMyPrizesComponent extends Component {
 
 	async componentDidMount() {
 		this.id = this.props.navigation.getParam('id',0);
-		this.load_data();
+		await this.load_data();
 	}
 
 	load_data = async () => {
@@ -26,12 +26,13 @@ export default withNavigation(class PromoMyPrizesComponent extends Component {
 			this.setState({list:response.items});
 		}
 		if(error) {
-			alert("Не удалось загрузить данные",error.code);
+			alert("Не удалось загрузить данные",error.message);
 		}
 		this.setState({loading:false});
 	}
 
 	render() {
+		console.log(this.state);
 		return (
 			<Layout
 				{...this.props}

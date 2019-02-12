@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image,Text,View} from 'react-native';
+import {Linking,Image,Text,TouchableOpacity,View} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
 const styles = EStyleSheet.create({
@@ -9,10 +9,14 @@ const styles = EStyleSheet.create({
 		marginTop: 20, padding: 10,
 		backgroundColor: '#f4f4f4',
 	},
-	image: {
+	image_area: {
 		height: 50, width: 50,
 		borderRadius: 25,
 		backgroundColor: '#fff',
+	},
+	image: {
+		height: 50, width: 50,
+		borderRadius: 25,
 	},
 	area: {
 		flex: 1,
@@ -39,11 +43,19 @@ const styles = EStyleSheet.create({
 
 export default (props) => (
 	<View style={styles.container}>
-		<Image style={styles.image} source={{uri:props.image_url}} />
+		<View style={styles.image_area}>
+			{props.image_url ? (<Image style={styles.image} source={{uri:props.image_url}} />) : null}
+		</View>
 		<View style={styles.area}>
 			<Text style={styles.title}>{props.name}</Text>
-			<Text style={styles.checks}>За чеки: </Text>
-			<Text style={styles.state}>{props.state}</Text>
+			{props.details?.length ? (<Text style={styles.checks}>{props.details}</Text>) : null}
+			{props.link?.length ? (
+				<TouchableOpacity onPress={_=>Linking.openURL(props.link)}>
+					<Text style={styles.state}>{props.state}</Text>
+				</TouchableOpacity>
+			) : (
+				<Text style={styles.state}>{props.state}</Text>
+			)}
 		</View>
 	</View>
 );

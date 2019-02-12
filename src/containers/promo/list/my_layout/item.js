@@ -11,7 +11,7 @@ const styles = EStyleSheet.create({
 		margin: 10,
 	},
 	image: {
-		height: 150, width: '100%',
+		height: 120, width: '100%',
 		backgroundColor: '#eee',
 	},
 	big_image: {

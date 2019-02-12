@@ -1,14 +1,23 @@
 import {connect} from 'react-redux';
 
-import {update_check,module as promo_module} from '../../../redux/reducers/add_check';
+import {module as promo_module}		from '../../../redux/reducers/promo';
+import {module as settings_module}	from '../../../redux/reducers/settings';
+import {
+	open_smoke,
+	close_smoke,
+	module as smoke_module
+} from '../../../redux/reducers/smoke';
 import Component from './component';
 
 const mapStateToProps = state => ({
-	...state[promo_module]
+	user: state[settings_module],
+	promo: state[promo_module],
+	smoke:	state[smoke_module],
 });
 
 const mapDispatchToProps = {
-	update_check,
+	open_smoke,
+	close_smoke,
 };
 
 export default connect(mapStateToProps,mapDispatchToProps)(Component);

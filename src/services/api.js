@@ -84,7 +84,6 @@ var methods = [
 
 	// Подарки
 	'/GetPrizeList',
-	'/GetPrizeAccessibleMethods',
 	'/BuyPrize',
 	'/GetUserPrizes',
 	'/ConfirmGetPrizeDetails',

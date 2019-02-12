@@ -11,7 +11,11 @@ const styles = EStyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		paddingVertical: 20,
+		paddingVertical: 10,
+	},
+	left: {
+		alignItems: 'center',
+		width: 50,
 	},
 	right: {
 		color: '#000',
@@ -59,6 +63,7 @@ let check_state = (state) => ['проверяется','подтвержден',
 
 export default withNavigation(({navigation,data,extra}) => (
 	<View style={styles.container}>
+		<View style={styles.left}>
 		{data.scores>0 ? (
 			<Text style={[styles.scores,(data.state=="Подтвержден" ? styles.right : styles.wrong)]}>
 				<Text style={styles.scores_number}>{'+'+data.scores}</Text>
@@ -68,6 +73,7 @@ export default withNavigation(({navigation,data,extra}) => (
 		) : (
 			<Image style={styles.scores_voucher} source={data.state=="Подтвержден" ? Confirmed : NotConfirmed} />
 		)}
+		</View>
 		<View style={styles.area}>
 			<View>
 				{data.number ? (<Text style={[styles.number,(data.state=="Подтвержден" ? styles.right : styles.wrong)]}>{data.number}</Text>) : null}
