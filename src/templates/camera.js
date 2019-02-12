@@ -16,10 +16,22 @@ const styles = EStyleSheet.create({
 		flex: 1,
 		height: '100%',
 	},
+	close_area: {
+		alignItems: 'flex-end',
+		width: '100%',
+		marginTop: 15,
+		// backgroundColor: '#fff',
+	},
 	close: {
-		position: 'absolute', top: 30, right: 15,
+		margin: 15, padding: 15,
+		borderRadius: 15,
+		backgroundColor: 'rgba(255,255,255,0.1)',
 		zIndex: 10,
 	},
+	// close: {
+	// 	position: 'absolute', top: 30, right: 15,
+	// 	zIndex: 10,
+	// },
 	capture: {
 		alignSelf: 'center',
 		position: 'absolute', bottom: 30,
@@ -82,18 +94,21 @@ export default withNavigation(class Camera extends Component {
 				onRequestClose={this.props.close}
 			>
 				<View style={styles.modal}>
-					<TouchableOpacity style={styles.close} onPress={this.props.close}>
-						<Icon name="close" style={{color:'white'}} size={40} />
-					</TouchableOpacity>
 					<RNCamera
 						ref={ref => this.camera=ref}
 						style={styles.camera}
 						captureAudio={false}
 						flashMode={RNCamera.Constants.FlashMode.off}
-					/>
-					<TouchableOpacity style={styles.capture} onPress={this.capture}>
-						<Text style={styles.capture_text}>Сделать снимок</Text>
-					</TouchableOpacity>
+					>
+						<View style={styles.close_area}>
+							<TouchableOpacity style={styles.close} onPress={this.props.close}>
+								<Icon name="close" style={{color:'white'}} size={40} />
+							</TouchableOpacity>
+						</View>
+						<TouchableOpacity style={styles.capture} onPress={this.capture}>
+							<Text style={styles.capture_text}>Сделать снимок</Text>
+						</TouchableOpacity>
+					</RNCamera>
 				</View>
 			</Modal>
 		);
