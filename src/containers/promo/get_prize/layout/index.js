@@ -42,21 +42,58 @@ const styles = EStyleSheet.create({
 export default class GetPrize extends Component {
 	constructor(props) {
 		super(props);
-
-		this.state = {
-			name: '',
-			father: '',
-			family: '',
-			mail: '',
-			adress: {},
-		};
-	}
-	update = (data) =>{
+		props = props.user;
 		
+		this.state = {
+			name: 			props.name ?? '',
+			father: 		props.father ?? '',
+			family: 		props.family ?? '',
+			adress: 		props.adress?.full ?? '',
+			name_error: 	false,
+			father_error: 	false,
+			family_error: 	false,
+			waiting: 		false,
+		}
+	}
+	componentDidUpdate(prev_props) {
+		// Изменились данные о пользователе
+		if(!Object.is(prev_props.user,this.props.user)) {
+			this.setState({
+				name: 			this.props.name ?? '',
+				father: 		this.props.father ?? '',
+				family: 		this.props.family ?? '',
+				adress: 		this.props.adress?.full ?? '',
+			});
+		}
+	}
+	// Все остальные поля
+	update = async (adjust) => {
+		await this.setState({...adjust});
+	}
+
+	send_data = async () => {
+		let state = this.state;
+
+		Keyboard.dismiss();
+		if(state.waiting) return;
+
+		// Проверяем все поля
+		if(!await this.check_completeness()) return;
+
+		// Отправляем изменения
+		await this.setState({waiting:true});
+		await this.props.send_data({
+			name:		state.name,
+			father: 	state.father,
+			family: 	state.family,
+			adress: 	state.adress,
+		});
+		await this.setState({updated:false,waiting:false});
 	}
 
 	render() {
-		let state = this.state;
+		let {state,props} = this;
+		console.log('ready state', state);
 		return (
 				<ScrollView style={styles.container}>
 					<View style={styles.fio_area}>
@@ -66,23 +103,29 @@ export default class GetPrize extends Component {
 							value={state.name}
 							update={value => this.update({ name: value })}
 							error={state.name_error}
+							editable={props.name ? true : false}
 						/>
 						<Input
 							title="Отчество"
-							value={state.name}
+							value={state.father}
 							update={value => this.update({ father: value })}
-							error={state.name_error}
+							error={state.father_error}
+							editable={props.father ? true : false}
 						/>
 						<Input
 							title="Фамилия"
-							value={state.name}
+							value={state.family}
 							update={value => this.update({ family: value })}
-							error={state.name_error}
+							error={state.family_error}
+							editable={props.family ? true : false}
 						/>
 					</View>
 					<View style={styles.adress_area}>
 						<SubTitle style={styles.title} text="Укажите адресс доставки" />
 						<SelectAdress
+							value={state.adress}
+							update={value => this.update({ adress: value })}
+							error={state.name_error}
 						/>
 					</View>
 					<TouchableOpacity style={styles.save} onPress={this.send}>

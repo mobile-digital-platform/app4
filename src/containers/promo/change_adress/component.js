@@ -49,23 +49,22 @@ export default withNavigation(class ChangeAdress extends Component {
 
 	componentDidMount() {
 		this.input.current.focus();
-		if(this.props.user.city>0)			this.setState({city_id:this.props.user.city,city_name:city.find_city(this.props.user.city)});
-		else if(this.props.user.city_name)	this.change_text(this.props.user.city_name);
-	}
+		if(this.props.adress) this.setState({adress: adress.full})
+	} 
 
-	change_text = (value) => {
-		this.setState({value});
-		if(adress.trim().length)	this.setState({suggest:adress(value)});
-		else						this.setState({suggest:[]});
+	change_text = async (value) => {
+		this.setState({adress:value});
+		if(value.trim().length)	this.setState({suggest: await adress(value)});
+		else this.setState({suggest:[]});
 	}
 	select = (adress) => {
-		this.props.update_user(adress);
+		this.props.update_user({adress});
 		this.props.navigation.goBack();
 	}
 
 	render_item = ({item}) => (
-		<TouchableOpacity style={styles.item} onPress={_=>this.select(item.id,item.name)}>
-			<Text style={styles.item_text}>{item.name}</Text>
+		<TouchableOpacity style={styles.item} onPress={_=>this.select(item)}>
+			<Text style={styles.item_text}>{item.full}</Text>
 		</TouchableOpacity>
 	);
 
@@ -74,8 +73,8 @@ export default withNavigation(class ChangeAdress extends Component {
 
 		let container = (
 			<View style={styles.container}>
-				<TextInput ref={this.input} style={styles.input} value={state.city_name} placeholder="Введите адрес доставки" onChangeText={this.change_text} />
-				{state.city_name.trim().length ? (
+				<TextInput ref={this.input} style={styles.input} value={state.adress} placeholder="Введите адрес доставки" onChangeText={this.change_text} />
+				{state.adress.trim().length ? (
 					<FlatList
 						keyboardShouldPersistTaps='always'
 						style={styles.list}

@@ -3,48 +3,24 @@ import {Keyboard,Platform,Image,TouchableOpacity,Text,View} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {withNavigation} from 'react-navigation';
 
-import Arrow from '../../assets/ui/right_arrow.png';
-
 const styles = EStyleSheet.create({
 	container: {
-		flexDirection: 'row',
-		justifyContent: 'center',
-		alignItems: 'center',
-		height: 110,
-		marginVertical: 5, paddingLeft: 20, paddingRight: 5,
+		marginVertical: 5, 
+		paddingHorizontal: 25, paddingHorizontal: 20,
 		borderWidth: 1, borderColor: '#ccc',
-		backgroundColor: '#fff',
 		borderRadius: 20,
-		textAlignVertical: 'top', justifyContent: 'flex-start',
+		height: 110, width: '100%',
+		backgroundColor: '#fff',
+		flex: 1,
 	},
 	container_error: {
 		borderColor: '$red',
 	},
-	left: {
-		flex: 1,
-	},
-	title: {
-		marginTop: 10,
+	text: {
 		color: '#bbb',
-		fontSize: 10, fontFamily: 'GothamPro',
-		lineHeight: 12,
-	},
-	title_active: {
-		marginTop: 0,
-		fontSize: 14, fontFamily: 'GothamPro',
-		lineHeight: 18,
-	},
-	input: {
-		width: '100%',
-		paddingBottom: 7,
-		fontSize: 14, fontFamily: 'GothamPro-Medium',
-		lineHeight: 18,
-	},
-	right: {
-	},
-	right_arrow: {
-		height: 20, width: 20,
-		marginHorizontal: 10,
+		marginTop: 15, marginBottom: 15,
+		fontSize: 14, fontFamily: 'GothamPro', lineHeight: 18,
+		textAlignVertical: 'top', justifyContent: 'flex-start',
 	},
 	error_text: {
 		marginLeft: 20, marginBottom: 10,
@@ -59,16 +35,11 @@ export default withNavigation(({navigation,...props}) => (
 			Keyboard.dismiss();
 			navigation.push('promo_change_adress');
 		}}>
-			<View style={styles.left}>
 			{props.value ? (
-				<View>
-					<Text style={styles.title}>Выберите центр выдачи призов</Text>
-					<Text style={styles.input} numberOfLines={1}>{props.name}</Text>
-				</View>
+				<Text style={styles.text} numberOfLines={1}>{props.value}</Text>
 			) : (
-				<Text style={[styles.title,styles.title_active]}>Выберите адрес</Text>
+				<Text style={[styles.text,styles.title_active]}>Выберите адрес доставки</Text>
 			)}
-			</View>
 		</TouchableOpacity>
 		{props.error?.length ? (<Text style={styles.error_text}>{props.error}</Text>) : null}
 	</View>

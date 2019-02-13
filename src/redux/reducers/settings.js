@@ -22,6 +22,7 @@ export const ReducerRecord = () => ({
 	city_name:		'',
 	loyalty_card:	[],
 	push_token:		'',
+	adress:         {},
 });
 
 // Постоянные

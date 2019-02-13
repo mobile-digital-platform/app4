@@ -14,26 +14,21 @@ export default withNavigation(class PromoGetPrizeComponent extends Component {
 	};
 
 	componentDidMount() {
-		this.id = this.props.navigation.getParam('id',0);
-
-		this.load_data();
+	
 	}
 
-	load_data = async () => {
-		let {response,error} = await request.get_user_prizes({user_id:this.props.user.id,promo_id:this.id});
-		if(response) {
-			console.log(response);
-		}
-		if(error) {
-			alert("Не удалось загрузить данные",error.code);
-		}
-	}
+	/* send_data = async () => {
+		await this.props.update_user;
+	} */
 
 	render() {
 		// console.log("Get Prize Component",this.props);
 
 		return (
-			<Layout {...this.state} />
+			<Layout
+				{...this.props}
+				send_data={this.send_data}
+			 />
 		);
 	}
 });

@@ -14,17 +14,19 @@ export default async function(data = {}) {
 					'Content-Type':	'application/json',
 					'Authorization':'Token 5d446e7f158e0c8b8de537cdf70d437d3198429b',
 				},
-				body: JSON.stringify({query:data, count:10}),
+				body: JSON.stringify({query:data}),
 			});
-
+			console.log(data);
 			let found_error = await check_data(data);
 			if(found_error) return found_error;
 
 			if(res.status == 200) {
 				let data = (await res.json()).suggestions;
-				// console.log(data);
+				console.log('data_1', data);
 				data = get_adress(data);
+				console.log('data_2', data);
 				data = filter_adress(data);
+				console.log('data_3', data);
 				return data;
 				
 			} else if(res.status == 403) {
@@ -46,27 +48,25 @@ export default async function(data = {}) {
 }
 
 
-function get_adress(data) {
-	data.map(item => {
+function get_adress(data = []) {
+	return data.map(item => {
 		let full = item.value;
 		let i = item.data;
 		return {
-			full: full,
-			id: i.fias_id,
-			postcode: i.postal_code,
-			region: i.region_with_type,
-			city: i.city,
-			street: i.settlement,
-			building: i.house,
-			apartment: i.flat,
+			full: 		full,
+			id: 		i.fias_id,
+			postcode: 	i.postal_code,
+			region: 	i.region_with_type,
+			city: 		i.city,
+			street: 	i.street_with_type,
+			building: 	i.house,
+			apartment: 	i.flat ?? i.block,
 		}
 	}
 )}
 
 function filter_adress(data = []) {
-	return data.filter(item =>{
-		for (key in item) {
-			return !!item[key]
-		}
-	})
+	return data.filter(item =>(
+		[item.full,item.id,item.postcode,item.region,item.city,item.street,item.building,item.apartment].every(i => !!i)
+	))
 }
