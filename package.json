@@ -39,7 +39,12 @@
       "./assets/",
       "./assets/fonts/",
       "./assets/onboarding_screen/",
-      "./assets/splash_screen/"
+      "./assets/onboarding_screen/1",
+      "./assets/onboarding_screen/2",
+      "./assets/onboarding_screen/3",
+      "./assets/onboarding_screen/4",
+      "./assets/splash_screen/",
+      "./assets/ui/"
     ]
   }
 }
