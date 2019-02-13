@@ -297,4 +297,25 @@ export const request = {
 			return {error};
 		}
 	},
+	// Добавление адреса доставки приза
+	add_adress: async (data) => {
+		let {response,error} = await API('/​SetDeliveryAddres',{
+			UserID:		data.user_id,
+			PromoID:	data.promo_id,
+			Region: 	data.region,
+			Postcode: 	data.postcode,
+			City: 		data.city,
+			Street:		data.street,
+			Building: 	data.building,
+			Apartment: 	data.apartment,
+			
+		});
+		if(response) {
+			return {response:1};
+		}
+		if(error) {
+			console.log('error',error);
+			return {error};
+		}
+	},
 };

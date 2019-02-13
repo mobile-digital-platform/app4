@@ -1,18 +1,18 @@
 import React,{Component} from 'react';
 import {StyleSheet,FlatList,ImageBackground,ScrollView,Text,TouchableOpacity,View,Image} from 'react-native';
 import {withNavigation} from 'react-navigation';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 import Input		from '../../../../templates/input';
 import SelectAdress	from '../../../../templates/select_adress';
-import MainText		from '../../../../templates/main_text';
 import SubTitle		from '../../../../templates/subtitle';
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
 	container: {
 		backgroundColor: '#fff',
-		paddingVertical: 20, paddingHorizontal: 20,
+		paddingTop: 20, paddingHorizontal: 20,
 	},
-	area: {
+	fio_area: {
 		paddingBottom: 30
 	},
 	text: {
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 		marginBottom: 15,
 	},
 	title: {
-		paddingBottom: 25, paddingHorizontal: 20,
+		paddingHorizontal: 20,
 	},
 	save: {
 		marginTop: 25, marginBottom: 10,
@@ -45,10 +45,10 @@ export default class GetPrize extends Component {
 
 		this.state = {
 			name: '',
-			family: '',
 			father: '',
+			family: '',
 			mail: '',
-			prize_center: '',
+			adress: {},
 		};
 	}
 	update = (data) =>{
@@ -59,7 +59,7 @@ export default class GetPrize extends Component {
 		let state = this.state;
 		return (
 				<ScrollView style={styles.container}>
-					<View style={styles.area}>
+					<View style={styles.fio_area}>
 						<Text style={styles.text}>Заполните форму для получения выигрыша почтой.</Text>
 						<Input
 							title="Имя"
@@ -70,22 +70,24 @@ export default class GetPrize extends Component {
 						<Input
 							title="Отчество"
 							value={state.name}
-							update={value => this.update({ name: value })}
+							update={value => this.update({ father: value })}
 							error={state.name_error}
 						/>
 						<Input
 							title="Фамилия"
 							value={state.name}
-							update={value => this.update({ name: value })}
+							update={value => this.update({ family: value })}
 							error={state.name_error}
 						/>
-						<SubTitle text="Укажите адресс доставки" />
+					</View>
+					<View style={styles.adress_area}>
+						<SubTitle style={styles.title} text="Укажите адресс доставки" />
 						<SelectAdress
 						/>
-						<TouchableOpacity style={styles.save} onPress={this.send}>
-							<Text style={styles.save_text}>Отправить</Text>
-						</TouchableOpacity>
 					</View>
+					<TouchableOpacity style={styles.save} onPress={this.send}>
+						<Text style={styles.save_text}>Отправить</Text>
+					</TouchableOpacity>
 				</ScrollView>
 		)
 	}

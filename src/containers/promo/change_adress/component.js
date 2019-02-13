@@ -3,7 +3,7 @@ import {Platform,FlatList,KeyboardAvoidingView,Text,TextInput,TouchableOpacity,V
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {withNavigation} from 'react-navigation';
 
-import city from '../../../services/city';
+import adress from '../../../services/adress';
 
 const styles = EStyleSheet.create({
 	container: {
@@ -35,15 +35,14 @@ const styles = EStyleSheet.create({
 	},
 });
 
-export default withNavigation(class ChangeCity extends Component {
+export default withNavigation(class ChangeAdress extends Component {
 	constructor(props) {
 		super(props);
 
 		this.input = React.createRef();
 
 		this.state = {
-			city_id: 0,
-			city_name: '',
+			adress: '',
 			suggest: [],
 		};
 	}
@@ -54,13 +53,13 @@ export default withNavigation(class ChangeCity extends Component {
 		else if(this.props.user.city_name)	this.change_text(this.props.user.city_name);
 	}
 
-	change_text = (city_name) => {
-		this.setState({city_name});
-		if(city_name.trim().length)	this.setState({suggest:city.search_city(city_name.trim())});
+	change_text = (value) => {
+		this.setState({value});
+		if(adress.trim().length)	this.setState({suggest:adress(value)});
 		else						this.setState({suggest:[]});
 	}
-	select = (city_id,city_name) => {
-		this.props.update_user({city_id,city_name});
+	select = (adress) => {
+		this.props.update_user(adress);
 		this.props.navigation.goBack();
 	}
 
@@ -75,7 +74,7 @@ export default withNavigation(class ChangeCity extends Component {
 
 		let container = (
 			<View style={styles.container}>
-				<TextInput ref={this.input} style={styles.input} value={state.city_name} placeholder="Введите центр выдачи" onChangeText={this.change_text} />
+				<TextInput ref={this.input} style={styles.input} value={state.city_name} placeholder="Введите адрес доставки" onChangeText={this.change_text} />
 				{state.city_name.trim().length ? (
 					<FlatList
 						keyboardShouldPersistTaps='always'
@@ -86,7 +85,7 @@ export default withNavigation(class ChangeCity extends Component {
 						keyExtractor={item => ''+item.id}
 					/>
 				) : (
-					<Text style={styles.tint}>Начните писать центр выдачи приза, а потом выберите его из вариантов, которые появятся ниже.</Text>
+					<Text style={styles.tint}>Начните писать адрес доставки, а потом выберите его из вариантов, которые появятся ниже.</Text>
 				)}
 			</View>
 		);

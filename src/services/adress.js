@@ -3,7 +3,7 @@ import check_data from './check_data';
 
 var domain = 'https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address';
 
-export default async function(method,data = {}) {
+export default async function(data = {}) {
 		try {
 			let res = await fetch(domain,{
 				method: 'POST',
@@ -21,13 +21,14 @@ export default async function(method,data = {}) {
 			if(found_error) return found_error;
 
 			if(res.status == 200) {
-				let data = (await res.json()).d.Data.data;
+				let data = (await res.json()).suggestions;
 				// console.log(data);
-				if(data.Result === false) {
-					return {error:{message:data.Code}};
-				} else {
-					return {response:data};
-				}
+				data = get_adress(data);
+				data = filter_adress(data);
+				return data;
+				
+			} else if(res.status == 403) {
+				return {error:{code:res.status,message:'Сервер перегружен, попробуйте позже'}};
 			} else if(res.status == 500) {
 				return {error:{code:res.status,message:'Сервер не доступен'}};
 			} else {
@@ -42,4 +43,30 @@ export default async function(method,data = {}) {
 			console.log(e);
 			return {error:{message:'Не удается выполнить запрос'}};
 		}
+}
+
+
+function get_adress(data) {
+	data.map(item => {
+		let full = item.value;
+		let i = item.data;
+		return {
+			full: full,
+			id: i.fias_id,
+			postcode: i.postal_code,
+			region: i.region_with_type,
+			city: i.city,
+			street: i.settlement,
+			building: i.house,
+			apartment: i.flat,
+		}
+	}
+)}
+
+function filter_adress(data = []) {
+	return data.filter(item =>{
+		for (key in item) {
+			return !!item[key]
+		}
+	})
 }
