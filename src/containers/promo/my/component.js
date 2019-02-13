@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {withNavigation} from 'react-navigation';
+import {withNavigation,NavigationEvents} from 'react-navigation';
 
 import {request}	from '../../../redux/reducers/promo';
 
@@ -14,53 +14,50 @@ export default withNavigation(class MyPromoListComponent extends Component {
 			details: {},
 			check: [],
 			check_error: '',
-			waiting: false,
+			loading: false,
 		};
 	}
 
-	async componentDidMount() {
+	componentDidMount() {
 		this.get_data();
 	}
 
 	get_promo = (id) => this.props.promo.find(e => e.id==id);
 
 	get_data = async () => {
-		this.setState({waiting:true});
+		this.setState({loading:true});
 		// Если загружаем в первый раз, то не показываем значок загрузки, если она длится менее секунды
-		// if(!this.state.check.length) setTimeout(_=>this.setState(state => ({waiting:!state.check.length})),1000);
+		// if(!this.state.check.length) setTimeout(_=>this.setState(state => ({loading:!state.check.length})),1000);
 
-		// await new Promise(res => setTimeout(res,2000));
-		await Promise.all([
-			new Promise(async (resolve) => {
-				let {response,error} = await request.get_checks({
-					user_id: this.props.user.id,
-					promo_id: this.state.data.id,
-				});
-				if(response) {
-					this.setState({check:response.items});
-				}
-				if(error) {
-					this.setState({check_error:error.message});
-				}
-				resolve();
-			}),
-			new Promise(async (resolve) => {
-				let {response,error} = await request.get_details({
-					user_id: this.props.user.id,
-					promo_id: this.state.data.id,
-				});
-				if(response) {
-					response.add_check = 1;
-					response.buy_prize = 1;
-					this.setState({details:response});
-				}
-				if(error) {
-					this.setState({check_error:error.message});
-				}
-				resolve();
-			}),
-		]);
-		this.setState({waiting:false});
+		let waiting = [];
+
+		// Загружаем список чеков
+		waiting.push(new Promise(async (resolve) => {
+			let {response,error} = await request.get_checks({
+				user_id: this.props.user.id,
+				promo_id: this.state.data.id,
+			});
+			if(response)	this.setState({check:response.items});
+			if(error)		this.setState({check_error:error.message});
+			resolve();
+		}));
+
+		// Загружаем информацию по возможностям в акции
+		waiting.push(new Promise(async (resolve) => {
+			let {response,error} = await request.get_details({
+				user_id: this.props.user.id,
+				promo_id: this.state.data.id,
+			});
+			if(response)	this.setState({details:response});
+			if(error)		this.setState({check_error:error.message});
+			resolve();
+		}));
+
+		// Ждем 2 секунды, чтоб слишком быстро не моргал кружок загрузки
+		if(this.state.check.length) waiting.push(new Promise(res => setTimeout(res,1000)));
+
+		await Promise.all(waiting);
+		await this.setState({loading:false});
 	}
 
 	render() {

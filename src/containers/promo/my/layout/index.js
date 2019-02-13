@@ -171,7 +171,6 @@ export default withNavigation(class MyPromoListLayout extends Component {
 		let {data,details,check} = props;
 
 		data = promo_date_diff(data);
-		console.log(details);
 
 		return (
 			<View style={styles.container}>
@@ -211,10 +210,10 @@ export default withNavigation(class MyPromoListLayout extends Component {
 							// ItemSeparatorComponent={Separator}
 							keyExtractor={item => ''+item.id}
 							onRefresh={props.get_data}
-							refreshing={props.waiting}
+							refreshing={props.loading}
 						/>
 					) : (
-						props.waiting ? (
+						props.loading ? (
 							<ActivityIndicator size='large' />
 						) : (
 							<View style={styles.empty}><Text style={styles.empty_text}>
@@ -236,7 +235,10 @@ export default withNavigation(class MyPromoListLayout extends Component {
 				{details.add_check && details.buy_prize ? (
 				<Animated.View style={[styles.bottom,{marginTop:state.bottom_top}]}>
 					{details.add_check ? (
-						<TouchableOpacity style={[styles.button,styles.add_button]} onPress={_=>props.navigation.push('promo_add_check',{id:data.id})}>
+						<TouchableOpacity style={[styles.button,styles.add_button]} onPress={_ => {
+							props.navigation.push('promo_add_check',{id:data.id});
+							props.navigation.addListener('didFocus',props.get_data);
+						}}>
 							<Text style={[styles.button_text,styles.add_button_text]}>Добавить чек</Text>
 						</TouchableOpacity>
 					) : null}

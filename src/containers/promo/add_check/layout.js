@@ -2,17 +2,18 @@ import React,{Component} from 'react';
 import {Keyboard,FlatList,Image,ScrollView,Text,TouchableOpacity,View} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
-import QRIcon		from '../../../../assets/ui/qr.png';
-import CameraImage	from '../../../../assets/ui/camera.png';
+import QRIcon			from '../../../../assets/ui/qr.png';
+import CameraImage		from '../../../../assets/ui/camera.png';
 
-import SubTitle		from '../../../templates/subtitle';
-import Input		from '../../../templates/input';
-import DateInput	from '../../../templates/input_date';
-import TimeInput	from '../../../templates/input_time';
+import AnimatedButton	from '../../../templates/animated_button';
+import SubTitle			from '../../../templates/subtitle';
+import Input			from '../../../templates/input';
+import DateInput		from '../../../templates/input_date';
+import TimeInput		from '../../../templates/input_time';
 
-import Photo		from '../../../templates/scan';
-import Camera		from '../../../templates/camera';
-import QRScanner	from '../../../templates/qr_scanner';
+import Photo			from '../../../templates/scan';
+import Camera			from '../../../templates/camera';
+import QRScanner		from '../../../templates/qr_scanner';
 
 const styles = EStyleSheet.create({
 	container: {
@@ -82,27 +83,9 @@ const styles = EStyleSheet.create({
 		width: 120,
 	},
 
-	save: {
+	save_area: {
 		alignItems: 'center',
 		marginTop: 15, marginBottom: 30, marginHorizontal: 20,
-		padding: 15,
-		borderRadius: 100,
-	},
-	save_text: {
-		fontSize: 16, fontFamily: 'GothamPro-Medium',
-		lineHeight: 19,
-	},
-	active_button: {
-		backgroundColor: '$red',
-	},
-	active_button_text: {
-		color: '#fff',
-	},
-	passive_button: {
-		backgroundColor: '#f1f1f1',
-	},
-	passive_button_text: {
-		color: '#d5d5d5',
 	},
 });
 
@@ -110,6 +93,7 @@ export default class PromoAddCheckLayout extends Component {
 	constructor(props) {
 		super(props);
 
+		// Отступы, примерно на которых расположены поля ввода
 		this.scroll = React.createRef();
 		this.inputs = {
 			sum: {
@@ -130,6 +114,7 @@ export default class PromoAddCheckLayout extends Component {
 			},
 		};
 
+		// Необходимые для заполнения поля
 		this.required = ['date','time','sum','fn','fd','fp'];
 
 		this.state = {
@@ -157,7 +142,18 @@ export default class PromoAddCheckLayout extends Component {
 			updated: false,
 			waiting: false,
 			ready: false,
+
+			button_state: 'ready',
 		};
+	}
+
+	componentDidUpdate(prev_props) {
+		// Изменилось состояние запроса
+		if(prev_props.state != this.props.state) {
+			if(this.props.state == 'waiting') this.setState({button_state:'waiting'});
+			if(this.props.state == 'succeed') this.setState({button_state:'end'});
+			if(this.props.state == 'errored') this.setState({button_state:'ready'});
+		}
 	}
 
 	// Камера
@@ -169,16 +165,30 @@ export default class PromoAddCheckLayout extends Component {
 	close_scanner	= () => this.setState({scanner_opened:false});
 
 	// Фотографии
-	add_photo		= (data) => this.setState(({photo_list}) => ({photo_list:[...photo_list,data],photo_error:''}));
-	remove_photo	= (id)   => this.setState(({photo_list}) => ({photo_list:photo_list.filter(item => item.id!=id)}));
+	add_photo		= async (data) => {
+		await this.setState(({photo_list}) => ({photo_list:[...photo_list,data],photo_error:''}));
+		await this.check_ready();
+	}
+	remove_photo	= async (id)   => {
+		await this.setState(({photo_list}) => ({photo_list:photo_list.filter(item => item.id!=id)}));
+		await this.check_ready();
+	}
 
 	// Дата и время
-	set_date = (date) => this.setState(state => ({datetime:new Date(date+' '+state.time),date,date_error:false,updated:true}));
-	set_time = (time) => this.setState(state => ({datetime:new Date(state.date+' '+time),time,time_error:false,updated:true}));
+	set_date = async (date) => {
+		await this.setState(state => ({datetime:new Date(date+' '+state.time),date,date_error:false,updated:true}));
+		await this.check_ready();
+	}
+	set_time = async (time) => {
+		await this.setState(state => ({datetime:new Date(state.date+' '+time),time,time_error:false,updated:true}));
+		await this.check_ready();
+	}
 
 	// Все остальные поля
 	update = async (adjust) => {
 		await this.setState({...adjust,updated:true});
+
+		await this.check_ready();
 
 		// Убираем ошибки
 		for(let field of this.required) if(this.state[field+'_error'] && this.state[field].length) {
@@ -186,28 +196,33 @@ export default class PromoAddCheckLayout extends Component {
 		}
 	}
 
+	// Проверяем, готова ли форма
+	check_ready = async () => {
+		await this.setState(state => ({
+			ready: state.photo_list.length && this.required.every(field => state[field].length)
+		}));
+	}
+
 	// Указание на ошибки при заполнении полей
 	check_completeness = async () => {
 		let state = this.state;
 
+		await this.check_ready();
+
 		if(!state.photo_list.length) {
 			this.setState({photo_error:'Прикрепите фотографию чека!',ready:false});
 			this.scroll.current.scrollTo({y:0});
-			await this.setState({ready:false});
 			return false;
 		}
 
 		// Указываем на то, что не заполнено
-		let ready = this.required.every(field => state[field].length);
 		for(let field of this.required) {
 			this.setState({[field+'_error']:!state[field].length});
 			if(!state[field].length) {
 				if(this.inputs[field]) this.scroll.current.scrollTo({y:this.inputs[field].offset});
-				await this.setState({ready:false});
 				return false;
 			}
 		}
-		await this.setState({ready:true});
 		return true;
 	}
 
@@ -329,9 +344,16 @@ export default class PromoAddCheckLayout extends Component {
 					/>
 				</View>
 
-				<TouchableOpacity style={[styles.save,styles[(state.disabled ? 'passive' : 'active')+'_button']]} onPress={this.send_data}>
-					<Text style={[styles.save_text,styles[(state.disabled ? 'passive' : 'active')+'_button_text']]}>Сохранить чек</Text>
-				</TouchableOpacity>
+				<View style={styles.save_area}>
+					<AnimatedButton
+						active={this.state.ready}
+						state={this.state.button_state}
+						on_press={this.send_data}
+						on_end={this.props.button_on_end}
+					>
+						Сохранить чек
+					</AnimatedButton>
+				</View>
 
 				<Camera visible={state.camera_opened} add_photo={this.add_photo} close={this.close_camera} />
 				<QRScanner

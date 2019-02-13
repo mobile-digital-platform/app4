@@ -217,8 +217,10 @@ export const request = {
 	// Данные о чеках
 	add_check_photo: async (data) => {
 		let {response,error} = await API('/UploadCheckPhoto',{
-			CheckID: data.check_id,
-			File: data.file,
+			UserID:		data.user_id,
+			PromoID:	data.promo_id,
+			CheckID:	data.check_id,
+			File:		data.file,
 		});
 		if(response) {
 			return {response:1};

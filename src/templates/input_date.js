@@ -52,7 +52,7 @@ const styles = EStyleSheet.create({
 	},
 });
 
-export default class Date extends Component {
+export default class InputDate extends Component {
 	constructor(props) {
 		super(props);
 
@@ -87,7 +87,7 @@ export default class Date extends Component {
 
 	choose = (date) => {
 		this.close();
-		this.props.update(f.date("d.m.Y",date));
+		this.props.update(f.date("Y-m-d",date));
 	}
 
 	render() {
@@ -100,7 +100,7 @@ export default class Date extends Component {
 						{state.value ? (
 						<>
 							<Text style={styles.title}>{props.title}</Text>
-							<Text style={styles.input}>{state.value}</Text>
+							<Text style={styles.input}>{f.date("d.m.Y",new Date(state.value))}</Text>
 						</>
 						) : (
 							<Text style={[styles.title,styles.title_active]}>{props.title}</Text>

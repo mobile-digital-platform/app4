@@ -24,11 +24,14 @@ export default withNavigation(class PromoAddCheckComponent extends Component {
 				{state:0,error:''},
 			],
 			error: '',
+			save_state: 'initial',
 		}
 	}
 
 	send_data = async (data) => {
 		console.log(data);
+
+		this.setState({save_state:'waiting'});
 
 		// Загружаем чек, если до этого не загружали или поменялись данные
 		if(data.updated || !this.state.check_id) {
@@ -47,6 +50,7 @@ export default withNavigation(class PromoAddCheckComponent extends Component {
 				await this.setState({check_id});
 			}
 			if(check_data.error) {
+				this.setState({save_state:'errored'});
 				await alert("Не удалось загрузить данные о чеке",check_data.error.message);
 				return;
 			}
@@ -63,13 +67,16 @@ export default withNavigation(class PromoAddCheckComponent extends Component {
 			let photo = data.photo_list[i];
 
 			console.log(photo_list[i]);
-			// Если она уже не загружена успешно, то загружаем
+			// Если она еще не загружена успешно, то загружаем
 			if(photo_list[i].state != 1) {
 				waiting.push(new Promise(async (resolve) => {
 					let image_data = await request.add_check_photo({
+						user_id: this.props.user.id,
+						promo_id: this.promo_id,
 						check_id,
 						file: photo.base64,
 					});
+					console.log(i,image_data);
 					if(image_data.response) {
 						this.setState(({photo_list}) => {
 							photo_list[i] = {
@@ -93,23 +100,34 @@ export default withNavigation(class PromoAddCheckComponent extends Component {
 			}
 		}
 
+		// Ждем, пока все загрузится
 		await Promise.all(waiting);
 		for(let i=0; i<photo_list.length; i++) {
 			let photo = photo_list[i];
 
 			if(photo.state == 2) {
-				this.setState({error:photo.error});
+				this.setState({
+					error: photo.error,
+					save_state: 'errored',
+				});
 				await alert("Не удалось загрузить фотографии",photo.error+'\nПопробуйте еще раз');
 				return;
 			}
 		}
+
+		// Если ошибок нет, то все успешно!
+		await this.setState({save_state:'succeed'});
 	}
+
+	back = () => this.props.navigation.goBack();
 
 	render() {
 		return (
 			<Layout
 				{...this.props}
+				state={this.state.save_state}
 				send_data={this.send_data}
+				button_on_end={this.back}
 			/>
 		);
 	}
