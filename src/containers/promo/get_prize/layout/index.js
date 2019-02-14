@@ -155,10 +155,9 @@ export default withNavigation(class GetPrize extends Component {
 					<View style={styles.adress_area}>
 						<SubTitle style={styles.title} text="Адрес доставки" />
 						<SelectAdress
-							value={state.city_id}
-							name={state.city_name}
-							send={value => this.setState({city:value})}
-							error={state.city_error}
+							title="Укажите адрес доставки"
+							value={state.adress}
+							error={state.adress_error}
 						/>
 					</View>
 					<TouchableOpacity style={styles.save} onPress={this.send}>

@@ -23,7 +23,7 @@ export default async function(data = {}) {
 			if(res.status == 200) {
 				let data = (await res.json()).suggestions;
 				let temp = get_adress(filter_adress(data));
-				console.log('tesTING',data,temp)
+				console.log('подсказки до и после фильтрации',data,temp)
 				return temp;
 				
 			} else if(res.status == 403) {
@@ -65,10 +65,16 @@ const get_adress = function(data = []) {
 
 const filter_adress = function(data = []){
 	return data.filter(item => {
-		if(item.data.fias_level != 8){
-			return false;
+		// отбираем только те подсказки где по ФИАС найден адрес до дома (8 уровень) и есть почтовый индекс
+		if(item.data.fias_level == 8 && item.data.postal_code?.length){
+			// если в подсказках адрес городского дома и не указана квартира - убираем эти подсказки
+			if(item.data.city?.length && !item.data.flat){
+				return false;
+			} else{
+				return true;
+			}
 		} else {
-			return true;
+			return false;
 		}
 	})
 }

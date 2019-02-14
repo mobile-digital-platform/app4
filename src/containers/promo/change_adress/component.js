@@ -47,12 +47,12 @@ export default withNavigation(class ChangeAdress extends Component {
 	}
 
 	componentDidMount() {
-		/* this.input.current.focus();
-		let props = this.props;
-		if(props.adress) {
-			this.setState({adress: props.adress.full});
-			this.change_text(props.adress);
-		} */
+		this.input.current.focus();
+		let adress = this.props.adress.full;
+		if(adress?.length) {
+			this.setState({adress});
+			this.change_text(adress);
+		}
 	} 
 
 	change_text = async (value) => {
@@ -87,7 +87,7 @@ export default withNavigation(class ChangeAdress extends Component {
 						keyExtractor={item => ''+item.id}
 					/>
 				) : (
-					<Text style={styles.tint}>Начните писать адрес доставки, а потом выберите его из вариантов, которые появятся ниже.</Text>
+					<Text style={styles.tint}>Начните писать адрес доставки, а потом выберите его из вариантов, которые появятся ниже. Примеры указания адресов: (г Уфа Ростовская 18 лит А кв 311, г Уфа Ростовская 18 к 1 кв 311)</Text>
 				)}
 			</View>
 		);

@@ -16,11 +16,15 @@ const styles = EStyleSheet.create({
 	container_error: {
 		borderColor: '$red',
 	},
-	text: {
+	title: {
 		color: '#bbb',
 		marginTop: 15, marginBottom: 15,
 		fontSize: 14, fontFamily: 'GothamPro', lineHeight: 18,
-		textAlignVertical: 'top', justifyContent: 'flex-start',
+	},
+	text: {
+		color: '#3d3d3d',
+		marginTop: 15, marginBottom: 15,
+		fontSize: 14, fontFamily: 'GothamPro', lineHeight: 18,
 	},
 	error_text: {
 		marginLeft: 20, marginBottom: 10,
@@ -36,9 +40,9 @@ export default withNavigation(({navigation,...props}) => (
 			navigation.push('promo_change_adress');
 		}}>
 			{props.value ? (
-				<Text style={styles.text} numberOfLines={1}>{props.value}</Text>
+				<Text style={styles.text}>{props.value}</Text>
 			) : (
-				<Text style={[styles.text,styles.title_active]}>Выберите адрес доставки</Text>
+				<Text style={styles.title}>{props.title}</Text>
 			)}
 		</TouchableOpacity>
 		{props.error?.length ? (<Text style={styles.error_text}>{props.error}</Text>) : null}
