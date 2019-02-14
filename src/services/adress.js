@@ -65,10 +65,11 @@ const get_adress = function(data = []) {
 
 const filter_adress = function(data = []){
 	return data.filter(item => {
-		// отбираем только те подсказки где по ФИАС найден адрес до дома (8 уровень) и есть почтовый индекс
-		if(item.data.fias_level == 8 && item.data.postal_code?.length){
-			// если в подсказках адрес городского дома и не указана квартира - убираем эти подсказки
-			if(item.data.city?.length && !item.data.flat){
+		let i = item.data;
+		// условие отбора: по ФИАС адрес найден до улицы(7 уровень) + заполненный номер дома + почтовый индекс 
+		if(i.fias_level >= 7 && i.fias_level != 65 && i.house?.length && i.postal_code?.length){
+			// если пользователь - городской житель -требуем также номер квартиры
+			if(i.city?.length && !i.flat?.length){
 				return false;
 			} else{
 				return true;
