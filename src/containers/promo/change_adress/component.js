@@ -40,7 +40,6 @@ export default withNavigation(class ChangeAdress extends Component {
 		super(props);
 
 		this.input = React.createRef();
-
 		this.state = {
 			adress: '',
 			suggest: [],
@@ -48,8 +47,12 @@ export default withNavigation(class ChangeAdress extends Component {
 	}
 
 	componentDidMount() {
-		this.input.current.focus();
-		if(this.props.adress) this.setState({adress: adress.full})
+		/* this.input.current.focus();
+		let props = this.props;
+		if(props.adress) {
+			this.setState({adress: props.adress.full});
+			this.change_text(props.adress);
+		} */
 	} 
 
 	change_text = async (value) => {

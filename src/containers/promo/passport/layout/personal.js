@@ -5,7 +5,7 @@ import {withNavigation} from 'react-navigation';
 import Input		from '../../../../templates/input';
 import DateInput	from '../../../../templates/input_date';
 import TextArea		from '../../../../templates/textarea';
-import SeriaNumber	from '../../../../templates/seria_number';
+
 import MainText		from '../../../../templates/main_text';
 import SubTitle		from '../../../../templates/subtitle';
 
@@ -40,7 +40,7 @@ export default withNavigation(({navigation,data}) => (
 		</View>
 		<View>
 			<SubTitle style={styles.title} text="Паспорт" />
-			<SeriaNumber />
+			
 			<DateInput title="Дата выдачи паспорта" />
 			<Input
 				title="Кем выдан"

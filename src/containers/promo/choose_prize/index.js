@@ -1,6 +1,6 @@
 import {connect} from 'react-redux';
 
-import {update_check,module as promo_module} from '../../../redux/reducers/add_check';
+import {update_check,module as promo_module} from '../../../redux/reducers/promo';
 import Component from './component';
 
 const mapStateToProps = state => ({

@@ -298,9 +298,9 @@ export const request = {
 		}
 	},
 	// Добавление адреса доставки приза
-	add_adress: async (data) => {
+	set_delivery_adress: async (data) => {
 		let {response,error} = await API('/​SetDeliveryAddres',{
-			UserID:		data.user_id,
+			User_id:	data.user_id,
 			PromoID:	data.promo_id,
 			Region: 	data.region,
 			Postcode: 	data.postcode,

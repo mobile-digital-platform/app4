@@ -9,25 +9,20 @@ import Layout from './layout';
 
 export default withNavigation(class PromoGetPrizeComponent extends Component {
 	state = {
-		data: [],
-		loading: false,
+
 	};
 
-	componentDidMount() {
-	
+	set_data = (data) => {
+		this.props.update_user(data);
 	}
 
-	/* send_data = async () => {
-		await this.props.update_user;
-	} */
-
 	render() {
-		// console.log("Get Prize Component",this.props);
 
+		// console.log("Get Prize Component",this.props);
 		return (
 			<Layout
 				{...this.props}
-				send_data={this.send_data}
+				set_data={this.set_data}
 			 />
 		);
 	}

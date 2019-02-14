@@ -22,12 +22,9 @@ export default async function(data = {}) {
 
 			if(res.status == 200) {
 				let data = (await res.json()).suggestions;
-				console.log('data_1', data);
-				data = get_adress(data);
-				console.log('data_2', data);
-				data = filter_adress(data);
-				console.log('data_3', data);
-				return data;
+				let temp = get_adress(filter_adress(data));
+				console.log('tesTING',data,temp)
+				return temp;
 				
 			} else if(res.status == 403) {
 				return {error:{code:res.status,message:'Сервер перегружен, попробуйте позже'}};
@@ -48,7 +45,7 @@ export default async function(data = {}) {
 }
 
 
-function get_adress(data = []) {
+const get_adress = function(data = []) {
 	return data.map(item => {
 		let full = item.value;
 		let i = item.data;
@@ -56,17 +53,22 @@ function get_adress(data = []) {
 			full: 		full,
 			id: 		i.fias_id,
 			postcode: 	i.postal_code,
-			region: 	i.region_with_type,
-			city: 		i.city,
+
+			region: 	(i.region_with_type+' '+i.area_with_type).trim(),
+			city: 		i.city_with_type ?? i.settlement_with_type,
 			street: 	i.street_with_type,
-			building: 	i.house,
-			apartment: 	i.flat ?? i.block,
+			building: 	(i.house_type+' '+i.house+' '+i.block_type+' '+i.block).trim(),
+			apartment: 	i.flat,
 		}
 	}
 )}
 
-function filter_adress(data = []) {
-	return data.filter(item =>(
-		[item.full,item.id,item.postcode,item.region,item.city,item.street,item.building,item.apartment].every(i => !!i)
-	))
+const filter_adress = function(data = []){
+	return data.filter(item => {
+		if(item.data.fias_level != 8){
+			return false;
+		} else {
+			return true;
+		}
+	})
 }

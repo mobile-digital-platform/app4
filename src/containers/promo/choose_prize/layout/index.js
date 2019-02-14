@@ -2,8 +2,6 @@ import React,{Component} from 'react';
 import { StyleSheet,FlatList,ImageBackground,ScrollView,Text,TouchableOpacity,View,Image,Modal,Alert} from 'react-native';
 import {withNavigation} from 'react-navigation';
 
-import MainText								from '../../../../templates/main_text';
-import {AvailablePrize as Prize, Empty}		from '../../../../templates/prize';
 
 const styles = StyleSheet.create({
 	container: {
