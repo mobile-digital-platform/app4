@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {StyleSheet,FlatList,ImageBackground,ScrollView,Text,TouchableOpacity,View,Image} from 'react-native';
+import {StyleSheet,FlatList,ImageBackground,Keyboard,ScrollView,Text,TouchableOpacity,View,Image} from 'react-native';
 import {withNavigation} from 'react-navigation';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
@@ -46,11 +46,19 @@ export default withNavigation(class GetPrize extends Component {
 		props = props.user;
 
 		this.state = {
-			waiting: false,
 			name: 	props.name ??  '',
 			father: props.father ?? '',
 			family: props.family ?? '',
 			adress: props.adress?.full ?? '',
+
+			name_error:   false,
+			father_error: false,
+			family_error: false,
+			adress_error: false,
+			// если данные уже были в хранилище, то делаем поле нередактируемым
+			name_editable: 	 !props.name,
+			father_editable: !props.father,
+			family_editable: !props.family,
 		};
 	}
 
@@ -63,7 +71,8 @@ export default withNavigation(class GetPrize extends Component {
 				father: props.father ?? '',
 				family: props.family ?? '',
 				adress: props.adress?.full ?? '',
-				name_error: false,
+
+				name_error:   false,
 				father_error: false,
 				family_error: false,
 				adress_error: false,
@@ -90,39 +99,38 @@ export default withNavigation(class GetPrize extends Component {
 		})
 	}
 
-	send = async () =>{
+	send = () =>{
 		let state = this.state;
 
 		Keyboard.dismiss();
-		if(state.waiting) return;
 
 		// Проверяем имя
 		if(!state.name.length) {
 			this.setState({name_error:'Введите имя'});
 			return;
 		} else {
-			await this.setState({name_error:false});
+			this.setState({name_error:false});
 		}
 		// Проверяем отчество
 		if(!state.father.length) {
 			this.setState({father_error:'Введите отчество'});
 			return;
 		} else {
-			await this.setState({father_error:false});
+			this.setState({father_error:false});
 		}
 		// Проверяем фамилию
 		if(!state.family.length) {
 			this.setState({family_error:'Введите фамилию'});
 			return;
 		} else {
-			await this.setState({family_error:false});
+			this.setState({family_error:false});
 		}
 		// проверяем адрес доставки
-		if(!state.adress.full.length) {
+		if(!state.adress.full?.length) {
 			this.setState({adress_error:'Введите адрес доставки'});
 			return;
 		} else {
-			await this.setState({adress_error:false});
+			this.setState({adress_error:false});
 		}
 		//navigation.push('promo_change_adress');
 	}
@@ -139,21 +147,21 @@ export default withNavigation(class GetPrize extends Component {
 							value={state.name}
 							update={value => this.update({name:value})}
 							error={state.name_error}
-							editable={!props.user.name}
+							editable={state.name_editable}
 						/>
 						<Input
 							title="Отчество"
 							value={state.father}
 							update={value => this.update({father:value})}
 							error={state.father_error}
-							editable={!props.user.father}
+							editable={state.father_editable}
 						/>
 						<Input
 							title="Фамилия"
 							value={state.family}
 							update={value => this.update({family:value})}
 							error={state.family_error}
-							editable={!props.user.family}
+							editable={state.family_editable}
 						/>
 					</View>
 					<View style={styles.adress_area}>
