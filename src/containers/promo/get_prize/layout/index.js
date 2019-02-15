@@ -10,15 +10,15 @@ import SubTitle		from '../../../../templates/subtitle';
 const styles = EStyleSheet.create({
 	container: {
 		backgroundColor: '#fff',
-		paddingTop: 20, paddingHorizontal: 20,
+		paddingHorizontal: 20,
 	},
 	fio_area: {
-		paddingBottom: 20
+		paddingTop: 20, paddingBottom: 20,
 	},
 	text: {
 		color: '#3d3d3d',
-		fontSize: 14, fontFamily: 'GothamPro',
-		lineHeight: 18,
+		fontSize: 14, lineHeight: 18,
+		fontFamily: 'GothamPro',
 		textAlign: 'center',
 		marginBottom: 15,
 	},
@@ -26,15 +26,16 @@ const styles = EStyleSheet.create({
 		paddingHorizontal: 20,
 	},
 	save: {
-		marginTop: 25, marginBottom: 10,
+		backgroundColor: '$red',
+		alignItems: 'center',
+		marginTop: 25, marginBottom: 30,
 		padding: 15,
 		borderRadius: 100,
-		backgroundColor: '#f1f1f1',
 	},
 	save_text: {
-		color: '#d5d5d5',
-		fontSize: 20,
-		textAlign: 'center',
+		color: '#fff',
+		fontSize: 16, fontFamily: 'GothamPro-Medium',
+		lineHeight: 19,
 	}
 });
 
@@ -117,7 +118,7 @@ export default withNavigation(class GetPrize extends Component {
 			await this.setState({family_error:false});
 		}
 		// проверяем адрес доставки
-		if(!state.adress.length) {
+		if(!state.adress.full.length) {
 			this.setState({adress_error:'Введите адрес доставки'});
 			return;
 		} else {
@@ -137,19 +138,22 @@ export default withNavigation(class GetPrize extends Component {
 							title="Имя"
 							value={state.name}
 							update={value => this.update({name:value})}
-							editable={!!props.name}
+							error={state.name_error}
+							editable={!props.user.name}
 						/>
 						<Input
 							title="Отчество"
 							value={state.father}
 							update={value => this.update({father:value})}
-							editable={!!props.father}
+							error={state.father_error}
+							editable={!props.user.father}
 						/>
 						<Input
 							title="Фамилия"
 							value={state.family}
 							update={value => this.update({family:value})}
-							editable={!!props.family}
+							error={state.family_error}
+							editable={!props.user.family}
 						/>
 					</View>
 					<View style={styles.adress_area}>
@@ -159,10 +163,10 @@ export default withNavigation(class GetPrize extends Component {
 							value={state.adress}
 							error={state.adress_error}
 						/>
+						<TouchableOpacity style={styles.save} onPress={this.send}>
+							<Text style={styles.save_text}>Отправить</Text>
+						</TouchableOpacity>
 					</View>
-					<TouchableOpacity style={styles.save} onPress={this.send}>
-						<Text style={styles.save_text}>Отправить</Text>
-					</TouchableOpacity>
 				</ScrollView>
 		)
 	}

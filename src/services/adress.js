@@ -22,9 +22,9 @@ export default async function(data = {}) {
 
 			if(res.status == 200) {
 				let data = (await res.json()).suggestions;
-				let temp = get_adress(filter_adress(data));
-				console.log('подсказки до и после фильтрации',data,temp)
-				return temp;
+				let adress = get_adress(filter_adress(data));
+				console.log('подсказки до и после фильтрации',data,adress);
+				return adress;
 				
 			} else if(res.status == 403) {
 				return {error:{code:res.status,message:'Сервер перегружен, попробуйте позже'}};
