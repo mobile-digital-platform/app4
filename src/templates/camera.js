@@ -14,7 +14,6 @@ const styles = EStyleSheet.create({
 	},
 	camera: {
 		flex: 1,
-		height: '100%',
 	},
 	close_area: {
 		alignItems: 'flex-end',
@@ -28,13 +27,14 @@ const styles = EStyleSheet.create({
 		backgroundColor: 'rgba(255,255,255,0.1)',
 		zIndex: 10,
 	},
-	// close: {
-	// 	position: 'absolute', top: 30, right: 15,
-	// 	zIndex: 10,
-	// },
+	footer: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		width: '100%',
+		paddingVertical: 15,
+		backgroundColor: '#000',
+	},
 	capture: {
-		alignSelf: 'center',
-		position: 'absolute', bottom: 30,
 		paddingVertical: 15, paddingHorizontal: 30,
 		borderRadius: 100,
 		backgroundColor: '$red',
@@ -55,8 +55,9 @@ const styles = EStyleSheet.create({
 
 export default withNavigation(class Camera extends Component {
 
+	// Запрос разрешений на андроиде
 	request_permission = async (photo) => {
-		if(Platform.OS == 'android') try {
+		try {
 			const granted = await PermissionsAndroid.requestMultiple([
 				PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
 				PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
@@ -72,16 +73,24 @@ export default withNavigation(class Camera extends Component {
 			return null;
 		}
 	};
+
+	// Съемка
 	capture = async () => {
 		if(this.camera) {
-			this.props.close();
-			let photo = await this.camera.takePictureAsync({base64:true,doNotSave:true});
-			// await this.request_permission(photo);
+			if(Platform.OS == 'android') await this.request_permission(photo);
 
-			this.props.add_photo({
+			// Сразу закрываем камеру
+			this.props.close();
+
+			// Открываем крутилку
+			this.props.open_smoke();
+			let photo = await this.camera.takePictureAsync({base64:true,doNotSave:true});
+
+			await this.props.add_photo({
 				id: "Coca Cola Promo "+f.date("Y-m-d H:i:s"),
 				...photo,
 			});
+			this.props.close_smoke();
 		}
 	};
 
@@ -105,10 +114,12 @@ export default withNavigation(class Camera extends Component {
 								<Icon name="close" style={{color:'white'}} size={40} />
 							</TouchableOpacity>
 						</View>
+					</RNCamera>
+					<View style={styles.footer}>
 						<TouchableOpacity style={styles.capture} onPress={this.capture}>
 							<Text style={styles.capture_text}>Сделать снимок</Text>
 						</TouchableOpacity>
-					</RNCamera>
+					</View>
 				</View>
 			</Modal>
 		);

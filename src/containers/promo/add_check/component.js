@@ -119,7 +119,9 @@ export default withNavigation(class PromoAddCheckComponent extends Component {
 		await this.setState({save_state:'succeed'});
 	}
 
-	back = () => this.props.navigation.goBack();
+	back = () => {
+		if(this.state.save_state == 'succeed') this.props.navigation.goBack();
+	}
 
 	render() {
 		return (

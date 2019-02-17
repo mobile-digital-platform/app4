@@ -355,7 +355,13 @@ export default class PromoAddCheckLayout extends Component {
 					</AnimatedButton>
 				</View>
 
-				<Camera visible={state.camera_opened} add_photo={this.add_photo} close={this.close_camera} />
+				<Camera
+					visible={state.camera_opened}
+					close={this.close_camera}
+					add_photo={this.add_photo}
+					open_smoke={this.props.open_smoke}
+					close_smoke={this.props.close_smoke}
+				/>
 				<QRScanner
 					visible={state.scanner_opened}
 					close={this.close_scanner}
