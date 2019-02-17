@@ -3,6 +3,7 @@ import {withNavigation} from 'react-navigation';
 
 import alert		from '../../../services/alert';
 import st			from '../../../services/storage';
+import push			from '../../../services/push_notification';
 
 import get_promo	from '../../../services/get_promo';
 
@@ -112,6 +113,8 @@ export default withNavigation(class PromoParticipateComponent extends Component 
 		if(response) {
 			// Записываем его ид, полученный с сервера
 			let id = response.user_id;
+			let push_token = await push.request();
+
 			this.props.update_user({id});
 
 			// В асинхронное хранилище изменения тоже записываем

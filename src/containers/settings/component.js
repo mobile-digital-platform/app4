@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 import {Alert,StyleSheet,ScrollView,View} from 'react-native';
+import PushNotification from 'react-native-push-notification';
 import {withNavigation} from 'react-navigation';
 
 import Personal		from './personal';
@@ -9,6 +10,7 @@ import About		from './about';
 
 import alert		from '../../services/alert';
 import st			from '../../services/storage';
+import push			from '../../services/push_notification';
 
 import {request}	from '../../redux/reducers/settings';
 
@@ -20,6 +22,23 @@ export default withNavigation(class SettingsComponent extends Component {
 
 		this.state = {
 			save_state: 'initial',
+		}
+	}
+
+	// Когда зарегистрировался или вошел
+	componentDidUpdate(prev_props) {
+		console.log(prev_props.user.id,this.props.user.id);
+		if(prev_props.user.id != this.props.user.id && this.props.user.id) {
+			PushNotification.configure({
+				onRegister: ({token}) => {
+					console.log('TOKEN:',token);
+					if(this.props.user.push_token != token) {
+						request.save({...this.props.user,push_token:token});
+						this.props.update_user({push_token:token});
+					}
+				},
+				requestPermissions: true,
+			});
 		}
 	}
 
@@ -64,10 +83,12 @@ export default withNavigation(class SettingsComponent extends Component {
 			if(response) {
 				// Записываем его ид, полученный с сервера
 				let id = response.user_id;
-				this.props.update_user({id});
+				let push_token = await push.request();
+
+				this.props.update_user({id,push_token});
 
 				// В асинхронное хранилище изменения тоже записываем
-				st.merge('user',{...data,id});
+				st.merge('user',{...data,id,push_token});
 
 				this.setState({save_state:'succeed'});
 

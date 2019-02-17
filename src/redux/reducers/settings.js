@@ -1,5 +1,4 @@
-import {AsyncStorage} from 'react-native';
-import {all,call,put,select,takeEvery,takeLatest} from 'redux-saga/effects';
+import {AsyncStorage,Platform} from 'react-native';
 
 import f 			from '../../functions';
 import config		from '../../config';
@@ -22,6 +21,7 @@ export const ReducerRecord = () => ({
 	city_name:		'',
 	loyalty_card:	[],
 	push_token:		'',
+	device:			Platform.select({ios:1,android:0}),
 });
 
 // Постоянные
@@ -135,13 +135,15 @@ export const request = {
 	// Сохранение данных
 	save: async (data) => {
 		let {response,error} = await API('/UserDataEdit',{
-			UserID:	data.id,
-			Name:	data.name,
-			MName:	data.father,
-			LName:	data.family,
-			Gender:	data.gender,
-			Email:	data.mail,
-			City:	data.city_id,
+			UserID:		data.id,
+			Name:		data.name,
+			MName:		data.father,
+			LName:		data.family,
+			Gender:		data.gender,
+			Email:		data.mail,
+			City:		data.city_id,
+			PushToken:	data.push_token,
+			Device:		data.device,
 		});
 		if(response) {
 			return {response:1};

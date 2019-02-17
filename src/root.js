@@ -1,11 +1,11 @@
 import React,{Component}							from 'react';
 import {AsyncStorage,Dimensions,Linking,StatusBar}	from 'react-native';
+import EStyleSheet					from 'react-native-extended-stylesheet';
 import {
-	createStackNavigator,
-	createAppContainer
+	createAppContainer,
+	createStackNavigator
 }									from 'react-navigation';
 import {Provider}					from 'react-redux';
-import EStyleSheet					from 'react-native-extended-stylesheet';
 
 import config						from './config';
 import colors						from './config/colors';
@@ -41,6 +41,7 @@ import store						from './redux';
 import {request}					from './redux/reducers/settings';
 
 import alert						from './services/alert';
+import push							from './services/push_notification';
 
 // Глобальные стили
 EStyleSheet.build({
@@ -50,6 +51,9 @@ EStyleSheet.build({
 
 // Полоска вверху экрана
 StatusBar.setBarStyle('light-content',true);
+
+// Уведомления
+push.init();
 
 // Страницы приложения
 var Navigator = createAppContainer(createStackNavigator(
@@ -149,7 +153,7 @@ export default class Router extends Component {
 	render() {
 		return (
 			<Provider store={store}>
-				{this.state.page == 'start'			? (<Empty />)	: null}
+				{this.state.page == 'start'			? (<Empty/>)	: null}
 				{this.state.page == 'onboarding'	? (<Onboarding	set_page={this.set_page} />)	: null}
 				{this.state.page == 'splash'		? (<Splash		set_page={this.set_page} />)	: null}
 				{this.state.page == 'navigator'		? (<Navigator/>) : null}

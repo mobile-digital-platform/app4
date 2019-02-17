@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "330059855909",
+    "firebase_url": "https://cocacolamobile-99e65.firebaseio.com",
+    "project_id": "cocacolamobile-99e65",
+    "storage_bucket": "cocacolamobile-99e65.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:330059855909:android:fc16490d173cd476",
+        "android_client_info": {
+          "package_name": "com.cocacolapromo.app.emg"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "330059855909-e6klo5gb22vs93qov68sbc0ta40nkocj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBv3iV2evdwile_XVcVu_6-8rv_Vdrsb6I"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

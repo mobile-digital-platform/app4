@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet,FlatList,ImageBackground,ScrollView,Text,TouchableOpacity,View,Image} from 'react-native';
 import {withNavigation} from 'react-navigation';
-import ModalFilterPicker from 'react-native-modal-filter-picker';
 
 import Input	from '../../../../templates/input';
 import Select	from '../../../../templates/select';

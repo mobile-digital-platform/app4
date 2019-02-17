@@ -10,6 +10,7 @@ import SubTitle			from '../../../templates/subtitle';
 
 import alert			from '../../../services/alert';
 import st				from '../../../services/storage';
+import push				from '../../../services/push_notification';
 
 import get_promo		from '../../../services/get_promo';
 
@@ -67,9 +68,9 @@ export default withNavigation(class Authorization extends Component {
 			timeout: 0,
 			state: 'starting',
 
-			phone: '+7',
+			phone: '+79174545606',
 			phone_error: false,
-			password: '',
+			password: '608459',
 			password_error: false,
 
 			button_state: 'ready',
@@ -160,13 +161,17 @@ export default withNavigation(class Authorization extends Component {
 			let user_data = await settings_request.get(authorize.response.user_id);
 			if(user_data.response) {
 
+				// Запрашиваем токен уведомлений
+				let push_token = await push.request_async();
+				let data = {...user_data.response,push_token};
+
 				// Сохраняем
-				this.props.update_user(user_data.response);
+				this.props.update_user(data);
 
 				// В асинхронное хранилище изменения тоже записываем
-				st.merge('user',user_data.response);
+				st.merge('user',data);
 
-				await this.get_promo_list(user_data.response.id);
+				await this.get_promo_list(data.id);
 				this.setState({button_state:'end',result:true});
 			}
 			if(user_data.error) {
