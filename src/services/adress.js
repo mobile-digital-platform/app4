@@ -23,7 +23,7 @@ export default async function(data = {}) {
 			if(res.status == 200) {
 				let data = (await res.json()).suggestions;
 				let adress = get_adress(filter_adress(data));
-				console.log('подсказки до и после фильтрации',data,adress);
+				console.log('подсказки: ',data,adress);
 				return adress;
 				
 			} else if(res.status == 403) {
@@ -45,24 +45,6 @@ export default async function(data = {}) {
 }
 
 
-const get_adress = function(data = []) {
-	return data.map(item => {
-		let full = item.value;
-		let i = item.data;
-		return {
-			full: 		full,
-			id: 		i.fias_id,
-			postcode: 	i.postal_code,
-
-			region: 	(i.region_with_type+' '+i.area_with_type).trim(),
-			city: 		i.city_with_type ?? i.settlement_with_type,
-			street: 	i.street_with_type,
-			building: 	(i.house_type+' '+i.house+' '+i.block_type+' '+i.block).trim(),
-			apartment: 	i.flat,
-		}
-	}
-)}
-
 const filter_adress = function(data = []){
 	return data.filter(item => {
 		let i = item.data;
@@ -79,3 +61,21 @@ const filter_adress = function(data = []){
 		}
 	})
 }
+
+const get_adress = function(data = []) {
+	return data.map(item => {
+		let complete = item.value;
+		let i = item.data;
+		return {
+			complete,
+			id: 		i.fias_id,
+			postcode: 	i.postal_code,
+			region: 	[i.region_with_type,i.area_with_type].join(' ').trim(),
+			city: 		i.city_with_type ?? i.settlement_with_type,
+			street: 	i.street_with_type,
+			building: 	[i.house_type,i.house,i.block_type,i.block].join(' ').trim(),
+			apartment: 	i.flat,
+		}
+	}
+)}
+

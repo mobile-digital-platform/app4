@@ -16,6 +16,10 @@ export default withNavigation(class PromoGetPrizeComponent extends Component {
 		this.props.update_user(data);
 	}
 
+	send_data = (data) => {
+
+	}
+
 	render() {
 
 		// console.log("Get Prize Component",this.props);
@@ -23,6 +27,7 @@ export default withNavigation(class PromoGetPrizeComponent extends Component {
 			<Layout
 				{...this.props}
 				set_data={this.set_data}
+				send_data={this.send_data}
 			 />
 		);
 	}

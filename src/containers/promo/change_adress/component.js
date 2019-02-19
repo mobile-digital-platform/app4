@@ -48,9 +48,8 @@ export default withNavigation(class ChangeAdress extends Component {
 
 	componentDidMount() {
 		this.input.current.focus();
-		let adress = this.props.adress.full;
+		let adress = this.props.adress.complete;
 		if(adress?.length) {
-			this.setState({adress});
 			this.change_text(adress);
 		}
 	} 
@@ -67,7 +66,7 @@ export default withNavigation(class ChangeAdress extends Component {
 
 	render_item = ({item}) => (
 		<TouchableOpacity style={styles.item} onPress={_=>this.select(item)}>
-			<Text style={styles.item_text}>{item.full}</Text>
+			<Text style={styles.item_text}>{item.complete}</Text>
 		</TouchableOpacity>
 	);
 
@@ -87,7 +86,7 @@ export default withNavigation(class ChangeAdress extends Component {
 						keyExtractor={item => ''+item.id}
 					/>
 				) : (
-					<Text style={styles.tint}>Начните писать адрес доставки, а потом выберите его из вариантов, которые появятся ниже. Примеры указания адресов: (г Уфа Ростовская 18 стр А кв 311, г Уфа Ростовская 18 к 1 кв 311)</Text>
+					<Text style={styles.tint}>Начните писать адрес доставки, а потом выберите его из вариантов, которые появятся ниже.Примеры указания адресов: (г Уфа Ростовская 18 стр А кв 311, г Уфа Ростовская 18 к 1 кв 311)</Text>
 				)}
 			</View>
 		);
