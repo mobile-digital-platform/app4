@@ -80,7 +80,7 @@ export default class Input extends Component {
 		this.scroll();
 	}
 	reset_active = () => {
-		if(!this.state.value.length) this.setState({active:false});
+		if(!this.state.value?.length) this.setState({active:false});
 		if(this.props.send) this.props.send(this.state.value);
 	}
 
@@ -92,6 +92,7 @@ export default class Input extends Component {
 
 	render() {
 		let {props,state} = this;
+		console.log(props.error);
 
 		return (
 			<View>
@@ -102,6 +103,7 @@ export default class Input extends Component {
 							ref={this.input}
 							style={[styles.input,props.style]}
 							value={state.value}
+							editable={!props.disabled}
 							keyboardType={this.props.type}
 							onFocus={_=>{this.scroll();this.setState({active:true})}}
 							onChangeText={this.set_value}

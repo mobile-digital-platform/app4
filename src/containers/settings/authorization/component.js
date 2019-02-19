@@ -68,9 +68,9 @@ export default withNavigation(class Authorization extends Component {
 			timeout: 0,
 			state: 'starting',
 
-			phone: '+79174545606',
+			phone: '+7',
 			phone_error: false,
-			password: '608459',
+			password: '',
 			password_error: false,
 
 			button_state: 'ready',
@@ -162,8 +162,8 @@ export default withNavigation(class Authorization extends Component {
 			if(user_data.response) {
 
 				// Запрашиваем токен уведомлений
-				let push_token = await push.request_async();
-				let data = {...user_data.response,push_token};
+				let data = {...user_data.response};
+				// data.push_token = await push.request_async();
 
 				// Сохраняем
 				this.props.update_user(data);

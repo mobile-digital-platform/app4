@@ -5,10 +5,12 @@ import {withNavigation} from 'react-navigation';
 
 import f from '../../../../functions';
 
-import promo_date_diff from '../../../../services/promo_date_diff';
+import QuestionIcon		from '../../../../../assets/ui/question_icon.png';
 
-import Check		from './check';
-import Separator	from './separator';
+import promo_date_diff	from '../../../../services/promo_date_diff';
+
+import Check			from './check';
+import Separator		from './separator';
 
 const styles = EStyleSheet.create({
 	container: {
@@ -69,8 +71,10 @@ const styles = EStyleSheet.create({
 	},
 
 	list: {
-		marginTop: 10,
 		paddingHorizontal: 20,
+	},
+	list_padding: {
+		height: 10,
 	},
 
 	empty: {
@@ -88,14 +92,14 @@ const styles = EStyleSheet.create({
 	bottom: {
 		alignItems: 'center',
 		marginTop: 0,
-		paddingVertical: 15, paddingHorizontal: 40,
+		paddingTop: 10, paddingBottom: 5, paddingHorizontal: 40,
 		borderTopWidth: 1, borderTopColor: '#ccc',
 	},
 	button: {
+		justifyContent: 'center',
 		alignItems: 'center',
-		width: '100%',
+		height: 40, width: '100%',
 		marginVertical: 5,
-		paddingVertical: 10,
 		borderRadius: 100,
 	},
 	button_text: {
@@ -113,6 +117,21 @@ const styles = EStyleSheet.create({
 	},
 	get_button_text: {
 		color: '$red',
+	},
+	question: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
+		height: 40,
+	},
+	question_icon: {
+		height: 13, width: 14,
+		marginRight: 8,
+	},
+	question_text: {
+		color: '#3d3d3d',
+		fontSize: 14, fontFamily: 'GothamPro',
+		lineHeight: 16,
 	},
 });
 
@@ -172,6 +191,8 @@ export default withNavigation(class MyPromoListLayout extends Component {
 
 		data = promo_date_diff(data);
 
+		console.log(check);
+
 		return (
 			<View style={styles.container}>
 				<ImageBackground style={styles.banner} imageStyle={{opacity:0.5}} source={{uri:data.image_url}}>
@@ -207,6 +228,8 @@ export default withNavigation(class MyPromoListLayout extends Component {
 							style={styles.list}
 							data={check}
 							renderItem={({item}) => (<Check data={item} extra={details} />)}
+							ListHeaderComponent={<View style={styles.list_padding} />}
+							ListFooterComponent={<View style={styles.list_padding} />}
 							// ItemSeparatorComponent={Separator}
 							keyExtractor={item => ''+item.id}
 							onRefresh={props.get_data}
@@ -251,6 +274,10 @@ export default withNavigation(class MyPromoListLayout extends Component {
 							<Text style={[styles.button_text,styles.get_button_text]}>Получить выигрыш</Text>
 						</TouchableOpacity>
 					) : null}
+					<TouchableOpacity style={styles.question} onPress={_=>props.navigation.push('help',{promo_id:data.id})}>
+						<Image style={styles.question_icon} source={QuestionIcon} />
+						<Text style={styles.question_text}>Задать вопрос</Text>
+					</TouchableOpacity>
 				</Animated.View>
 				) : null}
 			</View>

@@ -47,6 +47,10 @@ const styles = EStyleSheet.create({
 		fontSize: 14, fontFamily: 'GothamPro-Medium',
 		textAlign: 'center',
 	},
+	button_next: {
+		width: '100%',
+		backgroundColor: '$red',
+	},
 	button_yes: {
 		backgroundColor: '$red',
 	},
@@ -73,12 +77,20 @@ export default (props) => (
 				<Image style={styles.modal_image} source={Attention} />
 				<Text style={styles.modal_text}>{props.text}</Text>
 				<View style={styles.buttons}>
+				{props.on_next ? (
+					<TouchableOpacity style={[styles.button,styles.button_next]} onPress={props.on_next}>
+						<Text style={[styles.button_text,styles.button_yes_text]}>{props.next_text ?? 'Хорошо'}</Text>
+					</TouchableOpacity>
+				) : props.on_yes && props.on_no ? (
+				<>
 					<TouchableOpacity style={[styles.button,styles.button_yes]} onPress={props.on_yes}>
-						<Text style={[styles.button_text,styles.button_yes_text]}>{props.yes_text || 'Да'}</Text>
+						<Text style={[styles.button_text,styles.button_yes_text]}>{props.yes_text ?? 'Да'}</Text>
 					</TouchableOpacity>
 					<TouchableOpacity style={[styles.button,styles.button_no]} onPress={props.on_no}>
-						<Text style={[styles.button_text,styles.button_no_text]}>{props.no_text || 'Нет'}</Text>
+						<Text style={[styles.button_text,styles.button_no_text]}>{props.no_text ?? 'Нет'}</Text>
 					</TouchableOpacity>
+				</>
+				) : null}
 				</View>
 			</View>
 		</View>

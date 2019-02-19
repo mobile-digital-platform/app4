@@ -3,22 +3,30 @@ import {StyleSheet,TextInput,Text,View} from 'react-native';
 
 const styles = StyleSheet.create({
 	container: {
-		marginVertical: 5, paddingHorizontal: 25,
+		marginVertical: 5, paddingHorizontal: 20,
 		borderWidth: 1, borderColor: '#ccc',
-		borderRadius: 20,
+		borderRadius: 25,
 		backgroundColor: '#fff',
 	},
 	input: {
-		color: '#bbb',
-		height: 110, width: '100%',
-		marginTop: 15, marginBottom: 15,
-		fontSize: 18, fontFamily: 'GothamPro', lineHeight: 18,
-		textAlignVertical: 'top', justifyContent: 'flex-start',
+		flex: 1,
+		width: '100%',
+		marginVertical: 12.5,
+		fontSize: 14, fontFamily: 'GothamPro',
+		lineHeight: 16,
 	},
 });
 
 export default (props) => (
-	<View style={styles.container}>
-		<TextInput style={[styles.input, props.style]} multiline={true} value={props.value} placeholder={props.title ? props.title : "Укажите адрес постоянной регистрации (как в паспорте)"} />
+	<View style={[styles.container,props.style]}>
+		<TextInput
+			style={[styles.input,props.area_style]}
+			multiline={true}
+			value={props.value}
+			disabled={props.disabled}
+			placeholder={props.placeholder}
+			onFocus={_ => {if(props.keyboard_options) props.keyboard_options.scroll.current.scrollTo({y:props.keyboard_options.offset})}}
+			onChangeText={text => props.update(text)}
+		/>
 	</View>
 );

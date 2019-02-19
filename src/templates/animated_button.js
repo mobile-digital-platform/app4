@@ -50,14 +50,14 @@ const styles = EStyleSheet.create({
 		transform: [{rotate:'-45deg'}],
 	},
 	tick_left: {
-		position: 'absolute', bottom: 3.5, right: 9.5,
+		position: 'absolute', bottom: 3.5, right: 10,
 		height: 5, width: 12,
 		borderRadius: 5,
 		backgroundColor: '#fff',
 		transform: [{rotate:'45deg'}],
 	},
 	tick_right: {
-		position: 'absolute', bottom: 6, left: 3.5,
+		position: 'absolute', bottom: 6, left: 5,
 		height: 5, width: 20,
 		borderRadius: 5,
 		backgroundColor: '#fff',

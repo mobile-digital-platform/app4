@@ -23,7 +23,7 @@ export default withNavigation(class PromoListComponent extends Component {
 	}
 
 	componentDidMount() {
-		// this.props.navigation.push('settings');
+		// this.props.navigation.push('help');
 		console.log(this.props);
 	}
 	componentDidUpdate(prev_props) {

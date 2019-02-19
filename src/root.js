@@ -26,7 +26,6 @@ import PromoAddCheckScreen			from './screens/promo/add_check';
 import PromoGetPrizeScreen			from './screens/promo/get_prize';
 import PromoChoosePrizeScreen		from './screens/promo/choose_prize';
 import PromoMyPrizesScreen			from './screens/promo/my_prizes';
-import PromoAskScreen				from './screens/promo/ask';
 import PromoPassportScreen			from './screens/promo/passport';
 
 import SettingsScreen				from './screens/settings/main';
@@ -35,6 +34,7 @@ import AuthorizationScreen			from './screens/settings/authorization';
 import ChangeCityScreen				from './screens/settings/change_city';
 import SettingsAddLoyaltyCardScreen	from './screens/settings/add_loyalty_card';
 
+import HelpScreen					from './screens/help';
 import WebScreen					from './screens/web';
 
 import store						from './redux';
@@ -68,7 +68,6 @@ var Navigator = createAppContainer(createStackNavigator(
 		promo_my_prizes:			PromoMyPrizesScreen,
 		promo_choose_prize:			PromoChoosePrizeScreen,
 		promo_get_prize:			PromoGetPrizeScreen,
-		promo_ask:					PromoAskScreen,
 		promo_passport: 			PromoPassportScreen,
 
 		settings:					SettingsScreen,
@@ -76,6 +75,8 @@ var Navigator = createAppContainer(createStackNavigator(
 		settings_authorization:		AuthorizationScreen,
 		settings_change_city:		ChangeCityScreen,
 		settings_add_loyalty_card:	SettingsAddLoyaltyCardScreen,
+
+		help:						HelpScreen,
 		web:						WebScreen,
 	},
 	{
@@ -90,13 +91,14 @@ var Navigator = createAppContainer(createStackNavigator(
 		// initialRouteName: 'promo_passport', 			// паспортные данные
 		// initialRouteName: 'promo_choose_prize',		// выбор приза
 		// initialRouteName: 'promo_my_prizes', 		// мои призы
-		// initialRouteName: 'promo_ask', 				// задать вопрос
 
 		// initialRouteName: 'settings',
 		// initialRouteName: 'settings_confirm_phone',
 		// initialRouteName: 'settings_authorization',
 		// initialRouteName: 'settings_change_city',
 		// initialRouteName: 'settings_add_loyalty_card',
+
+		// initialRouteName: 'help',
 		// initialRouteName: 'web',
 	}
 ));
