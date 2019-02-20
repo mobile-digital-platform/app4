@@ -71,7 +71,7 @@ var Navigator = createAppContainer(createStackNavigator(
 		promo_get_prize:			PromoGetPrizeScreen,
 
 		promo_change_adress:		ChangeAdressScreen,
-		promo_passport: 			PromoPassportScreen,
+		//promo_passport: 			PromoPassportScreen,
 
 		settings:					SettingsScreen,
 		settings_confirm_phone:		ConfirmPhoneScreen,
@@ -89,10 +89,10 @@ var Navigator = createAppContainer(createStackNavigator(
 		// initialRouteName: 'promo_participate',
 		// initialRouteName: 'promo_my_view',
 		// initialRouteName: 'promo_add_check', 		// кассовый чек
-		initialRouteName: 'promo_get_prize',			// получить выигрыш
+		//initialRouteName: 'promo_get_prize',			// получить выигрыш
 		// initialRouteName: 'promo_change_adress',		// выбрать центр выдачи
 
-		// initialRouteName: 'promo_passport', 			// паспортные данные
+		 initialRouteName: 'promo_passport', 			// паспортные данные
 		// initialRouteName: 'promo_choose_prize',		// выбор приза
 		// initialRouteName: 'promo_my_prizes', 		// мои призы
 
