@@ -236,6 +236,44 @@ export const request = {
 			return {error};
 		}
 	},
+	// Сохранение данных регистрации
+	set_registration_data: async (data) => {
+		let {response,error} = await API('/SetRegistationData',{
+			PromoID:	data.promo_id,
+			UserID:		data.user_id,
+			Name:		data.name,
+			MName:		data.father,
+			LName:		data.family,
+			Birthday:	data.birthday,
+			Email:		data.mail,
+			Address:	data.address,
+		});
+		if(response) {
+			return {response:1};
+		}
+		if(error) {
+			console.log('error',error);
+			return {error};
+		}
+	},
+	// Сохранение адреса доставки
+	set_delivery_address: async (data) => {
+		let {response,error} = await API('/SetDeliveryAddress',{
+			PromoID:	data.promo_id,
+			UserID:		data.user_id,
+			Region:		data.region,
+			Postcode:	data.postcode,
+			City:		data.city,
+			Street:		data.street,
+			Building:	data.building,
+			Apartment:	data.apartment,
+		});
+		if(response) {
+			return {response:1};
+		}
+		if(error) {
+			console.log('error',error);
+			return {error};
+		}
+	},
 };
-
-export const saga = function*() {}

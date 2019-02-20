@@ -76,7 +76,7 @@ export default withNavigation(({navigation,data,extra}) => {
 					<TouchableOpacity style={styles.participate} onPress={_=>navigation.push('promo_details',{id:data.id,group_id:extra.id})}>
 						<Text style={styles.participate_text}>Подробнее</Text>
 					</TouchableOpacity>
-					{data.site_link ? (
+					{data.site_link?.length ? (
 					<TouchableOpacity
 						style={styles.link_area}
 						onPress={_=>Linking.openURL(data.site_link)}

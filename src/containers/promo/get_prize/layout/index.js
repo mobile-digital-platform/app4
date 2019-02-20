@@ -96,6 +96,8 @@ export default withNavigation(class GetPrizeLayout extends Component {
 		this.state = {
 			...props.user,
 
+			mail: 'xss@mail.ru',
+
 			name_error:   	'',
 			father_error: 	'',
 			family_error: 	'',
@@ -201,6 +203,13 @@ export default withNavigation(class GetPrizeLayout extends Component {
 		// Отправляем изменения
 		await this.setState({waiting:true});
 		await this.props.send_data({
+			name:   	state.name,
+			father: 	state.father,
+			family: 	state.family,
+			mail:	 	state.mail,
+			birthday:	state.birthday,
+			address: 	state.address,
+			address_obj:state.address_obj,
 		});
 		await this.setState({waiting:false});
 	}

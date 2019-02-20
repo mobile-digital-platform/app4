@@ -94,7 +94,7 @@ var Navigator = createAppContainer(createStackNavigator(
 
 		// initialRouteName: 'promo_passport', 			// паспортные данные
 		// initialRouteName: 'promo_choose_prize',		// выбор приза
-		initialRouteName: 'promo_my_prizes', 		// мои призы
+		// initialRouteName: 'promo_my_prizes', 		// мои призы
 
 		// initialRouteName: 'settings',
 		// initialRouteName: 'settings_confirm_phone',
