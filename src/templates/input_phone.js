@@ -32,6 +32,7 @@ const styles = EStyleSheet.create({
 	},
 	input: {
 		width: '100%',
+		...Platform.select({ios:{},android:{margin:-4}}),
 		paddingTop: 4, paddingBottom: 5,
 		fontSize: 14, fontFamily: 'GothamPro-Medium',
 	},
@@ -108,6 +109,8 @@ export default withNavigation(class InputPhone extends Component {
 	}
 
 	set_active = async () => {
+		if(this.props.disabled) return;
+
 		await this.setState({active:true});
 		this.input.current._inputElement.focus();
 
@@ -144,7 +147,7 @@ export default withNavigation(class InputPhone extends Component {
 		return (
 			<View>
 				{props.disabled || state.active ? (
-					<View style={[styles.container,state.error?styles.container_error:{}]}>
+					<TouchableOpacity style={[styles.container,state.error?styles.container_error:{}]} onPress={this.set_active}>
 						<Text style={styles.title}>{this.props.title}</Text>
 						{props.disabled ? (
 							<Text style={[styles.input,this.props.style]}>{
@@ -165,18 +168,7 @@ export default withNavigation(class InputPhone extends Component {
 								options={{mask:'+7(999)999-99-99'}}
 							/>
 						)}
-						{/*
-						<TextInput
-							ref={this.input}
-							style={styles.input}
-							value={state.value}
-							disabled={props.disabled}
-							keyboardType="phone-pad"
-							onChangeText={this.set_value}
-							onBlur={this.reset_active}
-						/>
-						*/}
-					</View>
+					</TouchableOpacity>
 				) : (
 					<TouchableOpacity style={[styles.container,state.error?styles.container_error:{}]} onPress={this.set_active}>
 						<Text style={[styles.title,styles.title_active]}>{this.props.title}</Text>

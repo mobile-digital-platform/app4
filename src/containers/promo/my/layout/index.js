@@ -71,7 +71,6 @@ const styles = EStyleSheet.create({
 	},
 
 	list: {
-		paddingHorizontal: 20,
 	},
 	list_padding: {
 		height: 10,

@@ -26,12 +26,12 @@ const styles = EStyleSheet.create({
 		marginTop: 30,
 	},
 	text_area: {
+		flex: 1,
 		justifyContent: 'center',
 	},
 	text: {
-		paddingVertical: 50,
 		color: '#fff',
-		fontSize: 18, fontFamily: 'GothamPro-Medium',
+		fontSize: 16, fontFamily: 'GothamPro-Medium',
 		textAlign: 'center',
 		lineHeight: 19,
 	},
@@ -93,7 +93,7 @@ export default class OnboardingComponent extends Component {
 				<Swiper
 					ref={ref => this.swipe=ref}
 					loop={false}
-					autoplay={true}
+					autoplay={false}
 					autoplayTimeout={5}
 					showsPagination={false}
 					style={styles.area}

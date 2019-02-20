@@ -27,6 +27,7 @@ const styles = EStyleSheet.create({
 	},
 	input: {
 		width: '100%',
+		...Platform.select({ios:{},android:{margin:-4}}),
 		paddingTop: 4, paddingBottom: 5,
 		fontSize: 14, fontFamily: 'GothamPro-Medium',
 	},
@@ -74,6 +75,8 @@ export default class Input extends Component {
 	}
 
 	set_active = async () => {
+		if(this.props.disabled) return;
+
 		await this.setState({active:true});
 		this.input.current.focus();
 
@@ -92,12 +95,11 @@ export default class Input extends Component {
 
 	render() {
 		let {props,state} = this;
-		console.log(props.error);
 
 		return (
 			<View>
 				{state.active ? (
-					<View style={[styles.container,state.error?styles.container_error:{}]}>
+					<TouchableOpacity style={[styles.container,state.error?styles.container_error:{}]} onPress={this.set_active}>
 						<Text style={styles.title}>{props.title}</Text>
 						<TextInput
 							ref={this.input}
@@ -109,7 +111,7 @@ export default class Input extends Component {
 							onChangeText={this.set_value}
 							onBlur={this.reset_active}
 						/>
-					</View>
+					</TouchableOpacity>
 				) : (
 					<TouchableOpacity style={[styles.container,state.error?styles.container_error:{}]} onPress={this.set_active}>
 						<Text style={[styles.title,styles.title_active]}>{props.title}</Text>
