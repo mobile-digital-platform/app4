@@ -31,7 +31,12 @@ const styles = EStyleSheet.create({
 		width: '100%',
 		...Platform.select({ios:{},android:{margin:-4}}),
 		paddingTop: 4, paddingBottom: 5,
+		color: '#3d3d3d',
 		fontSize: 14, fontFamily: 'GothamPro-Medium',
+	},
+	input_disabled: {
+		margin: 0,
+		color: '#b3b3b3',
 	},
 	error_text: {
 		marginLeft: 20, marginBottom: 10, paddingTop: Platform.select({ios:3,android:0}),
@@ -97,7 +102,7 @@ export default withNavigation(class InputCard extends Component {
 					<TouchableOpacity style={[styles.container,state.error?styles.container_error:{}]} onPress={this.set_active}>
 						<Text style={styles.title}>{this.props.title}</Text>
 						{props.disabled ? (
-							<Text style={[styles.input,props.style]}>{state.value}</Text>
+							<Text style={[styles.input,styles.input_disabled,props.style]}>{state.value}</Text>
 						) : (
 							<TextInputMask
 								ref={this.input}

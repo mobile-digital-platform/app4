@@ -17,12 +17,13 @@ export const ReducerRecord = () => ({
 	father:			'',
 	family:			'',
 	gender:			'',
+	birthday:		'',
 	city_id:		0,
 	city_name:		'',
+	address:		'',
+	address_obj:	{},
 	loyalty_card:	[],
 	device:			Platform.select({ios:1,android:0}),
-	adress:         '',
-	birthday:		'',
 });
 
 // Постоянные
@@ -113,11 +114,11 @@ export const request = {
 				id,
 				phone:				f.parse_int(response.Phone),
 				phone_confirmed:	!!response.PhoneConfirmed,
-				mail:				response.Email,
+				mail:				response.Email	?? '',
 				mail_confirmed:		!!response.EmailConfirmed,
-				name:				response.Name,
-				father:				response.MName,
-				family:				response.LName,
+				name:				response.Name	?? '',
+				father:				response.MName	?? '',
+				family:				response.LName	?? '',
 				gender:				response.Gender,
 				city_id:			response.City,
 				city_name:			city.find_city(response.City),
@@ -125,7 +126,7 @@ export const request = {
 					retailer_id:		e.NetworkID,
 					number:				e.CardNum,
 				})),
-				push_token:			response.PushToken,
+				push_token:			response.PushToken	?? '',
 			}};
 		}
 		if(error) {

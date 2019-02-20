@@ -42,9 +42,6 @@ export default withNavigation(class SettingsComponent extends Component {
 		}
 	}
 
-	set_personal_data = async (data) => {
-		this.props.update_user(data);
-	}
 	save_personal_data = async (data) => {
 		// this.props.open_smoke();
 		this.setState({save_state:'waiting'});
@@ -128,7 +125,7 @@ export default withNavigation(class SettingsComponent extends Component {
 					{...this.props}
 					scroll={this.scroll}
 					state={this.state.save_state}
-					update_data={this.set_personal_data}
+					update_data={this.props.update_user}
 					send_data={this.save_personal_data}
 				/>
 				{/*

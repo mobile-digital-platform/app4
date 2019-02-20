@@ -12,10 +12,6 @@ export default withNavigation(class PromoGetPrizeComponent extends Component {
 
 	};
 
-	set_data = (data) => {
-		this.props.update_user(data);
-	}
-
 	send_data = (data) => {
 
 	}
@@ -26,7 +22,6 @@ export default withNavigation(class PromoGetPrizeComponent extends Component {
 		return (
 			<Layout
 				{...this.props}
-				set_data={this.set_data}
 				send_data={this.send_data}
 			 />
 		);

@@ -35,7 +35,11 @@ const styles = EStyleSheet.create({
 	input: {
 		width: '100%',
 		paddingTop: 4, paddingBottom: 5,
+		color: '#3d3d3d',
 		fontSize: 14, fontFamily: 'GothamPro-Medium',
+	},
+	input_disabled: {
+		color: '#b3b3b3',
 	},
 	left: {
 		flex: 1,

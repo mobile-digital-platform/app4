@@ -29,7 +29,11 @@ const styles = EStyleSheet.create({
 		width: '100%',
 		...Platform.select({ios:{},android:{margin:-4}}),
 		paddingTop: 4, paddingBottom: 5,
+		color: '#3d3d3d',
 		fontSize: 14, fontFamily: 'GothamPro-Medium',
+	},
+	input_disabled: {
+		color: '#b3b3b3',
 	},
 	error_text: {
 		marginLeft: 25, marginBottom: 10, paddingTop: Platform.select({ios:3,android:0}),
@@ -103,14 +107,13 @@ export default class Input extends Component {
 						<Text style={styles.title}>{props.title}</Text>
 						<TextInput
 							ref={this.input}
-							style={[styles.input,props.style]}
+							style={[styles.input,props.disabled?styles.input_disabled:{},props.style]}
 							value={state.value}
 							editable={!props.disabled}
 							keyboardType={this.props.type}
 							onFocus={_=>{this.scroll();this.setState({active:true})}}
 							onChangeText={this.set_value}
 							onBlur={this.reset_active}
-							editable={this.props.editable}
 						/>
 					</TouchableOpacity>
 				) : (

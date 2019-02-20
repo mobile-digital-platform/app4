@@ -3,7 +3,7 @@ import {Platform,FlatList,KeyboardAvoidingView,Text,TextInput,TouchableOpacity,V
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {withNavigation} from 'react-navigation';
 
-import adress from '../../../services/adress';
+import address from '../../../services/address';
 
 const styles = EStyleSheet.create({
 	container: {
@@ -35,38 +35,40 @@ const styles = EStyleSheet.create({
 	},
 });
 
-export default withNavigation(class ChangeAdress extends Component {
+export default withNavigation(class Changeaddress extends Component {
 	constructor(props) {
 		super(props);
 
 		this.input = React.createRef();
 		this.state = {
-			adress: '',
+			address: '',
+			address_obj: {},
 			suggest: [],
 		};
 	}
 
 	componentDidMount() {
 		this.input.current.focus();
-		let adress = this.props.adress.complete;
-		if(adress?.length) {
-			this.change_text(adress);
-		}
-	} 
+		let address = this.props.user.address_obj.full;
+		if(address?.length) this.change_text(address);
+	}
 
 	change_text = async (value) => {
-		this.setState({adress:value});
-		if(value.trim().length)	this.setState({suggest: await adress(value)});
-		else this.setState({suggest:[]});
+		this.setState({address:value});
+		if(value.trim().length)	this.setState({suggest:await address(value.trim())});
+		else					this.setState({suggest:[]});
 	}
-	select = (adress) => {
-		this.props.update_user({adress});
+	select = (address_obj) => {
+		this.props.update_user({
+			address: address_obj.full,
+			address_obj,
+		});
 		this.props.navigation.goBack();
 	}
 
 	render_item = ({item}) => (
 		<TouchableOpacity style={styles.item} onPress={_=>this.select(item)}>
-			<Text style={styles.item_text}>{item.complete}</Text>
+			<Text style={styles.item_text}>{item.full}</Text>
 		</TouchableOpacity>
 	);
 
@@ -75,8 +77,8 @@ export default withNavigation(class ChangeAdress extends Component {
 
 		let container = (
 			<View style={styles.container}>
-				<TextInput ref={this.input} style={styles.input} value={state.adress} placeholder="Введите адрес доставки" onChangeText={this.change_text} />
-				{state.adress.trim().length ? (
+				<TextInput ref={this.input} style={styles.input} value={state.address} placeholder="Введите город, улицу..." onChangeText={this.change_text} />
+				{state.address.trim().length ? (
 					<FlatList
 						keyboardShouldPersistTaps='always'
 						style={styles.list}
@@ -86,7 +88,7 @@ export default withNavigation(class ChangeAdress extends Component {
 						keyExtractor={item => ''+item.id}
 					/>
 				) : (
-					<Text style={styles.tint}>Начните писать адрес доставки, а потом выберите его из вариантов, которые появятся ниже.Примеры указания адресов: (г Уфа Ростовская 18 стр А кв 311, г Уфа Ростовская 18 к 1 кв 311)</Text>
+					<Text style={styles.tint}>Начните писать адрес доставки, а потом выберите его из вариантов, которые появятся ниже.</Text>
 				)}
 			</View>
 		);

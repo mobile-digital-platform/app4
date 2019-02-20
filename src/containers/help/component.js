@@ -42,11 +42,11 @@ export default withNavigation(class HelpComponent extends Component {
 			},
 			text: {
 				ref: React.createRef(),
-				offset: 70 + (props.user.id?0:60),
+				offset: (70 + (props.user.id?0:60))*EStyleSheet.value("$scale"),
 			},
 			mail: {
 				ref: React.createRef(),
-				offset: 200 + (props.user.id?0:60),
+				offset: (200 + (props.user.id?0:60))*EStyleSheet.value("$scale"),
 			},
 		};
 

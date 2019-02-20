@@ -51,11 +51,11 @@ export default class Personal extends Component {
 			},
 			phone: {
 				ref: React.createRef(),
-				offset: window.height-400,
+				offset: (window.height-400)*EStyleSheet.value("$scale"),
 			},
 			mail: {
 				ref: React.createRef(),
-				offset: window.height-300,
+				offset: (window.height-300)*EStyleSheet.value("$scale"),
 			},
 		};
 
@@ -256,6 +256,7 @@ export default class Personal extends Component {
 						id={this.inputs.mail.ref}
 						title="E-mail"
 						value={state.mail}
+						type="email-address"
 						update={value => this.update({mail:value})}
 						send={value => this.setState({mail:value})}
 						error={state.mail_error}

@@ -5,7 +5,7 @@ import {withNavigation} from 'react-navigation';
 
 const styles = EStyleSheet.create({
 	container: {
-		marginVertical: 5, 
+		marginVertical: 5,
 		paddingHorizontal: 25, paddingHorizontal: 20,
 		borderWidth: 1, borderColor: '#ccc',
 		borderRadius: 20,
@@ -34,11 +34,8 @@ const styles = EStyleSheet.create({
 });
 
 export default withNavigation(({navigation,...props}) => (
-	<View>
-		<TouchableOpacity style={[styles.container,props.error?styles.container_error:{}]} onPress={_=>{
-			Keyboard.dismiss();
-			navigation.push('promo_change_adress');
-		}}>
+	<>
+		<TouchableOpacity style={[styles.container,props.error?styles.container_error:{}]} onPress={_=>navigation.push('settings_change_address')}>
 			{props.value ? (
 				<Text style={styles.text}>{props.value}</Text>
 			) : (
@@ -46,5 +43,5 @@ export default withNavigation(({navigation,...props}) => (
 			)}
 		</TouchableOpacity>
 		{props.error?.length ? (<Text style={styles.error_text}>{props.error}</Text>) : null}
-	</View>
+	</>
 ));
