@@ -1,4 +1,5 @@
 import {connect} from 'react-redux';
+
 import {
 	update_user,
 	module as settings_module
@@ -6,7 +7,7 @@ import {
 import Component from './component';
 
 const mapStateToProps = state => ({
-	user: state[settings_module],
+	adress: state[settings_module].adress,
 });
 
 const mapDispatchToProps = {

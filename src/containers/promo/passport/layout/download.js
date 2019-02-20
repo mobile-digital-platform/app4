@@ -2,12 +2,7 @@ import React from 'react';
 import {StyleSheet,FlatList,ImageBackground,ScrollView,Text,TouchableOpacity,View,Image} from 'react-native';
 import {withNavigation} from 'react-navigation';
 
-import Input		from '../../../../templates/input';
-import DateInput	from '../../../../templates/input_date';
-import TextArea		from '../../../../templates/textarea';
-import SeriaNumber	from '../../../../templates/seria_number';
 import Scan			from '../../../../templates/scan';
-import MainText		from '../../../../templates/main_text';
 import SubTitle		from '../../../../templates/subtitle';
 
 const styles = StyleSheet.create({

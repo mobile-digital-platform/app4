@@ -110,6 +110,7 @@ export default class Input extends Component {
 							onFocus={_=>{this.scroll();this.setState({active:true})}}
 							onChangeText={this.set_value}
 							onBlur={this.reset_active}
+							editable={this.props.editable}
 						/>
 					</TouchableOpacity>
 				) : (

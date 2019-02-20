@@ -9,31 +9,26 @@ import Layout from './layout';
 
 export default withNavigation(class PromoGetPrizeComponent extends Component {
 	state = {
-		data: [],
-		loading: false,
+
 	};
 
-	componentDidMount() {
-		this.id = this.props.navigation.getParam('id',0);
-
-		this.load_data();
+	set_data = (data) => {
+		this.props.update_user(data);
 	}
 
-	load_data = async () => {
-		let {response,error} = await request.get_user_prizes({user_id:this.props.user.id,promo_id:this.id});
-		if(response) {
-			console.log(response);
-		}
-		if(error) {
-			alert("Не удалось загрузить данные",error.code);
-		}
+	send_data = (data) => {
+
 	}
 
 	render() {
-		// console.log("Get Prize Component",this.props);
 
+		// console.log("Get Prize Component",this.props);
 		return (
-			<Layout {...this.state} />
+			<Layout
+				{...this.props}
+				set_data={this.set_data}
+				send_data={this.send_data}
+			 />
 		);
 	}
 });

@@ -20,8 +20,9 @@ export const ReducerRecord = () => ({
 	city_id:		0,
 	city_name:		'',
 	loyalty_card:	[],
-	push_token:		'',
 	device:			Platform.select({ios:1,android:0}),
+	adress:         '',
+	birthday:		'',
 });
 
 // Постоянные
