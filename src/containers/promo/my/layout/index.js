@@ -190,6 +190,8 @@ export default withNavigation(class MyPromoListLayout extends Component {
 
 		data = promo_date_diff(data);
 
+		console.log(details);
+
 		return (
 			<View style={styles.container}>
 				<ImageBackground style={styles.banner} imageStyle={{opacity:0.5}} source={{uri:data.image_url}}>
@@ -262,11 +264,11 @@ export default withNavigation(class MyPromoListLayout extends Component {
 							<Text style={[styles.button_text,styles.add_button_text]}>Добавить чек</Text>
 						</TouchableOpacity>
 					) : null}
-					{0&&details.show_prizes ? (
+					{details.show_prizes ? (
 						<TouchableOpacity style={[styles.button,styles.get_button]} onPress={_=>props.navigation.push('promo_my_prizes',{id:data.id})}>
 							<Text style={[styles.button_text,styles.get_button_text]}>Посмотреть призы</Text>
 						</TouchableOpacity>
-					) : 0&&details.buy_prize ? (
+					) : details.buy_prize ? (
 						<TouchableOpacity style={[styles.button,styles.get_button]} onPress={_=>props.navigation.push('promo_choose_prize',{id:data.id})}>
 							<Text style={[styles.button_text,styles.get_button_text]}>Получить выигрыш</Text>
 						</TouchableOpacity>

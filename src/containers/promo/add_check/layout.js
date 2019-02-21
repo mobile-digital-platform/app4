@@ -377,6 +377,7 @@ export default class PromoAddCheckLayout extends Component {
 					close={this.close_camera}
 					add_photo={this.add_photo}
 					set_photo={this.set_photo}
+					remove_photo={this.remove_photo}
 					open_smoke={this.props.open_smoke}
 					close_smoke={this.props.close_smoke}
 				/>

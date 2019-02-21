@@ -67,12 +67,14 @@ export default withNavigation(class Camera extends Component {
 			if(granted['android.permission.WRITE_EXTERNAL_STORAGE'] == 'granted') {
 				CameraRoll.saveToCameraRoll(photo.uri);
 				console.log('Permisiion successfully got',granted,photo.uri);
+				return true;
 			} else {
 				console.log('CameraRoll permission denied',granted,photo.uri);
+				return false;
 			}
 		} catch (err) {
 			console.log('Failed to request permission',err);
-			return null;
+			return false;
 		}
 	};
 
@@ -94,7 +96,13 @@ export default withNavigation(class Camera extends Component {
 			this.props.add_photo({id,state:'saving'});
 
 			this.camera.takePictureAsync({base64:true}).then(async (photo) => {
-				if(Platform.OS == 'android') await this.request_permission(photo);
+				if(Platform.OS == 'android') {
+					let access = await this.request_permission(photo);
+					if(!access) {
+						this.props.remove_photo(id);
+						return;
+					}
+				}
 				photo.state = 'ready';
 				this.props.set_photo(id,photo);
 			}).catch(e => console.log(e));
