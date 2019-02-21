@@ -4,6 +4,8 @@ import {RNCamera} from 'react-native-camera';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {withNavigation} from 'react-navigation';
 
+import alert from '../services/alert';
+
 import f from '../functions';
 
 import Icon from 'react-native-vector-icons/EvilIcons';
@@ -69,7 +71,7 @@ export default withNavigation(class Camera extends Component {
 				console.log('CameraRoll permission denied',granted,photo.uri);
 			}
 		} catch (err) {
-			console.error('Failed to request permission',err);
+			console.log('Failed to request permission',err);
 			return null;
 		}
 	};
@@ -77,20 +79,28 @@ export default withNavigation(class Camera extends Component {
 	// Съемка
 	capture = async () => {
 		if(this.camera) {
-			if(Platform.OS == 'android') await this.request_permission(photo);
-
-			// Сразу закрываем камеру
-			this.props.close();
 
 			// Открываем крутилку
-			this.props.open_smoke();
-			let photo = await this.camera.takePictureAsync({base64:true,doNotSave:true});
+			// this.props.open_smoke();
+			// let photo = await this.camera.takePictureAsync({base64:true,doNotSave:true});
+			//
+			// await this.props.add_photo({
+			// 	id: "Coca Cola Promo "+f.date("Y-m-d H:i:s"),
+			// 	...photo,
+			// });
+			// this.props.close_smoke();
 
-			await this.props.add_photo({
-				id: "Coca Cola Promo "+f.date("Y-m-d H:i:s"),
-				...photo,
-			});
-			this.props.close_smoke();
+			let id = "Coca Cola Promo "+f.date("Y-m-d H:i:s");
+			this.props.add_photo({id,state:'saving'});
+
+			this.camera.takePictureAsync({base64:true}).then(async (photo) => {
+				if(Platform.OS == 'android') await this.request_permission(photo);
+				photo.state = 'ready';
+				this.props.set_photo(id,photo);
+			}).catch(e => console.log(e));
+
+			// И закрываем камеру
+			setTimeout(this.props.close,1000);
 		}
 	};
 
@@ -108,6 +118,7 @@ export default withNavigation(class Camera extends Component {
 						style={styles.camera}
 						captureAudio={false}
 						flashMode={RNCamera.Constants.FlashMode.off}
+						pauseAfterCapture={true}
 					>
 						<View style={styles.close_area}>
 							<TouchableOpacity style={styles.close} onPress={this.props.close}>

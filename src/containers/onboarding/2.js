@@ -25,8 +25,8 @@ const styles = EStyleSheet.create({
 });
 
 const wait = 500;		// Ожидание в начале
-const interval = 4500;	// Время между прокрутками
-const duration = 2500;	// Время прокрутки
+const interval = 3000;	// Время между прокрутками
+const duration = 1500;	// Время прокрутки
 
 export default class Onboarding2 extends Component {
 	state = {
@@ -44,7 +44,7 @@ export default class Onboarding2 extends Component {
 
 				top: this.state.top_value.interpolate({
 					inputRange: [0,1],
-					outputRange: [0,-105],
+					outputRange: [0,-105*EStyleSheet.value("$scale")],
 				}),
 			});
 

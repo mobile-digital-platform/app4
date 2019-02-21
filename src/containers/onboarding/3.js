@@ -24,9 +24,9 @@ const styles = EStyleSheet.create({
 
 const wait = 500;
 const duration = [
+	800,
+	800,
 	1200,
-	1200,
-	1700,
 ];
 
 export default class Onboarding2 extends Component {
@@ -42,7 +42,7 @@ export default class Onboarding2 extends Component {
 		{x: 9,y: 37},
 		{x:50,y: 27},
 		{x: 4,y:128},
-	];
+	].map(({x,y}) => ({x:x*EStyleSheet.value("$scale"),y:y*EStyleSheet.value("$scale")}));
 
 	componentDidUpdate(prev_props) {
 		// Проигрываем, если до этого еще не играли и фокус переключился

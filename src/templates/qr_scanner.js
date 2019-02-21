@@ -78,16 +78,17 @@ export default class QR extends Component {
 			t: "20170426T100348"
 		}; */
 		let time = {
-			day: check.t.substr(6,2),
-			month: check.t.substr(4,2),
-			year: check.t.substr(0,4),
+			d: check.t.substr(6,2),
+			m: check.t.substr(4,2),
+			y: check.t.substr(0,4),
 
-			hour: check.t.substr(9,2),
-			minutes: check.t.substr(11,2),
+			h: check.t.substr(9,2),
+			i: check.t.substr(11,2),
 		};
 		let data = {
-			date: time.day+'.'+time.month+'.'+time.year,
-			time: time.hour+':'+time.minutes,
+			datetime: new Date(time.y+'-'+time.m+'-'+time.d+' '+time.h+':'+time.i),
+			date: time.y+'-'+time.m+'-'+time.d,
+			time: time.h+':'+time.i,
 
 			sum: check.s,
 			fn: check.fn,

@@ -39,11 +39,17 @@ export default withNavigation(({data,navigation}) => (
 	<View style={styles.container}>
 		<View style={styles.info}>
 			<Subtitle text={data.group_name} />
-			<Text style={styles.text}>Чтобы мы могли отправить {data.group_name}, необходимо внести данные.</Text>
-			<TouchableOpacity style={styles.button} onPress={_=>navigation.push('promo_get_prize')}>
-				<Text style={styles.button_text}>Внести данные</Text>
-			</TouchableOpacity>
+			{data.user_data_type != -1 ? (
+			<>
+				<Text style={styles.text}>Чтобы мы могли отправить {data.group_name}, необходимо внести данные.</Text>
+				<TouchableOpacity style={styles.button} onPress={_=>{
+					navigation.push('promo_get_prize',{user_data_type:data.user_data_type,get_type:data.get_type})
+				}}>
+					<Text style={styles.button_text}>Внести данные</Text>
+				</TouchableOpacity>
+			</>
+			) : null}
 		</View>
-		{data.prize_list.map((e,i) => (<Item key={i} {...e} link="http://coca-cola.com" />))}
+		{data.prize_list.map((e,i) => (<Item key={i} {...e} />))}
 	</View>
 ));

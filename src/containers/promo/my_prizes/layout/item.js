@@ -35,11 +35,39 @@ const styles = EStyleSheet.create({
 	},
 	state: {
 		marginVertical: 10,
-		color: '#b3b3b3',
 		fontSize: 12, fontFamily: 'GothamPro',
 		lineHeight: 14,
 	},
+	grey_state: {
+		color: '#b3b3b3',
+	},
+	red_state: {
+		color: '$red',
+	},
 });
+
+translate_state = (state) => ({
+	'Нужно внести данные': {
+		id: 0,
+		style: styles.grey_state,
+	},
+	'Ожидает отправки': {
+		id: 1,
+		style: styles.grey_state,
+	},
+	'Отправлен на указанный адрес': {
+		id: 2,
+		style: styles.grey_state,
+	},
+	'Отправлено. Смотреть статус': {
+		id: 3,
+		style: styles.red_state,
+	},
+	'Получить подарок': {
+		id: 4,
+		style: styles.red_state,
+	},
+}[state]);
 
 export default (props) => (
 	<View style={styles.container}>
@@ -51,10 +79,10 @@ export default (props) => (
 			{props.details?.length ? (<Text style={styles.checks}>{props.details}</Text>) : null}
 			{props.link?.length ? (
 				<TouchableOpacity onPress={_=>Linking.openURL(props.link)}>
-					<Text style={styles.state}>{props.state}</Text>
+					<Text style={[styles.state,styles.red_state]}>{props.state}</Text>
 				</TouchableOpacity>
 			) : (
-				<Text style={styles.state}>{props.state}</Text>
+				<Text style={[styles.state,translate_state(props.state).style]}>{props.state}</Text>
 			)}
 		</View>
 	</View>

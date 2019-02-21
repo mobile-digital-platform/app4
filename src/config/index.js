@@ -1,6 +1,6 @@
 export default {
 	name: 'mobile-digital-platform',
-	version: '0.2.6',
+	version: '0.3.0',
 	year: '2019',
 
 	fcm_id: '162960043197',

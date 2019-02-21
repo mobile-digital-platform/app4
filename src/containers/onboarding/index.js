@@ -93,8 +93,8 @@ export default class OnboardingComponent extends Component {
 				<Swiper
 					ref={ref => this.swipe=ref}
 					loop={false}
-					autoplay={false}
-					autoplayTimeout={5}
+					autoplay={true}
+					autoplayTimeout={3.5}
 					showsPagination={false}
 					style={styles.area}
 					onMomentumScrollEnd={(e,state) => this.setState({index:+state?.index})}

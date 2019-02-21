@@ -91,7 +91,7 @@ const styles = EStyleSheet.create({
 	bottom: {
 		alignItems: 'center',
 		marginTop: 0,
-		paddingTop: 10, paddingBottom: 5, paddingHorizontal: 40,
+		paddingVertical: 10, paddingHorizontal: 40,
 		borderTopWidth: 1, borderTopColor: '#ccc',
 	},
 	button: {
@@ -190,8 +190,6 @@ export default withNavigation(class MyPromoListLayout extends Component {
 
 		data = promo_date_diff(data);
 
-		console.log(check);
-
 		return (
 			<View style={styles.container}>
 				<ImageBackground style={styles.banner} imageStyle={{opacity:0.5}} source={{uri:data.image_url}}>
@@ -268,15 +266,17 @@ export default withNavigation(class MyPromoListLayout extends Component {
 						<TouchableOpacity style={[styles.button,styles.get_button]} onPress={_=>props.navigation.push('promo_my_prizes',{id:data.id})}>
 							<Text style={[styles.button_text,styles.get_button_text]}>Посмотреть призы</Text>
 						</TouchableOpacity>
-					) : details.buy_prize ? (
+					) : 0&&details.buy_prize ? (
 						<TouchableOpacity style={[styles.button,styles.get_button]} onPress={_=>props.navigation.push('promo_choose_prize',{id:data.id})}>
 							<Text style={[styles.button_text,styles.get_button_text]}>Получить выигрыш</Text>
 						</TouchableOpacity>
 					) : null}
+					{/*
 					<TouchableOpacity style={styles.question} onPress={_=>props.navigation.push('help',{promo_id:data.id})}>
 						<Image style={styles.question_icon} source={QuestionIcon} />
 						<Text style={styles.question_text}>Задать вопрос</Text>
 					</TouchableOpacity>
+					*/}
 				</Animated.View>
 				) : null}
 			</View>

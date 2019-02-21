@@ -5,6 +5,8 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import QRIcon			from '../../../../assets/ui/qr.png';
 import CameraImage		from '../../../../assets/ui/camera.png';
 
+import alert			from '../../../services/alert';
+
 import AnimatedButton	from '../../../templates/animated_button';
 import SubTitle			from '../../../templates/subtitle';
 import Input			from '../../../templates/input';
@@ -127,10 +129,10 @@ export default class PromoAddCheckLayout extends Component {
 			datetime:	'',
 			date:		'',
 			time:		'',
-			sum:		'123.00',
-			fn:			'1232000100023230',
-			fd:			'123302',
-			fp:			'1230303030',
+			sum:		'',
+			fn:			'',
+			fd:			'',
+			fp:			'',
 
 			date_error:	false,
 			time_error:	false,
@@ -169,7 +171,20 @@ export default class PromoAddCheckLayout extends Component {
 		await this.setState(({photo_list}) => ({photo_list:[...photo_list,data],photo_error:''}));
 		await this.check_ready();
 	}
-	remove_photo	= async (id)   => {
+	set_photo		= async (id,photo) => {
+		await this.setState(({photo_list}) => ({photo_list:photo_list.map(item => {
+			if(item.id == id) {
+				item = {
+					...item,
+					...photo,
+				};
+				console.log(item,photo);
+			}
+			return item;
+		})}));
+		await this.check_ready();
+	}
+	remove_photo	= async (id) => {
 		await this.setState(({photo_list}) => ({photo_list:photo_list.filter(item => item.id!=id)}));
 		await this.check_ready();
 	}
@@ -187,6 +202,7 @@ export default class PromoAddCheckLayout extends Component {
 	// Все остальные поля
 	update = async (adjust) => {
 		await this.setState({...adjust,updated:true});
+		// alert('',JSON.stringify(adjust,null,4));
 
 		await this.check_ready();
 
@@ -199,7 +215,7 @@ export default class PromoAddCheckLayout extends Component {
 	// Проверяем, готова ли форма
 	check_ready = async () => {
 		await this.setState(state => ({
-			ready: state.photo_list.length && this.required.every(field => state[field].length)
+			ready: state.photo_list.length && !state.photo_list.find(e => e.state=='saving') && this.required.every(field => state[field].length)
 		}));
 	}
 
@@ -250,6 +266,7 @@ export default class PromoAddCheckLayout extends Component {
 
 	render() {
 		let {props,state} = this;
+		// console.log(state);
 
 		return (
 			<ScrollView ref={this.scroll} style={styles.container} keyboardShouldPersistTaps="always" keyboardDismissMode="on-drag">
@@ -359,6 +376,7 @@ export default class PromoAddCheckLayout extends Component {
 					visible={state.camera_opened}
 					close={this.close_camera}
 					add_photo={this.add_photo}
+					set_photo={this.set_photo}
 					open_smoke={this.props.open_smoke}
 					close_smoke={this.props.close_smoke}
 				/>

@@ -36,6 +36,7 @@ export default withNavigation(({navigation,...props}) => (
 				<Image style={styles.list_image} source={User} />
 				<Text style={styles.list_text}>{props.user.id ? 'Сменить пользователя' : 'Войти в профиль'}</Text>
 			</TouchableOpacity>
+			{/*
 			<TouchableOpacity style={styles.list_item} onPress={_=>props.log_out()}>
 				<Image style={styles.list_image} source={User} />
 				<Text style={styles.list_text}>Выйти</Text>

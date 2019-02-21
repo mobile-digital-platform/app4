@@ -325,8 +325,8 @@ export const request = {
 				items: response.map(e => ({
 					group_id:			e.GroupID,
 					group_name:			e.GroupName,
-					get_user_data_id:	e.GetUserData,
-					get_type_id:		e.GetTypeID,
+					user_data_type:		e.GetUserData,
+					get_type:			e.GetTypeID,
 					prize_list: e.Prizes.map(g => ({
 						name:		g.PrizeName,
 						image_url:	g.ImgLink,
@@ -353,7 +353,7 @@ export const request = {
 			Street:		data.street,
 			Building: 	data.building,
 			Apartment: 	data.apartment,
-			
+
 		});
 		if(response) {
 			return {response:1};
