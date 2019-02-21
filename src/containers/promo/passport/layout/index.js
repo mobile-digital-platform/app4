@@ -26,19 +26,19 @@ const styles = StyleSheet.create({
 	},
 	passport_title: {
 		paddingHorizontal: 20,
-		paddingBottom: 5,
+		paddingBottom: 11, marginBottom: 0,
 	},
 	adress_title: {
 		paddingHorizontal: 20,
-		paddingBottom: 5,
+		paddingBottom: 7, marginBottom: 0,
 	},
 	inn_title: {
 		paddingHorizontal: 20,
-		paddingBottom: 5,
+		paddingBottom: 11, marginBottom: 0,
 	},
 	photo_title: {
 		paddingHorizontal: 20,
-		paddingBottom: 0,
+		paddingBottom: 10, marginBottom: 0,
 	},
 	seria_number: {
 		flexDirection: 'row',
