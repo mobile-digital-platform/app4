@@ -1,7 +1,6 @@
 import React,{Component} from 'react';
 import {ActivityIndicator,Image,TouchableOpacity,Text,TextInput,View} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import {withNavigation} from 'react-navigation';
 
 import Cross	from '../../assets/ui/cross_red.png';
 import Camera	from '../../assets/ui/camera.png';
@@ -28,12 +27,16 @@ const styles = EStyleSheet.create({
 	}
 });
 
-export default withNavigation(props => {
-	console.log(props);
-	return(
+export default (props) => {
+	// console.log(props.photo);
+	return (
 	<View style={styles.container}>
 		{props.photo.state == 'ready' ? (
-			<Image style={styles.photo} source={{uri:props.photo.uri}} />
+			props.photo.uri ? (
+				<Image style={styles.photo} source={{uri:props.photo.uri}} />
+			) : props.photo.base64 ? (
+				<Image style={styles.photo} source={{uri:'data:image/png;base64,'+props.photo.base64}} />
+			) : null
 		) : (
 			<ActivityIndicator/>
 		)}
@@ -41,7 +44,5 @@ export default withNavigation(props => {
 			<Image style={styles.cross} source={Cross} />
 		</TouchableOpacity>
 	</View>
-);
-
-}
 )
+}

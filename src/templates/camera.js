@@ -1,8 +1,10 @@
 import React,{Component} from 'react';
-import {CameraRoll,PermissionsAndroid,Platform,FlatList,Image,ImageBackground,Modal,ScrollView,Text,TouchableOpacity,View} from 'react-native';
+import {CameraRoll,ImageEditor,ImageStore,PermissionsAndroid,Platform,Modal,Text,TouchableOpacity,View} from 'react-native';
 import {RNCamera} from 'react-native-camera';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {withNavigation} from 'react-navigation';
+
+import config from '../config';
 
 import alert from '../services/alert';
 
@@ -95,20 +97,25 @@ export default withNavigation(class Camera extends Component {
 			let id = "Coca Cola Promo "+f.date("Y-m-d H:i:s");
 			this.props.add_photo({id,state:'saving'});
 
-			this.camera.takePictureAsync({base64:true}).then(async (photo) => {
-				if(Platform.OS == 'android') {
-					let access = await this.request_permission(photo);
-					if(!access) {
-						this.props.remove_photo(id);
-						return;
+			let photo = await this.camera.takePictureAsync({width:config.image.width,base64:true,pauseAfterCapture:true,doNotSave:true});
+			// ImageEditor.cropImage(photo.uri,{displaySize:{width:1080,resizeMode:'cover'}},async (image_uri) => {
+			// 	console.log(ImageStore.hasImageForTag(image_uri,_ => console.log(_)));
+			// 	ImageStore.getBase64ForTag(image_uri,async (base64) => {
+			// 		photo.base64 = base64;
+					if(Platform.OS == 'android') {
+						let access = await this.request_permission(photo);
+						if(!access) {
+							this.props.remove_photo(id);
+							return;
+						}
 					}
-				}
-				photo.state = 'ready';
-				this.props.set_photo(id,photo);
-			}).catch(e => console.log(e));
+					photo.state = 'ready';
+					this.props.set_photo({id,photo});
 
-			// И закрываем камеру
-			setTimeout(this.props.close,1000);
+					// И закрываем камеру
+					this.props.close();
+			// 	},error => console.log("1",error));
+			// },error => console.log("2",error));
 		}
 	};
 

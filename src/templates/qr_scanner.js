@@ -67,6 +67,9 @@ const styles = EStyleSheet.create({
 });
 
 export default class QR extends Component {
+	state = {
+		torch: RNCamera.Constants.FlashMode.off,
+	};
 
 	parse_qr = (check) => {
 		/* check = {
@@ -116,6 +119,7 @@ export default class QR extends Component {
 
 	render() {
 		let props = this.props;
+		console.log(RNCamera.Constants);
 
 		return (
 			<Modal
@@ -129,9 +133,10 @@ export default class QR extends Component {
 						ref={ref => this.camera=ref}
 						style={styles.camera}
 						captureAudio={false}
-						flashMode={RNCamera.Constants.FlashMode.torch}
+						flashMode={this.state.torch}
 						barCodeTypes={[RNCamera.Constants.BarCodeType.qr]}
 						onBarCodeRead={this.read_code}
+						onCameraReady={_=>this.setState({torch:RNCamera.Constants.FlashMode.torch})}
 					>
 						<View style={styles.close_area}>
 							<TouchableOpacity style={styles.close} onPress={this.props.close}>

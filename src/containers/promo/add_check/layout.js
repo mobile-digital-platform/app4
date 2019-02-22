@@ -171,7 +171,7 @@ export default class PromoAddCheckLayout extends Component {
 		await this.setState(({photo_list}) => ({photo_list:[...photo_list,data],photo_error:''}));
 		await this.check_ready();
 	}
-	set_photo		= async (id,photo) => {
+	set_photo		= async ({id,photo}) => {
 		await this.setState(({photo_list}) => ({photo_list:photo_list.map(item => {
 			if(item.id == id) {
 				item = {
@@ -215,7 +215,7 @@ export default class PromoAddCheckLayout extends Component {
 	// Проверяем, готова ли форма
 	check_ready = async () => {
 		await this.setState(state => ({
-			ready: state.photo_list.length && !state.photo_list.find(e => e.state=='saving') && this.required.every(field => state[field].length)
+			ready: state.photo_list.length && state.photo_list.every(e => e.state=='ready') && this.required.every(field => state[field].length)
 		}));
 	}
 
@@ -266,7 +266,7 @@ export default class PromoAddCheckLayout extends Component {
 
 	render() {
 		let {props,state} = this;
-		// console.log(state);
+		console.log(state.photo_list);
 
 		return (
 			<ScrollView ref={this.scroll} style={styles.container} keyboardShouldPersistTaps="always" keyboardDismissMode="on-drag">

@@ -25,16 +25,18 @@ const styles = EStyleSheet.create({
 });
 
 export default (props) => (
-	<View style={[styles.container,props.style]}>
-		<TextInput
-			style={[styles.input,props.area_style]}
-			multiline={true}
-			value={props.value}
-			editable={!props.disabled}
-			placeholder={props.placeholder}
-			onFocus={_ => {if(props.keyboard_options) props.keyboard_options.scroll.current.scrollTo({y:props.keyboard_options.offset})}}
-			onChangeText={text => props.update(text)}
-		/>
+	<>
+		<View style={[styles.container,props.style]}>
+			<TextInput
+				style={[styles.input,props.area_style]}
+				multiline={true}
+				value={props.value}
+				editable={!props.disabled}
+				placeholder={props.placeholder}
+				onFocus={_ => {if(props.keyboard_options) props.keyboard_options.scroll.current.scrollTo({y:props.keyboard_options.offset})}}
+				onChangeText={text => props.update(text)}
+			/>
+		</View>
 		{props.error?.length ? (<Text style={styles.error_text}>{props.error}</Text>) : null}
-	</View>
+	</>
 );

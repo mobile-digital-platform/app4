@@ -1,6 +1,7 @@
 import React from 'react';
 import {Linking,Image,Text,TouchableOpacity,View} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import {withNavigation} from 'react-navigation';
 
 const styles = EStyleSheet.create({
 	container: {
@@ -69,21 +70,36 @@ translate_state = (state) => ({
 	},
 }[state]);
 
-export default (props) => (
-	<View style={styles.container}>
-		<View style={styles.image_area}>
-			{props.image_url ? (<Image style={styles.image} source={{uri:props.image_url}} />) : null}
+export default withNavigation((props) => {
+	let state = {
+		text: props.state,
+		...translate_state(props.state),
+	};
+	console.log(state);
+	// navigation.push('promo_passport',{promo_id,user_data_type:data.user_data_type,get_type:data.get_type})
+
+	return (
+		<View style={styles.container}>
+			<View style={styles.image_area}>
+				{props.image_url ? (<Image style={styles.image} source={{uri:props.image_url}} />) : null}
+			</View>
+			<View style={styles.area}>
+				<Text style={styles.title}>{props.name}</Text>
+				{props.details?.length ? (<Text style={styles.checks}>{props.details}</Text>) : null}
+				{props.link?.length ? (
+					<TouchableOpacity onPress={_=>Linking.openURL(props.link)}>
+						<Text style={[styles.state,styles.red_state]}>{state.text}</Text>
+					</TouchableOpacity>
+				) : (state.id == 4) ? (
+					<TouchableOpacity onPress={_=>{
+						props.navigation.push('promo_get_prize',{promo_id:props.promo_id,user_data_type:props.user_data_type,get_type:props.get_type});
+					}}>
+						<Text style={[styles.state,styles.red_state]}>{state.text}</Text>
+					</TouchableOpacity>
+				) : (
+					<Text style={[styles.state,translate_state(props.state).style]}>{state.text}</Text>
+				)}
+			</View>
 		</View>
-		<View style={styles.area}>
-			<Text style={styles.title}>{props.name}</Text>
-			{props.details?.length ? (<Text style={styles.checks}>{props.details}</Text>) : null}
-			{props.link?.length ? (
-				<TouchableOpacity onPress={_=>Linking.openURL(props.link)}>
-					<Text style={[styles.state,styles.red_state]}>{props.state}</Text>
-				</TouchableOpacity>
-			) : (
-				<Text style={[styles.state,translate_state(props.state).style]}>{props.state}</Text>
-			)}
-		</View>
-	</View>
-);
+	);
+});

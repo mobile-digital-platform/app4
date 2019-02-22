@@ -16,7 +16,7 @@ export default (props) => (
 	<FlatList
 		style={styles.container}
 		data={props.list}
-		renderItem={({item}) => <Section data={item} />}
+		renderItem={({item}) => <Section promo_id={props.promo_id} data={item} />}
 		keyExtractor={item => item.group_id+''}
 		onRefresh={props.reload}
 		refreshing={props.loading}

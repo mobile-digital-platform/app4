@@ -35,6 +35,7 @@ export default withNavigation(class PromoMyPrizesComponent extends Component {
 		console.log(this.state);
 		return (
 			<Layout
+				promo_id={this.id}
 				{...this.props}
 				{...this.state}
 				reload={this.load_data}

@@ -12,4 +12,7 @@ export default {
 	city: {
 		limit: 30,
 	},
+	image: {
+		width: 1080,
+	},
 };

@@ -35,7 +35,7 @@ const styles = EStyleSheet.create({
 	},
 });
 
-export default withNavigation(({data,navigation}) => (
+export default withNavigation(({promo_id,data,navigation}) => (
 	<View style={styles.container}>
 		<View style={styles.info}>
 			<Subtitle text={data.group_name} />
@@ -43,13 +43,15 @@ export default withNavigation(({data,navigation}) => (
 			<>
 				<Text style={styles.text}>Чтобы мы могли отправить {data.group_name}, необходимо внести данные.</Text>
 				<TouchableOpacity style={styles.button} onPress={_=>{
-					navigation.push('promo_get_prize',{user_data_type:data.user_data_type,get_type:data.get_type})
+					navigation.push('promo_passport',{promo_id,user_data_type:data.user_data_type})
 				}}>
 					<Text style={styles.button_text}>Внести данные</Text>
 				</TouchableOpacity>
 			</>
 			) : null}
 		</View>
-		{data.prize_list.map((e,i) => (<Item key={i} {...e} />))}
+		{data.prize_list.map((e,i) => (
+			<Item key={i} promo_id={promo_id} user_data_type={data.user_data_type} get_type={data.get_type} {...e} />
+		))}
 	</View>
 ));

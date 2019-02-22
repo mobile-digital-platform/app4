@@ -1,44 +1,37 @@
-import React from 'react';
-import {StyleSheet,FlatList,ImageBackground,ScrollView,Text,TouchableOpacity,View,Image} from 'react-native';
+import React,{Component} from 'react';
+import {Keyboard,Platform,FlatList,ScrollView,Text,TouchableOpacity,View} from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 import {withNavigation} from 'react-navigation';
 
-import Item				from './item';
+import AnimatedButton	from '../../../../templates/animated_button';
+import Input			from '../../../../templates/input';
 import DateInput		from '../../../../templates/input_date';
-import SelectAdress		from '../../../../templates/select_adress';
+import SubTitle			from '../../../../templates/subtitle';
+import TextArea			from '../../../../templates/textarea';
 
-const styles = StyleSheet.create({
+import Item				from './item';
+
+const styles = EStyleSheet.create({
 	container: {
-		paddingHorizontal: 20,
+		flex: 1,
+		padding: 20,
 		backgroundColor: '#fff',
 	},
 	fio_area: {
 		paddingBottom: 30,
 	},
 	text: {
+		marginBottom: 10,
 		color: '#3d3d3d',
-		fontSize: 14, lineHeight: 18,
-		fontFamily: 'GothamPro',
+		fontSize: 14, fontFamily: 'GothamPro',
 		textAlign: 'center',
-		paddingBottom: 8, marginBottom: 10,
+		lineHeight: 18,
 	},
 	block: {
-		paddingBottom: 20,
+		marginBottom: 20,
 	},
-	passport_title: {
+	subtitle: {
 		paddingHorizontal: 20,
-		paddingBottom: 11, marginBottom: 0,
-	},
-	adress_title: {
-		paddingHorizontal: 20,
-		paddingBottom: 7, marginBottom: 0,
-	},
-	inn_title: {
-		paddingHorizontal: 20,
-		paddingBottom: 11, marginBottom: 0,
-	},
-	photo_title: {
-		paddingHorizontal: 20,
-		paddingBottom: 10, marginBottom: 0,
 	},
 	seria_number: {
 		flexDirection: 'row',
@@ -50,245 +43,467 @@ const styles = StyleSheet.create({
 	number: {
 		width: 160,
 	},
-	save: {
-		backgroundColor: '$red',
-		alignItems: 'center',
-		marginTop: 20, marginBottom: 30,
-		padding: 15,
-		borderRadius: 100,
+	textarea: {
+		height: 110,
 	},
-	save_text: {
-		color: '#fff',
-		fontSize: 16, fontFamily: 'GothamPro-Medium',
-		lineHeight: 19,
-	}
+	photo_area: {
+		marginBottom: 10,
+	},
+	button: {
+		marginBottom: 30,
+	},
+	error_text: {
+		marginLeft: 25, marginVertical: 10, paddingTop: Platform.select({ios:3,android:0}),
+		fontSize: 14, fontFamily: 'GothamPro',
+		color: '$red',
+	},
 });
 
-export default withNavigation(class Passport extends Component {
+export default withNavigation(class PromoPassportLayout extends Component {
 	constructor(props) {
 		super(props);
-		props = props.user;
-		console.log('constructor',this)
+
+		this.scroll = React.createRef();
+		this.inputs = {
+			name: {
+				ref: React.createRef(),
+				offset: 0,
+			},
+			father: {
+				ref: React.createRef(),
+				offset: 0,
+			},
+			family: {
+				ref: React.createRef(),
+				offset: 0,
+			},
+			birthday: {
+				ref: React.createRef(),
+				offset: 0*EStyleSheet.value("$scale"),
+			},
+			seria: {
+				ref: React.createRef(),
+				offset: 350*EStyleSheet.value("$scale"),
+			},
+			number: {
+				ref: React.createRef(),
+				offset: 350*EStyleSheet.value("$scale"),
+			},
+			date: {
+				ref: React.createRef(),
+				offset: 350*EStyleSheet.value("$scale"),
+			},
+			issuer: {
+				ref: React.createRef(),
+				offset: 350*EStyleSheet.value("$scale"),
+			},
+			address: {
+				ref: React.createRef(),
+				offset: 550*EStyleSheet.value("$scale"),
+			},
+			inn: {
+				ref: React.createRef(),
+				offset: 650*EStyleSheet.value("$scale"),
+			},
+		};
+
+		this.required = ['name','father','family','birthday','seria','number','date','issuer','address','inn'];
+
 		this.state = {
-			name: 		props.name ??  '',
-			father: 	props.father ?? '',
-			family: 	props.family ?? '',
-			birthday: 	props.birthday ?? '',
-			
-			seria: ''
-			num: ''
-			date: ''
-			issuer: ''
-			adress: ''
-			inn: ''
-			
-			name_error:   	false,
-			father_error: 	false,
-			family_error: 	false,
-			mail_error:	 	false,
-			birthday_error:	false,
-			adress_error: 	false,
-			// если данные уже были в хранилище, то делаем поле нередактируемым
-			name_editable: 	 !props.name,
-			father_editable: !props.father,
-			family_editable: !props.family,
-			mail_editable:	 !props.mail,
+			name: 		props.user.name,
+			father: 	props.user.father,
+			family: 	props.user.family,
+			birthday: 	props.user.birthday || '2019-02-22',
+
+			seria:		props.user.passport.seria || '123',
+			number:		props.user.passport.number || '123',
+			date:		props.user.passport.date || '2019-03-02',
+			issuer:		props.user.passport.issuer || 'xas',
+			address:	props.user.passport.address || 'x',
+			inn:		props.user.passport.inn || '123',
+
+			passport_photo: {},
+			passport_residence: {},
+			inn_photo: {},
+
+			name_error:   	'',
+			father_error: 	'',
+			family_error: 	'',
+			birthday_error:	'',
+			passport_error:	'',
+			address_error:	'',
+			inn_error:		'',
+			photo_error:	'',
+
+			waiting: false,
+			ready: false,
+
+			button_state: 'ready',
 		};
 	}
 
 	componentDidUpdate(prev_props) {
+		// Изменились данные о пользователе
 		if(!Object.is(prev_props.user,this.props.user)) {
-			let props = this.props.user;
-			let state = this.state;
-			console.log('componentDidUpdate_this',this)
-			this.setState({
-				name: 			 props.name ?? state.name ?? '',
-				father: 		 props.father ?? state.father ?? '',
-				family: 		 props.family ?? state.family ?? '',
-				mail: 			 props.mail ?? state.mail ?? '',
-				birthday: 		 props.birthday ?? state.birthday ?? '',
-				adress: 		 props.adress.complete ?? state.adress ?? '',
+			this.setState(this.props.user);
+		}
 
-				name_editable: 	 !props.name,
-				father_editable: !props.father,
-				family_editable: !props.family,
-				mail_editable:	 !props.mail,
-			})
-
-			// убираем ошибки, если на других страницах пользователь ввел данные
-			let fields = ['name', 'father', 'family', 'mail', 'birthday', 'adress'];
-			fields.forEach(field => {
-				if (props[field].length && state[field + '_error']) {
-					this.setState({ [field + '_error']: false });
-				}
-			})
+		// Изменилось состояние запроса
+		if(prev_props.state != this.props.state) {
+			if(this.props.state == 'waiting') this.setState({button_state:'waiting'});
+			if(this.props.state == 'succeed') this.setState({button_state:'end'});
+			if(this.props.state == 'errored') this.setState({button_state:'ready'});
 		}
 	}
 
-	update = async (data) =>{
+	update = async (data) => {
 		await this.setState(data);
-		// убираем ошибки
-		let state = this.state;
-		let fields = ['name','father','family','mail','birthday'];
-		fields.forEach(field =>{
-			if(state[field].length && state[field+'_error']){
-				this.setState({[field+'_error']:false});
-			}
-		})
+
+		// Убираем ошибки
+		if(this.state.name.length		&& this.state.name_error.length)		this.setState({name_error:false});
+		if(this.state.father.length		&& this.state.father_error.length)		this.setState({father_error:false});
+		if(this.state.family.length		&& this.state.family_error.length)		this.setState({family_error:false});
+		if(this.state.birthday.length	&& this.state.birthday_error.length)	this.setState({birthday_error:false});
+
+		if(this.state.passport_error.length) await this.check_passport_completeness();
+
+		if(this.state.address.length	&& this.state.address_error.length)		this.setState({address_error:false});
+		if(this.state.inn.length		&& this.state.inn_error.length)			this.setState({inn_error:false});
+
+		if(this.state.photo_error.length) await this.check_photo_completeness();
+
+		this.check_ready();
 	}
 
-	check_completeness = () =>{
-		// Проверяем поля
+	// Проверяем, готова ли форма
+	check_ready = async () => {
+		await this.setState(state => ({ready: (
+			[state.passport_photo,state.passport_residence,state.inn_photo].every(e => e.state=='ready') &&
+			this.required.every(field => state[field].length)
+		)}));
+	}
+
+	// Указание на ошибки при заполнении полей
+	check_completeness = async () => {
 		let state = this.state;
+
+		await this.check_ready();
+
+		// Проверяем поля
 		let fields = [
 			{
 				field: 'name',
-				error:  'Введите имя'
+				error: 'Введите имя'
 			},
 			{
 				field: 'father',
-				error:  'Введите отчество'
+				error: 'Введите отчество'
 			},
 			{
 				field: 'family',
-				error:  'Введите фамилию'
-			},
-			{
-				field: 'mail',
-				error:  'Введите почтоый ящик'
+				error: 'Введите фамилию'
 			},
 			{
 				field: 'birthday',
-				error:  'Введите день рождения'
+				error: 'Введите день рождения'
 			},
 			{
-				field: 'adress',
-				error:  'Введите адрес доставки'
+				field: 'address',
+				error: 'Укажите адрес регистрации'
 			},
-		]
-		return fields.every(item =>{
+			{
+				field: 'inn',
+				error: 'Укажите ИНН'
+			},
+		];
+
+		for(let item of fields) {
 			let {field,error} = item;
 			if(!state[field]?.length){
 				this.setState({[field+'_error']:error});
-				//this.props.scroll.current.scrollTo({y:this.inputs.field.offset});
+				this.scroll.current.scrollTo({y:this.inputs[field].offset});
 				return false;
-			} else{
-				this.setState({[field+'_error']:false});
+			} else {
+				this.setState({[field+'_error']:''});
+			}
+		}
+
+		return true;
+	}
+	check_passport_completeness = async () => {
+		let state = this.state;
+
+		await this.check_ready();
+
+		// Проверяем поля
+		let fields = [
+			{
+				field: 'seria',
+				error: 'Укажите серию'
+			},
+			{
+				field: 'number',
+				error: 'Укажите номер'
+			},
+			{
+				field: 'date',
+				error: 'Укажите дату выдачи'
+			},
+			{
+				field: 'issuer',
+				error: 'Укажите, кем выдан'
+			},
+		];
+		let has_error = fields.some(({field,error}) => {
+			console.log(field,state[field]?.length);
+			if(state[field]?.length) {
+				return false;
+			} else {
+				this.setState({passport_error:error});
+				console.log(field,error);
+				this.scroll.current.scrollTo({y:this.inputs[field].offset});
 				return true;
 			}
-		})
+		});
+		if(has_error) {
+			return false;
+		} else {
+			this.setState({passport_error:''});
+		}
+		return true;
+	}
+	check_photo_completeness = async () => {
+		let state = this.state;
+
+		await this.check_ready();
+
+		if(!state.passport_photo.state) {
+			this.setState({'photo_error':'Сделайте фотографию разворота паспорта'});
+			return false;
+		} else if(state.passport_photo.state != 'ready') {
+			this.setState({'photo_error':'Дождитесь сохранения фотографии'});
+			return false;
+		}
+		if(!state.passport_residence.state) {
+			this.setState({'photo_error':'Сделайте фотографию прописки в паспорте'});
+			return false;
+		} else if(state.passport_residence.state != 'ready') {
+			this.setState({'photo_error':'Дождитесь сохранения фотографии'});
+			return false;
+		}
+		if(!state.inn_photo.state) {
+			this.setState({'photo_error':'Сделайте фотографию ИННа'});
+			return false;
+		} else if(state.inn_photo.state != 'ready') {
+			this.setState({'photo_error':'Дождитесь сохранения фотографии'});
+			return false;
+		}
+
+		this.setState({'photo_error':''});
+		return true;
 	}
 
-	send = () =>{
+	send = async () => {
 		let state = this.state;
 		Keyboard.dismiss();
 
-		if (!this.check_completeness()) return;
+		// Проверяем все поля
+		if(!await this.check_completeness() || !await this.check_passport_completeness() || !await this.check_photo_completeness()) return;
+
+		// Отправляем изменения
+		await this.setState({waiting:true});
+		await this.props.send_data({
+			name: 		state.name,
+			father: 	state.father,
+			family: 	state.family,
+			birthday: 	state.birthday,
+
+			seria:		state.seria,
+			number:		state.number,
+			date:		state.date,
+			issuer:		state.issuer,
+			address:	state.address,
+			inn:		state.inn,
+
+			passport_photo:		state.passport_photo,
+			passport_residence:	state.passport_residence,
+			inn_photo:			state.inn_photo,
+		});
+		await this.setState({waiting:false});
 	}
 
 	render() {
-		let { state, props } = this;
-		console.log('render_this', this)
+		let {props,state} = this;
+
+		// console.log(state);
+
 		return (
-			<ScrollView style={styles.container}>
+			<ScrollView ref={this.scroll} keyboardShouldPersistTaps="always" keyboardDismissMode="on-drag" style={styles.container}>
 				<View style={styles.fio_area}>
 					<Text style={styles.text}>В соответствии с законодательством, для получения выигрыша требуются ваши паспортные данные и ИНН.</Text>
 					<Input
+						id={this.inputs.name.ref}
 						title="Имя"
 						value={state.name}
-						update={value => this.update({ name: value })}
+						disabled={props.user.name.length}
+						update={name => this.update({name})}
 						error={state.name_error}
-						editable={state.name_editable}
+						keyboard_options={{
+							scroll: this.scroll,
+							offset: this.inputs.name.offset,
+						}}
 					/>
 					<Input
+						id={this.inputs.father.ref}
 						title="Отчество"
 						value={state.father}
-						update={value => this.update({ father: value })}
+						disabled={props.user.father.length}
+						update={father => this.update({father})}
 						error={state.father_error}
-						editable={state.father_editable}
+						keyboard_options={{
+							scroll: this.scroll,
+							offset: this.inputs.father.offset,
+						}}
 					/>
 					<Input
+						id={this.inputs.family.ref}
 						title="Фамилия"
 						value={state.family}
-						update={value => this.update({ family: value })}
+						disabled={props.user.family.length}
+						update={family => this.update({family})}
 						error={state.family_error}
-						editable={state.family_editable}
+						keyboard_options={{
+							scroll: this.scroll,
+							offset: this.inputs.family.offset,
+						}}
 					/>
 					<DateInput
+						id={this.inputs.birthday.ref}
 						title="Дата рождения"
 						value={state.birthday}
-						update={value => this.update({ birthday: value })}
+						update={birthday => this.update({birthday})}
 						error={state.birthday_error}
+						keyboard_options={{
+							scroll: this.scroll,
+							offset: this.inputs.birthday.offset,
+						}}
 					/>
 				</View>
-				{/* <View style={styles.passport_area}>
+				<View style={styles.passport_area}>
 					<View style={styles.block}>
-						<SubTitle style={styles.passport_title} text="Паспорт" />
+						<SubTitle style={styles.subtitle} text="Паспорт" />
 						<View style={styles.seria_number}>
 							<View style={styles.seria}>
 								<Input
+									id={this.inputs.seria.ref}
 									title="Серия"
-									value={state.father}
-									update={value => this.update({ father: value })}
-									error={state.father_error}
+									value={state.seria}
 									type="numeric"
+									update={seria => this.update({seria})}
+									type="numeric"
+									keyboard_options={{
+										scroll: this.scroll,
+										offset: this.inputs.seria.offset,
+									}}
 								/>
 							</View>
 							<View style={styles.number}>
 								<Input
+									id={this.inputs.number.ref}
 									title="Номер"
-									value={state.family}
-									update={value => this.update({ family: value })}
-									error={state.family_error}
+									value={state.number}
 									type="numeric"
+									update={number => this.update({number})}
+									type="numeric"
+									keyboard_options={{
+										scroll: this.scroll,
+										offset: this.inputs.number.offset,
+									}}
 								/>
 							</View>
 						</View>
 						<DateInput
+							id={this.inputs.date.ref}
 							title="Дата выдачи паспорта"
-							value={state.birthday}
-							update={value => this.update({ birthday: value })}
-							error={state.birthday_error}
+							value={state.date}
+							update={date => this.update({date})}
+							keyboard_options={{
+								scroll: this.scroll,
+								offset: this.inputs.date.offset,
+							}}
 						/>
 						<Input
+							id={this.inputs.issuer.ref}
 							title="Кем выдан"
-							value={state.family}
-							update={value => this.update({ family: value })}
-							error={state.family_error}
-							editable={state.family_editable}
+							value={state.issuer}
+							update={issuer => this.update({issuer})}
+							keyboard_options={{
+								scroll: this.scroll,
+								offset: this.inputs.issuer.offset,
+							}}
+						/>
+						{state.passport_error?.length ? (<Text style={styles.error_text}>{state.passport_error}</Text>) : null}
+					</View>
+					<View style={styles.block}>
+						<SubTitle style={styles.subtitle} text="Адрес регистрации" />
+						<TextArea
+							id={this.inputs.address.ref}
+							style={styles.textarea}
+							value={state.address}
+							placeholder="Укажите адрес постоянной регистрации (как в паспорте)"
+							update={address => this.update({address})}
+							error={state.address_error}
+							keyboard_options={{
+								scroll: this.scroll,
+								offset: this.inputs.address.offset,
+							}}
 						/>
 					</View>
 					<View style={styles.block}>
-						<SubTitle style={styles.adress_title} text="Адрес регистрации" />
-						<SelectAdress
-							title="Укажите адрес постоянной регистрации (как в паспорте)"
-							value={state.adress}
-							error={state.adress_error}
-						/>
-					</View>
-					<View style={styles.block}>
-						<SubTitle style={styles.inn_title} text="ИНН" />
+						<SubTitle style={styles.subtitle} text="ИНН" />
 						<Input
-							title="ИНН"
-							value={state.family}
-							update={value => this.update({ family: value })}
-							error={state.family_error}
-							editable={state.family_editable}
+							title="ИНН (12 цифр)"
+							value={state.inn}
+							type="numeric"
+							update={inn => this.update({inn})}
+							error={state.inn_error}
+							keyboard_options={{
+								scroll: this.scroll,
+								offset: this.inputs.inn.offset,
+							}}
 						/>
 					</View>
-				</View> */}
-				{/* <View style={styles.photo_area}>
-					<SubTitle style={styles.photo_title} text="Загрузите фотографии или сканы" />
-					<View>
-						<Item text="Паспорт, разворот с фотографией" value={} />
-						<Item text="Паспорт, разворот с «пропиской»" value={} />
-						<Item text="ИНН" value={} />
-					</View>
-					<TouchableOpacity style={styles.save} onPress={this.send}>
-						<Text style={styles.save_text}>Отправить</Text>
-					</TouchableOpacity>
-				</View> */}
+				</View>
+				<View style={styles.photo_area}>
+					<SubTitle style={styles.subtitle} text="Загрузите фотографии или сканы" />
+					<Item
+						text="Паспорт, разворот с фотографией"
+						add_photo={passport_photo => this.update({passport_photo})}
+						remove_photo={_ => this.update({passport_photo:{}})}
+					/>
+					<Item
+						text="Паспорт, разворот с «пропиской»"
+						add_photo={passport_residence => this.update({passport_residence})}
+						remove_photo={_ => this.update({passport_residence:{}})}
+					/>
+					<Item
+						text="ИНН"
+						add_photo={inn_photo => this.update({inn_photo})}
+						remove_photo={_ => this.update({inn_photo:{}})}
+					/>
+					{state.photo_error?.length ? (<Text style={styles.error_text}>{state.photo_error}</Text>) : null}
+				</View>
+				<View style={styles.button}>
+					<AnimatedButton
+						active={this.state.ready}
+						state={this.state.button_state}
+						on_press={this.send}
+						on_end={this.props.button_on_end}
+					>
+						Отправить
+					</AnimatedButton>
+				</View>
 			</ScrollView>
 		)
 	}
-})
+});

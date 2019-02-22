@@ -43,6 +43,8 @@ export default withNavigation(class PromoGetPrizeComponent extends Component {
 
 		// В асинхронное хранилище изменения тоже записываем
 		st.merge('user',data);
+
+		this.props.navigation.goBack();
 	}
 
 	render() {

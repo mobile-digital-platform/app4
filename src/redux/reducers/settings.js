@@ -22,6 +22,14 @@ export const ReducerRecord = () => ({
 	city_name:		'',
 	address:		'',
 	address_obj:	{},
+	passport: {
+		seria: '',
+		number: '',
+		date: '',
+		issuer: '',
+		address: '',
+		inn: '',
+	},
 	loyalty_card:	[],
 	device:			Platform.select({ios:1,android:0}),
 });
@@ -267,6 +275,46 @@ export const request = {
 			Street:		data.street,
 			Building:	data.building,
 			Apartment:	data.apartment,
+		});
+		if(response) {
+			return {response:1};
+		}
+		if(error) {
+			console.log('error',error);
+			return {error};
+		}
+	},
+	// Сохранение паспортныъ данные
+	set_passport_data: async (data) => {
+		let {response,error} = await API('/SetPassportData',{
+			PromoID:		data.promo_id,
+			UserID:			data.user_id,
+			Name:			data.name,
+			MName:			data.father,
+			LName:			data.family,
+			Birthday:		data.birthday,
+			Email:			data.mail,
+			DocSeries:		data.seria,
+			DocNumber:		data.number,
+			DocIssueDate:	data.date,
+			DocIssuer:		data.issuer,
+			INN:			data.inn,
+			Address:		data.address,
+		});
+		if(response) {
+			return {response:1};
+		}
+		if(error) {
+			console.log('error',error);
+			return {error};
+		}
+	},
+	// Загрузка фотографий паспорта
+	add_passport_photo: async (data) => {
+		let {response,error} = await API('/UploadPassportData',{
+			UserID:	data.user_id,
+			TypeID:	data.type,
+			File:	data.file,
 		});
 		if(response) {
 			return {response:1};
