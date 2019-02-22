@@ -11,10 +11,10 @@ import SubTitle			from '../../../../templates/subtitle';
 const styles = EStyleSheet.create({
 	container: {
 		backgroundColor: '#fff',
-		paddingHorizontal: 20,
 	},
 	fio_area: {
-		paddingTop: 20, paddingBottom: 10,
+		paddingHorizontal: 20,
+		paddingTop: 20, paddingBottom: 15,
 	},
 	fio_text: {
 		color: '#3d3d3d',
@@ -223,7 +223,7 @@ export default withNavigation(class GetPrizeLayout extends Component {
 			<ScrollView ref={this.scroll} keyboardShouldPersistTaps="always" keyboardDismissMode="on-drag" style={styles.container}>
 				<View style={styles.fio_area}>
 					<View style={styles.block}>
-						<Text style={styles.fio_text}>Заполните форму для получения выигрыша почтой.</Text>
+						<Text style={styles.fio_text}>Заполните форму для получения выигрыша в Центре выдачи призов.</Text>
 						<Input
 							id={this.inputs.name.ref}
 							title="Имя"
