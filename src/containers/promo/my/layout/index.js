@@ -242,8 +242,7 @@ export default withNavigation(class MyPromoListLayout extends Component {
 								Пока у вас нет ни одной покупки по акции.{'\n\n'}
 								{data.retailer.has_loyalty_card ? (
 									details.add_check ? (
-										/*'Вы можете вручную добавить кассовый чек, нажав кнопку «Добавить»'*/
-										'Возможность добавления чека скоро появится.\nСледите за обновлениями приложения'
+										'Вы можете вручную добавить кассовый чек, нажав кнопку «Добавить»'
 									) : (
 										'Зарегистрируйте карту лояльности магазина в настройках, и используйте ее при покупке.\n'+
 										'Данные по покупкам добавятся автоматически.'
@@ -273,12 +272,10 @@ export default withNavigation(class MyPromoListLayout extends Component {
 							<Text style={[styles.button_text,styles.get_button_text]}>Получить выигрыш</Text>
 						</TouchableOpacity>
 					) : null}
-					{/*
 					<TouchableOpacity style={styles.question} onPress={_=>props.navigation.push('help',{promo_id:data.id})}>
 						<Image style={styles.question_icon} source={QuestionIcon} />
 						<Text style={styles.question_text}>Задать вопрос</Text>
 					</TouchableOpacity>
-					*/}
 				</Animated.View>
 				) : null}
 			</View>

@@ -119,7 +119,7 @@ export default class SelectRetailer extends Component {
 						onValueChange={(value,i) => this.select(value)}
 						itemStyle={styles.item}
 					>
-						<Picker.Item value={0} label='Выберите торговую сеть' />
+						<Picker.Item value={0} label={this.props.title} />
 						{this.props.data.map((e,i) => (<Picker.Item key={i} value={e.id} label={e.title} />))}
 					</Picker>
 				</View>
@@ -130,7 +130,7 @@ export default class SelectRetailer extends Component {
 	android_picker = () => (
 		<Picker
 			mode="dialog"
-			prompt="Торговая сеть"
+			prompt={this.props.title}
 			selectedValue={this.state.value}
 			onValueChange={(value,i) => this.select(value)}
 			style={{
@@ -143,7 +143,7 @@ export default class SelectRetailer extends Component {
 			}}
 			itemStyle={styles.item}
 		>
-			<Picker.Item value={-1} label='Выберите торговую сеть' />
+			<Picker.Item value={-1} label={this.props.title} />
 			{this.props.data.map((e,i) => (<Picker.Item key={i} value={e.id} label={e.title} />))}
 		</Picker>
 	);
@@ -157,8 +157,8 @@ export default class SelectRetailer extends Component {
 					<View style={styles.left}>
 						<Text style={styles.input} numberOfLines={1}>{
 							props.data.length
-							? (props.data.find(e => e.id==state.value)?.title ?? 'Выберите торговую сеть')
-							: ('Больше торговых сетей нет')
+							? (props.data.find(e => e.id==state.value)?.title ?? props.title)
+							: (props.empty_title)
 						}</Text>
 					</View>
 					{props.data.length ? (<View styles={styles.right}><Image style={styles.right_arrow} source={Arrow} /></View>) : null}

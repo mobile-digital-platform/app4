@@ -75,8 +75,6 @@ export default withNavigation((props) => {
 		text: props.state,
 		...translate_state(props.state),
 	};
-	console.log(state);
-	// navigation.push('promo_passport',{promo_id,user_data_type:data.user_data_type,get_type:data.get_type})
 
 	return (
 		<View style={styles.container}>
@@ -91,11 +89,15 @@ export default withNavigation((props) => {
 						<Text style={[styles.state,styles.red_state]}>{state.text}</Text>
 					</TouchableOpacity>
 				) : (state.id == 4) ? (
-					<TouchableOpacity onPress={_=>{
-						props.navigation.push('promo_get_prize',{promo_id:props.promo_id,user_data_type:props.user_data_type,get_type:props.get_type});
-					}}>
-						<Text style={[styles.state,styles.red_state]}>{state.text}</Text>
-					</TouchableOpacity>
+					props.get_type == 2 ? (
+						<TouchableOpacity onPress={_=>{
+							props.navigation.push('promo_get_prize',{promo_id:props.promo_id,user_data_type:props.user_data_type,get_type:props.get_type});
+						}}>
+							<Text style={[styles.state,styles.red_state]}>{state.text}</Text>
+						</TouchableOpacity>
+					) : (
+						<Text style={[styles.state,styles.red_state]}>Возможность получения этого приза будет добавлена позже. Следите за обновлениями!</Text>
+					)
 				) : (
 					<Text style={[styles.state,translate_state(props.state).style]}>{state.text}</Text>
 				)}

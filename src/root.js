@@ -26,7 +26,7 @@ import PromoAddCheckScreen			from './screens/promo/add_check';
 import PromoGetPrizeScreen			from './screens/promo/get_prize';
 import PromoChoosePrizeScreen		from './screens/promo/choose_prize';
 import PromoMyPrizesScreen			from './screens/promo/my_prizes';
-//import PromoPassportScreen			from './screens/promo/passport';
+import PromoPassportScreen			from './screens/promo/passport';
 
 import SettingsScreen				from './screens/settings/main';
 import ConfirmPhoneScreen			from './screens/settings/confirm_phone';

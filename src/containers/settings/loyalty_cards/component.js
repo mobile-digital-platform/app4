@@ -7,7 +7,7 @@ import f from '../../../functions';
 
 import AnimatedButton	from '../../../templates/animated_button';
 import InputCard		from '../../../templates/input_card';
-import SelectRetailer	from '../../../templates/select_retailer';
+import Select			from '../../../templates/select';
 
 import alert			from '../../../services/alert';
 import st				from '../../../services/storage';
@@ -103,7 +103,9 @@ export default withNavigation(class LoyaltyCardsComponent extends Component {
 			<View style={styles.main}>
 				<Text style={styles.text}>Выберите торговую сеть из списка</Text>
 				<View style={styles.input_area}>
-					<SelectRetailer
+					<Select
+						title='Выберите торговую сеть'
+						empty_title='Больше торговых сетей нет'
 						value={state.retailer_id}
 						data={retailer_list}
 						update={retailer_id => this.update({retailer_id})}
