@@ -48,7 +48,7 @@ const styles = EStyleSheet.create({
 });
 
 translate_state = (state) => ({
-	'Нужно внести данные': {
+	'Нужно ввести данные': {
 		id: 0,
 		style: styles.grey_state,
 	},
@@ -95,11 +95,11 @@ export default withNavigation((props) => {
 						}}>
 							<Text style={[styles.state,styles.red_state]}>{state.text}</Text>
 						</TouchableOpacity>
-					) : (
+					) : props.get_type == 1 ? (
 						<Text style={[styles.state,styles.red_state]}>Возможность получения этого приза будет добавлена позже. Следите за обновлениями!</Text>
-					)
+					) : null
 				) : (
-					<Text style={[styles.state,translate_state(props.state).style]}>{state.text}</Text>
+					<Text style={[styles.state,translate_state(props.state)?.style]}>{state.text}</Text>
 				)}
 			</View>
 		</View>

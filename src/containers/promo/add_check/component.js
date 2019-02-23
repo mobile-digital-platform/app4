@@ -124,6 +124,7 @@ export default withNavigation(class PromoAddCheckComponent extends Component {
 	}
 
 	render() {
+		console.log(this.state);
 		return (
 			<Layout
 				{...this.props}

@@ -9,7 +9,7 @@ import Item from './item';
 
 const styles = EStyleSheet.create({
 	container: {
-		marginTop: 25, marginBottom: 15,
+		marginTop: 20, marginBottom: 10,
 		backgroundColor: '#fff',
 	},
 	info: {
@@ -33,6 +33,14 @@ const styles = EStyleSheet.create({
 		textAlign: 'center',
 		lineHeight: 16,
 	},
+	empty: {
+		marginTop: 20, paddingHorizontal: 10,
+	},
+	empty_text: {
+		color: '#3d3d3d',
+		fontSize: 12, fontFamily: 'GothamPro',
+		lineHeight: 16,
+	},
 });
 
 export default withNavigation(({promo_id,data,navigation}) => (
@@ -41,7 +49,7 @@ export default withNavigation(({promo_id,data,navigation}) => (
 			<Subtitle text={data.group_name} />
 			{data.user_data_type != -1 ? (
 			<>
-				<Text style={styles.text}>Чтобы мы могли отправить {data.group_name}, необходимо внести данные.</Text>
+				<Text style={styles.text}>Чтобы мы могли отправить {data.group_name.toLowerCase()}, необходимо внести данные.</Text>
 				<TouchableOpacity style={styles.button} onPress={_=>{
 					navigation.push('promo_passport',{promo_id,user_data_type:data.user_data_type})
 				}}>
@@ -50,8 +58,12 @@ export default withNavigation(({promo_id,data,navigation}) => (
 			</>
 			) : null}
 		</View>
-		{data.prize_list.map((e,i) => (
-			<Item key={i} promo_id={promo_id} user_data_type={data.user_data_type} get_type={data.get_type} {...e} />
-		))}
+		{data.prize_list.length ? (
+			data.prize_list.map((e,i) => (
+				<Item key={i} promo_id={promo_id} user_data_type={data.user_data_type} get_type={data.get_type} {...e} />
+			))
+		) : (
+			<View style={styles.empty}><Text style={styles.empty_text}>Пока у вас нет призов</Text></View>
+		)}
 	</View>
 ));

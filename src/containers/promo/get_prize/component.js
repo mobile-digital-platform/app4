@@ -9,13 +9,18 @@ import st		from '../../../services/storage';
 import Layout from './layout';
 
 export default withNavigation(class PromoGetPrizeComponent extends Component {
-	state = {
+	constructor(props) {
+		super(props);
 
-	};
+		this.promo_id = this.props.navigation.getParam('promo_id',0);
+
+		this.state = {
+		};
+	}
 
 	send_data = async (data) => {
 		let registration_data = await request.set_registration_data({
-			promo_id: this.props.navigation.getParam('promo_id',0),
+			promo_id: this.promo_id,
 			user_id: this.props.user.id,
 			...data,
 		});
@@ -27,7 +32,7 @@ export default withNavigation(class PromoGetPrizeComponent extends Component {
 		}
 
 		let address_data = await request.set_delivery_address({
-			promo_id: this.props.navigation.getParam('promo_id',0),
+			promo_id: this.promo_id,
 			user_id: this.props.user.id,
 			...data.adress_obj,
 		});
@@ -51,10 +56,12 @@ export default withNavigation(class PromoGetPrizeComponent extends Component {
 		console.log("Get Prize Component",this.props);
 
 		return (
-			<Layout
-				{...this.props}
-				send_data={this.send_data}
-			 />
+			<>
+				<Layout
+					{...this.props}
+					send_data={this.send_data}
+				 />
+			 </>
 		);
 	}
 });

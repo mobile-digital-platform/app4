@@ -77,11 +77,13 @@ const styles = EStyleSheet.create({
 	},
 
 	empty: {
+		flex: 1,
+		justifyContent: 'center',
 		alignItems: 'center',
 		padding: 20,
 	},
 	empty_text: {
-		paddingBottom: '20%',
+		paddingBottom: '10%',
 		color: '#555',
 		fontSize: 14,
 		textAlign: 'center',
@@ -220,7 +222,7 @@ export default withNavigation(class MyPromoListLayout extends Component {
 				</View>
 				<View style={styles.main_area}>
 				{props.check_error ? (
-					<View style={styles.empty}><Text style={styles.empty_text}>{check_error}</Text></View>
+					<View style={styles.empty}><Text style={styles.empty_text}>{props.check_error}</Text></View>
 				) : (
 					check.length ? (
 						<FlatList
@@ -242,7 +244,7 @@ export default withNavigation(class MyPromoListLayout extends Component {
 								Пока у вас нет ни одной покупки по акции.{'\n\n'}
 								{data.retailer.has_loyalty_card ? (
 									details.add_check ? (
-										'Вы можете вручную добавить кассовый чек, нажав кнопку «Добавить»'
+										'Вы можете вручную добавить кассовый чек, нажав кнопку «Добавить чек»'
 									) : (
 										'Зарегистрируйте карту лояльности магазина в настройках, и используйте ее при покупке.\n'+
 										'Данные по покупкам добавятся автоматически.'

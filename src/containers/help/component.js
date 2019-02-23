@@ -116,9 +116,9 @@ export default withNavigation(class HelpComponent extends Component {
 
 		let ready = (
 			(this.props.user.id || !this.props.user.id && state.from.length) &&
-			state.question > 0 &&
-			state.text.length > 0 &&
-			state.mail.length > 0
+			state.question >= 0 &&
+			state.text.length &&
+			state.mail.length
 		);
 		await this.setState({ready});
 	}

@@ -363,4 +363,19 @@ export const request = {
 			return {error};
 		}
 	},
+	// Подтверждение доставки чека
+	confirm_prize_details: async (data) => {
+		let {response,error} = await API('/ConfirmGetPrizeDetails',{
+			User_id:	data.user_id,
+			PromoID:	data.promo_id,
+
+		});
+		if(response) {
+			return {response:1};
+		}
+		if(error) {
+			console.log('error',error);
+			return {error};
+		}
+	},
 };

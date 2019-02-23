@@ -10,10 +10,10 @@ import SubTitle			from '../../../../templates/subtitle';
 
 const styles = EStyleSheet.create({
 	container: {
+		paddingHorizontal: 20,
 		backgroundColor: '#fff',
 	},
 	fio_area: {
-		paddingHorizontal: 20,
 		paddingTop: 20, paddingBottom: 15,
 	},
 	fio_text: {
@@ -39,7 +39,7 @@ const styles = EStyleSheet.create({
 		backgroundColor: '#fff',
 	},
 	address_text: {
-		marginTop: 20, marginBottom: 25,
+		marginTop: 20,
 		paddingBottom: 8,
 		color: '#3d3d3d',
 		fontSize: 14, fontFamily: 'GothamPro',
@@ -48,7 +48,7 @@ const styles = EStyleSheet.create({
 	},
 	save: {
 		alignItems: 'center',
-		marginBottom: 30, padding: 15,
+		marginVertical: 20, padding: 15,
 		borderRadius: 100,
 		backgroundColor: '$red',
 	},
@@ -96,8 +96,6 @@ export default withNavigation(class GetPrizeLayout extends Component {
 		this.state = {
 			...props.user,
 
-			mail: 'xss@mail.ru',
-
 			name_error:   	'',
 			father_error: 	'',
 			family_error: 	'',
@@ -115,7 +113,15 @@ export default withNavigation(class GetPrizeLayout extends Component {
 	componentDidUpdate(prev_props) {
 		// Изменились данные о пользователе
 		if(!Object.is(prev_props.user,this.props.user)) {
-			this.setState(this.props.user);
+			this.setState(state => ({
+				name:			this.props.user.name		|| state.name,
+				father:			this.props.user.father		|| state.father,
+				family:			this.props.user.family		|| state.family,
+				mail:			this.props.user.mail		|| state.mail,
+				birthday:		this.props.user.birthday	|| state.birthday,
+				address:		this.props.user.address,
+				address_obj:	this.props.user.address_obj,
+			}));
 		}
 
 		// Изменилось состояние запроса
@@ -295,9 +301,11 @@ export default withNavigation(class GetPrizeLayout extends Component {
 						value={state.address}
 						error={state.address_error}
 					/>
+					{/*
 					<Text style={styles.address_text}>
 						Текст, описывающий особенности получения выигрыша, правила и какие-то хитрости. Может занимать несколько строчек.
 					</Text>
+					*/}
 					<TouchableOpacity style={styles.save} onPress={this.send}>
 						<Text style={styles.save_text}>Отправить</Text>
 					</TouchableOpacity>

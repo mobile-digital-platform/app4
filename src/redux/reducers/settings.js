@@ -21,7 +21,16 @@ export const ReducerRecord = () => ({
 	city_id:		0,
 	city_name:		'',
 	address:		'',
-	address_obj:	{},
+	address_obj:	{
+		full: '',
+		id: '',
+		postcode: '',
+		region: '',
+		city: '',
+		street: '',
+		building: '',
+		apartment: '',
+	},
 	passport: {
 		seria: '',
 		number: '',
