@@ -108,12 +108,14 @@ export default class Input extends Component {
 						<TextInput
 							ref={this.input}
 							style={[styles.input,props.disabled?styles.input_disabled:{},props.style]}
+							keyboardType={this.props.type}
 							value={state.value}
 							editable={!props.disabled}
-							keyboardType={this.props.type}
+							maxLength={props.size}
 							onFocus={_=>{this.scroll();this.setState({active:true})}}
 							onChangeText={this.set_value}
 							onBlur={this.reset_active}
+							{...props}
 						/>
 					</TouchableOpacity>
 				) : (

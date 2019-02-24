@@ -113,6 +113,7 @@ export default withNavigation(class InputCard extends Component {
 								onFocus={this.scroll}
 								onChangeText={this.set_value}
 								onBlur={this.reset_active}
+								{...props}
 								type={'custom'}
 								options={{mask:'9999 9999 9999 9999'}}
 							/>

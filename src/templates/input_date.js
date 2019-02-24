@@ -117,8 +117,11 @@ export default class InputDate extends Component {
 					titleIOS='Выберите дату'
 					confirmTextIOS='Выбрать'
 					cancelTextIOS='Отмена'
+					minimumDate={props.min}
+					maximumDate={props.max}
 					onConfirm={this.choose}
 					onCancel={this.close}
+					{...props}
 				/>
 			</View>
 		);

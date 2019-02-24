@@ -122,6 +122,7 @@ export default class Time extends Component {
 					cancelTextIOS='Отмена'
 					onConfirm={this.choose}
 					onCancel={this.close}
+					{...props}
 				/>
 			</View>
 		);

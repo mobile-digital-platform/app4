@@ -223,8 +223,6 @@ export default withNavigation(class GetPrizeLayout extends Component {
 	render() {
 		let {props,state} = this;
 
-		console.log(state);
-
 		return (
 			<ScrollView ref={this.scroll} keyboardShouldPersistTaps="always" keyboardDismissMode="on-drag" style={styles.container}>
 				<View style={styles.fio_area}>

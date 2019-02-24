@@ -169,6 +169,7 @@ export default withNavigation(class InputPhone extends Component {
 								onFocus={this.scroll}
 								onChangeText={this.set_value}
 								onBlur={this.reset_active}
+								{...props}
 								type={'custom'}
 								options={{mask:'+7(999)999-99-99'}}
 							/>

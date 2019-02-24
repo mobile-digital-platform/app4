@@ -3,6 +3,8 @@ import {Keyboard,Platform,FlatList,ScrollView,Text,TouchableOpacity,View} from '
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {withNavigation} from 'react-navigation';
 
+import f from '../../../../functions';
+
 import AnimatedButton	from '../../../../templates/animated_button';
 import Input			from '../../../../templates/input';
 import DateInput		from '../../../../templates/input_date';
@@ -113,14 +115,14 @@ export default withNavigation(class PromoPassportLayout extends Component {
 			name: 		props.user.name,
 			father: 	props.user.father,
 			family: 	props.user.family,
-			birthday: 	props.user.birthday || '2019-02-22',
+			birthday: 	props.user.birthday,
 
-			seria:		props.user.passport.seria || '123',
-			number:		props.user.passport.number || '123',
-			date:		props.user.passport.date || '2019-03-02',
-			issuer:		props.user.passport.issuer || 'xas',
-			address:	props.user.passport.address || 'x',
-			inn:		props.user.passport.inn || '123',
+			seria:		props.user.passport.seria,
+			number:		props.user.passport.number,
+			date:		props.user.passport.date,
+			issuer:		props.user.passport.issuer,
+			address:	props.user.passport.address,
+			inn:		props.user.passport.inn,
 
 			passport_photo: {},
 			passport_residence: {},
@@ -189,45 +191,66 @@ export default withNavigation(class PromoPassportLayout extends Component {
 
 		await this.check_ready();
 
-		// Проверяем поля
-		let fields = [
-			{
-				field: 'name',
-				error: 'Введите имя'
-			},
-			{
-				field: 'father',
-				error: 'Введите отчество'
-			},
-			{
-				field: 'family',
-				error: 'Введите фамилию'
-			},
-			{
-				field: 'birthday',
-				error: 'Введите день рождения'
-			},
-			{
-				field: 'address',
-				error: 'Укажите адрес регистрации'
-			},
-			{
-				field: 'inn',
-				error: 'Укажите ИНН'
-			},
-		];
+		// Проверяем все поля
 
-		for(let item of fields) {
-			let {field,error} = item;
-			if(!state[field]?.length){
-				this.setState({[field+'_error']:error});
-				this.scroll.current.scrollTo({y:this.inputs[field].offset});
-				return false;
-			} else {
-				this.setState({[field+'_error']:''});
-			}
+		// Имя
+		if(!state.name.length){
+			this.setState({name_error:'Введите имя'});
+			this.scroll.current.scrollTo({y:this.inputs.name.offset});
+			return false;
+		} else {
+			this.setState({name_error:''});
+		}
+		// Отчество
+		if(!state.father.length){
+			this.setState({father_error:'Введите отчество'});
+			this.scroll.current.scrollTo({y:this.inputs.father.offset});
+			return false;
+		} else {
+			this.setState({father_error:''});
+		}
+		// Фамилия
+		if(!state.family.length){
+			this.setState({family_error:'Введите фамилию'});
+			this.scroll.current.scrollTo({y:this.inputs.family.offset});
+			return false;
+		} else {
+			this.setState({family_error:''});
+		}
+		// День рождения
+		if(!state.birthday.length){
+			this.setState({birthday_error:'Введите дату рождения'});
+			this.scroll.current.scrollTo({y:this.inputs.birthday.offset});
+			return false;
+		} else if(state.birthday>f.date("Y-m-d")){
+			this.setState({birthday_error:'Вы родились в будущем?'});
+			this.scroll.current.scrollTo({y:this.inputs.birthday.offset});
+			return false;
+		} else {
+			this.setState({birthday_error:''});
+		}
+		// Адрес
+		if(!state.address.length){
+			this.setState({address_error:'Укажите адрес регистрации'});
+			this.scroll.current.scrollTo({y:this.inputs.address.offset});
+			return false;
+		} else {
+			this.setState({address_error:''});
+		}
+		// ИНН
+		if(!state.inn.length){
+			this.setState({inn_error:'Укажите ИНН'});
+			this.scroll.current.scrollTo({y:this.inputs.inn.offset});
+			return false;
+		} else if(state.inn.length > 12){
+			this.setState({inn_error:'ИНН состоит из 12 цифр'});
+			this.scroll.current.scrollTo({y:this.inputs.inn.offset});
+			return false;
+		} else {
+			this.setState({inn_error:''});
 		}
 
+		// Кажется, все в порядке
 		return true;
 	}
 	check_passport_completeness = async () => {
@@ -235,41 +258,47 @@ export default withNavigation(class PromoPassportLayout extends Component {
 
 		await this.check_ready();
 
-		// Проверяем поля
-		let fields = [
-			{
-				field: 'seria',
-				error: 'Укажите серию'
-			},
-			{
-				field: 'number',
-				error: 'Укажите номер'
-			},
-			{
-				field: 'date',
-				error: 'Укажите дату выдачи'
-			},
-			{
-				field: 'issuer',
-				error: 'Укажите, кем выдан'
-			},
-		];
-		let has_error = fields.some(({field,error}) => {
-			console.log(field,state[field]?.length);
-			if(state[field]?.length) {
-				return false;
-			} else {
-				this.setState({passport_error:error});
-				console.log(field,error);
-				this.scroll.current.scrollTo({y:this.inputs[field].offset});
-				return true;
-			}
-		});
-		if(has_error) {
+		// Проверяем все поля
+
+		// Серия
+		if(!state.seria.length) {
+			this.setState({passport_error:'Введите серию'});
+			this.scroll.current.scrollTo({y:this.inputs.seria.offset});
 			return false;
-		} else {
-			this.setState({passport_error:''});
+		} else if(state.seria.length > 4) {
+			this.setState({passport_error:'Серия состоит из 4 цифр'});
+			this.scroll.current.scrollTo({y:this.inputs.seria.offset});
+			return false;
 		}
+		// Номер
+		if(!state.number.length) {
+			this.setState({passport_error:'Введите номер'});
+			this.scroll.current.scrollTo({y:this.inputs.number.offset});
+			return false;
+		} else if(state.number.length > 6) {
+			this.setState({passport_error:'Номер состоит из шести цифр'});
+			this.scroll.current.scrollTo({y:this.inputs.number.offset});
+			return false;
+		}
+		// Дата выдачи
+		if(!state.date.length) {
+			this.setState({passport_error:'Укажите дату выдачи'});
+			this.scroll.current.scrollTo({y:this.inputs.date.offset});
+			return false;
+		} else if(state.date > f.date("Y-m-d")) {
+			this.setState({passport_error:'Вам выдали паспорт в будущем?'});
+			this.scroll.current.scrollTo({y:this.inputs.date.offset});
+			return false;
+		}
+		// Кем выдан
+		if(!state.issuer.length) {
+			this.setState({passport_error:'Укажите, кем выдан паспорт'});
+			this.scroll.current.scrollTo({y:this.inputs.issuer.offset});
+			return false;
+		}
+
+		// Если все в порядке, убираем ошибки
+		this.setState({passport_error:''});
 		return true;
 	}
 	check_photo_completeness = async () => {
@@ -277,6 +306,7 @@ export default withNavigation(class PromoPassportLayout extends Component {
 
 		await this.check_ready();
 
+		// Проверяем все поля
 		if(!state.passport_photo.state) {
 			this.setState({'photo_error':'Сделайте фотографию разворота паспорта'});
 			return false;
@@ -299,6 +329,7 @@ export default withNavigation(class PromoPassportLayout extends Component {
 			return false;
 		}
 
+		// Если все в порядке, убираем ошибки
 		this.setState({'photo_error':''});
 		return true;
 	}
@@ -383,6 +414,7 @@ export default withNavigation(class PromoPassportLayout extends Component {
 						value={state.birthday}
 						update={birthday => this.update({birthday})}
 						error={state.birthday_error}
+						max={new Date()}
 						keyboard_options={{
 							scroll: this.scroll,
 							offset: this.inputs.birthday.offset,
@@ -397,10 +429,11 @@ export default withNavigation(class PromoPassportLayout extends Component {
 								<Input
 									id={this.inputs.seria.ref}
 									title="Серия"
+									type="numeric"
 									value={state.seria}
 									type="numeric"
+									size={4}
 									update={seria => this.update({seria})}
-									type="numeric"
 									keyboard_options={{
 										scroll: this.scroll,
 										offset: this.inputs.seria.offset,
@@ -411,10 +444,10 @@ export default withNavigation(class PromoPassportLayout extends Component {
 								<Input
 									id={this.inputs.number.ref}
 									title="Номер"
+									type="numeric"
 									value={state.number}
-									type="numeric"
+									size={6}
 									update={number => this.update({number})}
-									type="numeric"
 									keyboard_options={{
 										scroll: this.scroll,
 										offset: this.inputs.number.offset,
@@ -427,6 +460,7 @@ export default withNavigation(class PromoPassportLayout extends Component {
 							title="Дата выдачи паспорта"
 							value={state.date}
 							update={date => this.update({date})}
+							max={new Date()}
 							keyboard_options={{
 								scroll: this.scroll,
 								offset: this.inputs.date.offset,
@@ -463,8 +497,9 @@ export default withNavigation(class PromoPassportLayout extends Component {
 						<SubTitle style={styles.subtitle} text="ИНН" />
 						<Input
 							title="ИНН (12 цифр)"
-							value={state.inn}
 							type="numeric"
+							value={state.inn}
+							size={12}
 							update={inn => this.update({inn})}
 							error={state.inn_error}
 							keyboard_options={{
