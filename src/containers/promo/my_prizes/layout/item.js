@@ -75,8 +75,6 @@ export default withNavigation((props) => {
 		text: props.state,
 		...translate_state(props.state),
 	};
-	state.id = 4;
-	console.log(props);
 
 	return (
 		<View style={styles.container}>
