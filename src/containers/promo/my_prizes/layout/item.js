@@ -92,7 +92,7 @@ export default withNavigation((props) => {
 					</TouchableOpacity>
 				) : (state.id == 4) ? (
 					<TouchableOpacity onPress={_=>{
-						props.navigation.push('promo_get_prize',{promo_id:props.promo_id,get_type:2});
+						props.navigation.push('promo_get_prize',{promo_id:props.promo_id,get_type:props.get_type});
 					}}>
 						<Text style={[styles.state,styles.red_state]}>{state.text}</Text>
 					</TouchableOpacity>
