@@ -22,7 +22,6 @@ export default withNavigation(class PromoMyPrizesComponent extends Component {
 		this.setState({loading:true});
 		let {response,error} = await request.get_user_prizes({user_id:this.props.user.id,promo_id:this.id});
 		if(response) {
-			console.log(response);
 			this.setState({list:response.items});
 		}
 		if(error) {
@@ -32,7 +31,7 @@ export default withNavigation(class PromoMyPrizesComponent extends Component {
 	}
 
 	render() {
-		console.log(this.state);
+		console.log(this.state.list);
 		return (
 			<Layout
 				promo_id={this.id}

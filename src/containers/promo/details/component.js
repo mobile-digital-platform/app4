@@ -76,6 +76,8 @@ const stylize = (html) => (
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=width, initial-scale=`+EStyleSheet.value('$scale')+
+	`, maximum-scale=`+EStyleSheet.value('$scale')+`, user-scalable=`+EStyleSheet.value('$scale')+`" />
 <style>
 @font-face {
 	font-family: "GothamPro";
@@ -85,9 +87,9 @@ html {
 }
 body {
 	color: #111;
-	font-size: `+(14*Platform.select({ios:(3*EStyleSheet.value('$scale')),android:(EStyleSheet.value('$scale'))}))+`px;
+	font-size: 14px;
 	font-family: "GothamPro",Arial;
-	line-height: `+(18*Platform.select({ios:(3*EStyleSheet.value('$scale')),android:(EStyleSheet.value('$scale'))}))+`px;
+	line-height: 18px;
 }
 p,li {
 }
@@ -97,12 +99,12 @@ img {
 	margin: 0px auto;
 }
 .container {
-	margin: `+(18*Platform.select({ios:(3*EStyleSheet.value('$scale')),android:(0.7*EStyleSheet.value('$scale'))}))+`px;
+	margin: 18px;
 }
 .mobile_title {
 	margin-bottom: 9px;
 	color: #b3b3b3;
-	font-size: `+(10*Platform.select({ios:(3*EStyleSheet.value('$scale')),android:(EStyleSheet.value('$scale'))}))+`px;
+	font-size: 10px;
 	font-family: "GothamPro",Arial; font-weight: bold;
 	text-transform: uppercase;
 }

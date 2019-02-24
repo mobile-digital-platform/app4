@@ -68,7 +68,7 @@ export default withNavigation(class Camera extends Component {
 			]);
 			if(granted['android.permission.WRITE_EXTERNAL_STORAGE'] == 'granted') {
 				CameraRoll.saveToCameraRoll(photo.uri);
-				console.log('Permisiion successfully got',granted,photo.uri);
+				console.log('Permission successfully got',granted,photo.uri);
 				return true;
 			} else {
 				console.log('CameraRoll permission denied',granted,photo.uri);
@@ -97,7 +97,7 @@ export default withNavigation(class Camera extends Component {
 			let id = "Coca Cola Promo "+f.date("Y-m-d H:i:s");
 			this.props.add_photo({id,state:'saving'});
 
-			let photo = await this.camera.takePictureAsync({width:config.image.width,base64:true,pauseAfterCapture:true,doNotSave:true});
+			let photo = await this.camera.takePictureAsync({width:config.image.width,base64:true,pauseAfterCapture:true});
 			// ImageEditor.cropImage(photo.uri,{displaySize:{width:1080,resizeMode:'cover'}},async (image_uri) => {
 			// 	console.log(ImageStore.hasImageForTag(image_uri,_ => console.log(_)));
 			// 	ImageStore.getBase64ForTag(image_uri,async (base64) => {
@@ -105,7 +105,9 @@ export default withNavigation(class Camera extends Component {
 					if(Platform.OS == 'android') {
 						let access = await this.request_permission(photo);
 						if(!access) {
+							await alert("Невозможно сделать фотографию","Вы не дали приложению разрешение на использование камеры и хранилища фотографий");
 							this.props.remove_photo(id);
+							this.props.close();
 							return;
 						}
 					}

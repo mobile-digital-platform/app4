@@ -74,7 +74,7 @@ export default withNavigation(class PromoAddCheckComponent extends Component {
 						user_id: this.props.user.id,
 						promo_id: this.promo_id,
 						check_id,
-						file: photo.base64,
+						file: 'data:image/jpeg;base64,'+photo.base64,
 					});
 					console.log(i,image_data);
 					if(image_data.response) {

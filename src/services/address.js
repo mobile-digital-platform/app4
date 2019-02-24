@@ -1,5 +1,7 @@
 import {NetInfo} from 'react-native';
 
+import config from '../config';
+
 var domain = 'https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address';
 
 export default async function(data = {}) {
@@ -11,7 +13,7 @@ export default async function(data = {}) {
 			headers: {
 				'Accept':		'application/json',
 				'Content-Type':	'application/json',
-				'Authorization':'Token 5d446e7f158e0c8b8de537cdf70d437d3198429b',
+				'Authorization':'Token '+config.dadata_token,
 			},
 			body: JSON.stringify({query:data}),
 		});

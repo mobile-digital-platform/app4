@@ -342,6 +342,46 @@ export const request = {
 			return {error};
 		}
 	},
+	// Список центров выдачи подарков
+	get_prize_center_list: async (data) => {
+		let {response,error} = await API('/PrizeCenterList',{
+			UserID:  data.user_id,
+			PromoID: data.promo_id,
+		});
+		if(response) {
+			// if(!response.length) {
+			// 	response = [
+			// 		{
+			// 			"ID":1,
+			// 			"Name":"Лента в Южном Бутово",
+			// 			"Address":"г.Москва, ул. Южнобутовская, д.123",
+			// 			"GpsLat": 54.743689,
+			// 			"GpsLng": 56.014002
+			// 		},
+			// 		{
+			// 			"ID":2,
+			// 			"Name":"Лента на Севастопольском",
+			// 			"Address":"г.Москва, Севастопольский проспект, д.83",
+			// 			"GpsLat": 54.793689,
+			// 			"GpsLng": 56.114002
+			// 		},
+            // 	];
+			// }
+			return {response:{
+				items: response.map(e => ({
+					id:			e.ID,
+					name:		e.Name,
+					address:	e.Address,
+					lat:		e.GpsLat,
+					lng:		e.GpsLng,
+				})),
+			}};
+		}
+		if(error) {
+			console.log('error',error);
+			return {error};
+		}
+	},
 	// Добавление адреса доставки приза
 	set_delivery_adress: async (data) => {
 		let {response,error} = await API('/​SetDeliveryAddres',{
