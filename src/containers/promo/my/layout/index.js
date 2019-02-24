@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Animated,Easing,ActivityIndicator,FlatList,Image,ImageBackground,ScrollView,Text,TouchableOpacity,View} from 'react-native';
+import {Animated,Dimensions,Easing,ActivityIndicator,FlatList,Image,ImageBackground,ScrollView,Text,TouchableOpacity,View} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {withNavigation} from 'react-navigation';
 
@@ -92,9 +92,11 @@ const styles = EStyleSheet.create({
 
 	bottom: {
 		alignItems: 'center',
-		marginTop: 0,
+		position: 'absolute', bottom: '-100%', left: 0,
+		width: '100%',
 		paddingVertical: 10, paddingHorizontal: 40,
 		borderTopWidth: 1, borderTopColor: '#ccc',
+		backgroundColor: '#fff',
 	},
 	button: {
 		justifyContent: 'center',
@@ -138,52 +140,75 @@ const styles = EStyleSheet.create({
 
 export default withNavigation(class MyPromoListLayout extends Component {
 	animation = {
-		points_top: new Animated.Value(0),
-		bottom_top: new Animated.Value(0),
+		points: new Animated.Value(0),
+		bottom: new Animated.Value(0),
+		check: []
 	};
 	state = {
-		points_top: '-100%',
-		bottom_top: 0,
+		points: '-100%',
+		bottom: '-100%',
+		bottom_pad: 0,
+		check: [],
 	};
 
 	componentDidMount() {
 		this.setState({
-			points_top: this.animation.points_top.interpolate({
+			points: this.animation.points.interpolate({
 				inputRange: [0,1],
 				outputRange: ['-100%','0%'],
 			}),
-			// bottom_top: this.animation.bottom_top.interpolate({
-			// 	inputRange: [0,1],
-			// 	outputRange: [500,0],
-			// }),
+			bottom: this.animation.bottom.interpolate({
+				inputRange: [0,1],
+				outputRange: ['-100%','0%'],
+			}),
 		});
 	}
-	componentDidUpdate(prev_props) {
+	async componentDidUpdate(prev_props) {
 		// Получили данные по очкам
 		if(!prev_props.details.points && this.props.details.points) {
 			setTimeout(_=> {
-				Animated.timing(this.animation.points_top,{
+				Animated.timing(this.animation.points,{
 					toValue: 1,
 					duration: 500,
 					easing: Easing.bezier(0.5,0,0.2,1),
 				}).start();
-			},1000);
-		}
-		// Получили данные по участию
-		/*
-		if(
-			!(prev_props.details.add_check && prev_props.details.buy_prize) &&
-			  this.props.details.add_check && this.props.details.buy_prize
-		) {
+			},1700);
+
 			setTimeout(async _=> {
-				Animated.timing(this.animation.bottom_top,{
+				Animated.timing(this.animation.bottom,{
 					toValue: 1,
-					duration: 500,
-					easing: Easing.bezier(0.3,0,0.7,1),
+					duration: 700,
+					easing: Easing.bezier(0.5,0,0.2,1),
 				}).start();
-			},300);
+			},800);
 		}
-		*/
+
+		// Получили чеки
+		if(!prev_props.check.length && this.props.check.length) {
+
+			// Анимируем не более 10 чеков
+			let length = Math.min(10,this.props.check.length);
+			this.animation.check = Array.from({length},_=>new Animated.Value(0));
+
+			await this.setState({check:this.animation.check.map(ani => {
+				return ani.interpolate({
+					inputRange: [0,1],
+					outputRange: ['100%','0%'],
+				})
+			})});
+
+			this.animation.check.forEach(ani => {
+				Animated.timing(ani,{
+					toValue: 1,
+					duration: 700,
+					easing: Easing.bezier(0.5,0.5,0.0,1),
+				}).start();
+			});
+		}
+	}
+
+	layout_bottom = (layout) => {
+		this.setState({bottom_pad:layout.height});
 	}
 
 	render() {
@@ -192,13 +217,11 @@ export default withNavigation(class MyPromoListLayout extends Component {
 
 		data = promo_date_diff(data);
 
-		console.log(details);
-
 		return (
 			<View style={styles.container}>
 				<ImageBackground style={styles.banner} imageStyle={{opacity:0.5}} source={{uri:data.image_url}}>
 					{details.prizes>0 || details.points>0 ? (
-					<Animated.View style={[styles.points_area,{top:state.points_top}]}>
+					<Animated.View style={[styles.points_area,{top:state.points}]}>
 						<View style={styles.points}>
 						{details.prizes>0 ? (
 							<>
@@ -226,9 +249,9 @@ export default withNavigation(class MyPromoListLayout extends Component {
 				) : (
 					check.length ? (
 						<FlatList
-							style={styles.list}
+							style={[styles.list,{marginBottom:state.bottom_pad*this.animation.bottom._value}]}
 							data={check}
-							renderItem={({item}) => (<Check data={item} extra={details} />)}
+							renderItem={({item,index}) => (<Check data={item} top={state.check[index]} extra={details} />)}
 							ListHeaderComponent={<View style={styles.list_padding} />}
 							ListFooterComponent={<View style={styles.list_padding} />}
 							// ItemSeparatorComponent={Separator}
@@ -255,8 +278,8 @@ export default withNavigation(class MyPromoListLayout extends Component {
 					)
 				)}
 				</View>
-				{details.add_check && details.buy_prize ? (
-				<Animated.View style={[styles.bottom,{marginTop:state.bottom_top}]}>
+				{1 || details.add_check && (details.show_prizes || details.buy_prize) ? (
+				<Animated.View style={[styles.bottom,{bottom:state.bottom}]} onLayout={({nativeEvent}) => this.layout_bottom(nativeEvent.layout)}>
 					{details.add_check ? (
 						<TouchableOpacity style={[styles.button,styles.add_button]} onPress={_ => {
 							props.navigation.push('promo_add_check',{id:data.id});

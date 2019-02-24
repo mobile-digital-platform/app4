@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {StyleSheet,Image,Text,TouchableOpacity,View} from 'react-native';
+import {Animated,Image,Text,TouchableOpacity,View} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {withNavigation} from 'react-navigation';
 
@@ -76,7 +76,7 @@ export default withNavigation(class MyPromoListCheckLayout extends Component {
 		let {navigation,data,extra} = this.props;
 
 		return (
-			<View style={styles.container}>
+			<Animated.View style={[styles.container,{marginTop:this.props.top}]}>
 				<View style={styles.left}>
 				{data.scores>0 ? (
 					<Text style={[styles.scores,(data.state=="Подтвержден" ? styles.right : styles.wrong)]}>
@@ -102,7 +102,7 @@ export default withNavigation(class MyPromoListCheckLayout extends Component {
 					text={data.details}
 					on_next={this.close_dialog}
 				/>
-			</View>
+			</Animated.View>
 		);
 	}
 });
