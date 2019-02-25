@@ -114,6 +114,8 @@ export default withNavigation(class GetPrizeCenterLayout extends Component {
 	update = async (data) => {
 		await this.setState(data);
 
+		this.check_ready();
+
 		// Убираем ошибки
 		if(this.state.name.length		&& this.state.name_error.length)		this.setState({name_error:false});
 		if(this.state.father.length		&& this.state.father_error.length)		this.setState({father_error:false});

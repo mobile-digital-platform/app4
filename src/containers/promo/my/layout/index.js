@@ -147,7 +147,7 @@ export default withNavigation(class MyPromoListLayout extends Component {
 	state = {
 		points: '-100%',
 		bottom: '-100%',
-		bottom_pad: 0,
+		bottom_pad: 160*EStyleSheet.value("$scale"),
 		check: [],
 	};
 
@@ -162,25 +162,27 @@ export default withNavigation(class MyPromoListLayout extends Component {
 				outputRange: ['-100%','0%'],
 			}),
 		});
+
+		// Панель снизу
+		setTimeout(async _=> {
+			Animated.timing(this.animation.bottom,{
+				toValue: 1,
+				duration: 700,
+				easing: Easing.bezier(0.5,0,0.2,1),
+			}).start();
+		},100);
 	}
 	async componentDidUpdate(prev_props) {
 		// Получили данные по очкам
 		if(!prev_props.details.points && this.props.details.points) {
+			// Очки сверху
 			setTimeout(_=> {
 				Animated.timing(this.animation.points,{
 					toValue: 1,
 					duration: 500,
 					easing: Easing.bezier(0.5,0,0.2,1),
 				}).start();
-			},1700);
-
-			setTimeout(async _=> {
-				Animated.timing(this.animation.bottom,{
-					toValue: 1,
-					duration: 700,
-					easing: Easing.bezier(0.5,0,0.2,1),
-				}).start();
-			},800);
+			},1000);
 		}
 
 		// Получили чеки
@@ -216,6 +218,8 @@ export default withNavigation(class MyPromoListLayout extends Component {
 		let {data,details,check} = props;
 
 		data = promo_date_diff(data);
+
+		console.log(details);
 
 		return (
 			<View style={styles.container}>
@@ -263,7 +267,7 @@ export default withNavigation(class MyPromoListLayout extends Component {
 						props.loading ? (
 							<ActivityIndicator size='large' />
 						) : (
-							<View style={styles.empty}><Text style={styles.empty_text}>
+							<View style={[styles.empty,{marginBottom:state.bottom_pad}]}><Text style={styles.empty_text}>
 								Пока у вас нет ни одной покупки по акции.{'\n\n'}
 								{data.retailer.has_loyalty_card ? (
 									details.add_check ? (

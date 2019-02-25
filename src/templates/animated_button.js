@@ -229,8 +229,8 @@ export default class AnimatedButton extends Component {
 			styles.button,
 			props_styles.button,
 			props.active ? styles.active_button : styles.passive_button,
-			{width:this.state.button_width},
 		];
+		if(state.state != 'ready') button_styles.push({width:this.state.button_width});
 		let button_text_styles = [
 			styles.button_text,
 			props_styles.text,
@@ -242,16 +242,16 @@ export default class AnimatedButton extends Component {
 				<TouchableOpacity style={container_styles} onPress={this.on_press} onLayout={e => {
 					if(!this.state.layout) this.setState({layout:e.nativeEvent.layout})
 				}}>
-					<Animated.View style={button_styles}>
+					<View style={button_styles}>
 						<Text style={button_text_styles}>{props.children}</Text>
-					</Animated.View>
+					</View>
 				</TouchableOpacity>
 			)
 		} else if(state.state == 'shrinking') {
 			return (
 				<View style={container_styles}>
 					<Animated.View style={button_styles}>
-						<Text style={button_text_styles}>{props.children}</Text>
+						<Text style={button_text_styles}> </Text>
 					</Animated.View>
 				</View>
 			)

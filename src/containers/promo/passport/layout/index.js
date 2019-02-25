@@ -242,7 +242,7 @@ export default withNavigation(class PromoPassportLayout extends Component {
 			this.setState({inn_error:'Укажите ИНН'});
 			this.scroll.current.scrollTo({y:this.inputs.inn.offset});
 			return false;
-		} else if(state.inn.length > 12){
+		} else if(state.inn.length != 12){
 			this.setState({inn_error:'ИНН состоит из 12 цифр'});
 			this.scroll.current.scrollTo({y:this.inputs.inn.offset});
 			return false;
@@ -265,7 +265,7 @@ export default withNavigation(class PromoPassportLayout extends Component {
 			this.setState({passport_error:'Введите серию'});
 			this.scroll.current.scrollTo({y:this.inputs.seria.offset});
 			return false;
-		} else if(state.seria.length > 4) {
+		} else if(state.seria.length != 4) {
 			this.setState({passport_error:'Серия состоит из 4 цифр'});
 			this.scroll.current.scrollTo({y:this.inputs.seria.offset});
 			return false;
@@ -275,7 +275,7 @@ export default withNavigation(class PromoPassportLayout extends Component {
 			this.setState({passport_error:'Введите номер'});
 			this.scroll.current.scrollTo({y:this.inputs.number.offset});
 			return false;
-		} else if(state.number.length > 6) {
+		} else if(state.number.length != 6) {
 			this.setState({passport_error:'Номер состоит из шести цифр'});
 			this.scroll.current.scrollTo({y:this.inputs.number.offset});
 			return false;

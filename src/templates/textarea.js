@@ -30,6 +30,7 @@ export default (props) => (
 			<TextInput
 				style={[styles.input,props.area_style]}
 				multiline={true}
+				textAlignVertical='top'
 				value={props.value}
 				editable={!props.disabled}
 				placeholder={props.placeholder}

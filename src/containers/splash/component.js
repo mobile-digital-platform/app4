@@ -4,6 +4,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 
 import alert	from '../../services/alert';
 import st		from '../../services/storage';
+import push		from '../../services/push_notification';
 
 import get_promo from '../../services/get_promo';
 
@@ -150,6 +151,7 @@ export default class SplashComponent extends Component {
 				let {response,error} = await settings_request.get(we.id);
 				if(response) {
 					this.setState({user:'loaded'});
+					// if(!response.push_token) response.push_token = await push.request_async();
 					this.props.update_user(response);
 					st.set('user',response);
 				}

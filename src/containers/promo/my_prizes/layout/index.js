@@ -28,7 +28,7 @@ const styles = EStyleSheet.create({
 
 export default (props) => (
 	<View style={styles.container}>
-	{props.list.length ? (
+	{props.loading || props.list.length ? (
 		<FlatList
 			style={styles.list}
 			data={props.list}
