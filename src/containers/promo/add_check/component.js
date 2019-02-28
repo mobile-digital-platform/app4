@@ -29,8 +29,6 @@ export default withNavigation(class PromoAddCheckComponent extends Component {
 	}
 
 	send_data = async (data) => {
-		console.log(data);
-
 		this.setState({save_state:'waiting'});
 
 		// Загружаем чек, если до этого не загружали или поменялись данные
@@ -38,8 +36,7 @@ export default withNavigation(class PromoAddCheckComponent extends Component {
 			let check_data = await request.add_check_data({
 				user_id:	this.props.user.id,
 				promo_id:	this.promo_id,
-				// datetime:	f.date("Y-m-d H:i:s",data.datetime)+'.000',
-				datetime:	f.date("Y-m-d",data.datetime)+'T'+f.date("H:i:s",data.datetime)+'.000Z',
+				datetime:	data.date+'T'+data.time+':00.000Z',
 				sum:		data.sum,
 				fn:			data.fn,
 				fd:			data.fd,
@@ -66,7 +63,7 @@ export default withNavigation(class PromoAddCheckComponent extends Component {
 		for(let i=0; i<data.photo_list.length; i++) {
 			let photo = data.photo_list[i];
 
-			console.log(photo_list[i]);
+			// console.log(photo_list[i]);
 			// Если она еще не загружена успешно, то загружаем
 			if(photo_list[i].state != 1) {
 				waiting.push(new Promise(async (resolve) => {
@@ -76,7 +73,7 @@ export default withNavigation(class PromoAddCheckComponent extends Component {
 						check_id,
 						file: 'data:image/jpeg;base64,'+photo.base64,
 					});
-					console.log(i,image_data);
+					// console.log(i,image_data);
 					if(image_data.response) {
 						this.setState(({photo_list}) => {
 							photo_list[i] = {

@@ -3,7 +3,9 @@ import {Platform,StyleSheet,FlatList,Image,ImageBackground,ScrollView,Text,Touch
 import {withNavigation} from 'react-navigation';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
-import SubTitle from '../../../templates/subtitle';
+import NoBanner		from '../../../../assets/ui/promo_no_banner.png';
+
+import SubTitle		from '../../../templates/subtitle';
 
 import promo_date_diff from '../../../services/promo_date_diff';
 
@@ -69,13 +71,26 @@ const styles = EStyleSheet.create({
 		color: '#fff',
 		fontSize: 14, fontFamily: 'GothamPro-Medium',
 	},
+
+	empty: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	empty_text: {
+		paddingBottom: '20%',
+		color: '#3d3d3d',
+		fontSize: 12, fontFamily: 'GothamPro',
+		textAlign: 'center',
+		lineHeight: 16,
+	},
 });
 
 const stylize = (html) => (
 `
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=width, initial-scale=`+EStyleSheet.value('$scale')+
 	`, maximum-scale=`+EStyleSheet.value('$scale')+`, user-scalable=`+EStyleSheet.value('$scale')+`" />
 <style>
@@ -125,32 +140,39 @@ export default withNavigation(class PromoDetails extends Component {
 		super(props);
 
 		let navigation = props.navigation;
-		let {promo,data} = this.get_data(navigation.getParam('id',0),navigation.getParam('group_id',0));
 
-		this.state = {promo,data};
+		this.id = navigation.getParam('id',0);
+		let data = this.get_data(this.id);
+
+		this.state = {data};
 	}
 
 	componentDidUpdate(prev_props) {
 		if(!Object.is(prev_props,this.props)) {
 			let navigation = this.props.navigation;
-			let {promo,data} = this.get_data(navigation.getParam('id',0),navigation.getParam('group_id',0));
-			this.setState({promo,data});
+			let data = this.get_data(this.id);
+			this.setState({data});
 		}
 	}
 
-	get_data = (id,promo_id) => {
-		let promo = this.props.promo.find(e => e.id==promo_id);
-		let data  = promo.promo_list.find(e => e.id==id);
-		return {promo,data};
+	get_data = (id) => {
+		for(let group of this.props.promo) {
+			console.log(group.promo_list);
+			let data = group.promo_list.find(e => e.id==id);
+			if(data) return data;
+		}
 	}
 
 	render() {
 		let navigation = this.props.navigation;
-		let {data,promo} = this.state;
+		let {data} = this.state;
 
-		if(!data || !promo) return null;
+		if(!data) return (
+			<View style={styles.empty}><Text style={styles.empty_text}>Не удалось загрузить данные об акции</Text></View>
+		);
 
-		if(!data.image_url) data.image_url = promo.image_url || 'https://www.sostav.ru/images/news/2018/04/20/on5vjvly.jpg';
+		// if(!data.image_url) data.image_url = 'https://www.sostav.ru/images/news/2018/04/20/on5vjvly.jpg';
+		const Banner = data.image_url ? {uri:data.image_url} : NoBanner;
 
 		data = promo_date_diff(data);
 
@@ -158,8 +180,8 @@ export default withNavigation(class PromoDetails extends Component {
 
 		return (
 			<View style={styles.container}>
-				<ImageBackground style={styles.banner} imageStyle={{opacity:0.5}} source={{uri:data.image_url}}>
-					<Text style={styles.title}>{promo.title?.toUpperCase()}</Text>
+				<ImageBackground style={styles.banner} imageStyle={{opacity:0.5}} source={Banner}>
+					<Text style={styles.title}>{data.title?.toUpperCase()}</Text>
 					{data ? (
 						<Text style={styles.ending}>{data.diff_text}</Text>
 					) : null}

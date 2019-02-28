@@ -7,7 +7,7 @@ const styles = EStyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		alignItems: 'flex-start',
-		marginTop: 20, padding: 10,
+		marginVertical: 10, padding: 10,
 		backgroundColor: '#f4f4f4',
 	},
 	image_area: {
@@ -47,28 +47,32 @@ const styles = EStyleSheet.create({
 	},
 });
 
-translate_state = (state) => ({
-	'Нужно ввести данные': {
-		id: 0,
-		style: styles.grey_state,
-	},
-	'Ожидает отправки': {
-		id: 1,
-		style: styles.grey_state,
-	},
-	'Отправлен на указанный адрес': {
-		id: 2,
-		style: styles.grey_state,
-	},
-	'Отправлено. Смотреть статус': {
-		id: 3,
-		style: styles.red_state,
-	},
-	'Получить подарок': {
-		id: 4,
-		style: styles.red_state,
-	},
-}[state]);
+translate_state = (state) => {
+	let dict = {
+		'Нужно внести данные': {
+			id: 1,
+			style: styles.grey_state,
+		},
+		'Ожидает отправки': {
+			id: 2,
+			style: styles.grey_state,
+		},
+		'Отправлен на указанный адрес': {
+			id: 3,
+			style: styles.grey_state,
+		},
+		'Отправлено. Смотреть статус': {
+			id: 4,
+			style: styles.red_state,
+		},
+		'Получить подарок': {
+			id: 5,
+			style: styles.red_state,
+		},
+	};
+	if(state in dict)	return dict[state];
+	else				return {id:0,style:styles.grey_state};
+}
 
 export default withNavigation((props) => {
 	let state = {
@@ -86,12 +90,6 @@ export default withNavigation((props) => {
 				{props.details?.length ? (<Text style={styles.checks}>{props.details}</Text>) : null}
 				{props.link?.length ? (
 					<TouchableOpacity onPress={_=>Linking.openURL(props.link)}>
-						<Text style={[styles.state,styles.red_state]}>{state.text}</Text>
-					</TouchableOpacity>
-				) : (state.id == 4) ? (
-					<TouchableOpacity onPress={_=>{
-						props.navigation.push('promo_get_prize',{promo_id:props.promo_id,get_type:props.get_type});
-					}}>
 						<Text style={[styles.state,styles.red_state]}>{state.text}</Text>
 					</TouchableOpacity>
 				) : (

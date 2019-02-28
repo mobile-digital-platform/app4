@@ -32,7 +32,7 @@ export default (props) => (
 		<FlatList
 			style={styles.list}
 			data={props.list}
-			renderItem={({item}) => <Section promo_id={props.promo_id} data={item} />}
+			renderItem={({item}) => <Section promo_id={props.promo_id} data={item} reload={props.reload} />}
 			keyExtractor={item => item.group_id+''}
 			onRefresh={props.reload}
 			refreshing={props.loading}

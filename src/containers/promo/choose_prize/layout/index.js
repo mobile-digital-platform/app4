@@ -33,6 +33,7 @@ const styles = EStyleSheet.create({
 		alignItems: 'center',
 		marginTop: 0,
 		paddingVertical: 10, paddingHorizontal: 40,
+		borderTopWidth: 1, borderTopColor: '#ccc',
 	},
 	button: {
 		alignItems: 'center',
@@ -44,6 +45,19 @@ const styles = EStyleSheet.create({
 	button_text: {
 		color: '#fff',
 		fontSize: 14, fontFamily: 'GothamPro-Medium',
+	},
+
+	empty: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	empty_text: {
+		paddingBottom: '20%',
+		color: '#3d3d3d',
+		fontSize: 12, fontFamily: 'GothamPro',
+		textAlign: 'center',
+		lineHeight: 16,
 	},
 });
 
@@ -73,6 +87,8 @@ export default class ChoosePrize extends Component {
 
 		return (
 			<View style={styles.container}>
+			{props.loading || props.list.length ? (
+			<>
 				<View style={styles.balance}>
 				{props.available_points_type.length ? (
 					<Text style={styles.balance_text}>
@@ -90,15 +106,19 @@ export default class ChoosePrize extends Component {
 				/>
 				<View style={styles.bottom}>
 					<TouchableOpacity style={styles.button} onPress={_=>props.navigation.push('promo_my_prizes',{id:props.promo_id})}>
-						<Text style={styles.button_text}>Все выбранные призы</Text>
+						<Text style={styles.button_text}>Мои призы</Text>
 					</TouchableOpacity>
 				</View>
 				<Dialog
 					visible={state.modal_visible}
-					text={(state.selected>=0 ? 'Вы выбрали «'+props.list[state.selected].name+'». ' : '')+'Подтвержаешь свой выбор?'}
+					text={(state.selected>=0 ? 'Вы выбрали «'+props.list[state.selected].name+'». ' : '')+'Подтвержаете свой выбор?'}
 					on_yes={this.buy}
 					on_no={this.deselect}
 				/>
+			</>
+			) : (
+				<View style={styles.empty}><Text style={styles.empty_text}>Пока у вас нет призов</Text></View>
+			)}
 			</View>
 		);
 	}

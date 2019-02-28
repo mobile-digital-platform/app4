@@ -14,7 +14,7 @@ const styles = EStyleSheet.create({
 	},
 	button: {
 		alignItems: 'center',
-		width: '100%',
+		height: '100%', width: '100%',
 		padding: 15,
 		borderRadius: 40,
 	},

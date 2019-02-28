@@ -1,4 +1,4 @@
-package com.app5;
+package com.cocacolapromo.app.emg;
 
 import com.facebook.react.ReactActivity;
 

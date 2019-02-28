@@ -44,12 +44,7 @@ export default async function(data = {}) {
 const filter_address = (data = []) => data.filter(item => {
 	let i = item.data;
 	// условие отбора: по ФИАС адрес найден до улицы(7 уровень) + заполненный номер дома + почтовый индекс
-	if(i.fias_level >= 7 && i.fias_level != 65 && i.house?.length && i.postal_code?.length){
-		// если пользователь - городской житель -требуем также номер квартиры
-		return (i.city?.length && !i.flat?.length);
-	} else {
-		return false;
-	}
+	return (i.fias_level >= 7 && i.fias_level != 65 && i.house?.length && i.postal_code?.length);
 });
 
 const get_address = (data = []) => data.map(item => {

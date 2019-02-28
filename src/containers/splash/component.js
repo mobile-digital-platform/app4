@@ -2,6 +2,8 @@ import React,{Component} from 'react';
 import {NetInfo,Image,View,Text} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
+import config	from '../../config';
+
 import alert	from '../../services/alert';
 import st		from '../../services/storage';
 import push		from '../../services/push_notification';
@@ -151,7 +153,14 @@ export default class SplashComponent extends Component {
 				let {response,error} = await settings_request.get(we.id);
 				if(response) {
 					this.setState({user:'loaded'});
-					// if(!response.push_token) response.push_token = await push.request_async();
+					if(!response.push_token && !config.simulator) response.push_token = await push.request_async();
+					if(!config.simulator) {
+						let push_token = await push.request_async();
+						if(response.push_token != push_token) {
+							response.push_token = push_token;
+							settings_request.save(response);
+						}
+					}
 					this.props.update_user(response);
 					st.set('user',response);
 				}

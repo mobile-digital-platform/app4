@@ -90,9 +90,8 @@ export default class Time extends Component {
 	close = () => this.setState({visible:false});
 
 	choose = (timestamp) => {
-		// Выбирается время сегодняшней даты
 		this.close();
-		this.props.update(f.date("H:i"));
+		this.props.update(f.date("H:i",timestamp));
 	}
 
 	render() {

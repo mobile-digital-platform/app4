@@ -12,6 +12,7 @@ export default withNavigation(class MyPromoListComponent extends Component {
 		this.state = {
 			data: this.get_promo(props.navigation.getParam('id',0)),
 			details: {},
+			details_error: '',
 			check: [],
 			check_error: '',
 			loading: false,
@@ -49,7 +50,7 @@ export default withNavigation(class MyPromoListComponent extends Component {
 				promo_id: this.state.data.id,
 			});
 			if(response)	this.setState({details:response});
-			if(error)		this.setState({check_error:error.message});
+			if(error)		this.setState({details_error:error.message});
 			resolve();
 		}));
 

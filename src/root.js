@@ -3,7 +3,8 @@ import {AsyncStorage,Dimensions,Linking,StatusBar}	from 'react-native';
 import EStyleSheet					from 'react-native-extended-stylesheet';
 import {
 	createAppContainer,
-	createStackNavigator
+	createStackNavigator,
+	NavigationActions
 }									from 'react-navigation';
 import {Provider}					from 'react-redux';
 
@@ -23,9 +24,9 @@ import PromoParticipateScreen		from './screens/promo/participate';
 import PromoMyListScreen			from './screens/promo/my';
 
 import PromoAddCheckScreen			from './screens/promo/add_check';
-import PromoGetPrizeScreen			from './screens/promo/get_prize';
 import PromoChoosePrizeScreen		from './screens/promo/choose_prize';
 import PromoMyPrizesScreen			from './screens/promo/my_prizes';
+import PromoAddressScreen			from './screens/promo/address';
 import PromoPassportScreen			from './screens/promo/passport';
 
 import SettingsScreen				from './screens/settings/main';
@@ -66,9 +67,9 @@ var Navigator = createAppContainer(createStackNavigator(
 		promo_my_view:				PromoMyListScreen,
 
 		promo_add_check:			PromoAddCheckScreen,
-		promo_my_prizes:			PromoMyPrizesScreen,
 		promo_choose_prize:			PromoChoosePrizeScreen,
-		promo_get_prize:			PromoGetPrizeScreen,
+		promo_my_prizes:			PromoMyPrizesScreen,
+		promo_address:				PromoAddressScreen,
 		promo_passport: 			PromoPassportScreen,
 
 		settings:					SettingsScreen,
@@ -107,10 +108,14 @@ var Navigator = createAppContainer(createStackNavigator(
 ));
 
 export default class Router extends Component {
-	state = {
-		page: 'start',
-		// page: 'navigator',
-	};
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			page: 'start',
+			// page: 'navigator',
+		};
+	}
 
 	async componentDidMount() {
 		// Обрабатываем заход по ссылке
@@ -128,6 +133,16 @@ export default class Router extends Component {
 		if(Object.keys(data).length)	this.set_page('splash');
 		else							this.set_page('onboarding');
 	}
+	// componentDidUpdate(prev_props,prev_state) {
+	// 	if(prev_state.page != 'navigator' && this.state.page == 'navigator') {
+	// 		console.log(config.navigator_ref);
+	// 		config.navigator_ref.dispatch(NavigationActions.navigate({
+	// 			routeName: 'promo_my_view',
+	// 			params: {id:1},
+	// 		}));
+	// 		console.log("XSS!");
+	// 	}
+	// }
 	componentWillUnmount() {
 		Linking.removeEventListener('url',this.handle_open_url);
 	}
@@ -161,7 +176,7 @@ export default class Router extends Component {
 				{this.state.page == 'start'			? (<Empty/>)	: null}
 				{this.state.page == 'onboarding'	? (<Onboarding	set_page={this.set_page} />)	: null}
 				{this.state.page == 'splash'		? (<Splash		set_page={this.set_page} />)	: null}
-				{this.state.page == 'navigator'		? (<Navigator/>) : null}
+				{this.state.page == 'navigator'		? (<Navigator	ref={ref => config.navigator_ref=ref} />) : null}
 				<Smoke/>
 			</Provider>
 		);

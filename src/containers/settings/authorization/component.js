@@ -3,10 +3,7 @@ import {Keyboard,Platform,StyleSheet,ScrollView,Text,TouchableOpacity,View} from
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {withNavigation} from 'react-navigation';
 
-import AnimatedButton	from '../../../templates/animated_button';
-import Input			from '../../../templates/input';
-import InputPhone		from '../../../templates/input_phone';
-import SubTitle			from '../../../templates/subtitle';
+import config			from '../../../config';
 
 import alert			from '../../../services/alert';
 import st				from '../../../services/storage';
@@ -15,6 +12,11 @@ import push				from '../../../services/push_notification';
 import get_promo		from '../../../services/get_promo';
 
 import {request as settings_request}	from '../../../redux/reducers/settings';
+
+import AnimatedButton	from '../../../templates/animated_button';
+import Input			from '../../../templates/input';
+import InputPhone		from '../../../templates/input_phone';
+import SubTitle			from '../../../templates/subtitle';
 
 const styles = EStyleSheet.create({
 	main: {
@@ -163,7 +165,13 @@ export default withNavigation(class Authorization extends Component {
 
 				// Запрашиваем токен уведомлений
 				let data = {...user_data.response};
-				// data.push_token = await push.request_async();
+				if(!config.simulator) {
+					let push_token = await push.request_async();
+					if(data.push_token != push_token) {
+						data.push_token = push_token;
+						settings_request.save(data);
+					}
+				}
 
 				// Сохраняем
 				this.props.update_user(data);

@@ -133,6 +133,14 @@ export default class SelectRetailer extends Component {
 			prompt={this.props.title}
 			selectedValue={this.state.value}
 			onValueChange={(value,i) => this.select(value)}
+			style={{
+				position: 'absolute',
+				top: 0,
+				left: 0,
+				right: 0,
+				bottom: 0,
+				opacity: 0,
+			}}
 		>
 			{this.props.data.map((e,i) => (<Picker.Item key={i} value={e.id} label={e.title} />))}
 		</Picker>

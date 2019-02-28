@@ -3,6 +3,8 @@ import {Dimensions,FlatList,Image,ImageBackground,Modal,ScrollView,Text,Touchabl
 import {RNCamera} from 'react-native-camera';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
+import config from '../config';
+
 import alert from '../services/alert';
 
 import Icon from 'react-native-vector-icons/EvilIcons';
@@ -29,6 +31,10 @@ const styles = EStyleSheet.create({
 		backgroundColor: 'rgba(255,255,255,0.1)',
 		zIndex: 10,
 	},
+	focus_area: {
+		flex: 1,
+			justifyContent: 'center',
+	},
 	focus: {
 		height: 0.45*width, width: 0.45*width,
 		marginBottom: '20%',
@@ -54,6 +60,20 @@ const styles = EStyleSheet.create({
 		bottom: 0, right: 0,
 		borderBottomWidth: 3, borderRightWidth: 3,
 	},
+	error: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		width: '100%',
+		padding: 15,
+		// backgroundColor: '$red',
+	},
+	error_text: {
+		color: '#fff',
+		fontSize: 16, fontFamily: 'GothamPro',
+		textAlign: 'center',
+		textShadowRadius: 5, textShadowColor: '#111',
+		lineHeight: 19,
+	},
 	footer: {
 		justifyContent: 'center',
 		alignItems: 'center',
@@ -67,59 +87,77 @@ const styles = EStyleSheet.create({
 });
 
 export default class QR extends Component {
-	state = {
-		torch: RNCamera.Constants.FlashMode.off,
-	};
+	constructor(props) {
+		super(props);
 
-	parse_qr = (check) => {
-		/* check = {
-			fn: "8710000100388285",
-			fp: "1421230762",
-			i: "1472",
-			n: "1",
-			s: "259.00",
-			t: "20170426T100348"
-		}; */
-		let time = {
-			d: check.t.substr(6,2),
-			m: check.t.substr(4,2),
-			y: check.t.substr(0,4),
+		this.error_timeout;
 
-			h: check.t.substr(9,2),
-			i: check.t.substr(11,2),
+		this.state = {
+			torch: RNCamera.Constants.FlashMode.off,
+			tint: config.qr_scanner.tint.base,
+			error: '',
 		};
-		let data = {
-			datetime: new Date(time.y+'-'+time.m+'-'+time.d+' '+time.h+':'+time.i),
-			date: time.y+'-'+time.m+'-'+time.d,
-			time: time.h+':'+time.i,
+	}
+
+	componentDidMount() {
+		this.tire_tint();
+	}
+
+	// Смена надписи под сканером
+	tire_tint = () => {
+		this.setState({tint:config.qr_scanner.tint.base});
+		setTimeout(_=>{
+			if(this.error_timeout)	this.tire_tint();
+			else					this.setState({tint:config.qr_scanner.tint.tired});
+		},10000);
+	}
+
+	// Разбор кода
+	parse_qr = (check) => {
+		let d = check.t.substr( 6,2),
+			m = check.t.substr( 4,2),
+			y = check.t.substr( 0,4),
+			h = check.t.substr( 9,2),
+			i = check.t.substr(11,2);
+		
+		return {
+			datetime: new Date(y+'-'+m+'-'+d+' '+h+':'+i),
+			date: y+'-'+m+'-'+d,
+			time: h+':'+i,
 
 			sum: check.s,
 			fn: check.fn,
 			fd: check.i,
 			fp: check.fp,
 		};
-		return data;
 	}
 	read_code = async (res) => {
-		// res.data = t=20170426T100348&s=259.00&fn=8710000100388285&i=1472&fp=1421230762&n=1
 		let check = {};
 		res.data.split('&').forEach(item => {
 			item = item.split('=');
 			check[item[0]] = item[1];
 		});
-		// проверяем, содержит ли qr нужные данные или же там закодирована ссылка на сайт
-		if(![check.t,check.s,check.fn,check.i,check.fp,check.n].every(e => !!e)) {
-			alert('Увы, данный QR-код не подходит','Поищите на чеке другой');
-			console.log('QR-data',res);
-		} else {
+
+		// Проверяем, содержит ли код нужные данные
+		if([check.t,check.s,check.fn,check.i,check.fp,check.n].every(e => !!e)) {
+			this.setState({error:''});
 			this.props.send_data(this.parse_qr(check));
 			this.props.close();
+
+		// Или же тут закодирована ссылка на сайт
+		} else {
+			this.setState({error:config.qr_scanner.error});
+			if(!this.error_timeout) this.error_timeout = setTimeout(_=>{
+				this.setState({error:''});
+				this.error_timeout = null;
+				this.tire_tint();
+			},2000);
+			// console.log('QR-data',res);
 		}
 	}
 
 	render() {
-		let props = this.props;
-		console.log(RNCamera.Constants);
+		let {props,state} = this;
 
 		return (
 			<Modal
@@ -143,14 +181,19 @@ export default class QR extends Component {
 								<Icon name="close" style={{color:'white'}} size={40} />
 							</TouchableOpacity>
 						</View>
-						<View style={styles.focus}>
-							<View style={[styles.focus_corner,styles.focus_top_left]} />
-							<View style={[styles.focus_corner,styles.focus_top_right]} />
-							<View style={[styles.focus_corner,styles.focus_bottom_left]} />
-							<View style={[styles.focus_corner,styles.focus_bottom_right]} />
+						<View style={styles.focus_area}>
+							<View style={styles.focus}>
+								<View style={[styles.focus_corner,styles.focus_top_left]} />
+								<View style={[styles.focus_corner,styles.focus_top_right]} />
+								<View style={[styles.focus_corner,styles.focus_bottom_left]} />
+								<View style={[styles.focus_corner,styles.focus_bottom_right]} />
+							</View>
+						</View>
+						<View style={styles.error}>
+							<Text style={styles.error_text}>{state.error}</Text>
 						</View>
 						<View style={styles.footer}>
-							<Text style={styles.footer_text}>Поднесите камеру к штрих-коду</Text>
+							<Text style={styles.footer_text}>{state.tint}</Text>
 						</View>
 					</RNCamera>
 				</View>

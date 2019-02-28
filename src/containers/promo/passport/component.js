@@ -26,7 +26,6 @@ export default withNavigation(class PromoPassportComponent extends Component {
 	}
 
 	send_data = async (data) => {
-
 		this.setState({save_state:'waiting'});
 
 		let {response,error} = await request.set_passport_data({
@@ -36,7 +35,7 @@ export default withNavigation(class PromoPassportComponent extends Component {
 			father:		data.father,
 			family:		data.family,
 			birthday:	data.birthday,
-			mail:		this.props.user.mail,
+			// mail:		this.props.user.mail,
 			seria:		data.seria,
 			number:		data.number,
 			date:		data.date,
@@ -45,11 +44,26 @@ export default withNavigation(class PromoPassportComponent extends Component {
 			address:	data.address,
 		});
 		if(response) {
+			let obj = {
+				name:		data.name,
+				father:		data.father,
+				family:		data.family,
+				birthday:	data.birthday,
+				passport: {
+					seria:		data.seria,
+					number:		data.number,
+					date:		data.date,
+					issuer:		data.issuer,
+					inn:		data.inn,
+					address:	data.address,
+				},
+			};
+
 			// Сохраняем
-			this.props.update_user(data);
+			this.props.update_user(obj);
 
 			// В асинхронное хранилище изменения тоже записываем
-			st.merge('user',data);
+			st.merge('user',obj);
 
 			this.send_photos([data.passport_photo,data.passport_residence,data.inn_photo]);
 		}
@@ -119,13 +133,11 @@ export default withNavigation(class PromoPassportComponent extends Component {
 	}
 
 	back = () => {
-		if(this.state.save_state == 'succeed') this.props.navigation.goBack();
+		if(this.state.save_state == 'succeed') this.props.navigation.navigate('promo_my_prizes');
 	}
 
 	render() {
-		// console.log("Component",this.props);
-
-		console.log(this.state.save_state);
+		console.log("Component",this.props);
 
 		return (
 			<Layout

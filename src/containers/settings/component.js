@@ -45,7 +45,7 @@ export default withNavigation(class SettingsComponent extends Component {
 	save_personal_data = async (data) => {
 		// this.props.open_smoke();
 		this.setState({save_state:'waiting'});
-		// Если он уже вошел, то сохраняем, иначе регистрируем
+		// Если он уже вошел, то сохраняем
 		if(this.props.user?.id) {
 			this.props.update_user(data);
 			let {response,error} = await request.save({...this.props.user,...data});
@@ -75,17 +75,26 @@ export default withNavigation(class SettingsComponent extends Component {
 				this.setState({save_state:'errored'});
 				await alert('Не удалось сохранить изменения');
 			}
+
+		// Регистрируем
 		} else {
 			let {response,error} = await request.register(data);
 			if(response) {
 				// Записываем его ид, полученный с сервера
 				let id = response.user_id;
-				let push_token = await push.request();
+				this.props.update_user({id});
 
-				this.props.update_user({id,push_token});
+				// Записываем токен
+				if(!config.simulator) {
+					let push_token = await push.request_async();
+					if(data.push_token != push_token) {
+						data.push_token = push_token;
+						settings_request.save({...data,id});
+					}
+				}
 
 				// В асинхронное хранилище изменения тоже записываем
-				st.merge('user',{...data,id,push_token});
+				st.merge('user',{...data,id});
 
 				this.setState({save_state:'succeed'});
 

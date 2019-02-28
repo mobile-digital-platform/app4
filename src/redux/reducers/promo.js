@@ -117,7 +117,7 @@ export const request = {
 				items: response.map(e => ({
 					id:					e.PromoID,
 					group_id:			e.PromoGroupID,
-					title:				e.PromoGroupName,
+					title:				e.Name,
 					description:		e.Description,
 					start:				e.Start.substr(0,10),
 					end:				e.Finish.substr(0,10),
@@ -244,7 +244,7 @@ export const request = {
 				items: response.Prizes.map(e => ({
 					id:			e.PrizeID,
 					name:		e.PrizeName,
-					image_url:	e.ImageLink,
+					image_url:	e.ImgLink,
 					cost:	   +e.Cost.substring(0,e.Cost.indexOf(' ')),
 					cost_type:	e.Cost.substring(e.Cost.indexOf(' ')+1),
 					remains:	e.Remains,

@@ -2,6 +2,8 @@ import React,{Component} from 'react';
 import {Animated,Easing,Text,TouchableOpacity,View} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
+import API from '../services/api';
+
 const styles = EStyleSheet.create({
 	container: {
 		alignItems: 'center',
@@ -90,6 +92,10 @@ export default class MainTabs extends Component {
 		}
 	}
 
+	push = async () => {
+		let {response,error} = await API('/Push');
+	}
+
 	render() {
 		let props = this.props,state = this.state;
 
@@ -109,6 +115,7 @@ export default class MainTabs extends Component {
 
 		return (
 			<View style={styles.container}>
+				{/*<Text style={{paddingBottom:20}} onPress={this.push}>Отправить уведомление</Text>*/}
 				<View style={styles.tab_bar}>
 					<Animated.View style={[styles.background_tab,{left:state.left,width:state.width}]} />
 					<TouchableOpacity style={left_styles} onPress={_=>props.change_page(0)}>

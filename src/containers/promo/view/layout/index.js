@@ -3,6 +3,8 @@ import {FlatList,ImageBackground,ScrollView,Text,TouchableOpacity,View} from 're
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {withNavigation} from 'react-navigation';
 
+import NoBanner		from '../../../../../assets/ui/promo_no_banner.png';
+
 import SubTitle		from '../../../../templates/subtitle';
 // import BackgroundImage from '../../../../templates/background_image';
 
@@ -46,9 +48,11 @@ const styles = EStyleSheet.create({
 export default withNavigation(({navigation,data}) => {
 	if(data.promo_list) data.promo_list = data.promo_list.filter(e => e.retailer.id>0);
 
+	const Banner = data.image_url ? {uri:data.image_url} : NoBanner;
+
 	return (
 		<View style={styles.container}>
-			<ImageBackground style={styles.banner} imageStyle={styles.image} source={{uri:data.image_url}}>
+			<ImageBackground style={styles.banner} imageStyle={styles.image} source={Banner}>
 				<Text style={styles.title}>{data.title?.toUpperCase()}</Text>
 			</ImageBackground>
 			<ScrollView>

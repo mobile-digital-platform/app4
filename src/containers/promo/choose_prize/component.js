@@ -21,8 +21,9 @@ export default withNavigation(class PromoChoosePrizeComponent extends Component 
 	}
 
 	load_data = async () => {
+		this.setState({loading:true});
 		// Если загружаем в первый раз, то не показываем значок загрузки, если она длится менее секунды
-		if(!this.state.list.length) setTimeout(_=>this.setState(state => ({loading:!state.list.length})),1000);
+		// if(!this.state.list.length) setTimeout(_=>this.setState(state => ({loading:!state.list.length})),1000);
 
 		// Загрузка своих баллов и списка доступных подарков
 		let {response,error} = await request.choose_prize({user_id:this.props.user.id,promo_id:this.id});

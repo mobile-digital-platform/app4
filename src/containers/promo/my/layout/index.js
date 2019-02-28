@@ -23,13 +23,16 @@ const styles = EStyleSheet.create({
 		backgroundColor: '#000',
 	},
 	points_area: {
+		flexDirection: 'row',
+		justifyContent: 'flex-end',
 		alignItems: 'flex-end',
-		position: 'absolute', top: '-100%', right: 10,
+		position: 'absolute', top: '-100%', right: 0,
 	},
 	points: {
 		justifyContent: 'center',
 		alignItems: 'center',
 		height: 45, width: 50,
+		marginRight: 10,
 		backgroundColor: '#b30000',
 	},
 	points_number: {
@@ -162,19 +165,14 @@ export default withNavigation(class MyPromoListLayout extends Component {
 				outputRange: ['-100%','0%'],
 			}),
 		});
-
-		// Панель снизу
-		setTimeout(async _=> {
-			Animated.timing(this.animation.bottom,{
-				toValue: 1,
-				duration: 700,
-				easing: Easing.bezier(0.5,0,0.2,1),
-			}).start();
-		},100);
 	}
 	async componentDidUpdate(prev_props) {
+
 		// Получили данные по очкам
-		if(!prev_props.details.points && this.props.details.points) {
+		if(
+			!prev_props.details.points && this.props.details.points ||
+			!prev_props.details.prizes && this.props.details.prizes
+		) {
 			// Очки сверху
 			setTimeout(_=> {
 				Animated.timing(this.animation.points,{
@@ -182,7 +180,7 @@ export default withNavigation(class MyPromoListLayout extends Component {
 					duration: 500,
 					easing: Easing.bezier(0.5,0,0.2,1),
 				}).start();
-			},1000);
+			},1500);
 		}
 
 		// Получили чеки
@@ -206,6 +204,15 @@ export default withNavigation(class MyPromoListLayout extends Component {
 					easing: Easing.bezier(0.5,0.5,0.0,1),
 				}).start();
 			});
+
+			// Панель снизу
+			setTimeout(_=>{
+				Animated.timing(this.animation.bottom,{
+					toValue: 1,
+					duration: 700,
+					easing: Easing.bezier(0.5,0,0.2,1),
+				}).start();
+			},750);
 		}
 	}
 
@@ -226,19 +233,18 @@ export default withNavigation(class MyPromoListLayout extends Component {
 				<ImageBackground style={styles.banner} imageStyle={{opacity:0.5}} source={{uri:data.image_url}}>
 					{details.prizes>0 || details.points>0 ? (
 					<Animated.View style={[styles.points_area,{top:state.points}]}>
+					{details.prizes>0 ? (
 						<View style={styles.points}>
-						{details.prizes>0 ? (
-							<>
-								<Text style={styles.points_number}>{details.prizes}</Text>
-								<Text style={styles.points_type}>приз{f.number_case(details.prizes,1)}</Text>
-							</>
-						) : (
-							<>
-								<Text style={styles.points_number}>{details.points}</Text>
-								<Text style={styles.points_type}>{details.points_type}</Text>
-							</>
-						)}
+							<Text style={styles.points_number}>{details.prizes}</Text>
+							<Text style={styles.points_type}>приз{f.number_case(details.prizes,1)}</Text>
 						</View>
+					) : null}
+					{details.points>0 ? (
+						<View style={styles.points}>
+							<Text style={styles.points_number}>{details.points}</Text>
+							<Text style={styles.points_type}>{details.points_type}</Text>
+						</View>
+					) : null}
 					</Animated.View>
 					) : null}
 					<Text style={styles.title}>{data.title.toUpperCase()}</Text>
@@ -292,7 +298,7 @@ export default withNavigation(class MyPromoListLayout extends Component {
 							<Text style={[styles.button_text,styles.add_button_text]}>Добавить чек</Text>
 						</TouchableOpacity>
 					) : null}
-					{details.show_prizes ? (
+					{0&&details.show_prizes ? (
 						<TouchableOpacity style={[styles.button,styles.get_button]} onPress={_=>props.navigation.push('promo_my_prizes',{id:data.id})}>
 							<Text style={[styles.button_text,styles.get_button_text]}>Посмотреть призы</Text>
 						</TouchableOpacity>

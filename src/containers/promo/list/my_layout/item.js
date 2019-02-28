@@ -22,6 +22,7 @@ const styles = EStyleSheet.create({
 		width: '100%',
 		marginTop: -25, marginBottom: -15,
 		paddingRight: 10,
+		shadowOpacity: 1, shadowOffset: {height:0,width:0}, shadowRadius: 1, shadowColor: '#111',
 	},
 	retailer_image: {
 		height: 40, width: 40,

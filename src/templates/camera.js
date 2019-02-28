@@ -58,6 +58,9 @@ const styles = EStyleSheet.create({
 });
 
 export default withNavigation(class Camera extends Component {
+	state = {
+		saving: false,
+	};
 
 	// Запрос разрешений на андроиде
 	request_permission = async (photo) => {
@@ -82,17 +85,8 @@ export default withNavigation(class Camera extends Component {
 
 	// Съемка
 	capture = async () => {
-		if(this.camera) {
-
-			// Открываем крутилку
-			// this.props.open_smoke();
-			// let photo = await this.camera.takePictureAsync({base64:true,doNotSave:true});
-			//
-			// await this.props.add_photo({
-			// 	id: "Coca Cola Promo "+f.date("Y-m-d H:i:s"),
-			// 	...photo,
-			// });
-			// this.props.close_smoke();
+		if(this.camera && !this.state.saving) {
+			this.setState({saving: true});
 
 			let id = "Coca Cola Promo "+f.date("Y-m-d H:i:s");
 			this.props.add_photo({id,state:'saving'});
@@ -107,12 +101,14 @@ export default withNavigation(class Camera extends Component {
 						if(!access) {
 							await alert("Невозможно сделать фотографию","Вы не дали приложению разрешение на использование камеры и хранилища фотографий");
 							this.props.remove_photo(id);
+							this.setState({saving:false});
 							this.props.close();
 							return;
 						}
 					}
 					photo.state = 'ready';
 					this.props.set_photo({id,photo});
+					this.setState({saving:false});
 
 					// И закрываем камеру
 					this.props.close();
@@ -145,7 +141,7 @@ export default withNavigation(class Camera extends Component {
 					</RNCamera>
 					<View style={styles.footer}>
 						<TouchableOpacity style={styles.capture} onPress={this.capture}>
-							<Text style={styles.capture_text}>Сделать снимок</Text>
+							<Text style={styles.capture_text}>{config.camera.capture_text}</Text>
 						</TouchableOpacity>
 					</View>
 				</View>

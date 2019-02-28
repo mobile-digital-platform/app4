@@ -1,9 +1,9 @@
 export default {
 	name: 'mobile-digital-platform',
-	version: '0.3.1',
+	version: '0.3.2',
 	year: '2019',
 
-	fcm_id: '162960043197',
+	fcm_id: '330059855909',
 
 	yandex_maps_api_key: '58fdb353-b0dc-4770-b94b-4945b4760d33',
 
@@ -13,10 +13,24 @@ export default {
 
 	base_width: 320,
 
+	simulator: 1,
+
+	navigator_ref: null,
+
 	city: {
 		limit: 30,
 	},
 	image: {
 		width: 1080,
+	},
+	qr_scanner: {
+		tint: {
+			base: 'Поднесите камеру к штрих-коду',
+			tired: 'Попробуйте под другим углом',
+		},
+		error: 'Увы, данный QR-код не подходит\nПоищите на чеке другой',
+	},
+	camera: {
+		capture_text: 'Сделать снимок',
 	},
 };

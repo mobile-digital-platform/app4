@@ -191,18 +191,36 @@ export default class PromoAddCheckLayout extends Component {
 
 	// Дата и время
 	set_date = async (date) => {
-		await this.setState(state => ({datetime:new Date(date+' '+state.time),date,date_error:false,updated:true}));
+		await this.setState(state => {
+			let datetime = new Date(date+' '+state.time);
+
+			if(+datetime > +new Date()) {
+				alert("Неправильная дата","Ваша дата из будущего");
+				return {};
+			}
+			return {datetime,date,date_error:false,updated:true};
+		});
+		// await alert(this.state.date,this.state.time);
 		await this.check_ready();
 	}
 	set_time = async (time) => {
-		await this.setState(state => ({datetime:new Date(state.date+' '+time),time,time_error:false,updated:true}));
+		await this.setState(state => {
+			let datetime = new Date(state.date+' '+time);
+
+			if(+datetime > +new Date()) {
+				alert("Неправильная дата","Ваша дата из будущего");
+				return {};
+			}
+			return {datetime,time,time_error:false,updated:true}
+		});
+		// await alert(this.state.date,this.state.time);
 		await this.check_ready();
 	}
 
 	// Все остальные поля
 	update = async (adjust) => {
 		await this.setState({...adjust,updated:true});
-		// alert('',JSON.stringify(adjust,null,4));
+		// await alert(this.state.date,this.state.time);
 
 		await this.check_ready();
 
@@ -255,7 +273,9 @@ export default class PromoAddCheckLayout extends Component {
 		await this.setState({waiting:true});
 		await this.props.send_data({
 			photo_list:	state.photo_list,
-			datetime: 	state.datetime,
+			datetime: 	new Date(state.date+' '+state.time),
+			date:		state.date,
+			time:		state.time,
 			sum: 		state.sum,
 			fn: 		state.fn,
 			fd: 		state.fd,
@@ -266,7 +286,6 @@ export default class PromoAddCheckLayout extends Component {
 
 	render() {
 		let {props,state} = this;
-		console.log(state.photo_list);
 
 		return (
 			<ScrollView ref={this.scroll} style={styles.container} keyboardShouldPersistTaps="always" keyboardDismissMode="on-drag">
