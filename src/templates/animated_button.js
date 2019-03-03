@@ -221,15 +221,18 @@ export default class AnimatedButton extends Component {
 			text:		props.style?.text		?? {},
 		});
 
+		console.log(state.height);
+
 		let container_styles = [
 			styles.container,
 			props_styles.container,
-			{height:state.height*EStyleSheet.value("$scale")},
+			{height:state.height},
 		];
 		let button_styles = [
 			styles.button,
 			props_styles.button,
 			props.active ? styles.active_button : styles.passive_button,
+			{height:state.height},
 		];
 		if(state.state != 'ready') button_styles.push({width:this.state.button_width});
 		let button_text_styles = [
