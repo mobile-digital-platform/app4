@@ -165,6 +165,14 @@ export default withNavigation(class MyPromoListLayout extends Component {
 				outputRange: ['-100%','0%'],
 			}),
 		});
+		// Панель снизу
+		setTimeout(_=>{
+			Animated.timing(this.animation.bottom,{
+				toValue: 1,
+				duration: 700,
+				easing: Easing.bezier(0.5,0,0.2,1),
+			}).start();
+		},50);
 	}
 	async componentDidUpdate(prev_props) {
 
@@ -197,21 +205,14 @@ export default withNavigation(class MyPromoListLayout extends Component {
 				})
 			})});
 
-			this.animation.check.forEach(ani => {
-				Animated.timing(ani,{
-					toValue: 1,
-					duration: 700,
-					easing: Easing.bezier(0.5,0.5,0.0,1),
-				}).start();
-			});
-
-			// Панель снизу
-			setTimeout(_=>{
-				Animated.timing(this.animation.bottom,{
-					toValue: 1,
-					duration: 700,
-					easing: Easing.bezier(0.5,0,0.2,1),
-				}).start();
+			setTimeout(_=> {
+				this.animation.check.forEach(ani => {
+					Animated.timing(ani,{
+						toValue: 1,
+						duration: 700,
+						easing: Easing.bezier(0.5,0.5,0.0,1),
+					}).start();
+				});
 			},750);
 		}
 	}

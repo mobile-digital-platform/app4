@@ -13,10 +13,11 @@ const styles = EStyleSheet.create({
 		// backgroundColor: '#ddd',
 	},
 	button: {
+		justifyContent: 'center',
 		alignItems: 'center',
 		height: '100%', width: '100%',
-		padding: 15,
 		borderRadius: 40,
+		backgroundColor: '#ddd',
 	},
 	button_text: {
 		fontSize: 16, fontFamily: 'GothamPro-Medium',

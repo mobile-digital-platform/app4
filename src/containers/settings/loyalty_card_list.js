@@ -15,7 +15,10 @@ const styles = EStyleSheet.create({
 		backgroundColor: '#f4f4f4',
 	},
 	save: {
-		marginTop: 15, padding: 15,
+		justifyContent: 'center',
+		alignItems: 'center',
+		height: 40,
+		marginTop: 15,
 		borderRadius: 100,
 		backgroundColor: '$red',
 	},
