@@ -53,10 +53,10 @@ export default withNavigation(class PromoGetPrizeComponent extends Component {
 			return;
 		}
 
-		let address_data = await settings_request.set_delivery_address({
+		let address_data = await promo_request.set_prize_center({
 			promo_id: this.promo_id,
 			user_id: this.props.user.id,
-			...data.adress_obj,
+			center: data.center,
 		});
 		if(address_data.response) {
 		}

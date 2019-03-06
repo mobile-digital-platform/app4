@@ -3,10 +3,11 @@ import {FlatList,ImageBackground,Keyboard,ScrollView,Text,TouchableOpacity,View,
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {withNavigation} from 'react-navigation';
 
+import AnimatedButton	from '../../../../templates/animated_button';
 import Input			from '../../../../templates/input';
 import DateInput		from '../../../../templates/input_date';
-import SelectAddress	from '../../../../templates/select_address';
 import SubTitle			from '../../../../templates/subtitle';
+import TextArea			from '../../../../templates/textarea';
 
 const styles = EStyleSheet.create({
 	container: {
@@ -17,38 +18,24 @@ const styles = EStyleSheet.create({
 		paddingTop: 20, paddingBottom: 15,
 	},
 	fio_text: {
+		paddingBottom: 8,
 		color: '#3d3d3d',
 		fontSize: 14, lineHeight: 18,
 		fontFamily: 'GothamPro',
 		textAlign: 'center',
-		paddingBottom: 8, marginBottom: 5,
 	},
 	block: {
 		marginBottom: 10,
 	},
-	address_title: {
+	subtitle: {
 		paddingHorizontal: 20,
 	},
-	address: {
-		flex: 1,
-		height: 110, width: '100%',
-		marginVertical: 5,
-		paddingHorizontal: 25, paddingHorizontal: 20,
-		borderWidth: 1, borderColor: '#ccc',
-		borderRadius: 20,
-		backgroundColor: '#fff',
-	},
-	address_text: {
-		marginTop: 20,
-		paddingBottom: 8,
-		color: '#3d3d3d',
-		fontSize: 14, fontFamily: 'GothamPro',
-		textAlign: 'center',
-		lineHeight: 18,
+	textarea: {
+		height: 110,
 	},
 	save: {
 		alignItems: 'center',
-		marginVertical: 20, padding: 15,
+		marginBottom: 25, padding: 15,
 		borderRadius: 100,
 		backgroundColor: '$red',
 	},
@@ -59,7 +46,7 @@ const styles = EStyleSheet.create({
 	}
 });
 
-export default withNavigation(class GetPrizeLayout extends Component {
+export default withNavigation(class GetPrizeEmailLayout extends Component {
 	constructor(props) {
 		super(props);
 
@@ -94,16 +81,19 @@ export default withNavigation(class GetPrizeLayout extends Component {
 		this.required = ['name','father','family','mail','birthday','address'];
 
 		this.state = {
-			...props.user,
+			name: 		props.user.name,
+			father: 	props.user.father,
+			family: 	props.user.family,
+			mail:		props.user.mail,
+			birthday: 	props.user.birthday,
+			address:	props.user.passport.address,
 
 			name_error:   	'',
 			father_error: 	'',
 			family_error: 	'',
 			mail_error:	 	'',
 			birthday_error:	'',
-			address_error: 	'',
-
-			address_tint:	'',
+			address_error:	'',
 
 			waiting: false,
 			ready: false,
@@ -115,19 +105,13 @@ export default withNavigation(class GetPrizeLayout extends Component {
 	componentDidUpdate(prev_props) {
 		// Изменились данные о пользователе
 		if(!Object.is(prev_props.user,this.props.user)) {
-			let address_tint = '';
-			if(this.props.user.address && !this.props.user.address_obj.apartment) {
-				address_tint = 'Укажите квартиру, если есть';
-			}
 			this.setState(state => ({
 				name:			this.props.user.name,
 				father:			this.props.user.father,
 				family:			this.props.user.family,
 				mail:			this.props.user.mail,
 				birthday:		this.props.user.birthday || state.birthday,
-				address:		this.props.user.address,
-				address_obj:	this.props.user.address_obj,
-				address_tint,
+				address:		this.props.user.passport.address || state.address,
 			}));
 		}
 
@@ -139,12 +123,12 @@ export default withNavigation(class GetPrizeLayout extends Component {
 		}
 
 		// Убираем ошибки
-		if(this.state.name.length		&& this.state.name_error.length)		this.setState({name_error:false});
-		if(this.state.father.length		&& this.state.father_error.length)		this.setState({father_error:false});
-		if(this.state.family.length		&& this.state.family_error.length)		this.setState({family_error:false});
-		if(this.state.mail.length		&& this.state.mail_error.length)		this.setState({mail_error:false}); // потом нормальную надо сделать
-		if(this.state.birthday.length	&& this.state.birthday_error.length)	this.setState({birthday_error:false});
-		if(this.state.address.length	&& this.state.address_error.length)		this.setState({address_error:false});
+		if(this.state.name.length		&& this.state.name_error.length)		this.setState({name_error:''});
+		if(this.state.father.length		&& this.state.father_error.length)		this.setState({father_error:''});
+		if(this.state.family.length		&& this.state.family_error.length)		this.setState({family_error:''});
+		if(this.state.mail.length		&& this.state.mail_error.length)		this.setState({mail_error:''}); // потом нормальную надо сделать
+		if(this.state.birthday.length	&& this.state.birthday_error.length)	this.setState({birthday_error:''});
+		if(this.state.address.length	&& this.state.address_error.length)		this.setState({address_error:''});
 	}
 
 	update = async (data) => {
@@ -190,7 +174,7 @@ export default withNavigation(class GetPrizeLayout extends Component {
 			},
 			{
 				field: 'address',
-				error: 'Укажите адрес доставки'
+				error: 'Введите адрес регистрации'
 			},
 		];
 
@@ -222,8 +206,7 @@ export default withNavigation(class GetPrizeLayout extends Component {
 			family: 	state.family,
 			mail:	 	state.mail,
 			birthday:	state.birthday,
-			address: 	state.address,
-			address_obj:state.address_obj,
+			address:	state.address,
 		});
 		await this.setState({waiting:false});
 	}
@@ -299,21 +282,30 @@ export default withNavigation(class GetPrizeLayout extends Component {
 							}}
 						/>
 					</View>
+					<View style={styles.block}>
+						<SubTitle style={styles.subtitle} text="Адрес регистрации" />
+						<TextArea
+							id={this.inputs.address.ref}
+							style={styles.textarea}
+							value={state.address}
+							placeholder="Укажите адрес постоянной регистрации (как в паспорте)"
+							update={address => this.update({address})}
+							error={state.address_error}
+							keyboard_options={{
+								scroll: this.scroll,
+								offset: this.inputs.address.offset,
+							}}
+						/>
+					</View>
 				</View>
 				<View style={styles.address_area}>
-					<SubTitle style={styles.address_title} text="Адрес доставки" />
-					<SelectAddress
-						title="Укажите адрес доставки"
-						value={state.address}
-						error={state.address_error || state.address_tint}
-					/>
 					{/*
 					<Text style={styles.address_text}>
 						Текст, описывающий особенности получения выигрыша, правила и какие-то хитрости. Может занимать несколько строчек.
 					</Text>
 					*/}
 					<TouchableOpacity style={styles.save} onPress={this.send}>
-						<Text style={styles.save_text}>Дальше</Text>
+						<Text style={styles.save_text}>Отправить</Text>
 					</TouchableOpacity>
 				</View>
 			</ScrollView>

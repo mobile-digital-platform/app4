@@ -162,7 +162,7 @@ export const request = {
 			Email:		data.mail,
 			City:		data.city_id,
 			PushToken:	data.push_token,
-			Device:		data.device,
+			// Device:		data.device,
 		});
 		if(response) {
 			return {response:1};
@@ -273,6 +273,23 @@ export const request = {
 			return {error};
 		}
 	},
+	// Получение данных регистрации
+	get_registration_data: async (id) => {
+		let {response,error} = await API('/GetRegistationData',{UserID:id});
+		if(response) {
+			return {response:{
+				father:		response.LName,
+				family:		response.MName,
+				address:	response.Address,
+				birthday:	response.Birthday.substring(0,10),
+				mail:		response.Email,
+			}};
+		}
+		if(error) {
+			console.log('error',error);
+			return {error};
+		}
+	},
 	// Сохранение адреса доставки
 	set_delivery_address: async (data) => {
 		let {response,error} = await API('/SetDeliveryAddress',{
@@ -287,6 +304,24 @@ export const request = {
 		});
 		if(response) {
 			return {response:1};
+		}
+		if(error) {
+			console.log('error',error);
+			return {error};
+		}
+	},
+	// Получение адреса доставки
+	get_delivery_address: async (id) => {
+		let {response,error} = await API('/GetDeliveryAddress',{UserID:id});
+		if(response) {
+			return {response:{
+				region:		response.Region,
+				postcode:	response.Postcode,
+				city:		response.City,
+				street:		response.Street,
+				building:	response.Building,
+				apartment:	response.Apartment,
+			}};
 		}
 		if(error) {
 			console.log('error',error);
@@ -312,6 +347,28 @@ export const request = {
 		});
 		if(response) {
 			return {response:1};
+		}
+		if(error) {
+			console.log('error',error);
+			return {error};
+		}
+	},
+	// Получение паспортныъ данные
+	get_passport_data: async (id) => {
+		let {response,error} = await API('/GetPassportData',{UserID:id});
+		if(response) {
+			return {response:{
+				father:		response.LName,
+				family:		response.MName,
+				birthday:	response.Birthday.substring(0,10),
+				mail:		response.Email,
+				seria:		response.DocSeries,
+				number:		response.DocNumber,
+				date:		response.DocIssueDate,
+				issuer:		response.DocIssuer,
+				inn:		response.INN,
+				address:	response.Address,
+			}};
 		}
 		if(error) {
 			console.log('error',error);

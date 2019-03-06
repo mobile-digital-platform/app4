@@ -153,16 +153,53 @@ export default class SplashComponent extends Component {
 				let {response,error} = await settings_request.get(we.id);
 				if(response) {
 					this.setState({user:'loaded'});
-					if(!response.push_token && !config.simulator) response.push_token = await push.request_async();
+					let user_data = response;
+					if(!user_data.push_token && !config.simulator) user_data.push_token = await push.request_async();
 					if(!config.simulator) {
 						let push_token = await push.request_async();
-						if(response.push_token != push_token) {
-							response.push_token = push_token;
-							settings_request.save(response);
+						if(user_data.push_token != push_token) {
+							user_data.push_token = push_token;
+							settings_request.save(user_data);
 						}
 					}
-					this.props.update_user(response);
-					st.set('user',response);
+					this.props.update_user(user_data);
+					st.set('user',user_data);
+
+					let passport_data = await settings_request.get_passport_data(we.id);
+					if(passport_data.response) {
+						user_data.birthday = passport_data.response.birthday;
+						user_data.passport = {
+							seria:		passport_data.response.seria,
+							number:		passport_data.response.number,
+							date:		passport_data.response.date,
+							issuer:		passport_data.response.issuer,
+							address:	passport_data.response.address,
+							inn:		passport_data.response.inn,
+						}
+						this.props.update_user(user_data);
+						st.merge('user',user_data);
+					}
+
+					let address_data = await settings_request.get_delivery_address(we.id);
+					if(address_data.response) {
+						let full = (
+							address_data.response.city+' '+
+							address_data.response.street+' '+
+							address_data.response.building+' кв. '+address_data.response.apartment
+						);
+						user_data.address = full;
+						user_data.address_obj = {
+							full,
+							postcode:	address_data.response.postcode,
+							region:		address_data.response.region,
+							city:		address_data.response.city,
+							street:		address_data.response.street,
+							building:	address_data.response.building,
+							apartment:	address_data.response.apartment,
+						}
+						this.props.update_user(user_data);
+						st.merge('user',user_data);
+					}
 				}
 				if(error) {
 					this.setState({user:'failed'});

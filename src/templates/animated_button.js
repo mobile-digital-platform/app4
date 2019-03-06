@@ -1,8 +1,10 @@
 import React,{Component} from 'react';
-import {Animated,Easing,Platform,StyleSheet,Text,TouchableOpacity,View} from 'react-native';
+import {Animated,Easing,Platform,Image,Text,TouchableOpacity,View} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import {Svg,Path,G} from 'react-native-svg';
+import {Svg,Line} from 'react-native-svg';
 import {AnimatedCircularProgress,CircularProgress} from 'react-native-circular-progress';
+
+import Tick from '../../assets/ui/tick.png';
 
 const styles = EStyleSheet.create({
 	container: {
@@ -50,15 +52,18 @@ const styles = EStyleSheet.create({
 		backgroundColor: 'transparent',
 		transform: [{rotate:'-45deg'}],
 	},
+	tick_image: {
+		height: 25, width: 25,
+	},
 	tick_left: {
-		position: 'absolute', bottom: 3.5, right: 10,
+		position: 'absolute', bottom: 3.5, right: 11,
 		height: 5, width: 12,
 		borderRadius: 5,
 		backgroundColor: '#fff',
 		transform: [{rotate:'45deg'}],
 	},
 	tick_right: {
-		position: 'absolute', bottom: 6, left: 5,
+		position: 'absolute', bottom: 6, left: 6,
 		height: 5, width: 20,
 		borderRadius: 5,
 		backgroundColor: '#fff',
@@ -67,7 +72,7 @@ const styles = EStyleSheet.create({
 });
 
 const linear = {
-	duration:  300,
+	duration: 300,
 	easing: Easing.linear,
 }
 const circular = {
@@ -94,7 +99,7 @@ export default class AnimatedButton extends Component {
 
 		this.state = {
 			layout: null,
-			height: 50,
+			height: 50*EStyleSheet.value("$scale"),
 
 			button_width_value: new Animated.Value(1),
 			button_width: '100%',
@@ -283,9 +288,28 @@ export default class AnimatedButton extends Component {
 					<Animated.View style={button_styles}>
 					{props.state == 'end' ? (
 						<View style={styles.tick_area}>
-							{/*<View style={tick_styles} />*/}
+							{/*
+							<View style={tick_styles} />
 							<Animated.View style={[styles.tick_left]} />
 							<Animated.View style={[styles.tick_right]} />
+							*/}
+							<Image style={styles.tick_image} source={Tick} />
+							{/*
+							<Svg height='30' width='30'>
+								<Line
+									x1={ 0} y1={14}
+									x2={10} y2={20}
+									stroke='#fff'
+									strokeWidth='5'
+								/>
+								<Line
+									x1={20} y1={ 6}
+									x2={10} y2={20}
+									stroke='#fff'
+									strokeWidth='5'
+								/>
+							</Svg>
+							*/}
 						</View>
 					) : null}
 					</Animated.View>

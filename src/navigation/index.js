@@ -18,8 +18,8 @@ const light = {
 	headerTitleStyle: {
 		width: 220*scale,
 		marginHorizontal: 0,
-		paddingVertical: 3,
-		fontSize: 16*scale, fontFamily: 'GothamPro-Bold',
+		paddingVertical: 5,
+		fontSize: 16*scale, fontFamily: 'GothamPro-Bold', fontWeight: '200',
 	},
 };
 
@@ -38,7 +38,7 @@ const dark = {
 	headerTitleStyle: {
 		width: '100%',
 		paddingVertical: 3,
-		fontSize: 16*scale, fontFamily: 'GothamPro-Bold',
+		fontSize: 16*scale, fontFamily: 'GothamPro-Bold', fontWeight: '200',
 	},
 };
 

@@ -76,8 +76,8 @@ export const request = {
 				items: response.map(e => ({
 					id:				e.PromoGroupID,
 					title:			e.PromoGroupName,
-					start:			e.Start.substr(0,10),
-					end:			e.Finish.substr(0,10),
+					start:			e.Start.substring(0,10),
+					end:			e.Finish.substring(0,10),
 					image_url:		e.BannerLink,
 					main_image_url: e.MainBannerLink,
 				})),
@@ -119,8 +119,8 @@ export const request = {
 					group_id:			e.PromoGroupID,
 					title:				e.Name,
 					description:		e.Description,
-					start:				e.Start.substr(0,10),
-					end:				e.Finish.substr(0,10),
+					start:				e.Start.substring(0,10),
+					end:				e.Finish.substring(0,10),
 					retailer_id:		e.NetworkID,
 					image_url:			e.BannerLink,
 					site_link:			e.WebSiteLink,
@@ -182,7 +182,7 @@ export const request = {
 				items: response.map(e => ({
 					id:			e.CheckID,
 					number:		e.CheckNum,
-					date:		e.Date.substr(0,10),
+					date:		e.Date.substring(0,10),
 					state:		e.State,
 					scores:		e.Scores,
 					details:	e.Details,
@@ -376,6 +376,22 @@ export const request = {
 					lng:		e.GpsLng,
 				})),
 			}};
+		}
+		if(error) {
+			console.log('error',error);
+			return {error};
+		}
+	},
+	// Выбор центра выдачи призов
+	set_prize_center: async (data) => {
+		let {response,error} = await API('/SetPrizeCenter',{
+			User_id:	data.user_id,
+			PromoID:	data.promo_id,
+			ID: 		data.center,
+
+		});
+		if(response) {
+			return {response:1};
 		}
 		if(error) {
 			console.log('error',error);

@@ -7,7 +7,7 @@ import Input		from '../../../../templates/input';
 import InputPhone	from '../../../../templates/input_phone';
 import Select		from '../../../../templates/select';
 
-import YandesMaps	from './map';
+import YandexMaps	from './map';
 
 const styles = EStyleSheet.create({
 	container: {
@@ -159,10 +159,10 @@ export default withNavigation(class GetPrizeCenterLayout extends Component {
 				field: 'mail',
 				error: 'Укажите почтоый ящик'
 			},
-			{
-				field: 'center',
-				error: 'Выберите центр выдачи'
-			},
+			// {
+			// 	field: 'center',
+			// 	error: 'Выберите центр выдачи'
+			// },
 		];
 
 		return fields.every(item => {
@@ -192,7 +192,7 @@ export default withNavigation(class GetPrizeCenterLayout extends Component {
 			father: 	state.father,
 			family: 	state.family,
 			mail:	 	state.mail,
-			center: 	state.center,
+			center: 	1,
 		});
 		await this.setState({waiting:false});
 	}
@@ -284,7 +284,7 @@ export default withNavigation(class GetPrizeCenterLayout extends Component {
 				</View>
 				<View style={styles.map_area}>
 					<View style={styles.map}>
-						<YandesMaps list={props.list} />
+						<YandexMaps list={props.list} />
 					</View>
 					<TouchableOpacity style={styles.save} onPress={this.send}>
 						<Text style={styles.save_text}>Дальше</Text>

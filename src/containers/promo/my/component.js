@@ -9,8 +9,10 @@ export default withNavigation(class MyPromoListComponent extends Component {
 	constructor(props) {
 		super(props);
 
+		this.id = props.navigation.getParam('id',0);
+
 		this.state = {
-			data: this.get_promo(props.navigation.getParam('id',0)),
+			data: this.get_promo(this.id),
 			details: {},
 			details_error: '',
 			check: [],
@@ -21,6 +23,7 @@ export default withNavigation(class MyPromoListComponent extends Component {
 
 	componentDidMount() {
 		this.get_data();
+		this.props.navigation.push('promo_my_prizes',{id:this.id});
 	}
 
 	get_promo = (id) => this.props.promo.find(e => e.id==id);
