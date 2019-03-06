@@ -159,10 +159,10 @@ export default withNavigation(class GetPrizeCenterLayout extends Component {
 				field: 'mail',
 				error: 'Укажите почтоый ящик'
 			},
-			// {
-			// 	field: 'center',
-			// 	error: 'Выберите центр выдачи'
-			// },
+			{
+				field: 'center',
+				error: 'Выберите центр выдачи'
+			},
 		];
 
 		return fields.every(item => {

@@ -9,7 +9,8 @@ import Item from './item';
 
 const styles = EStyleSheet.create({
 	container: {
-		marginTop: 20, marginBottom: 10,
+		marginTop: 20,
+		paddingHorizontal: 10,
 		backgroundColor: '#fff',
 	},
 	info: {
@@ -48,7 +49,7 @@ export default withNavigation(({promo_id,data,...props}) => (
 	<View style={styles.container}>
 		<View style={styles.info}>
 			<Subtitle text={data.group_name} />
-			{1||data.user_data_type != -1 ? (
+			{data.user_data_type != -1 ? (
 			<>
 				<Text style={styles.text}>Чтобы мы могли отправить {data.group_name.toLowerCase()}, необходимо внести данные.</Text>
 				<TouchableOpacity style={styles.button} onPress={_=>{

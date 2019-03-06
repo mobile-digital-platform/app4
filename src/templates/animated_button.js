@@ -95,16 +95,17 @@ export default class AnimatedButton extends Component {
 		super(props);
 
 		this.animation;
+		this.value = {
+			button_width: new Animated.Value(1),
+			tick_size: new Animated.Value(0),
+		};
 		this.circular_progress;
 
 		this.state = {
 			layout: null,
 			height: 50*EStyleSheet.value("$scale"),
 
-			button_width_value: new Animated.Value(1),
 			button_width: '100%',
-
-			tick_size_value: new Animated.Value(0),
 
 			// tick_left:   8*EStyleSheet.value("$scale"),
 			// tick_right: 13*EStyleSheet.value("$scale"),
@@ -117,11 +118,11 @@ export default class AnimatedButton extends Component {
 
 	componentDidMount() {
 		// this.setState({
-			// tick_left: this.state.tick_size_value.interpolate({
+			// tick_left: this.value.tick_size.interpolate({
 			// 	inputRange: [0,1],
 			// 	outputRange: [ 8*EStyleSheet.value("$scale"),12*EStyleSheet.value("$scale")],
 			// }),
-			// tick_right: this.state.tick_size_value.interpolate({
+			// tick_right: this.value.tick_size.interpolate({
 			// 	inputRange: [0,1],
 			// 	outputRange: [13*EStyleSheet.value("$scale"),20*EStyleSheet.value("$scale")],
 			// }),
@@ -133,7 +134,7 @@ export default class AnimatedButton extends Component {
 			let {height,width} = this.state.layout;
 			this.setState({
 				height,
-				button_width: this.state.button_width_value.interpolate({
+				button_width: this.value.button_width.interpolate({
 					inputRange: [0,1],
 					outputRange: [height,width],
 				}),
@@ -155,13 +156,11 @@ export default class AnimatedButton extends Component {
 	}
 	// Сужение
 	shrink = () => {
-		this.setState({
-			state: 'shrinking',
-			tick_size_value: new Animated.Value(0),
-		});
+		this.value.tick_size = new Animated.Value(0);
+		this.setState({state:'shrinking'});
 
 		// Сворачиваем кнопку
-		this.animation = Animated.timing(this.state.button_width_value,{
+		this.animation = Animated.timing(this.value.button_width,{
 			toValue: 0,
 			duration: linear.duration,
 			easing: linear.easing,
@@ -195,12 +194,12 @@ export default class AnimatedButton extends Component {
 		this.setState({state:'expanding'});
 
 		// Расширяем кнопку и галочку
-		this.animation = Animated.timing(this.state.button_width_value,{
+		this.animation = Animated.timing(this.value.button_width,{
 			toValue: 1,
 			duration: linear.duration,
 			easing: linear.easing,
 		}).start(this.end);
-		// Animated.timing(this.state.tick_size_value,{
+		// Animated.timing(this.value.tick_size,{
 		// 	toValue: 1,
 		// 	duration: linear.duration,
 		// 	easing: linear.easing,
@@ -225,8 +224,6 @@ export default class AnimatedButton extends Component {
 			button:		props.style?.button		?? {},
 			text:		props.style?.text		?? {},
 		});
-
-		console.log(state.height);
 
 		let container_styles = [
 			styles.container,

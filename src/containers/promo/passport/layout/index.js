@@ -111,6 +111,8 @@ export default withNavigation(class PromoPassportLayout extends Component {
 
 		this.required = ['name','father','family','birthday','seria','number','date','issuer','address','inn'];
 
+		console.log(props);
+
 		this.state = {
 			name: 		props.user.name,
 			father: 	props.user.father,
@@ -366,7 +368,7 @@ export default withNavigation(class PromoPassportLayout extends Component {
 	render() {
 		let {props,state} = this;
 
-		// console.log(state);
+		console.log(state);
 
 		return (
 			<ScrollView ref={this.scroll} keyboardShouldPersistTaps="always" keyboardDismissMode="on-drag" style={styles.container}>

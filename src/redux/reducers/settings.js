@@ -364,7 +364,7 @@ export const request = {
 				mail:		response.Email,
 				seria:		response.DocSeries,
 				number:		response.DocNumber,
-				date:		response.DocIssueDate,
+				date:		response.DocIssueDate.substring(0,10),
 				issuer:		response.DocIssuer,
 				inn:		response.INN,
 				address:	response.Address,

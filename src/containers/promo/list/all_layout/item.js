@@ -217,8 +217,6 @@ export default withNavigation(class ListItem extends Component {
 
 		let triangle_size = 10*EStyleSheet.value("$scale");
 
-		console.log(props.data.promo_list);
-
 		return (
 			<TouchableOpacity style={styles.container} onPress={_=>this.change_position()}>
 				<Image style={[styles.image,{height:this.state.image_height}]} source={{uri:this.state.image_url}} />

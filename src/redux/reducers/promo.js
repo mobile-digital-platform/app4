@@ -385,7 +385,7 @@ export const request = {
 	// Выбор центра выдачи призов
 	set_prize_center: async (data) => {
 		let {response,error} = await API('/SetPrizeCenter',{
-			User_id:	data.user_id,
+			UserID:		data.user_id,
 			PromoID:	data.promo_id,
 			ID: 		data.center,
 

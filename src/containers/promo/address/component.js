@@ -10,7 +10,6 @@ export default withNavigation((props) => {
 		get_type		= props.navigation.getParam('get_type',1),
 		user_data_type	= props.navigation.getParam('user_data_type',1);
 
-	get_type = 1;
 	if(promo_id) {
 		if(get_type == 1) {
 			return (<LayoutCenter	{...props} {...{promo_id,get_type,user_data_type}} />);

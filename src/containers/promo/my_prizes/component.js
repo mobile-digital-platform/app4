@@ -31,7 +31,6 @@ export default withNavigation(class PromoMyPrizesComponent extends Component {
 	}
 
 	render() {
-		console.log(this.state.list);
 		return (
 			<Layout
 				promo_id={this.id}

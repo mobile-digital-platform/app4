@@ -19,9 +19,14 @@ export default withNavigation(class PromoGetPrizeByMailComponent extends Compone
 
 	send_data = async (data) => {
 		let registration_data = await request.set_registration_data({
-			promo_id: this.promo_id,
-			user_id: this.props.user.id,
-			...data,
+			promo_id:	this.promo_id,
+			user_id:	this.props.user.id,
+			name:   	data.name,
+			father: 	data.father,
+			family: 	data.family,
+			mail:	 	data.mail,
+			birthday:	data.birthday+' 00:00:00',
+			address:	data.address,
 		});
 		if(registration_data.response) {
 			let obj = {

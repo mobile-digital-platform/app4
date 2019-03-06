@@ -10,7 +10,6 @@ const styles = EStyleSheet.create({
 		backgroundColor: '#fff',
 	},
 	list: {
-		paddingHorizontal: 10,
 	},
 	empty: {
 		flex: 1,

@@ -169,13 +169,13 @@ export default class SplashComponent extends Component {
 					if(passport_data.response) {
 						user_data.birthday = passport_data.response.birthday;
 						user_data.passport = {
-							seria:		passport_data.response.seria,
-							number:		passport_data.response.number,
-							date:		passport_data.response.date,
-							issuer:		passport_data.response.issuer,
-							address:	passport_data.response.address,
-							inn:		passport_data.response.inn,
-						}
+							seria:		passport_data.response.seria	?? '',
+							number:		passport_data.response.number	?? '',
+							date:		passport_data.response.date		?? '',
+							issuer:		passport_data.response.issuer	?? '',
+							address:	passport_data.response.address	?? '',
+							inn:		passport_data.response.inn		?? '',
+						};
 						this.props.update_user(user_data);
 						st.merge('user',user_data);
 					}

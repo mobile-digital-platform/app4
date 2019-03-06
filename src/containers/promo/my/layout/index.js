@@ -142,10 +142,10 @@ const styles = EStyleSheet.create({
 });
 
 export default withNavigation(class MyPromoListLayout extends Component {
-	animation = {
+	value = {
 		points: new Animated.Value(0),
 		bottom: new Animated.Value(0),
-		check: []
+		check: [],
 	};
 	state = {
 		points: '-100%',
@@ -156,18 +156,18 @@ export default withNavigation(class MyPromoListLayout extends Component {
 
 	componentDidMount() {
 		this.setState({
-			points: this.animation.points.interpolate({
+			points: this.value.points.interpolate({
 				inputRange: [0,1],
 				outputRange: ['-100%','0%'],
 			}),
-			bottom: this.animation.bottom.interpolate({
+			bottom: this.value.bottom.interpolate({
 				inputRange: [0,1],
 				outputRange: ['-100%','0%'],
 			}),
 		});
 		// Панель снизу
 		setTimeout(_=>{
-			Animated.timing(this.animation.bottom,{
+			Animated.timing(this.value.bottom,{
 				toValue: 1,
 				duration: 700,
 				easing: Easing.bezier(0.5,0,0.2,1),
@@ -183,7 +183,7 @@ export default withNavigation(class MyPromoListLayout extends Component {
 		) {
 			// Очки сверху
 			setTimeout(_=> {
-				Animated.timing(this.animation.points,{
+				Animated.timing(this.value.points,{
 					toValue: 1,
 					duration: 500,
 					easing: Easing.bezier(0.5,0,0.2,1),
@@ -196,9 +196,9 @@ export default withNavigation(class MyPromoListLayout extends Component {
 
 			// Анимируем не более 10 чеков
 			let length = Math.min(10,this.props.check.length);
-			this.animation.check = Array.from({length},_=>new Animated.Value(0));
+			this.value.check = Array.from({length},_=>new Animated.Value(0));
 
-			await this.setState({check:this.animation.check.map(ani => {
+			await this.setState({check:this.value.check.map(ani => {
 				return ani.interpolate({
 					inputRange: [0,1],
 					outputRange: ['100%','0%'],
@@ -206,7 +206,7 @@ export default withNavigation(class MyPromoListLayout extends Component {
 			})});
 
 			setTimeout(_=> {
-				this.animation.check.forEach(ani => {
+				this.value.check.forEach(ani => {
 					Animated.timing(ani,{
 						toValue: 1,
 						duration: 700,
@@ -258,7 +258,7 @@ export default withNavigation(class MyPromoListLayout extends Component {
 				) : (
 					check.length ? (
 						<FlatList
-							style={[styles.list,{marginBottom:state.bottom_pad*this.animation.bottom._value}]}
+							style={[styles.list,{marginBottom:state.bottom_pad*this.value.bottom._value}]}
 							data={check}
 							renderItem={({item,index}) => (<Check data={item} top={state.check[index]} extra={details} />)}
 							ListHeaderComponent={<View style={styles.list_padding} />}
