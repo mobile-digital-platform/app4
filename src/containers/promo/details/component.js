@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Platform,StyleSheet,FlatList,Image,ImageBackground,ScrollView,Text,TouchableOpacity,View,WebView} from 'react-native';
+import {Linking,Platform,StyleSheet,FlatList,Image,ImageBackground,ScrollView,Text,TouchableOpacity,View,WebView} from 'react-native';
 import {withNavigation} from 'react-navigation';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
@@ -57,18 +57,31 @@ const styles = EStyleSheet.create({
 
 	participate_area: {
 		alignItems: 'center',
-		padding: 15,
+		paddingVertical: 10, paddingHorizontal: 20,
 		borderTopWidth: 1, borderTopColor: '#ccc',
 	},
 	participate_button: {
+		justifyContent: 'center',
 		alignItems: 'center',
-		width: '100%',
-		paddingVertical: 15, paddingHorizontal: 50,
+		height: 50, width: 280,
+		margin: 5,
 		borderRadius: 100,
 		backgroundColor: '$red',
 	},
 	participate_text: {
 		color: '#fff',
+		fontSize: 16, fontFamily: 'GothamPro-Medium',
+	},
+	link_button: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		height: 40, width: 240,
+		margin: 5,
+		borderWidth: 1, borderColor: '$red',
+		borderRadius: 100,
+	},
+	link_text: {
+		color: '$red',
 		fontSize: 14, fontFamily: 'GothamPro-Medium',
 	},
 
@@ -178,6 +191,8 @@ export default withNavigation(class PromoDetails extends Component {
 
 		// navigation.push('promo_participate',{data});
 
+		console.log(data);
+
 		return (
 			<View style={styles.container}>
 				<ImageBackground style={styles.banner} imageStyle={{opacity:0.5}} source={Banner}>
@@ -196,17 +211,22 @@ export default withNavigation(class PromoDetails extends Component {
 					<WebView style={styles.description_area} source={{html:stylize(data.description)}} useWebKit={true} />
 				</View>
 				) : null}
-				{data.can_participate ? (
+				{data.site_link || data.can_participate ? (
 				<View style={styles.participate_area}>
 					{data.participation ? (
 						<TouchableOpacity style={styles.participate_button} onPress={_=>navigation.push('promo_my_view',{id:data.id})}>
 							<Text style={styles.participate_text}>Перейти к акции</Text>
 						</TouchableOpacity>
-					) : (
+					) : data.can_participate ? (
 						<TouchableOpacity style={styles.participate_button} onPress={_=>navigation.push('promo_participate',{data})}>
 							<Text style={styles.participate_text}>Участвовать</Text>
 						</TouchableOpacity>
-					)}
+					) : null}
+					{data.site_link ? (
+						<TouchableOpacity style={styles.link_button} onPress={_=>Linking.openURL(data.site_link)}>
+							<Text style={styles.link_text}>Перейти на сайт акции</Text>
+						</TouchableOpacity>
+					) : null}
 				</View>
 				) : null}
 			</View>

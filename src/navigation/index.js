@@ -1,5 +1,5 @@
 import React from 'react';
-import {Dimensions,Image,View,} from 'react-native';
+import {Dimensions,Platform,Image,View,} from 'react-native';
 
 import config from '../config';
 
@@ -19,7 +19,8 @@ const light = {
 		width: 220*scale,
 		marginHorizontal: 0,
 		paddingVertical: 5,
-		fontSize: 16*scale, fontFamily: 'GothamPro-Bold', fontWeight: '200',
+		fontSize: 16*scale, fontFamily: 'GothamPro-Bold',
+		...Platform.select({ios:{},android:{fontWeight:'200'}}),
 	},
 };
 
@@ -38,7 +39,8 @@ const dark = {
 	headerTitleStyle: {
 		width: '100%',
 		paddingVertical: 3,
-		fontSize: 16*scale, fontFamily: 'GothamPro-Bold', fontWeight: '200',
+		fontSize: 16*scale, fontFamily: 'GothamPro-Bold',
+		...Platform.select({ios:{},android:{fontWeight:'200'}}),
 	},
 };
 

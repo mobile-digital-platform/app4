@@ -23,7 +23,7 @@ export default withNavigation(class MyPromoListComponent extends Component {
 
 	componentDidMount() {
 		this.get_data();
-		this.props.navigation.push('promo_my_prizes',{id:this.id});
+		// this.props.navigation.push('promo_my_prizes',{id:this.id});
 	}
 
 	get_promo = (id) => this.props.promo.find(e => e.id==id);

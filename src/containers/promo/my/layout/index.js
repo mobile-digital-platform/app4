@@ -227,8 +227,6 @@ export default withNavigation(class MyPromoListLayout extends Component {
 
 		data = promo_date_diff(data);
 
-		console.log(details);
-
 		return (
 			<View style={styles.container}>
 				<ImageBackground style={styles.banner} imageStyle={{opacity:0.5}} source={{uri:data.image_url}}>
