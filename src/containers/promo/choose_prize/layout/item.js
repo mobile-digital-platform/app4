@@ -75,7 +75,7 @@ export default withNavigation((props) => (
 				<Text style={styles.cost}><Text style={styles.cost_number}>{props.cost}</Text> {props.cost_type}</Text>
 				<Text style={styles.remains}>Осталось: <Text style={styles.remains_number}>{props.remains} шт.</Text></Text>
 			</View>
-			{props.remains>0 && props.available_points>props.cost ? (
+			{props.remains>0 && props.available_points>=props.cost ? (
 				<TouchableOpacity style={styles.button} onPress={props.select}>
 					<Text style={styles.button_text}>Выбрать</Text>
 				</TouchableOpacity>

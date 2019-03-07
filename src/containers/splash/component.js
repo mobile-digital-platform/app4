@@ -183,19 +183,24 @@ export default class SplashComponent extends Component {
 					let address_data = await settings_request.get_delivery_address(we.id);
 					if(address_data.response) {
 						let full = (
+							address_data.response.city?.length &&
+							address_data.response.street?.length &&
+							address_data.response.building?.length &&
+							address_data.response.apartment?.length
+						) ? (
 							address_data.response.city+' '+
 							address_data.response.street+' '+
-							address_data.response.building+' кв. '+address_data.response.apartment
-						);
+							address_data.response.building+' кв '+address_data.response.apartment
+						) : '';
 						user_data.address = full;
 						user_data.address_obj = {
 							full,
-							postcode:	address_data.response.postcode,
-							region:		address_data.response.region,
-							city:		address_data.response.city,
-							street:		address_data.response.street,
-							building:	address_data.response.building,
-							apartment:	address_data.response.apartment,
+							postcode:	address_data.response.postcode	?? '',
+							region:		address_data.response.region	?? '',
+							city:		address_data.response.city		?? '',
+							street:		address_data.response.street	?? '',
+							building:	address_data.response.building	?? '',
+							apartment:	address_data.response.apartment	?? '',
 						}
 						this.props.update_user(user_data);
 						st.merge('user',user_data);
