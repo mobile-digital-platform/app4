@@ -1,22 +1,33 @@
-import React,{Component} from 'react';
-import {Platform,StatusBar,StyleSheet,View} from 'react-native';
+import React			from 'react';
+import {StatusBar,View} from 'react-native';
+import EStyleSheet		from 'react-native-extended-stylesheet';
+import firebase			from 'react-native-firebase';
+import {withNavigation}	from 'react-navigation';
 
-import {light,dark}	from '../../navigation';
+import {light,dark}		from '../../navigation';
 
-import Main			from '../../containers/settings';
+import Main				from '../../containers/settings';
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: '#fff',
 	},
 });
 
-export default class MainSettings extends Component {
+const page_title = 'Настройки';
+
+export default withNavigation(class MainSettings extends React.Component {
 	static navigationOptions = ({navigation}) => ({
-		title: 'Настройки'.toUpperCase(),
+		title: page_title.toUpperCase(),
 		...light,
 	});
+
+	componentDidMount() {
+		this.props.navigation.addListener('didFocus',_=>{
+			firebase.analytics().setCurrentScreen(page_title);
+		});
+	}
 
 	render() {
 		return (
@@ -26,4 +37,4 @@ export default class MainSettings extends Component {
 			</View>
 		);
 	}
-}
+});

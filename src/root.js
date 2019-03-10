@@ -1,6 +1,7 @@
 import React,{Component}							from 'react';
 import {AsyncStorage,Dimensions,Linking,StatusBar}	from 'react-native';
 import EStyleSheet					from 'react-native-extended-stylesheet';
+import firebase						from 'react-native-firebase';
 import {
 	createAppContainer,
 	createStackNavigator,
@@ -56,6 +57,9 @@ StatusBar.setBarStyle('light-content',true);
 
 // Уведомления
 push.init();
+
+// Аналитика
+firebase.analytics().setAnalyticsCollectionEnabled(true);
 
 // Страницы приложения
 var Navigator = createAppContainer(createStackNavigator(

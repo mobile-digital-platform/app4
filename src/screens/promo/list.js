@@ -1,14 +1,14 @@
-import React,{Component} from 'react';
-import {Platform,StatusBar,Image,Text,TouchableOpacity,View} from 'react-native';
-import EStyleSheet from 'react-native-extended-stylesheet';
+import React			from 'react';
+import {Platform,StatusBar,View}	from 'react-native';
+import EStyleSheet		from 'react-native-extended-stylesheet';
+import firebase			from 'react-native-firebase';
+import {withNavigation}	from 'react-navigation';
 
 import {light,dark}		from '../../navigation';
 
-import Settings_Button	from '../../containers/settings_button';
-import Tabs				from '../../containers/main_tabs';
+import SettingsButton	from '../../containers/settings_button';
 
 import PromoList		from '../../containers/promo/list';
-import MyPromoList		from '../../containers/promo/my';
 
 const styles = EStyleSheet.create({
 	container: {
@@ -18,12 +18,20 @@ const styles = EStyleSheet.create({
 	},
 });
 
-export default class MainList extends Component {
+const page_title = 'Акции';
+
+export default withNavigation(class MainList extends React.Component {
 	static navigationOptions = ({navigation}) => ({
-		title: 'Акции'.toUpperCase(),
-		headerRight: (<Settings_Button navigation={navigation} />),
+		title: page_title.toUpperCase(),
+		headerRight: (<SettingsButton navigation={navigation} />),
 		...dark,
 	});
+
+	componentDidMount() {
+		this.props.navigation.addListener('didFocus',_=>{
+			firebase.analytics().setCurrentScreen(page_title);
+		});
+	}
 
 	render() {
 		return (
@@ -33,4 +41,4 @@ export default class MainList extends Component {
 			</View>
 		);
 	}
-}
+});

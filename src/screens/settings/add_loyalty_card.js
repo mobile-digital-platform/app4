@@ -1,22 +1,33 @@
-import React,{Component} from 'react';
-import {Platform,StatusBar,StyleSheet,View} from 'react-native';
+import React			from 'react';
+import {StatusBar,View} from 'react-native';
+import EStyleSheet		from 'react-native-extended-stylesheet';
+import firebase			from 'react-native-firebase';
+import {withNavigation}	from 'react-navigation';
 
 import {light,dark}		from '../../navigation';
 
-import LoyaltyCards	from '../../containers/settings/loyalty_cards';
+import LoyaltyCards		from '../../containers/settings/loyalty_cards';
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: '#fff',
 	},
 });
 
-export default class MainList extends Component {
+const page_title = 'Добавить карту';
+
+export default withNavigation(class MainList extends React.Component {
 	static navigationOptions = ({navigation}) => ({
-		title: 'Добавить карту'.toUpperCase(),
+		title: page_title.toUpperCase(),
 		...light,
 	});
+
+	componentDidMount() {
+		this.props.navigation.addListener('didFocus',_=>{
+			firebase.analytics().setCurrentScreen(page_title);
+		});
+	}
 
 	render() {
 		return (
@@ -26,4 +37,4 @@ export default class MainList extends Component {
 			</View>
 		);
 	}
-}
+});

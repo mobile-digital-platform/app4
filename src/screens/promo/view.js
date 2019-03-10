@@ -1,3 +1,7 @@
+// *
+// Страница устарела
+// *
+
 import React,{Component} from 'react';
 import {Platform,StatusBar,StyleSheet,Image,Text,TouchableOpacity,View} from 'react-native';
 

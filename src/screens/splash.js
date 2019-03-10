@@ -1,8 +1,9 @@
-import React,{Component} from 'react';
-import {StatusBar,View} from 'react-native';
-import EStyleSheet from 'react-native-extended-stylesheet';
+import React			from 'react';
+import {StatusBar,View}	from 'react-native';
+import EStyleSheet		from 'react-native-extended-stylesheet';
+import firebase			from 'react-native-firebase';
 
-import Splash from '../containers/splash';
+import Splash			from '../containers/splash';
 
 const styles = EStyleSheet.create({
 	container: {
@@ -13,12 +14,19 @@ const styles = EStyleSheet.create({
 	},
 });
 
-export default class SplashScreen extends Component {
+const page_title = 'Загрузка';
+
+export default class SplashScreen extends React.Component {
 	static navigationOptions = {
 		headerStyle: {
 			display: 'none',
 		},
 	};
+
+	componentDidMount() {
+		firebase.analytics().setCurrentScreen(page_title);
+		// firebase.analytics().logEvent("",{});
+	}
 
 	render() {
 		return (

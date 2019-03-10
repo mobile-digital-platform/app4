@@ -1,10 +1,11 @@
-import React,{Component} from 'react';
+import React			from 'react';
 import {StatusBar,View} from 'react-native';
-import EStyleSheet from 'react-native-extended-stylesheet';
+import EStyleSheet		from 'react-native-extended-stylesheet';
+import firebase			from 'react-native-firebase';
 
-import {light,dark}	from '../navigation';
+import {light,dark}		from '../navigation';
 
-import Help			from '../containers/help';
+import Help				from '../containers/help';
 
 const styles = EStyleSheet.create({
 	container: {
@@ -12,11 +13,18 @@ const styles = EStyleSheet.create({
 	},
 });
 
-export default class SplashScreen extends Component {
+const page_title = 'Задать вопрос';
+
+export default class SplashScreen extends React.Component {
 	static navigationOptions = {
-		title: 'Задать вопрос'.toUpperCase(),
+		title: page_title.toUpperCase(),
 		...light,
 	};
+
+	componentDidMount() {
+		firebase.analytics().setCurrentScreen(page_title);
+		// firebase.analytics().logEvent("",{});
+	}
 
 	render() {
 		return (

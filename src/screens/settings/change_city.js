@@ -1,23 +1,33 @@
-import React,{Component} from 'react';
-import {Platform,StatusBar,StyleSheet,View} from 'react-native';
+import React			from 'react';
+import {StatusBar,View} from 'react-native';
+import EStyleSheet		from 'react-native-extended-stylesheet';
+import firebase			from 'react-native-firebase';
+import {withNavigation}	from 'react-navigation';
 
 import {light,dark}		from '../../navigation';
 
-import Settings_Button	from '../../containers/settings_button';
 import ChangeCity		from '../../containers/settings/change_city';
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: '#fff',
 	},
 });
 
-export default class MainList extends Component {
+const page_title = 'Выберите город';
+
+export default withNavigation(class MainList extends React.Component {
 	static navigationOptions = ({navigation}) => ({
-		title: 'Выберите город'.toUpperCase(),
+		title: page_title.toUpperCase(),
 		...light,
 	});
+
+	componentDidMount() {
+		this.props.navigation.addListener('didFocus',_=>{
+			firebase.analytics().setCurrentScreen(page_title);
+		});
+	}
 
 	render() {
 		return (
@@ -27,4 +37,4 @@ export default class MainList extends Component {
 			</View>
 		);
 	}
-}
+});

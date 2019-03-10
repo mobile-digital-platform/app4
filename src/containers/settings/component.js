@@ -126,7 +126,7 @@ export default withNavigation(class SettingsComponent extends Component {
 	}
 
 	render() {
-		console.log("Settings Component",this.state,this.props);
+		// console.log("Settings Component",this.state,this.props);
 
 		return (
 			<ScrollView ref={this.scroll} keyboardShouldPersistTaps="always" keyboardDismissMode="on-drag" style={{padding:10}}>
