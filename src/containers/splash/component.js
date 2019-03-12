@@ -168,6 +168,7 @@ export default class SplashComponent extends Component {
 					let passport_data = await settings_request.get_passport_data(we.id);
 					if(passport_data.response) {
 						user_data.birthday = passport_data.response.birthday;
+						if(user_data.birthday == '0001-01-01') user_data.birthday = '';
 						user_data.passport = {
 							seria:		passport_data.response.seria	?? '',
 							number:		passport_data.response.number	?? '',

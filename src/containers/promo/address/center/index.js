@@ -20,6 +20,8 @@ export default withNavigation(class PromoGetPrizeComponent extends Component {
 
 		this.state = {
 			list: [],
+			loading: false,
+			save_state: 'initial',
 		};
 	}
 
@@ -28,6 +30,7 @@ export default withNavigation(class PromoGetPrizeComponent extends Component {
 	}
 
 	get_prize_center_list = async () => {
+		this.setState({loading:true});
 		let {response,error} = await promo_request.get_prize_center_list({
 			user_id: this.props.user.id,
 			promo_id: this.promo_id,
@@ -38,18 +41,26 @@ export default withNavigation(class PromoGetPrizeComponent extends Component {
 		if(error) {
 			await alert("Не удалось загрузить список центров выдачи призов","Зайдите на эту страницу позже");
 		}
+		this.setState({loading:false});
 	}
 
 	send_data = async (data) => {
+		this.setState({save_state:'waiting'});
+
 		let registration_data = await settings_request.set_registration_data({
-			promo_id: this.promo_id,
-			user_id: this.props.user.id,
-			...data,
+			promo_id:	this.promo_id,
+			user_id:	this.props.user.id,
+			name:   	data.name,
+			father: 	data.father,
+			family: 	data.family,
+			mail:	 	data.mail,
+			birthday:	this.props.user.birthday,
 		});
 		if(registration_data.response) {
 		}
 		if(registration_data.error) {
-			alert("Ошибка",registration_data.error.message);
+			await alert("Ошибка",registration_data.error.message);
+			this.setState({save_state:'errored'});
 			return;
 		}
 
@@ -61,7 +72,8 @@ export default withNavigation(class PromoGetPrizeComponent extends Component {
 		if(address_data.response) {
 		}
 		if(address_data.error) {
-			alert("Ошибка",address_data.error.message);
+			await alert("Ошибка",address_data.error.message);
+			this.setState({save_state:'errored'});
 			return;
 		}
 
@@ -71,12 +83,25 @@ export default withNavigation(class PromoGetPrizeComponent extends Component {
 		// В асинхронное хранилище изменения тоже записываем
 		st.merge('user',data);
 
+		// Если ошибок нет, то все успешно!
+		await this.setState({save_state:'succeed'});
+	}
+	next = () => {
 		this.props.navigation.push('promo_passport',{promo_id:this.promo_id,user_data_type:this.user_data_type});
 	}
 
 	render() {
-		console.log("Get Prize Center Component",this.props);
+		// console.log("Get Prize Center Component",this.props);
 
-		return (<Layout {...this.props} list={this.state.list} send_data={this.send_data} />);
+		return (
+			<Layout
+				{...this.props}
+				loading={this.state.loading}
+				list={this.state.list}
+				state={this.state.save_state}
+				send_data={this.send_data}
+				button_on_end={this.next}
+			/>
+		);
 	}
 });
