@@ -19,7 +19,7 @@ const styles = EStyleSheet.create({
 
 const page_title = 'Об акции';
 
-export default withNavigation(class PromoView extends React.Component {
+export default withNavigation(class PromoDetailsScreen extends React.Component {
 	static navigationOptions = ({navigation}) => ({
 		title: page_title.toUpperCase(),
 		headerRight: (<SettingsButton navigation={navigation} type='light' />),

@@ -4,11 +4,12 @@ import EStyleSheet		from 'react-native-extended-stylesheet';
 import firebase			from 'react-native-firebase';
 import {withNavigation}	from 'react-navigation';
 
-import {light,dark}		from '../../navigation';
+import {light,dark}		from '../navigation';
 
-import SettingsButton	from '../../containers/settings_button';
+import DrawerButton		from '../containers/drawer_button';
+import SettingsButton	from '../containers/settings_button';
 
-import PromoMy			from '../../containers/promo/my';
+import PromoDetails		from '../containers/recipe';
 
 const styles = EStyleSheet.create({
 	container: {
@@ -17,13 +18,14 @@ const styles = EStyleSheet.create({
 	},
 });
 
-const page_title = 'Моя акция';
+const page_title = 'Рецепты';
 
-export default withNavigation(class PromoView extends React.Component {
+export default withNavigation(class PromoDetailsScreen extends React.Component {
 	static navigationOptions = ({navigation}) => ({
 		title: page_title.toUpperCase(),
-		headerRight: (<SettingsButton navigation={navigation} type='light' />),
 		...light,
+		headerLeft: (<DrawerButton navigation={navigation} type='light' />),
+		headerRight: (<SettingsButton navigation={navigation} type='light' />),
 	});
 
 	componentDidMount() {
@@ -36,7 +38,7 @@ export default withNavigation(class PromoView extends React.Component {
 		return (
 			<View style={styles.container}>
 				<StatusBar barStyle="light-content" />
-				<PromoMy/>
+				<PromoDetails/>
 			</View>
 		);
 	}

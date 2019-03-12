@@ -2,11 +2,7 @@ import React,{Component}							from 'react';
 import {AsyncStorage,Dimensions,Linking,StatusBar}	from 'react-native';
 import EStyleSheet					from 'react-native-extended-stylesheet';
 import firebase						from 'react-native-firebase';
-import {
-	createAppContainer,
-	createDrawerNavigator,
-	NavigationActions
-}									from 'react-navigation';
+import {NavigationActions}			from 'react-navigation';
 import {Provider}					from 'react-redux';
 
 import config						from './config';
@@ -18,8 +14,7 @@ import Empty						from './screens/empty';
 import Onboarding					from './screens/onboarding';
 import Splash						from './screens/splash';
 
-import PromoNavigator				from './navigation/promo';
-import MyPromoNavigator				from './navigation/my_promo';
+import Navigator					from './navigation/drawer';
 
 import store						from './redux';
 import {request}					from './redux/reducers/settings';
@@ -42,24 +37,13 @@ push.init();
 // Аналитика
 firebase.analytics().setAnalyticsCollectionEnabled(true);
 
-// Страницы приложения
-var Navigator = createAppContainer(createDrawerNavigator(
-	{
-		promo:						PromoNavigator,
-		my_promo:					MyPromoNavigator,
-	},
-	{
-		initialRouteName: 'promo',
-	}
-));
-
 export default class Router extends Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			// page: 'start',
-			page: 'navigator',
+			page: 'start',
+			// page: 'navigator',
 		};
 	}
 
@@ -76,8 +60,8 @@ export default class Router extends Component {
 		// return;
 		let data = JSON.parse(await AsyncStorage.getItem(config.storage_name)) ?? {};
 		// console.log(data);
-		// if(Object.keys(data).length)	this.set_page('splash');
-		// else							this.set_page('onboarding');
+		if(Object.keys(data).length)	this.set_page('splash');
+		else							this.set_page('onboarding');
 	}
 	// componentDidUpdate(prev_props,prev_state) {
 	// 	if(prev_state.page != 'navigator' && this.state.page == 'navigator') {

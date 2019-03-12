@@ -11,7 +11,7 @@ import PromoListScreen				from '../screens/promo/list';
 import PromoViewScreen				from '../screens/promo/view';
 import PromoDetailsScreen			from '../screens/promo/details';
 import PromoParticipateScreen		from '../screens/promo/participate';
-import PromoMyListScreen			from '../screens/promo/my';
+import PromoMyViewScreen			from '../screens/promo/my_view';
 
 import PromoAddCheckScreen			from '../screens/promo/add_check';
 import PromoChoosePrizeScreen		from '../screens/promo/choose_prize';
@@ -36,7 +36,7 @@ export default createStackNavigator(
 		promo_view:					PromoViewScreen,
 		promo_details:				PromoDetailsScreen,
 		promo_participate:			PromoParticipateScreen,
-		promo_my_view:				PromoMyListScreen,
+		promo_my_view:				PromoMyViewScreen,
 
 		promo_add_check:			PromoAddCheckScreen,
 		promo_choose_prize:			PromoChoosePrizeScreen,

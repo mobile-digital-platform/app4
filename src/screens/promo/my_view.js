@@ -1,14 +1,14 @@
 import React			from 'react';
-import {StatusBar,View} from 'react-native';
+import {StatusBar,View}	from 'react-native';
 import EStyleSheet		from 'react-native-extended-stylesheet';
 import firebase			from 'react-native-firebase';
 import {withNavigation}	from 'react-navigation';
 
 import {light,dark}		from '../../navigation';
 
-import Settings_Button	from '../../containers/settings_button';
+import SettingsButton	from '../../containers/settings_button';
 
-import PromoAddCheck	from '../../containers/promo/add_check';
+import PromoMyView		from '../../containers/promo/my_view';
 
 const styles = EStyleSheet.create({
 	container: {
@@ -17,12 +17,12 @@ const styles = EStyleSheet.create({
 	},
 });
 
-const page_title = 'Кассовый чек';
+const page_title = 'Моя акция';
 
-export default withNavigation(class PromoAddCheckScreen extends React.Component {
+export default withNavigation(class PromoMyViewScreen extends React.Component {
 	static navigationOptions = ({navigation}) => ({
 		title: page_title.toUpperCase(),
-		headerRight: (<Settings_Button navigation={navigation} type='light' />),
+		headerRight: (<SettingsButton navigation={navigation} type='light' />),
 		...light,
 	});
 
@@ -36,7 +36,7 @@ export default withNavigation(class PromoAddCheckScreen extends React.Component 
 		return (
 			<View style={styles.container}>
 				<StatusBar barStyle="light-content" />
-				<PromoAddCheck/>
+				<PromoMyView/>
 			</View>
 		);
 	}

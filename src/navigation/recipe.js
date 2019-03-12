@@ -7,17 +7,7 @@ import {
 
 import config						from '../config';
 
-import PromoMyListScreen			from '../screens/promo/my_list';
-import PromoViewScreen				from '../screens/promo/view';
-import PromoDetailsScreen			from '../screens/promo/details';
-import PromoParticipateScreen		from '../screens/promo/participate';
-import PromoMyViewScreen			from '../screens/promo/my_view';
-
-import PromoAddCheckScreen			from '../screens/promo/add_check';
-import PromoChoosePrizeScreen		from '../screens/promo/choose_prize';
-import PromoMyPrizesScreen			from '../screens/promo/my_prizes';
-import PromoAddressScreen			from '../screens/promo/address';
-import PromoPassportScreen			from '../screens/promo/passport';
+import RecipeScreen					from '../screens/recipe';
 
 import SettingsScreen				from '../screens/settings/main';
 import ConfirmPhoneScreen			from '../screens/settings/confirm_phone';
@@ -32,17 +22,7 @@ import WebScreen					from '../screens/web';
 // Страницы приложения
 export default createStackNavigator(
 	{
-		promo_my_list:				PromoMyListScreen,
-		promo_view:					PromoViewScreen,
-		promo_details:				PromoDetailsScreen,
-		promo_participate:			PromoParticipateScreen,
-		promo_my_view:				PromoMyListScreen,
-
-		promo_add_check:			PromoAddCheckScreen,
-		promo_choose_prize:			PromoChoosePrizeScreen,
-		promo_my_prizes:			PromoMyPrizesScreen,
-		promo_address:				PromoAddressScreen,
-		promo_passport: 			PromoPassportScreen,
+		recipe:						RecipeScreen,
 
 		settings:					SettingsScreen,
 		settings_confirm_phone:		ConfirmPhoneScreen,
@@ -55,6 +35,6 @@ export default createStackNavigator(
 		web:						WebScreen,
 	},
 	{
-		initialRouteName: 'promo_my_list',
+		initialRouteName: 'recipe',
 	}
 );

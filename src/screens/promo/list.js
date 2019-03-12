@@ -6,6 +6,7 @@ import {withNavigation}	from 'react-navigation';
 
 import {light,dark}		from '../../navigation';
 
+import DrawerButton		from '../../containers/drawer_button';
 import SettingsButton	from '../../containers/settings_button';
 
 import PromoList		from '../../containers/promo/list';
@@ -20,9 +21,10 @@ const styles = EStyleSheet.create({
 
 const page_title = 'Акции';
 
-export default withNavigation(class MainList extends React.Component {
+export default withNavigation(class PromoListScreen extends React.Component {
 	static navigationOptions = ({navigation}) => ({
 		title: page_title.toUpperCase(),
+		headerLeft: (<DrawerButton navigation={navigation} />),
 		headerRight: (<SettingsButton navigation={navigation} />),
 		...dark,
 	});

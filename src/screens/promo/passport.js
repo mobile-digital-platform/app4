@@ -19,7 +19,7 @@ const styles = EStyleSheet.create({
 
 const page_title = 'Паспортные данные';
 
-export default withNavigation(class PromoView extends React.Component {
+export default withNavigation(class PromoPassportScreen extends React.Component {
 	static navigationOptions = ({navigation}) => ({
 		title: page_title.toUpperCase(),
 		headerRight: (<SettingsButton navigation={navigation} type='light' />),

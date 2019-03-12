@@ -27,7 +27,6 @@ export default withNavigation(class SettingsComponent extends Component {
 
 	// Когда зарегистрировался или вошел
 	componentDidUpdate(prev_props) {
-		console.log(prev_props.user.id,this.props.user.id);
 		if(prev_props.user.id != this.props.user.id && this.props.user.id) {
 			PushNotification.configure({
 				onRegister: ({token}) => {

@@ -30,12 +30,8 @@ const dark = {
 		borderBottomWidth: 0,
 		backgroundColor: '#fff',
 	},
-	headerTintColor: '#000',
+	headerTintColor: '#3d3d3d',
 	headerBackTitle: ' ',
-	headerLeftContainerStyle: {
-		padding: 10,
-		color: '#000',
-	},
 	headerTitleStyle: {
 		width: '100%',
 		paddingVertical: 3,
