@@ -90,10 +90,10 @@ export default withNavigation(class Recipe extends Component {
 				<View style={styles.area}>
 					<YouTube
 						apiKey={config.youtube_api_key[Platform.OS]}
-						videoId="ybiXSnXPPvY"   // The YouTube video ID
-						play={true}             // control playback of video with true/false
-						fullscreen={true}       // control whether the video should play in fullscreen or inline
-						loop={true}             // control whether the video should loop when ended
+						videoId="ybiXSnXPPvY"    // The YouTube video ID
+						play={false}             // control playback of video with true/false
+						fullscreen={false}       // control whether the video should play in fullscreen or inline
+						loop={false}             // control whether the video should loop when ended
 
 						onReady={e => this.setState({ isReady: true })}
 						onChangeState={e => this.setState({ status: e.state })}

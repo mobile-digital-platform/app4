@@ -5,6 +5,7 @@
 	};
 	objectVersion = 51;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		001263CFC830417AA38CDA10 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CCFA05D3711F4FA99F0AA3B8 /* MaterialIcons.ttf */; };
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
@@ -83,6 +84,7 @@
 		83DA39317F774532B64A0226 /* voucher_confirmed.png in Resources */ = {isa = PBXBuildFile; fileRef = 63D172FEB25E486BB8D0FFE1 /* voucher_confirmed.png */; };
 		8405140122351A77006516D2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8405140022351A76006516D2 /* GoogleService-Info.plist */; };
 		8443CDB02219A4F300A0DFD8 /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8443CD922219A4EB00A0DFD8 /* libRCTPushNotification.a */; };
+		8466B25E2237F43E0024167C /* libRCTYouTube.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8466B2322237F1940024167C /* libRCTYouTube.a */; };
 		85D84234B1984A4382C37784 /* icon1.png in Resources */ = {isa = PBXBuildFile; fileRef = FC886F228CB0422DB2F81D71 /* icon1.png */; };
 		8F961D37612B411F9883C531 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5C206B52FFE44F03912BAAC1 /* Zocial.ttf */; };
 		903C9B80987B459DBCAF2E1D /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = BDD9B94DE8974623AC447E99 /* check.png */; };
@@ -463,6 +465,13 @@
 			remoteGlobalIDString = A39873CE1EA65EE60051E01A;
 			remoteInfo = "RNVectorIcons-tvOS";
 		};
+		8466B2312237F1940024167C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8466B2162237F1940024167C /* RCTYouTube.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8BDB9BC91B4289AE00EF9FEF;
+			remoteInfo = RCTYouTube;
+		};
 		ADBDB9261DFEBF0700ED6528 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */;
@@ -551,6 +560,7 @@
 		8405140022351A76006516D2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "app5/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8443CD722219A4BA00A0DFD8 /* app5.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = app5.entitlements; path = app5/app5.entitlements; sourceTree = "<group>"; };
 		8443CD802219A4EA00A0DFD8 /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
+		8466B2162237F1940024167C /* RCTYouTube.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTYouTube.xcodeproj; path = "../node_modules/react-native-youtube/RCTYouTube.xcodeproj"; sourceTree = "<group>"; };
 		8533316D848A2996A214FE09 /* Pods-app5Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-app5Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-app5Tests/Pods-app5Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		86B53CC2D9444E9DB177DCDE /* GothamPro-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "GothamPro-Medium.ttf"; path = "../assets/fonts/GothamPro-Medium.ttf"; sourceTree = "<group>"; };
 		87B2E218B31343D4BC5CEFA4 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
@@ -623,6 +633,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8466B25E2237F43E0024167C /* libRCTYouTube.a in Frameworks */,
 				8443CDB02219A4F300A0DFD8 /* libRCTPushNotification.a in Frameworks */,
 				ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
@@ -845,6 +856,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				8466B2162237F1940024167C /* RCTYouTube.xcodeproj */,
 				8443CD802219A4EA00A0DFD8 /* RCTPushNotification.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
@@ -965,6 +977,14 @@
 			children = (
 				8443CE302219A58B00A0DFD8 /* libRNVectorIcons.a */,
 				8443CE322219A58B00A0DFD8 /* libRNVectorIcons-tvOS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8466B2172237F1940024167C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8466B2322237F1940024167C /* libRCTYouTube.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1233,6 +1253,10 @@
 				{
 					ProductGroup = 139FDEE71B06529A00C62182 /* Products */;
 					ProjectRef = 139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */;
+				},
+				{
+					ProductGroup = 8466B2172237F1940024167C /* Products */;
+					ProjectRef = 8466B2162237F1940024167C /* RCTYouTube.xcodeproj */;
 				},
 				{
 					ProductGroup = 146834001AC3E56700842450 /* Products */;
@@ -1583,6 +1607,13 @@
 			fileType = archive.ar;
 			path = "libRNVectorIcons-tvOS.a";
 			remoteRef = 8443CE312219A58B00A0DFD8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8466B2322237F1940024167C /* libRCTYouTube.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTYouTube.a;
+			remoteRef = 8466B2312237F1940024167C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */ = {

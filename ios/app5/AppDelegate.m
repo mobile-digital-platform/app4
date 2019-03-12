@@ -6,6 +6,7 @@
 #import <React/RCTPushNotificationManager.h>
 
 #import <Firebase.h>;
+#import <AVFoundation/AVFoundation.h>;
 
 @implementation AppDelegate
 
@@ -55,6 +56,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   [FIRApp configure];
+  [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error: nil];
   NSURL *jsCodeLocation;
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
