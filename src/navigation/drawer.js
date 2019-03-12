@@ -1,5 +1,5 @@
 import React from 'react';
-import {ScrollView} from 'react-native';
+import {Platform,ScrollView,View} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {
 	createAppContainer,
@@ -23,8 +23,13 @@ const styles = EStyleSheet.create({
 	text: {
 		paddingLeft: 10,
 		color: '#fff',
-		fontFamily: 'GothamPro',
+		fontSize: 14, fontFamily: 'GothamPro',
+		...Platform.select({ios:{},android:{fontWeight:'200'}}),
 	},
+	selected_text: {
+		fontFamily: 'GothamPro-Medium',
+		...Platform.select({ios:{},android:{fontWeight:'200'}}),
+	}
 });
 
 const Drawer = (props) => (
@@ -33,6 +38,7 @@ const Drawer = (props) => (
 			<DrawerItems
 				{...props}
 				labelStyle={styles.text}
+				activeLabelStyle={styles.selected_text}
 			/>
 		</SafeAreaView>
 	</ScrollView>
