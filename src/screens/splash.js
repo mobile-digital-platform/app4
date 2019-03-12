@@ -25,7 +25,7 @@ export default class SplashScreen extends React.Component {
 
 	componentDidMount() {
 		firebase.analytics().setCurrentScreen(page_title);
-		// firebase.analytics().logEvent("",{});
+		// firebase.analytics().logEvent("XSS",{xss:1});
 	}
 
 	render() {
