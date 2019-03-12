@@ -3,11 +3,12 @@ import {FlatList,ImageBackground,Keyboard,ScrollView,Text,TouchableOpacity,View,
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {withNavigation} from 'react-navigation';
 
-import Input		from '../../../../templates/input';
-import InputPhone	from '../../../../templates/input_phone';
-import Select		from '../../../../templates/select';
+import AnimatedButton	from '../../../../templates/animated_button';
+import Input			from '../../../../templates/input';
+import InputPhone		from '../../../../templates/input_phone';
+import Select			from '../../../../templates/select';
 
-import YandexMaps	from './map';
+import YandexMaps		from './map';
 
 const styles = EStyleSheet.create({
 	container: {
@@ -27,22 +28,14 @@ const styles = EStyleSheet.create({
 	block: {
 		marginBottom: 10,
 	},
-	map: {
+	map_area: {
 		height: 250, width: '100%',
 		backgroundColor: '#ccc',
 	},
-	save: {
+	save_area: {
 		alignItems: 'center',
 		margin: 20,
-		padding: 15,
-		borderRadius: 100,
-		backgroundColor: '$red',
 	},
-	save_text: {
-		color: '#fff',
-		fontSize: 16, fontFamily: 'GothamPro-Medium',
-		lineHeight: 19,
-	}
 });
 
 export default withNavigation(class GetPrizeCenterLayout extends Component {
@@ -77,7 +70,7 @@ export default withNavigation(class GetPrizeCenterLayout extends Component {
 			},
 		};
 
-		this.required = ['name','father','family','phone','mail','center'];
+		this.required = ['name','father','family','phone','mail'];
 
 		this.state = {
 			...props.user,
@@ -127,7 +120,7 @@ export default withNavigation(class GetPrizeCenterLayout extends Component {
 	// Проверяем, готова ли форма
 	check_ready = async () => {
 		await this.setState(state => ({
-			ready: this.required.every(field => state[field].length)
+			ready: this.required.every(field => state[field].length)&& state.center>0
 		}));
 	}
 
@@ -157,11 +150,7 @@ export default withNavigation(class GetPrizeCenterLayout extends Component {
 			},
 			{
 				field: 'mail',
-				error: 'Укажите почтоый ящик'
-			},
-			{
-				field: 'center',
-				error: 'Выберите центр выдачи'
+				error: 'Укажите почтовый ящик'
 			},
 		];
 
@@ -175,7 +164,7 @@ export default withNavigation(class GetPrizeCenterLayout extends Component {
 				this.setState({[field+'_error']:false});
 				return true;
 			}
-		})
+		}) && (state.center>0);
 	}
 
 	send = async () => {
@@ -274,7 +263,7 @@ export default withNavigation(class GetPrizeCenterLayout extends Component {
 						/>
 						<Select
 							title="Выберите центр выдачи"
-							empty_title='Центров выдачи этого приза нет'
+							empty_title={props.loading ? 'Выберите центр выдачи' : 'Центров выдачи этого приза нет'}
 							value={state.center}
 							data={center_list}
 							update={center => this.update({center})}
@@ -283,12 +272,17 @@ export default withNavigation(class GetPrizeCenterLayout extends Component {
 					</View>
 				</View>
 				<View style={styles.map_area}>
-					<View style={styles.map}>
-						<YandexMaps list={props.list} />
-					</View>
-					<TouchableOpacity style={styles.save} onPress={this.send}>
-						<Text style={styles.save_text}>Дальше</Text>
-					</TouchableOpacity>
+					<YandexMaps list={props.list} />
+				</View>
+				<View style={styles.save_area}>
+					<AnimatedButton
+						active={this.state.ready}
+						state={this.state.button_state}
+						on_press={this.send}
+						on_end={this.props.button_on_end}
+					>
+						Дальше
+					</AnimatedButton>
 				</View>
 			</ScrollView>
 		)

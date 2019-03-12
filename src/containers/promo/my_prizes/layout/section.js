@@ -58,6 +58,7 @@ export default withNavigation(({promo_id,data,...props}) => (
 				}}>
 					<Text style={styles.button_text}>Внести данные</Text>
 				</TouchableOpacity>
+				<Text>{JSON.stringify({get_type:data.get_type,user_data_type:data.user_data_type})}</Text>
 			</>
 			) : null}
 			{/*

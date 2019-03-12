@@ -274,6 +274,7 @@ export default withNavigation(class GetPrizeEmailLayout extends Component {
 							id={this.inputs.birthday.ref}
 							title="Дата рождения"
 							value={state.birthday}
+							disabled={props.user.birthday.length}
 							update={birthday => this.update({birthday})}
 							error={state.birthday_error}
 							keyboard_options={{
