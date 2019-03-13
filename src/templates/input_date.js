@@ -35,7 +35,11 @@ const styles = EStyleSheet.create({
 	input: {
 		width: '100%',
 		paddingTop: 4, paddingBottom: 5,
+		color: '#3d3d3d',
 		fontSize: 14, fontFamily: 'GothamPro-Medium',
+	},
+	input_disabled: {
+		color: '#b3b3b3',
 	},
 	left: {
 		flex: 1,
@@ -100,16 +104,16 @@ export default class InputDate extends Component {
 			<View style={props.style}>
 				<TouchableOpacity ref={this.input} style={[styles.container,state.error?styles.container_error:{}]} onPress={this.open}>
 					<View style={styles.left}>
-						{state.value ? (
+					{state.value ? (
 						<>
-							<Text style={styles.title}>{props.title}</Text>
-							<Text style={styles.input}>{f.date("d.m.Y",new Date(state.value))}</Text>
+						<Text style={styles.title}>{props.title}</Text>
+						<Text style={[styles.input,props.disabled?styles.input_disabled:{}]}>{f.date("d.m.Y",new Date(state.value))}</Text>
 						</>
-						) : (
-							<Text style={[styles.title,styles.title_active]}>{props.title}</Text>
-						)}
+					) : (
+						<Text style={[styles.title,styles.title_active]}>{props.title}</Text>
+					)}
 					</View>
-					{state.value ? (<View style={styles.right}><Image style={styles.right_image} source={Tick} /></View>) : null}
+					{0&&state.value ? (<View style={styles.right}><Image style={styles.right_image} source={Tick} /></View>) : null}
 				</TouchableOpacity>
 				{state.error?.length ? (<Text style={styles.error_text}>{state.error}</Text>) : null}
 				<DateTimePicker

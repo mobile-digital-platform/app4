@@ -9,56 +9,54 @@ import st			from '../../../../services/storage';
 import Layout		from './layout';
 
 export default withNavigation(class PromoGetPrizeByMailComponent extends Component {
-	constructor(props) {
-		super(props);
 
-		this.promo_id		= this.props.promo_id;
-		this.get_type		= this.props.get_type;
-		this.user_data_type	= this.props.user_data_type;
+	componentDidMount() {
+		if(!this.props.user.address_obj.full.length) this.load();
 	}
 
-	send_data = async (data) => {
-		let registration_data = await request.set_registration_data({
-			promo_id:	this.promo_id,
-			user_id:	this.props.user.id,
-			name:   	data.name,
-			father: 	data.father,
-			family: 	data.family,
-			mail:	 	data.mail,
-			birthday:	data.birthday+' 00:00:00',
-			address: 	data.address,
-		});
-		if(registration_data.response) {
-		}
-		if(registration_data.error) {
-			alert("Ошибка",registration_data.error.message);
-			return;
-		}
-
-		let address_data = await request.set_delivery_address({
-			promo_id: this.promo_id,
-			user_id: this.props.user.id,
-			...data.address_obj,
-		});
+	load = async () => {
+		let address_data = await request.get_delivery_address(this.props.user.id);
 		if(address_data.response) {
+			let full = (
+				address_data.response.city?.length &&
+				address_data.response.street?.length &&
+				address_data.response.building?.length &&
+				address_data.response.apartment?.length
+			) ? (
+				address_data.response.city+' '+
+				address_data.response.street+' '+
+				address_data.response.building+' кв '+address_data.response.apartment
+			) : '';
+
+			user_data = {
+				address: full,
+				address_obj: {
+					full,
+					postcode:	address_data.response.postcode	?? '',
+					region:		address_data.response.region	?? '',
+					city:		address_data.response.city		?? '',
+					street:		address_data.response.street	?? '',
+					building:	address_data.response.building	?? '',
+					apartment:	address_data.response.apartment	?? '',
+				},
+			};
+
+			this.props.update_user(user_data);
+			st.merge('user',user_data);
 		}
-		if(address_data.error) {
-			alert("Ошибка",address_data.error.message);
-			return;
-		}
+	}
 
-		// Сохраняем
-		this.props.update_user(data);
-
-		// В асинхронное хранилище изменения тоже записываем
-		st.merge('user',data);
-
-		this.props.navigation.push('promo_passport',{promo_id:this.promo_id,user_data_type:this.user_data_type});
+	next = () => {
+		this.props.navigation.push('promo_passport',{
+			promo_id:		this.props.promo_id,
+			get_type:		this.props.get_type,
+			user_data_type:	this.props.user_data_type,
+		});
 	}
 
 	render() {
-		console.log("Get Prize By Mail Component",this.props);
+		// console.log("Get Prize By Mail Component",this.props);
 
-		return (<Layout {...this.props} send_data={this.send_data} />);
+		return (<Layout {...this.props} next={this.next} />);
 	}
 });
