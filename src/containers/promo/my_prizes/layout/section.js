@@ -53,7 +53,8 @@ export default withNavigation(({promo_id,data,...props}) => (
 			<>
 				<Text style={styles.text}>Чтобы мы могли отправить {data.group_name.toLowerCase()}, необходимо внести данные.</Text>
 				<TouchableOpacity style={styles.button} onPress={_=>{
-					props.navigation.push('promo_address',{promo_id,get_type:data.get_type,user_data_type:data.user_data_type});
+					let page = (data.get_type == -1) ? 'promo_passport' : 'promo_address';
+					props.navigation.push(page,{promo_id,get_type:data.get_type,user_data_type:data.user_data_type});
 					props.navigation.addListener('didFocus',props.reload);
 				}}>
 					<Text style={styles.button_text}>Внести данные</Text>

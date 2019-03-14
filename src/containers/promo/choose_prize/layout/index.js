@@ -36,9 +36,10 @@ const styles = EStyleSheet.create({
 		borderTopWidth: 1, borderTopColor: '#ccc',
 	},
 	button: {
+		justifyContent: 'center',
 		alignItems: 'center',
-		width: '100%',
-		paddingVertical: 10,
+		height: 40, width: '100%',
+		marginVertical: 5,
 		borderRadius: 100,
 		backgroundColor: '$red',
 	},

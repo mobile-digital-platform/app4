@@ -3,7 +3,8 @@ import {Platform,FlatList,KeyboardAvoidingView,Text,TextInput,TouchableOpacity,V
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {withNavigation} from 'react-navigation';
 
-import address from '../../../services/address';
+import address	from '../../../services/address';
+import st		from '../../../services/storage';
 
 const styles = EStyleSheet.create({
 	container: {
@@ -60,6 +61,10 @@ export default withNavigation(class Changeaddress extends Component {
 	}
 	select = (address_obj) => {
 		this.props.update_user({
+			address: address_obj.full,
+			address_obj,
+		});
+		st.merge('user',{
 			address: address_obj.full,
 			address_obj,
 		});

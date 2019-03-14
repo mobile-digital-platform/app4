@@ -287,7 +287,6 @@ export default withNavigation(class MyPromoListLayout extends Component {
 					)
 				)}
 				</View>
-				{1 || details.add_check && (details.show_prizes || details.buy_prize) ? (
 				<Animated.View style={[styles.bottom,{bottom:state.bottom}]} onLayout={({nativeEvent}) => this.layout_bottom(nativeEvent.layout)}>
 					{details.add_check ? (
 						<TouchableOpacity style={[styles.button,styles.add_button]} onPress={_ => {
@@ -297,13 +296,13 @@ export default withNavigation(class MyPromoListLayout extends Component {
 							<Text style={[styles.button_text,styles.add_button_text]}>Добавить чек</Text>
 						</TouchableOpacity>
 					) : null}
-					{0&&details.show_prizes ? (
-						<TouchableOpacity style={[styles.button,styles.get_button]} onPress={_=>props.navigation.push('promo_my_prizes',{id:data.id})}>
-							<Text style={[styles.button_text,styles.get_button_text]}>Посмотреть призы</Text>
-						</TouchableOpacity>
-					) : details.buy_prize ? (
+					{details.buy_prize ? (
 						<TouchableOpacity style={[styles.button,styles.get_button]} onPress={_=>props.navigation.push('promo_choose_prize',{id:data.id})}>
 							<Text style={[styles.button_text,styles.get_button_text]}>Получить выигрыш</Text>
+						</TouchableOpacity>
+					) : details.show_prizes ? (
+						<TouchableOpacity style={[styles.button,styles.get_button]} onPress={_=>props.navigation.push('promo_my_prizes',{id:data.id})}>
+							<Text style={[styles.button_text,styles.get_button_text]}>Посмотреть призы</Text>
 						</TouchableOpacity>
 					) : null}
 					<TouchableOpacity style={styles.question} onPress={_=>props.navigation.push('help',{promo_id:data.id})}>
@@ -311,7 +310,6 @@ export default withNavigation(class MyPromoListLayout extends Component {
 						<Text style={styles.question_text}>Задать вопрос</Text>
 					</TouchableOpacity>
 				</Animated.View>
-				) : null}
 			</View>
 		);
 	}

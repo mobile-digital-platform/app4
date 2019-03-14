@@ -39,7 +39,6 @@
     "assets": [
       "./assets/",
       "./assets/fonts/",
-      "./assets/onboarding_screen/",
       "./assets/onboarding_screen/1",
       "./assets/onboarding_screen/2",
       "./assets/onboarding_screen/3",

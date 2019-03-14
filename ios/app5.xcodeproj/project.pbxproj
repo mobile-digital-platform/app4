@@ -5,6 +5,7 @@
 	};
 	objectVersion = 51;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		001263CFC830417AA38CDA10 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CCFA05D3711F4FA99F0AA3B8 /* MaterialIcons.ttf */; };
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
@@ -97,17 +98,14 @@
 		A752AA39FF36483CA1EDAE44 /* GothamPro-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ACC6BF3857FB4D7A8E70A026 /* GothamPro-BlackItalic.ttf */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		B203357B8D2647E48368D3E2 /* icon3.png in Resources */ = {isa = PBXBuildFile; fileRef = A929E1C223ED4B30AC4F93A9 /* icon3.png */; };
-		B36E83435D224EEA8024A03D /* 4.png in Resources */ = {isa = PBXBuildFile; fileRef = AE2D0950DE5945C1A9CFEDDE /* 4.png */; };
 		B4ACF62203684CB99ADA333A /* promo_no_banner.png in Resources */ = {isa = PBXBuildFile; fileRef = 54465324BD704458AB28D2DB /* promo_no_banner.png */; };
 		B4D28885C3224C8AB8BD8343 /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F2FE4BB2A3F2428EA0AD56E9 /* libRNGestureHandler.a */; };
 		B5412FDDFFDE4333A1393508 /* down_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = C75A7FFD6FD64C52AF076B46 /* down_arrow.png */; };
 		B926AD61C4E94F4EBF653ACA /* GothamPro.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E703F36D15B846868A94DB00 /* GothamPro.ttf */; };
 		BA4E3DB38C1A40F6811A83B7 /* 8.png in Resources */ = {isa = PBXBuildFile; fileRef = 07E77427342C4D42A79D604C /* 8.png */; };
-		BC2889D0D38C4BC3A4A466BF /* 1.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A2F31D08A8C41AFBF914FB1 /* 1.png */; };
 		BF1DA1067C1A423388F7F01D /* GothamPro-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CAB28EE1363A4AC5864DBFF9 /* GothamPro-Italic.ttf */; };
 		BFAB87C3BF9D4074AF78455F /* GothamProNarrow-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6B5472ADFCEB441C81372DB7 /* GothamProNarrow-Medium.ttf */; };
 		C098F0224ACC444785C6B4A5 /* text1.png in Resources */ = {isa = PBXBuildFile; fileRef = 9ECBCC487AEA43BFA416BF20 /* text1.png */; };
-		C4451B57B4EA418E9D4BC8D2 /* 3.png in Resources */ = {isa = PBXBuildFile; fileRef = 0FE0F6475E214B77800959D8 /* 3.png */; };
 		C4D1CD1CE91A470982B47BCD /* text2.png in Resources */ = {isa = PBXBuildFile; fileRef = AFE5AE7B9D194E6F88770B40 /* text2.png */; };
 		C8C040D813D845E69152D312 /* 5.png in Resources */ = {isa = PBXBuildFile; fileRef = 82C2B14DDE504107AB0609E7 /* 5.png */; };
 		D4961D68F5E546D3A7E645AB /* GothamPro-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86B53CC2D9444E9DB177DCDE /* GothamPro-Medium.ttf */; };
@@ -130,7 +128,6 @@
 		F07741F820D9425C84272B9A /* icon7.png in Resources */ = {isa = PBXBuildFile; fileRef = 542CDFA60134496B8A68D864 /* icon7.png */; };
 		F71A747847114915A84AC71D /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7F976DC8D9FC477896D09F1A /* Octicons.ttf */; };
 		FE87761DFD7245FE8A965A86 /* bubbles0.png in Resources */ = {isa = PBXBuildFile; fileRef = EB86DEEB5AA34E13B9BA64AD /* bubbles0.png */; };
-		FEF873CA6BAE43B2A2BAC309 /* 2.png in Resources */ = {isa = PBXBuildFile; fileRef = 020565BE1A5149EE9F20A7BA /* 2.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -512,6 +509,7 @@
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D5C9B4C8150430EBD8D01E6 /* splash1.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = splash1.png; path = ../assets/splash1.png; sourceTree = "<group>"; };
 		2EE4FABBF4A94B5387EC7BE8 /* back_arrow_white.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = back_arrow_white.png; path = ../assets/ui/back_arrow_white.png; sourceTree = "<group>"; };
+		3268228BC9FE4020B2785D32 /* 1.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = 1.png; path = ../assets/onboarding_screen/1/1.png; sourceTree = "<group>"; };
 		329C051CA996421DB509AA27 /* splash.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = splash.png; path = ../assets/splash.png; sourceTree = "<group>"; };
 		359E9DDEA3E541A08C519A5D /* bottle.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = bottle.png; path = ../assets/onboarding_screen/4/bottle.png; sourceTree = "<group>"; };
 		3A1B7AB8E51DA55861D91759 /* libPods-app5-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-app5-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1060,6 +1058,7 @@
 				54465324BD704458AB28D2DB /* promo_no_banner.png */,
 				D744EAB09E1C4FD4907FED3D /* question_icon.png */,
 				94CC6DE88A8A4D4CAAA2E5A1 /* tick.png */,
+				3268228BC9FE4020B2785D32 /* 1.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1609,7 +1608,6 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				04EBBF2D7E4749288D0DCC60 /* icon.png in Resources */,
-				BC2889D0D38C4BC3A4A466BF /* 1.png in Resources */,
 				85D84234B1984A4382C37784 /* icon1.png in Resources */,
 				4E11E201B0DE4DFC8269ACA7 /* icon2.png in Resources */,
 				B203357B8D2647E48368D3E2 /* icon3.png in Resources */,
@@ -1619,11 +1617,8 @@
 				F07741F820D9425C84272B9A /* icon7.png in Resources */,
 				79E9C6EE87A24FD6B150C90D /* icon8.png in Resources */,
 				6FC7CD55A176492C97C21312 /* icon9.png in Resources */,
-				FEF873CA6BAE43B2A2BAC309 /* 2.png in Resources */,
-				C4451B57B4EA418E9D4BC8D2 /* 3.png in Resources */,
 				903C9B80987B459DBCAF2E1D /* check.png in Resources */,
 				A53B7A2DCFEB4587A51B400C /* target.png in Resources */,
-				B36E83435D224EEA8024A03D /* 4.png in Resources */,
 				01912970EB00437DAB1F5304 /* bottle.png in Resources */,
 				C098F0224ACC444785C6B4A5 /* text1.png in Resources */,
 				C4D1CD1CE91A470982B47BCD /* text2.png in Resources */,
@@ -1983,11 +1978,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = app5/app5.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = BX7CBALR5G;
+				DEVELOPMENT_TEAM = XGXTPV3V8S;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
@@ -2006,9 +2001,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.cocacolapromo.app.emg;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cocacolaemg.app.ios;
 				PRODUCT_NAME = app5;
-				PROVISIONING_PROFILE_SPECIFIER = "Coca Cola Promo App Store";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -2019,10 +2014,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = app5/app5.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = BX7CBALR5G;
+				DEVELOPMENT_TEAM = XGXTPV3V8S;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
@@ -2041,9 +2036,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.cocacolapromo.app.emg;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cocacolaemg.app.ios;
 				PRODUCT_NAME = app5;
-				PROVISIONING_PROFILE_SPECIFIER = "Coca Cola Promo App Store";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
