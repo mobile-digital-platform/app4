@@ -78,9 +78,16 @@ export default withNavigation(class GetPrizeAddressLayout extends Component {
 		}
 	}
 	componentDidUpdate(prev_props) {
+		console.log(this.props.user.address_obj);
 		// Если там он указал адрес без квартиры, то указываем на это
-		if(this.props.user.address_obj.full.length && !this.props.user.address_obj.apartment) {
-			this.setState({tint:'Укажите квартиру, если есть'});
+		if(
+			prev_props.user.address_obj.full != this.props.user.address_obj.full &&
+			this.props.user.address_obj.full.length
+		) {
+			this.setState({ready:true});
+			if(!this.props.user.address_obj.apartment.length) {
+				this.setState({tint:'Укажите квартиру, если есть'});
+			}
 		}
 	}
 
