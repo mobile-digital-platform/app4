@@ -14,7 +14,7 @@ const styles = EStyleSheet.create({
 	},
 });
 
-const page_title = 'Посадочная';
+const title = 'Посадочная';
 
 export default class OnboardingScreen extends React.Component {
 
