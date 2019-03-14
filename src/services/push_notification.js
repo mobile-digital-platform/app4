@@ -1,4 +1,4 @@
-import {Platform} from 'react-native';
+import {Platform,PushNotificationIOS} from 'react-native';
 import PushNotification from 'react-native-push-notification';
 import {NavigationActions} from 'react-navigation';
 
@@ -28,7 +28,8 @@ export default {
 					}
 				}
 
-				if(Platform.OS == 'ios') notification.finish(PushNotificationIOS.FetchResult.NoData);
+				// if(Platform.OS == 'ios') notification.finish(PushNotificationIOS.FetchResult.NoData);
+				if(Platform.OS == 'ios') notification.finish("backgroundFetchResultNoData");
 			},
 			senderID: config.fcm_id,
 			permissions: {
