@@ -13,7 +13,7 @@ export default {
 
 	base_width: 320,
 
-	simulator: 0,
+	simulator: 1,
 
 	navigator_ref: null,
 
