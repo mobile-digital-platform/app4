@@ -1,6 +1,6 @@
 export default {
 	name: 'mobile-digital-platform',
-	version: '1.0.1',
+	version: '1.0.2',
 	year: '2019',
 
 	fcm_id: '330059855909',
@@ -13,7 +13,7 @@ export default {
 
 	base_width: 320,
 
-	simulator: 1,
+	simulator: 0,
 
 	navigator_ref: null,
 
