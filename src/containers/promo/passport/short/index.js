@@ -38,6 +38,9 @@ export default withNavigation(class PromoGetPrizeByMailComponent extends Compone
 		});
 		if(registration_data.response) {
 			let obj = {
+				name:   	data.name,
+				father: 	data.father,
+				family: 	data.family,
 				mail:	 	data.mail,
 				birthday:	data.birthday,
 				passport: {
@@ -47,10 +50,10 @@ export default withNavigation(class PromoGetPrizeByMailComponent extends Compone
 			};
 
 			// Сохраняем
-			this.props.update_user(data);
+			this.props.update_user(obj);
 
 			// В асинхронное хранилище изменения тоже записываем
-			st.merge('user',data);
+			st.merge('user',obj);
 		}
 		if(registration_data.error) {
 			await alert("Ошибка",registration_data.error.message);

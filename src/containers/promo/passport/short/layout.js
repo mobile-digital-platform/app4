@@ -296,6 +296,7 @@ export default withNavigation(class GetPrizeEmailLayout extends Component {
 							style={styles.textarea}
 							value={state.address}
 							placeholder="Укажите адрес постоянной регистрации (как в паспорте)"
+							disabled={props.user.passport.address.length}
 							update={address => this.update({address})}
 							error={state.address_error}
 							keyboard_options={{

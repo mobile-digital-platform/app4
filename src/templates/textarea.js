@@ -17,6 +17,9 @@ const styles = EStyleSheet.create({
 		fontSize: 14, fontFamily: 'GothamPro',
 		lineHeight: 16,
 	},
+	disabled: {
+		color: '#b3b3b3',
+	},
 	error_text: {
 		marginLeft: 25, marginBottom: 10, paddingTop: Platform.select({ios:3,android:0}),
 		fontSize: 14, fontFamily: 'GothamPro',
@@ -28,7 +31,7 @@ export default (props) => (
 	<>
 		<View style={[styles.container,props.style]}>
 			<TextInput
-				style={[styles.input,props.area_style]}
+				style={[styles.input,props.area_style,props.disabled ? styles.disabled : {}]}
 				multiline={true}
 				textAlignVertical='top'
 				value={props.value}

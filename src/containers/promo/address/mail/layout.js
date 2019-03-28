@@ -66,6 +66,7 @@ export default withNavigation(class GetPrizeAddressLayout extends Component {
 	constructor(props) {
 		super(props);
 
+		this.loaded_address = !!props.user.address_obj.full.length;
 		this.state = {
 			tint:	'',
 			ready:	props.user.address_obj.full.length,
@@ -120,6 +121,7 @@ export default withNavigation(class GetPrizeAddressLayout extends Component {
 					<SelectAddress
 						title="Укажите адрес доставки"
 						value={props.user.address_obj.full}
+						disabled={this.loaded_address}
 						error={state.tint}
 					/>
 					{/*

@@ -26,6 +26,9 @@ const styles = EStyleSheet.create({
 		marginTop: 15, marginBottom: 15,
 		fontSize: 14, fontFamily: 'GothamPro', lineHeight: 18,
 	},
+	disabled: {
+		color: '#b3b3b3',
+	},
 	error_text: {
 		marginLeft: 20, marginBottom: 10,
 		fontSize: 14, fontFamily: 'GothamPro',
@@ -34,14 +37,20 @@ const styles = EStyleSheet.create({
 });
 
 export default withNavigation(({navigation,...props}) => (
-	<>
-		<TouchableOpacity style={[styles.container,props.error?styles.container_error:{}]} onPress={_=>navigation.push('settings_change_address')}>
-			{props.value ? (
-				<Text style={styles.text}>{props.value}</Text>
-			) : (
-				<Text style={styles.title}>{props.title}</Text>
-			)}
-		</TouchableOpacity>
-		{props.error?.length ? (<Text style={styles.error_text}>{props.error}</Text>) : null}
-	</>
+	props.value && props.disabled ? (
+		<View style={styles.container}>
+			<Text style={[styles.text,styles.disabled]}>{props.value}</Text>
+		</View>
+	) : (
+		<>
+			<TouchableOpacity style={[styles.container,props.error?styles.container_error:{}]} onPress={_=>navigation.push('settings_change_address')}>
+				{props.value ? (
+					<Text style={styles.text}>{props.value}</Text>
+				) : (
+					<Text style={styles.title}>{props.title}</Text>
+				)}
+			</TouchableOpacity>
+			{props.error?.length ? (<Text style={styles.error_text}>{props.error}</Text>) : null}
+		</>
+	)
 ));
