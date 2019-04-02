@@ -9,9 +9,13 @@ import st			from '../../../../services/storage';
 import Layout		from './layout';
 
 export default withNavigation(class PromoGetPrizeByMailComponent extends Component {
+	state = {
+		accessible_address: false,
+	}
 
 	componentDidMount() {
-		if(!this.props.user.address_obj.full.length) this.load();
+		// if(!this.props.user.address_obj.full.length)
+		this.load();
 	}
 
 	load = async () => {
@@ -20,12 +24,12 @@ export default withNavigation(class PromoGetPrizeByMailComponent extends Compone
 			let full = (
 				address_data.response.city?.length &&
 				address_data.response.street?.length &&
-				address_data.response.building?.length &&
-				address_data.response.apartment?.length
+				address_data.response.building?.length
 			) ? (
 				address_data.response.city+' '+
 				address_data.response.street+' '+
-				address_data.response.building+' кв '+address_data.response.apartment
+				address_data.response.building+
+				(address_data.response.apartment ? ' кв '+address_data.response.apartment : '')
 			) : '';
 
 			user_data = {
@@ -43,6 +47,8 @@ export default withNavigation(class PromoGetPrizeByMailComponent extends Compone
 
 			this.props.update_user(user_data);
 			st.merge('user',user_data);
+
+			this.setState({accessible_address:full.length});
 		}
 	}
 
@@ -57,6 +63,6 @@ export default withNavigation(class PromoGetPrizeByMailComponent extends Compone
 	render() {
 		// console.log("Get Prize By Mail Component",this.props);
 
-		return (<Layout {...this.props} next={this.next} />);
+		return (<Layout {...this.props} accessible_address={this.state.accessible_address} next={this.next} />);
 	}
 });
