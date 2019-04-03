@@ -1,7 +1,11 @@
 import React,{Component} from 'react';
-import {StyleSheet,Image,Text,TouchableOpacity,View} from 'react-native';
+import {StyleSheet,Image,ImageBackground,Text,TouchableOpacity,View} from 'react-native';
 import {withNavigation} from 'react-navigation';
 import EStyleSheet from 'react-native-extended-stylesheet';
+
+import f from '../../../../functions';
+
+import Prize from '../../../../../assets/ui/prize.png';
 
 import promo_date_diff from '../../../../services/promo_date_diff';
 
@@ -16,6 +20,32 @@ const styles = EStyleSheet.create({
 	},
 	big_image: {
 		height: 350,
+	},
+	points_area: {
+		flexDirection: 'row',
+		justifyContent: 'flex-end',
+		alignItems: 'flex-end',
+		position: 'absolute', top: 0, right: 0,
+	},
+	points: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		height: 45, width: 50,
+		marginRight: 5,
+		backgroundColor: '#b30000',
+	},
+	points_icon: {
+		height: 21, width: 18,
+		marginTop: -3, marginBottom: 1,
+	},
+	points_number: {
+		color: '#fff',
+		fontSize: 18, fontFamily: 'GothamPro-Bold',
+	},
+	points_type: {
+		paddingTop: 3,
+		color: '#fff',
+		fontSize: 9, fontFamily: 'GothamPro',
 	},
 	retailer_area: {
 		alignItems: 'flex-end',
@@ -69,7 +99,33 @@ export default withNavigation(class MyListItem extends Component {
 
 		return (
 			<TouchableOpacity style={styles.container} onPress={_=>this.props.navigation.push('promo_my_view',{id:data.id})}>
-				<Image style={[styles.image,{height:this.state.image_height}]} source={{uri:this.state.image_url}} />
+				<ImageBackground style={[styles.image,{height:this.state.image_height}]} source={{uri:this.state.image_url}}>
+					{data.prizes>0 || data.points>0 ? (
+					<View style={styles.points_area}>
+						{data.prizes>0 ? (
+							<View style={styles.points}>
+							{data.show_prize_icon ? (
+							<>
+								<Image style={styles.points_icon} source={Prize} />
+								<Text style={styles.points_type}>подарок</Text>
+							</>
+							) : (
+							<>
+								<Text style={styles.points_number}>{data.prizes}</Text>
+								<Text style={styles.points_type}>приз{f.number_case(data.prizes,1)}</Text>
+							</>
+							)}
+							</View>
+						) : null}
+						{data.points>0 ? (
+							<View style={styles.points}>
+								<Text style={styles.points_number}>{data.points}</Text>
+								<Text style={styles.points_type}>балл{f.number_case(data.prizes,1)}</Text>
+							</View>
+						) : null}
+					</View>
+					) : null}
+				</ImageBackground>
 				<View style={styles.retailer_area}>
 					<Image style={styles.retailer_image} source={{uri:data.retailer.image_url}} />
 				</View>

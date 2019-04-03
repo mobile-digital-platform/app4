@@ -113,6 +113,7 @@ export const request = {
 			PromoGroupID: data.promo_id,
 		});
 		if(response) {
+			console.log(response);
 			return {response:{
 				items: response.map(e => ({
 					id:					e.PromoID,
@@ -126,8 +127,11 @@ export const request = {
 					site_link:			e.WebSiteLink,
 					rules_link:			e.RulesLink,
 					active:				e.IsActive,
-					can_participate:	e.CanJoin,
+					can_participate:	!!e.CanJoin,
 					participation:		e.Participate,
+					prizes:				e.Prizes,
+					show_prize_icon:	!!e.NewPrize,
+					points:				e.Scores,
 				})).filter(e => e.active),
 			}};
 		}
