@@ -102,19 +102,34 @@ export default class InputDate extends Component {
 
 		return (
 			<View style={props.style}>
-				<TouchableOpacity ref={this.input} style={[styles.container,state.error?styles.container_error:{}]} onPress={this.open}>
-					<View style={styles.left}>
-					{state.value ? (
-						<>
-						<Text style={styles.title}>{props.title}</Text>
-						<Text style={[styles.input,props.disabled?styles.input_disabled:{}]}>{f.date("d.m.Y",new Date(state.value))}</Text>
-						</>
-					) : (
-						<Text style={[styles.title,styles.title_active]}>{props.title}</Text>
-					)}
+				{props.disabled ? (
+					<View style={styles.container}>
+						<View style={styles.left}>
+						{state.value ? (
+							<>
+							<Text style={styles.title}>{props.title}</Text>
+							<Text style={[styles.input,styles.input_disabled]}>{f.date("d.m.Y",new Date(state.value))}</Text>
+							</>
+						) : (
+							<Text style={[styles.title,styles.title_active]}>{props.title}</Text>
+						)}
+						</View>
 					</View>
-					{0&&state.value ? (<View style={styles.right}><Image style={styles.right_image} source={Tick} /></View>) : null}
-				</TouchableOpacity>
+				) : (
+					<TouchableOpacity ref={this.input} style={[styles.container,state.error?styles.container_error:{}]} onPress={this.open}>
+						<View style={styles.left}>
+						{state.value ? (
+							<>
+							<Text style={styles.title}>{props.title}</Text>
+							<Text style={styles.input}>{f.date("d.m.Y",new Date(state.value))}</Text>
+							</>
+						) : (
+							<Text style={[styles.title,styles.title_active]}>{props.title}</Text>
+						)}
+						</View>
+						{0&&state.value ? (<View style={styles.right}><Image style={styles.right_image} source={Tick} /></View>) : null}
+					</TouchableOpacity>
+				)}
 				{state.error?.length ? (<Text style={styles.error_text}>{state.error}</Text>) : null}
 				<DateTimePicker
 					isVisible={state.visible}

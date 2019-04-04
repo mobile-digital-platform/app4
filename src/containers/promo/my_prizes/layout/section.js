@@ -50,7 +50,7 @@ export default withNavigation(({promo_id,data,...props}) => (
 		<View style={styles.info}>
 			<Subtitle text={data.group_name} />
 			{data.user_data_type != -1 ? (
-			<>
+				<>
 				<Text style={styles.text}>Чтобы мы могли отправить {data.group_name.toLowerCase()}, необходимо внести данные.</Text>
 				<TouchableOpacity style={styles.button} onPress={_=>{
 					let page = (data.get_type == -1) ? 'promo_passport' : 'promo_address';
@@ -59,7 +59,7 @@ export default withNavigation(({promo_id,data,...props}) => (
 				}}>
 					<Text style={styles.button_text}>Внести данные</Text>
 				</TouchableOpacity>
-			</>
+				</>
 			) : null}
 			{/*
 			<Text style={styles.text}>
