@@ -1,39 +1,39 @@
 {
   "project_info": {
-    "project_number": "162960043197",
-    "firebase_url": "https://coca-cola-promo.firebaseio.com",
-    "project_id": "coca-cola-promo",
-    "storage_bucket": "coca-cola-promo.appspot.com"
+    "project_number": "330059855909",
+    "firebase_url": "https://cocacolamobile-99e65.firebaseio.com",
+    "project_id": "cocacolamobile-99e65",
+    "storage_bucket": "cocacolamobile-99e65.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:162960043197:android:fc16490d173cd476",
+        "mobilesdk_app_id": "1:330059855909:android:fc16490d173cd476",
         "android_client_info": {
           "package_name": "com.cocacolapromo.app.emg"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "162960043197-mqq4osi5v9jsj399m1ff1kvme75npeco.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyC6oK9n5OgBj5L3or64JGqPXHWdOIcgM8E"
+          "current_key": "AIzaSyBv3iV2evdwile_XVcVu_6-8rv_Vdrsb6I"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "330059855909-r6pe8o1tf7afiknmojv08elrmvu5ctdo.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "330059855909-a8gnuchop8s7i3gdkpivl6ru67c9r3hq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.cocacolaemg.app.ios"
+              }
+            }
+          ]
         }
       }
     }

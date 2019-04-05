@@ -113,7 +113,6 @@ export const request = {
 			PromoGroupID: data.promo_id,
 		});
 		if(response) {
-			console.log(response);
 			return {response:{
 				items: response.map(e => ({
 					id:					e.PromoID,

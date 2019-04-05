@@ -191,8 +191,6 @@ export default withNavigation(class PromoDetails extends Component {
 
 		// navigation.push('promo_participate',{data});
 
-		console.log(data);
-
 		return (
 			<View style={styles.container}>
 				<ImageBackground style={styles.banner} imageStyle={{opacity:0.5}} source={Banner}>

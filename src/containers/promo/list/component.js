@@ -24,7 +24,7 @@ export default withNavigation(class PromoListComponent extends Component {
 
 	componentDidMount() {
 		// this.props.navigation.push('help');
-		console.log(this.props);
+		// console.log(this.props);
 	}
 	componentDidUpdate(prev_props) {
 		// Страница по умолчанию, сюда можно перейти из принятия участия в акции
