@@ -119,6 +119,7 @@ export default withNavigation(class GetPrizeEmailLayout extends Component {
 				birthday:		this.props.user.birthday || state.birthday,
 				address:		this.props.user.passport.address || state.address,
 			}));
+			this.check_ready();
 		}
 
 		// Изменилось состояние запроса
@@ -219,6 +220,7 @@ export default withNavigation(class GetPrizeEmailLayout extends Component {
 
 	render() {
 		let {props,state} = this;
+		console.log(state);
 
 		return (
 			<ScrollView ref={this.scroll} keyboardShouldPersistTaps="always" keyboardDismissMode="on-drag" style={styles.container}>
