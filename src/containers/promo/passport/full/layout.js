@@ -150,10 +150,11 @@ export default withNavigation(class PromoPassportLayout extends Component {
 		};
 	}
 
-	componentDidUpdate(prev_props) {
+	componentDidUpdate(prev_props,prev_state) {
 		// Изменились данные о пользователе
 		if(!Object.is(prev_props.user,this.props.user)) {
 			this.setState(this.props.user);
+			this.check_ready();
 		}
 
 		// Изменилось состояние запроса

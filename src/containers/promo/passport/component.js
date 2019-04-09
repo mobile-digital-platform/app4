@@ -18,9 +18,9 @@ export default withNavigation(class PassportComponent extends Component {
 	}
 
 	componentDidMount() {
-		if(!this.props.user.passport.address.length) {
+		// if(!this.props.user.passport.address.length) {
 			this.get_data();
-		}
+		// }
 	}
 
 	get_data = async () => {
