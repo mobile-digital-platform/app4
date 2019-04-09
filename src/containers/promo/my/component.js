@@ -25,6 +25,12 @@ export default withNavigation(class MyPromoListComponent extends Component {
 		this.get_data();
 		// this.props.navigation.push('promo_my_prizes',{id:this.id});
 	}
+	componentDidUpdate(prev_props) {
+		if(!Object.is(this.props.user,prev_props.user) && this.props.user.id) {
+			this.setState({data:this.get_promo(this.id),details:{},check:[]});
+			this.get_data();
+		}
+	}
 
 	get_promo = (id) => this.props.promo.find(e => e.id==id);
 

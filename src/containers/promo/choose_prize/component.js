@@ -19,6 +19,12 @@ export default withNavigation(class PromoChoosePrizeComponent extends Component 
 		this.id = this.props.navigation.getParam('id',0);
 		this.load_data();
 	}
+	componentDidUpdate(prev_props) {
+		if(!Object.is(this.props.user,prev_props.user) && this.props.user.id) {
+			this.setState({available_points:0,available_points_type:'',list:[]});
+			this.load_data();
+		}
+	}
 
 	load_data = async () => {
 		this.setState({loading:true});

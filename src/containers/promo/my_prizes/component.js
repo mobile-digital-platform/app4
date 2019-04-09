@@ -13,9 +13,15 @@ export default withNavigation(class PromoMyPrizesComponent extends Component {
 		loading: false,
 	};
 
-	async componentDidMount() {
+	componentDidMount() {
 		this.id = this.props.navigation.getParam('id',0);
-		await this.load_data();
+		this.load_data();
+	}
+	componentDidUpdate(prev_props) {
+		if(!Object.is(this.props.user,prev_props.user) && this.props.user.id) {
+			this.setState({list:[]});
+			this.load_data();
+		}
 	}
 
 	load_data = async () => {
