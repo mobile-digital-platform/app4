@@ -246,7 +246,7 @@ export default withNavigation(class MyPromoListLayout extends Component {
 					) : null}
 					</Animated.View>
 					) : null}
-					<Text style={styles.title}>{data.title.toUpperCase()}</Text>
+					<Text style={styles.title}>{data.title?.toUpperCase()}</Text>
 					<Text style={styles.ending}>{data.diff_text}</Text>
 				</ImageBackground>
 				<View style={styles.retailer_area}>

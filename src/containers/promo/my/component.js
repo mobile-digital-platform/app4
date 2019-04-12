@@ -27,8 +27,13 @@ export default withNavigation(class MyPromoListComponent extends Component {
 	}
 	componentDidUpdate(prev_props) {
 		if(!Object.is(this.props.user,prev_props.user) && this.props.user.id) {
-			this.setState({data:this.get_promo(this.id),details:{},check:[]});
-			this.get_data();
+			let data = this.get_promo(this.id);
+			if(data) {
+				this.setState({data,details:{},check:[]});
+				this.get_data();
+			} else {
+				this.props.navigation.navigate('promo_list',{page:1});
+			}
 		}
 	}
 
