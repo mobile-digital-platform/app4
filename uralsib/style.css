@@ -1,0 +1,121 @@
+body{
+    margin: 0; padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #F5F5F5;
+}
+
+.form-container-1{
+    width: 700px;
+    background-color: #fff;
+    padding: 30px;
+    border: 1px solid #e5e5e5;
+    margin: 0 auto;
+    margin-top: 30px;
+}
+header img{
+    height: 55px;
+    width: 100%;
+}
+h1{
+    text-align: center;
+    margin-bottom: 21px;
+    font-size: 22px;
+}
+h2{
+    text-transform: uppercase;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 20px;
+}
+h3{
+    font-size: 16px;
+    color: black;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-top: 15px;
+}
+
+.form-item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.button-item{
+    justify-content: flex-end;
+}
+.form-label{
+    font-size: 14px;
+    padding: 9px 12px 0;
+}
+.form-control{
+    max-width: 200px;
+    height: 32px;
+    margin-left: 20px;
+    border-radius: 6px;
+}
+.btn-primary{
+    width: 200px;
+    height: 40px;
+    padding: 9px 24px;
+    border-radius: 24px;
+    font-size: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    background-color: #2B7EF0;
+}
+
+.form-container-2{
+    width: 700px;
+    background-color: #fff;
+    margin: 0 auto;
+    margin-top: 30px;
+    padding: 30px;
+    border: 1px solid #e5e5e5;
+}
+.form-container-2 form{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+.form-container-2 .form-item{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.form-container-2 .button-item{
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+}
+.form-container-2 input[type="checkbox"]{
+    display: none;
+}
+.form-container-2 input+label{
+    background-color: #fff;
+    border: 1px solid #b3b3b3;
+    border-radius: 18px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 185px;
+    height: 185px;
+    color: #b3b3b3;
+    font-size: 18px;
+    cursor: pointer;
+    transition: .5s;
+}
+.form-container-2 input+label:hover{
+    transform: scale(1.1)
+}
+.form-container-2 .checked{
+    background-color: #2B7EF0;
+    border: 1px solid #2B7EF0;
+    color: white;
+}
+
